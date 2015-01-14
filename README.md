@@ -1,3 +1,3 @@
 odoo_addons
 ===========
-test downstream
+test downstream2
