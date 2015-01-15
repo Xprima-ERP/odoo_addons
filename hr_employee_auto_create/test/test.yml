@@ -1,0 +1,17 @@
+-
+  Create a user
+-
+  !record {model: res.users, id: res_users_test_1}:
+    name : "Test User"
+    login : "tuser"
+    notification_email_send : "none"
+
+-
+  Check if hr.employee was created and linked to the new user
+
+-
+  !python {model: hr.employee}: |
+    _id = self.search(cr, uid, [('user_id', "=", ref("res_users_test_1"))])
+    assert _id
+    employee = self.browse(cr, uid, _id)[0]
+    assert employee.user_id.name == "Test User"
