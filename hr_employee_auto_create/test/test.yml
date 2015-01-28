@@ -14,4 +14,4 @@
     _id = self.search(cr, uid, [('user_id', "=", ref("res_users_test_1"))])
     assert _id
     employee = self.browse(cr, uid, _id)[0]
-    assert employee.user_id.name == "Test Userr"
+    assert employee.user_id.name == "Test User"
