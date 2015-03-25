@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_xpr_pre_quote_creation_actions_xpr_pre_quote_creation_actions,xpr_pre_quote_creation_actions.xpr_pre_quote_creation_actions,model_xpr_pre_quote_creation_actions_xpr_pre_quote_creation_actions,,1,0,0,0
