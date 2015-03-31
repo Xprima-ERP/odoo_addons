@@ -8,7 +8,13 @@
 			<field name="inherit_id" ref="sale.view_order_form"/>
 			<field name="arch" type="xml">
 				<xpath expr="/form/header/button[1]" position="before">
-					<button type="workflow" name="sig_check_approval_needed" string="Send for Approval" states="draft" />
+					<button type="workflow" name="sig_check_approval_needed" string="Send for Approval" states="draft,manager_not_approved" />
+				</xpath>
+				<xpath expr="/form/header/button[1]" position="before">
+					<button type="workflow" name="sig_manager_approved" string="Approve" states="need_manager_approval" />
+				</xpath>
+				<xpath expr="/form/header/button[@name='sig_manager_approved']" position="after">
+					<button type="workflow" name="sig_manager_not_approved" string="Not Approved" states="need_manager_approval" />
 				</xpath>
 				<xpath expr="/form/header/button[@name='action_button_confirm' and @states='draft']" position="attributes">
 					<attribute name="states"></attribute>

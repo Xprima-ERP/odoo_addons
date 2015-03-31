@@ -20,6 +20,7 @@ class SaleOrder(models.Model):
             ('done', 'Done'),
             ('need_manager_approval', 'Need Manager Approval'),
             ('manager_approved', 'Manager Approved'),
+            ('manager_not_approved', 'Manager not Approved'),
         ],
         'Status',
         readonly=True,
@@ -31,6 +32,17 @@ class SaleOrder(models.Model):
         'Waiting Schedule' status is set when the invoice is confirmed\
         but waiting for the scheduler to run on the order date.",
         select=True
+    )
+    order_line = fields.One2many(
+        'sale.order.line',
+        'order_id',
+        'Order Lines',
+        readonly=True,
+        states={
+            'draft': [('readonly', False)],
+            'manager_not_approved': [('readonly', False)],
+            'sent': [('readonly', False)]},
+        copy=True
     )
 
     def check_manager_approval_needed(self):
