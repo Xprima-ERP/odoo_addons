@@ -18,6 +18,8 @@ class SaleOrder(models.Model):
             ('shipping_except', 'Shipping Exception'),
             ('invoice_except', 'Invoice Exception'),
             ('done', 'Done'),
+            ('need_manager_approval', 'Need Manager Approval'),
+            ('manager_approved', 'Manager Approved'),
         ],
         'Status',
         readonly=True,
@@ -30,3 +32,6 @@ class SaleOrder(models.Model):
         but waiting for the scheduler to run on the order date.",
         select=True
     )
+
+    def check_manager_approval_needed(self):
+        return True

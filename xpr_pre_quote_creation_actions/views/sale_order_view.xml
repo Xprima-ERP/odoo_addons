@@ -1,0 +1,14 @@
+<openerp>
+	<data>
+		<record id="sale_order_xprima_sale_process_view" model="ir.ui.view">
+			<field name="name">sale.order.form.xprima_sale_process</field>
+			<field name="model">sale.order</field>
+			<field name="inherit_id" ref="sale.view_order_form"/>
+			<field name="arch" type="xml">
+				<xpath expr="/form/header/button[last()-1]" position="after">
+					<button type="workflow" name="sig_check_approval_needed" string="send for approval" states="draft" />
+				</xpath>
+			</field>
+		</record>
+	</data>
+</openerp>
