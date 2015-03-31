@@ -1,5 +1,7 @@
 <openerp>
 	<data>
+		<!--TODO add new sale.order states to default list view-->
+
 		<record id="sale_order_xprima_sale_process_view" model="ir.ui.view">
 			<field name="name">sale.order.form.xprima_sale_process</field>
 			<field name="model">sale.order</field>
