@@ -5,8 +5,16 @@
 			<field name="model">sale.order</field>
 			<field name="inherit_id" ref="sale.view_order_form"/>
 			<field name="arch" type="xml">
-				<xpath expr="/form/header/button[last()-1]" position="after">
-					<button type="workflow" name="sig_check_approval_needed" string="send for approval" states="draft" />
+				<xpath expr="/form/header/button[1]" position="before">
+					<button type="workflow" name="sig_check_approval_needed" string="Send for Approval" states="draft" />
+				</xpath>
+				<xpath expr="/form/header/button[@name='action_button_confirm' and @states='draft']" position="attributes">
+					<attribute name="states"></attribute>
+					<attribute name="attrs">{"invisible": True}</attribute>
+				</xpath>
+				<xpath expr="/form/header/button[@name='action_quotation_send' and @states='draft']" position="attributes">
+					<attribute name="states"></attribute>
+					<attribute name="attrs">{"invisible": True}</attribute>
 				</xpath>
 			</field>
 		</record>
