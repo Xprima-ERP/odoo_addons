@@ -21,6 +21,9 @@ class SaleOrder(models.Model):
             ('need_manager_approval', 'Need Manager Approval'),
             ('manager_approved', 'Manager Approved'),
             ('manager_not_approved', 'Manager not Approved'),
+            ('contract_not_presented', 'Contract not Presented to Customer'),
+            ('contract_approved', 'Contract Approved by Customer'),
+            ('contract_not_approved', 'Contract not Approved by Customer'),
         ],
         'Status',
         readonly=True,
@@ -41,6 +44,7 @@ class SaleOrder(models.Model):
         states={
             'draft': [('readonly', False)],
             'manager_not_approved': [('readonly', False)],
+            'contract_not_approved': [('readonly', False)],
             'sent': [('readonly', False)]},
         copy=True
     )
