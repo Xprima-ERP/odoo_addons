@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+       	<data>
+		<!--sale.wkf_sale related-->
+		<record model="workflow.activity" id="act_pre_quote_creation_actions">
+			<field name="name">Pre Quote Creation Actions</field>
+			<field name="wkf_id" ref="sale.wkf_sale"/>
+			<field name="kind">dummy</field>
+		</record>
+
+		<record model="workflow.activity" id="act_check_manager_approval_needed">
+			<field name="name">Check Manager Approval Needed</field>
+			<field name="wkf_id" ref="sale.wkf_sale"/>
+			<field name="kind">dummy</field>
+		</record>
+
+		<record model="workflow.activity" id="act_manager_approval_needed">
+			<field name="name">Manager Approval Needed</field>
+			<field name="wkf_id" ref="sale.wkf_sale"/>
+			<field name="kind">function</field>
+			<field name="action">write({'state':'need_manager_approval'})</field>
+		</record>
+
+		<record model="workflow.activity" id="act_manager_approved">
+			<field name="name">Manager Approved</field>
+			<field name="wkf_id" ref="sale.wkf_sale"/>
+			<field name="kind">function</field>
+			<field name="action">write({'state':'manager_approved'})</field>
+		</record>
+
+		<record model="workflow.activity" id="act_manager_not_approved">
+			<field name="name">Manager not Approved</field>
+			<field name="wkf_id" ref="sale.wkf_sale"/>
+			<field name="kind">function</field>
+			<field name="action">write({'state':'manager_not_approved'})</field>
+		</record>
+
+		<record model="workflow.activity" id="act_post_quote_creation_actions">
+			<field name="name">Post Quote Creation Actions</field>
+			<field name="wkf_id" ref="sale.wkf_sale"/>
+			<field name="kind">dummy</field>
+		</record>
+
+		<record model="workflow.activity" id="act_contract_not_presented">
+			<field name="name">Contract not Presented</field>
+			<field name="wkf_id" ref="sale.wkf_sale"/>
+			<field name="kind">function</field>
+			<field name="action">write({'state':'contract_not_presented'})</field>
+		</record>
+
+		<record model="workflow.activity" id="act_contract_approved">
+			<field name="name">Contract Approved</field>
+			<field name="wkf_id" ref="sale.wkf_sale"/>
+			<field name="kind">function</field>
+			<field name="action">write({'state':'contract_approved'})</field>
+			<field name="flow_stop">True</field>
+		</record>
+
+		<record model="workflow.activity" id="act_contract_not_approved">
+			<field name="name">Contract not Approved</field>
+			<field name="wkf_id" ref="sale.wkf_sale"/>
+			<field name="kind">function</field>
+			<field name="action">write({'state':'contract_not_approved'})</field>
+		</record>
+
+		<record id="trans_draft_act_pre_quote_creation_actions" model="workflow.transition">
+			<field name="act_from" ref="sale.act_draft"/>
+			<field name="act_to" ref="act_pre_quote_creation_actions"/>
+			<field name="signal">sig_check_approval_needed</field>
+		</record>
+
+		<record id="trans_pre_quote_creation_actions_check_manager_approval_needed" model="workflow.transition">
+			<field name="act_from" ref="act_pre_quote_creation_actions"/>
+			<field name="act_to" ref="act_check_manager_approval_needed"/>
+			<field name="condition">True</field>
+		</record>
+
+		<record id="trans_check_manager_approval_needed_need_approval" model="workflow.transition">
+			<field name="act_from" ref="act_check_manager_approval_needed"/>
+			<field name="act_to" ref="act_manager_approval_needed"/>
+			<field name="condition">check_manager_approval_needed()</field>
+		</record>
+
+		<record id="trans_check_manager_approval_needed_approved" model="workflow.transition">
+			<field name="act_from" ref="act_check_manager_approval_needed"/>
+			<field name="act_to" ref="act_manager_approved"/>
+			<field name="condition">not check_manager_approval_needed()</field>
+		</record>
+
+		<record id="trans_act_manager_approval_needed_act_manager_approved" model="workflow.transition">
+			<field name="act_from" ref="act_manager_approval_needed"/>
+			<field name="act_to" ref="act_manager_approved"/>
+			<field name="signal">sig_manager_approved</field>
+		</record>
+
+		<record id="trans_act_manager_approval_needed_act_manager_not_approved" model="workflow.transition">
+			<field name="act_from" ref="act_manager_approval_needed"/>
+			<field name="act_to" ref="act_manager_not_approved"/>
+			<field name="signal">sig_manager_not_approved</field>
+		</record>
+
+		<record id="trans_act_manager_not_approved_act_manager_approval_needed" model="workflow.transition">
+			<field name="act_from" ref="act_manager_not_approved"/>
+			<field name="act_to" ref="act_manager_approval_needed"/>
+			<field name="signal">sig_check_approval_needed</field>
+			<field name="condition">check_manager_approval_needed()</field>
+		</record>
+
+		<record id="trans_act_manager_not_approved_act_manager_approved" model="workflow.transition">
+			<field name="act_from" ref="act_manager_not_approved"/>
+			<field name="act_to" ref="act_manager_approved"/>
+			<field name="signal">sig_check_approval_needed</field>
+			<field name="condition">not check_manager_approval_needed()</field>
+		</record>
+
+		<record id="trans_act_manager_approved_act_post_quote_creation_actions" model="workflow.transition">
+			<field name="act_from" ref="act_manager_approved"/>
+			<field name="act_to" ref="act_post_quote_creation_actions"/>
+			<field name="condition">True</field>
+		</record>
+
+		<record id="trans_act_post_quote_creation_actions_act_contract_not_presented" model="workflow.transition">
+			<field name="act_from" ref="act_post_quote_creation_actions"/>
+			<field name="act_to" ref="act_contract_not_presented"/>
+			<field name="condition">True</field>
+		</record>
+
+		<record id="trans_act_contract_not_presented_act_contract_approved" model="workflow.transition">
+			<field name="act_from" ref="act_contract_not_presented"/>
+			<field name="act_to" ref="act_contract_approved"/>
+			<field name="signal">sig_customer_approved</field>
+		</record>
+
+		<record id="trans_act_contract_not_presented_act_contract_not_approved" model="workflow.transition">
+			<field name="act_from" ref="act_contract_not_presented"/>
+			<field name="act_to" ref="act_contract_not_approved"/>
+			<field name="signal">sig_customer_not_approved</field>
+		</record>
+
+		<record id="trans_act_contract_not_approved_act_manager_approval_needed" model="workflow.transition">
+			<field name="act_from" ref="act_contract_not_approved"/>
+			<field name="act_to" ref="act_manager_approval_needed"/>
+			<field name="signal">sig_check_approval_needed</field>
+			<field name="condition">check_manager_approval_needed()</field>
+		</record>
+
+		<record id="trans_act_contract_not_approved_act_manager_approved" model="workflow.transition">
+			<field name="act_from" ref="act_contract_not_approved"/>
+			<field name="act_to" ref="act_manager_approved"/>
+			<field name="signal">sig_check_approval_needed</field>
+			<field name="condition">not check_manager_approval_needed()</field>
+		</record>
+
+		<record id="trans_act_contract_not_presented_sale_act_cancel" model="workflow.transition">
+			<field name="act_from" ref="act_contract_not_presented"/>
+			<field name="act_to" ref="sale.act_cancel"/>
+			<field name="signal">sig_cancel</field>
+		</record>
+		<!--
+		-->
+	</data>
+</openerp>
