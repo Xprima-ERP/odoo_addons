@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Xprima Pre Quote Creation Actions",
+    'name': "Xprima Sale Process",
 
     'summary': """
-        Add a Pre Quote Creation Actions subactivity to the sale.order.basic
-    workflow
+    The Xprima Sale Process
     """,
 
     'description': """
-        Add a Pre Quote Creation Actions subactivity to the sale.order.basic
-    workflow
+    A module that implement the Xprima Sale Process
     """,
 
     'author': "Xprima",
