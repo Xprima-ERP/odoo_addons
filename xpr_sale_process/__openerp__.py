@@ -32,6 +32,7 @@
         'templates.xml',
         'sale_workflow.xml',
         'views/sale_order_view.xml',
+        'views/product_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

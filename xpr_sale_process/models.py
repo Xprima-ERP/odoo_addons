@@ -36,6 +36,7 @@ class SaleOrder(models.Model):
         but waiting for the scheduler to run on the order date.",
         select=True
     )
+
     order_line = fields.One2many(
         'sale.order.line',
         'order_id',
@@ -58,3 +59,13 @@ class SaleOrder(models.Model):
             if line.discount:
                 return True
         return False
+
+
+class Product(models.Model):
+    _name = 'product.template'
+    _inherit = "product.template"
+
+    approver_groups = fields.Many2many(
+        comodel_name="res.groups",
+        string="Approver Groups"
+    )
