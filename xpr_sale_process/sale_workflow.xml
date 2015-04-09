@@ -91,12 +91,14 @@
 			<field name="act_from" ref="act_manager_approval_needed"/>
 			<field name="act_to" ref="act_manager_approved"/>
 			<field name="signal">sig_manager_approved</field>
+			<field name="condition">has_rights_to_approve()</field>
 		</record>
 
 		<record id="trans_act_manager_approval_needed_act_manager_not_approved" model="workflow.transition">
 			<field name="act_from" ref="act_manager_approval_needed"/>
 			<field name="act_to" ref="act_manager_not_approved"/>
 			<field name="signal">sig_manager_not_approved</field>
+			<field name="condition">has_rights_to_approve()</field>
 		</record>
 
 		<record id="trans_act_manager_not_approved_act_manager_approval_needed" model="workflow.transition">

@@ -24,6 +24,7 @@
     'depends': [
         'base',
         'sale',
+        'hr',
     ],
 
     # always loaded

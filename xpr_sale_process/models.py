@@ -52,12 +52,35 @@ class SaleOrder(models.Model):
 
     def check_manager_approval_needed(self):
         approval_needed = self._check_discount()
+        if not approval_needed:
+            approval_needed = self._check_product_approver_needed()
         return approval_needed
 
     def _check_discount(self):
         for line in self.order_line:
             if line.discount:
                 return True
+        return False
+
+    def _check_product_approver_needed(self):
+        for line in self.order_line:
+            if line.product_id.approver_groups:
+                return True
+        return False
+
+    def has_rights_to_approve(self):
+        """
+        Return True if the user triggering this method has the right to approve
+        the associated quote. The user has the right if he is the manager of
+        the salesperson associated to the quote.
+        """
+        args = [("user_id", "=", self.env.user.id)]
+        hr_approver = self.env["hr.employee"].search(args)
+        args = [("user_id", "=", self.user_id.id)]
+        hr_owner = self.env["hr.employee"].search(args)
+
+        if hr_owner.parent_id == hr_approver:
+            return True
         return False
 
 
