@@ -1,3 +1,4 @@
+from openerp.exceptions import AccessError
 from openerp.tests.common import TransactionCase
 
 
@@ -39,7 +40,7 @@ class TestSaleOrder(TransactionCase):
             "name": "Test Manager",
             "user_id": so_owner_manager.id,
         })
-        hr_so_owner = self.env['hr.employee'].create({
+        self.env['hr.employee'].create({
             "name": "Test Salesperson",
             "user_id": so_owner.id,
             "parent_id": hr_manager.id,
@@ -60,4 +61,4 @@ class TestSaleOrder(TransactionCase):
             "partner_id": so_customer.id,
         })
         # Test case if approver is admin. Admin is not owner's manager
-        self.assertFalse(so2.has_rights_to_approve())
+        self.assertRaises(AccessError, so2.has_rights_to_approve)

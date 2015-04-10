@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from openerp.exceptions import AccessError
 from openerp import models, fields
 
 
@@ -72,7 +73,9 @@ class SaleOrder(models.Model):
         """
         Return True if the user triggering this method has the right to approve
         the associated quote. The user has the right if he is the manager of
-        the salesperson associated to the quote.
+        the salesperson associated to the quote. An AccessError exception is
+        raised if approver doesn't have the rights so he gets a warning in
+        the web interface.
         """
         args = [("user_id", "=", self.env.user.id)]
         hr_approver = self.env["hr.employee"].search(args)
@@ -81,7 +84,9 @@ class SaleOrder(models.Model):
 
         if hr_owner.parent_id == hr_approver:
             return True
-        return False
+        raise AccessError("You cannot approve this quote, because you are not"
+                          " set as %s's manager in the system"
+                          % hr_owner.user_id.name)
 
 
 class Product(models.Model):
