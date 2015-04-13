@@ -97,3 +97,9 @@ class Product(models.Model):
         comodel_name="res.groups",
         string="Approver Groups"
     )
+
+    availability_groups = fields.Many2many(
+        comodel_name="res.groups",
+        string="Availability Groups",
+        help="Ask person from this group for product availability",
+    )
