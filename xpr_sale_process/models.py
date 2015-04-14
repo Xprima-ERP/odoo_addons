@@ -25,6 +25,7 @@ class SaleOrder(models.Model):
             ('contract_not_presented', 'Contract not Presented to Customer'),
             ('contract_approved', 'Contract Approved by Customer'),
             ('contract_not_approved', 'Contract not Approved by Customer'),
+            ('need_availability_check', 'Need Availability Check'),
         ],
         'Status',
         readonly=True,
@@ -88,6 +89,15 @@ class SaleOrder(models.Model):
                           " set as %s's manager in the system"
                           % hr_owner.user_id.name)
 
+    def check_product_availability_needed(self):
+        """
+        Return True if product availability check is required and False if not.
+        """
+        for order_line in self.order_line:
+            if order_line.product_id.availability_groups:
+                return True
+        return False
+
 
 class Product(models.Model):
     _name = 'product.template'
@@ -95,11 +105,13 @@ class Product(models.Model):
 
     approver_groups = fields.Many2many(
         comodel_name="res.groups",
-        string="Approver Groups"
+        string="Approver Groups",
+        relation="product_to_approver_group"
     )
 
     availability_groups = fields.Many2many(
         comodel_name="res.groups",
         string="Availability Groups",
+        relation="product_to_availability_group",
         help="Ask person from this group for product availability",
     )

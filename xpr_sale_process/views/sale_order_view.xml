@@ -11,6 +11,9 @@
 					<button type="workflow" name="sig_check_approval_needed" string="Send for Approval" states="draft,manager_not_approved,contract_not_approved" />
 				</xpath>
 				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
+					<button type="workflow" name="sig_availability_checked" string="Availability Checked" states="need_availability_check" />
+				</xpath>
+				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
 					<button type="workflow" name="sig_manager_approved" string="Approve" states="need_manager_approval" groups="base.group_sale_manager" />
 				</xpath>
 				<xpath expr="/form/header/button[@name='sig_manager_approved']" position="after">
@@ -68,7 +71,7 @@
 		</record>
 
 		<record id="sale.action_quotations" model="ir.actions.act_window">
-			<field name="domain">[('state','in',('draft','sent','cancel','need_manager_approval', 'manager_approved', 'manager_not_approved'))]</field>
+			<field name="domain">[('state','in',('draft','sent','cancel','need_manager_approval', 'manager_approved', 'manager_not_approved', 'need_availability_check'))]</field>
 			<field name="context">{
 				'search_default_my_sale_orders_filter': 0
 				}

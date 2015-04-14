@@ -8,6 +8,8 @@
 				<xpath expr="/form/sheet/notebook/page[@string='Sales']/group[@name='sale']/group[@name='sale_condition']" position="after">
 					<group>
 						<field name="approver_groups" />
+					</group>
+					<group>
 						<field name="availability_groups" />
 					</group>
 				</xpath>
