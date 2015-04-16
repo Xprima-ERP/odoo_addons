@@ -1,2 +1,2 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_product_variants_filters_product_variants_filters,product_variants_filters.product_variants_filters,model_product_variants_filters_product_variants_filters,,1,0,0,0
+access_product_variants_filters_filter,product_variants_filters.filter,model_pvf_filter,,1,0,0,0
