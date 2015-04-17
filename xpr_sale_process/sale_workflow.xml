@@ -2,10 +2,11 @@
 <openerp>
        	<data>
 		<!--sale.wkf_sale related-->
-		<record model="workflow.activity" id="act_pre_quote_creation_actions">
-			<field name="name">Pre Quote Creation Actions</field>
+		<record model="workflow.activity" id="act_check_product_availability">
+			<field name="name">Check Product Availability</field>
 			<field name="wkf_id" ref="sale.wkf_sale"/>
-			<field name="kind">dummy</field>
+			<field name="kind">function</field>
+			<field name="action">write({'state':'need_availability_check'})</field>
 		</record>
 
 		<record model="workflow.activity" id="act_check_manager_approval_needed">
@@ -63,16 +64,24 @@
 			<field name="action">write({'state':'contract_not_approved'})</field>
 		</record>
 
-		<record id="trans_draft_act_pre_quote_creation_actions" model="workflow.transition">
+		<record id="trans_draft_act_check_product_availability" model="workflow.transition">
 			<field name="act_from" ref="sale.act_draft"/>
-			<field name="act_to" ref="act_pre_quote_creation_actions"/>
+			<field name="act_to" ref="act_check_manager_approval_needed"/>
 			<field name="signal">sig_check_approval_needed</field>
+			<field name="condition">not check_product_availability_needed()</field>
 		</record>
 
-		<record id="trans_pre_quote_creation_actions_check_manager_approval_needed" model="workflow.transition">
-			<field name="act_from" ref="act_pre_quote_creation_actions"/>
+		<record id="trans_act_draft_act_check_product_availability" model="workflow.transition">
+			<field name="act_from" ref="sale.act_draft"/>
+			<field name="act_to" ref="act_check_product_availability"/>
+			<field name="signal">sig_check_approval_needed</field>
+			<field name="condition">check_product_availability_needed()</field>
+		</record>
+
+		<record id="trans_act_check_p_a_act_check_m_a_needed" model="workflow.transition">
+			<field name="act_from" ref="act_check_product_availability"/>
 			<field name="act_to" ref="act_check_manager_approval_needed"/>
-			<field name="condition">True</field>
+			<field name="signal">sig_availability_checked</field>
 		</record>
 
 		<record id="trans_check_manager_approval_needed_need_approval" model="workflow.transition">
@@ -91,12 +100,14 @@
 			<field name="act_from" ref="act_manager_approval_needed"/>
 			<field name="act_to" ref="act_manager_approved"/>
 			<field name="signal">sig_manager_approved</field>
+			<field name="condition">has_rights_to_approve()</field>
 		</record>
 
 		<record id="trans_act_manager_approval_needed_act_manager_not_approved" model="workflow.transition">
 			<field name="act_from" ref="act_manager_approval_needed"/>
 			<field name="act_to" ref="act_manager_not_approved"/>
 			<field name="signal">sig_manager_not_approved</field>
+			<field name="condition">has_rights_to_approve()</field>
 		</record>
 
 		<record id="trans_act_manager_not_approved_act_manager_approval_needed" model="workflow.transition">

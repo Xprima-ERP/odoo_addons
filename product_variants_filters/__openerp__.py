@@ -1,23 +1,22 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Xprima Pre Quote Creation Actions",
+    'name': "Product Variants Filters",
 
     'summary': """
-        Add a Pre Quote Creation Actions subactivity to the sale.order.basic
-    workflow
+    Filters product variants to produce only logical combinations
     """,
 
     'description': """
-        Add a Pre Quote Creation Actions subactivity to the sale.order.basic
-    workflow
+       Given a list of logical combinations, filter out non logical combinations
+    of products variants
     """,
 
     'author': "Xprima",
     'website': "http://www.xprima.com",
 
     # Categories can be used to filter modules in modules listing
-    # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base/
-    # module/module_data.xml
+    # Check https://github.com/odoo/odoo/blob/master/openerp/addons/base
+    # /module/module_data.xml
     # for the full list
     'category': 'Sales',
     'version': '0.1',
@@ -25,15 +24,14 @@
     # any module necessary for this one to work correctly
     'depends': [
         'base',
-        'sale',
+        'product',
     ],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'templates.xml',
-        'sale_workflow.xml',
-        'views/sale_order_view.xml',
+        'views/filter_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

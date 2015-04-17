@@ -1,0 +1,45 @@
+<openerp>
+	<data>
+                <record id="pvf_filter_form_view" model="ir.ui.view">
+			<field name="name">pvf.filter.form</field>
+			<field name="model">pvf.filter</field>
+			<field name="mode">primary</field>
+			<field name="arch" type="xml">
+				<form string="Filter">
+					<sheet>
+						<group>
+							<field name="template_id" />
+							<field name="product_attribute_value_ids" />
+						</group>
+					</sheet>
+				</form>
+			</field>
+		</record>
+
+                <record id="pvf_filter_tree_view" model="ir.ui.view">
+			<field name="name">pvf.filter.tree</field>
+			<field name="model">pvf.filter</field>
+			<field name="arch" type="xml">
+				<tree string="Filter">
+					<field name="product_attribute_value_ids" />
+					<field name="template_id" />
+				</tree>
+			</field>
+		</record>
+
+		<record id="action_product_variants_filters_filter" model="ir.actions.act_window">
+			<field name="name">Products Variants Filters</field>
+			<field name="type">ir.actions.act_window</field>
+			<field name="res_model">pvf.filter</field>
+			<field name="view_type">form</field>
+			<field name="view_mode">tree,form,calendar,graph</field>
+			<field name="help" type="html">
+				<p class="oe_view_nocontent_create">
+					Click to create a new Product Variant Filter
+				</p>
+			</field>
+		</record>
+
+		<menuitem action="action_product_variants_filters_filter" id="menu_product_variants_filters_filter" parent="product.prod_config_main" sequence="5" />
+	</data>
+</openerp>
