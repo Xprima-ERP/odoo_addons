@@ -8,8 +8,15 @@ class Solution(models.Model):
 
     name = fields.Char(required=True)
     description = fields.Char(required=True)
-    products = fields.Many2many('product.product', string='Mandatory Products')
-    options = fields.Many2many('product.product', string='Optional Products')
+    products = fields.Many2many(
+        'product.product',
+        'solution_builder_solution_mandatory_product_rel',
+        string='Mandatory Products')
+
+    options = fields.Many2many(
+        'product.product',
+        'solution_builder_solution_optional_product_rel',
+        string='Optional Products')
 
 
 class SalesOrder(models.Model):
