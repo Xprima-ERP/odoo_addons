@@ -4,25 +4,25 @@ from openerp import models, fields  # , api
 
 
 class Solution(models.Model):
-    _name = 'solution_builder.solution'
+    _name = 'xpr_solution_builder.solution'
 
     name = fields.Char(required=True)
     description = fields.Char(required=True)
     products = fields.Many2many(
         'product.product',
-        'solution_builder_solution_mandatory_product_rel',
+        'xpr_solution_builder_solution_mandatory_product_rel',
         string='Mandatory Products')
 
     options = fields.Many2many(
         'product.product',
-        'solution_builder_solution_optional_product_rel',
+        'xpr_solution_builder_solution_optional_product_rel',
         string='Optional Products')
 
 
 class SalesOrder(models.Model):
     _inherit = "sale.order"
 
-    solution = fields.Many2one('solution_builder.solution', string='Solution')
+    solution = fields.Many2one('xpr_solution_builder.solution', string='Solution')
 
     # Traditional ORM
     def create(self, cr, user, vals, context=None):

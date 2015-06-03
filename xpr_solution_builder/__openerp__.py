@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Solution Builder",
+    'name': "Xprima Solution Builder",
 
     'summary': """
         Add on to package products into one entity
@@ -28,6 +28,7 @@
         # 'security/ir.model.access.csv',
         'templates.xml',
         'views/solution_builder.xml',
+        'wizard/solution_configurator.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
