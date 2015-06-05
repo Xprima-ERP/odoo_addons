@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	<record id="view_solution_configurator_wizard" model="ir.ui.view">
+	    <field name="name">Solution Configurator</field>
+	    <field name="model">xpr_solution_builder.solution_configurator</field>
+	   
+	    <field name="arch" type="xml">
+           <!--  
+             <field name="inherit_id" ref="contract_isp_package_configurator.view_contract_service_configurator" />
+           <xpath expr="//group[@attrs and not(@string)]/div/p" position="replace">
+                <p>Click on add to view the available options</p>
+            </xpath>
+            <xpath expr="//group[@string='Category']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//field[@name='current_product_id']" position="attributes">
+                <attribute name="on_change">onchange_current_product_id(context)</attribute>
+                <attribute name="domain">[('name', '=', 'to_be_replaced_in_fields_view_get')]</attribute>
+                <attribute name="class"></attribute>
+                <attribute name="style">width:50%%</attribute>
+            </xpath>
+            <xpath expr="//field[@name='product_category_id']" position="attributes">
+                <attribute name="on_change">onchange_product_category_id(product_category_id, is_level2, context)</attribute>
+            </xpath>
+            <field name="contract_id" position="replace">
+                <field name="order_id" invisible="1" />
+            </field>
+            <xpath expr="//group[@string='Products']/group/field/tree/field[@name='serial']" position="after">
+                <field name="price" />
+            </xpath>
+            <xpath expr="//group/field[@name='dependency_ids']/tree/field[@name='product_id']" position="after">
+                <field name="price" />
+            </xpath>
+	    -->
+        <form string="Solution Configurator" version="8.0">
+            <header>
+            <!-- <field name="state" class="oe_right" widget="statusbar" /> -->
+            </header>
+         <!--    <field name="root_category_id" invisible="1" />
+            <field name="is_level2" invisible="1" />
+            <field name="contract_id" invisible="1" /> -->
+        
+<!--             <group colspan="4">
+                <div width="100%%">
+                <field 
+                    name="current_solution_id"
+                    width="70%%"
+                    class="oe_inline"
+                    options="{'no_open': True}"
+                    domain = "[('solution_id', '=', current_solution_id)]"
+                    placeholder="Product" />
+                <button 
+                    name="do_add_current_product_id"
+                    string="Add"
+                    type="object"
+                    states="draft,product"
+                    width="15%%"
+                    class="oe_inline oe_highlight" /> 
+                </div>
+            </group> -->
+            <group>
+                  
+
+            <field name="order_id" invisible="1"/>
+            <field name="solution_id" invisible="1"/>
+            <field name="product_ids" />
+            
+            </group>
+          
+            <footer>
+           
+            <button 
+                name="do_done"
+                string="Done"
+                type="object"
+                class="oe_highlight"
+                states="done"
+                />
+            <button
+                string="Cancel"
+                class="oe_link"
+                type="object"
+                name="do_cancel" />
+            </footer>
+        </form>
+    </field>
+	</record>
+   
+    <act_window id="action_solution_configurator"
+        name="Solution Configurator Action"
+        src_model="sale.order"
+        res_model="xpr_solution_builder.solution_configurator"
+        view_mode="form"
+        target="new"
+        key2="client_action_multi"
+
+    />
+
+    <record id="action_solution_configurator" model="ir.actions.act_window">
+        <field name="name">Solution Configurator</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="src_model">sale.order</field>
+        <field name="res_model">xpr_solution_builder.solution</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_solution_configurator_wizard" />
+        <field name="target">new</field>
+        <field name="context">{'order_id': id, 'solution_id' : solution }</field>
+    </record>
+
+     </data>
+</openerp>
