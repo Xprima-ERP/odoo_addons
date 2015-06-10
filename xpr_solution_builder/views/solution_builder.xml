@@ -35,8 +35,16 @@
 			<field name="model">sale.order</field>
 			<field name="inherit_id" ref="sale_stock.view_order_form_inherit"/>
 			<field name="arch" type="xml">
-				<field name="warehouse_id" position="after">	
-					<field name="solution"/>
+				<field name="client_order_ref" position="after">	
+					<field name="solution" onchange="onchange_solution()" />
+				</field>
+
+				<field name="warehouse_id">
+					<field name="warehouse_id" invisible="1"/>
+				</field>
+
+				<field name="pricelist_id">
+					<field name="pricelist_id" invisible="1"/>
 				</field>
 			</field>
 		</record>

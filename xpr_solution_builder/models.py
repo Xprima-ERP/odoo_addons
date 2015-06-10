@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from openerp import models, fields  # , api
+from openerp import models, fields, api
+from openerp.tools.translate import _
 
 
 class Solution(models.Model):
@@ -23,6 +24,8 @@ class SalesOrder(models.Model):
     _inherit = "sale.order"
 
     solution = fields.Many2one('xpr_solution_builder.solution', string='Solution')
+
+    #TODO: Use on_change('solution') and @constrains
 
     # Traditional ORM
     def create(self, cr, user, vals, context=None):
@@ -89,3 +92,50 @@ class SalesOrder(models.Model):
                     product_uom_qty=1.0),
                 context=context)
 
+
+class SolutionConfigurator(models.TransientModel):
+
+    """Solution Configurator wizard"""
+
+    _name = 'xpr_solution_builder.solution_configurator'
+
+    def _default_order(self):
+        return self.env['sale.order'].browse(self._context.get('order_id'))
+
+    def _default_solution(self):
+        return self.env['xpr_solution_builder.solution'].browse(self._context.get('solution_id'))
+
+    order = fields.Many2one('sale.order',string='Order', required=True, default=_default_order)
+    solution = fields.Many2one('xpr_solution_builder.solution',string='Solution',required=True, default=_default_solution)
+    products = fields.Many2many(
+        'product.product',
+        'xpr_solution_builder_solution_configurator_product_rel',
+        string='Product')
+
+    @api.one
+    def set_products(self):
+       
+        line = self.env['sale.order.line']
+
+        for product in self.products:
+            line.create(
+                dict(
+                    order_id=self.order.id,
+                    product_id=product.id,
+                    name=product.name,
+                    product_uom_qty=1.0))
+
+        return {}
+
+    @api.one
+    @api.onchange('solution_id')
+    def onchange_solution(self):
+
+        domain_ids = []
+
+        solution = self.solution
+
+        if solution:
+            domain_ids = [item.id for item in solution.options]
+
+        return {'domain': {'products': [('id', 'in', domain_ids)]}}
