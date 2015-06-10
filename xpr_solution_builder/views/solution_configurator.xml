@@ -9,8 +9,8 @@
             <form string="Add Optional Products">
                 <group>
 
-                <field name="order"  /> <!-- invisible="1" -->
-                <field name="solution"  /> <!-- invisible="1" -->
+                <field name="order" invisible="1"  />
+                <field name="solution" invisible="1" />
                 <field name="products" widget="many2many_checkboxes" />
 
                 </group>

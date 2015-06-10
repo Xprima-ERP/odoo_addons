@@ -105,8 +105,18 @@ class SolutionConfigurator(models.TransientModel):
     def _default_solution(self):
         return self.env['xpr_solution_builder.solution'].browse(self._context.get('solution_id'))
 
-    order = fields.Many2one('sale.order',string='Order', required=True, default=_default_order)
-    solution = fields.Many2one('xpr_solution_builder.solution',string='Solution',required=True, default=_default_solution)
+    order = fields.Many2one(
+        'sale.order',
+        string='Order',
+        required=True,
+        default=_default_order)
+
+    solution = fields.Many2one(
+        'xpr_solution_builder.solution',
+        string='Solution',
+        required=True,
+        default=_default_solution)
+
     products = fields.Many2many(
         'product.product',
         'xpr_solution_builder_solution_configurator_product_rel',
