@@ -138,6 +138,9 @@ class SolutionConfigurator(models.TransientModel):
         string='Product',
         default=_default_products)
 
+    # This field is a hack for widget display needs
+    dummy = fields.Boolean()
+
     @api.one
     def set_products(self):
 
@@ -183,15 +186,24 @@ class SolutionConfigurator(models.TransientModel):
 
         return {}
 
-    @api.one
+    @api.onchange('dummy')
+    def onchange_dummy(self):
+        return {}
+
     @api.onchange('solution')
     def onchange_solution(self):
 
         solution = self.solution
 
+        if solution:
+            solution = solution[0]
+
         if not solution:
             return []
 
         domain_ids = [item.id for item in solution.options]
+
+        # Force a proper refresh of the products widget
+        self.dummy = not self.dummy
 
         return {'domain': {'products': [('id', 'in', domain_ids)]}}
