@@ -3,10 +3,11 @@
 	<data>
 	<!-- window action -->
 		<record model="ir.actions.act_window" id="action_list_solutions">
-    			<field name="name">solutions</field>
-        		<field name="res_model">xpr_solution_builder.solution</field>
-    		</record>
-    		<menuitem id="menu_solutions" parent="base.menu_sales" name="Solutions"
+			<field name="name">solutions</field>
+    		<field name="res_model">xpr_solution_builder.solution</field>
+    	</record>
+
+    	<menuitem id="menu_solutions" parent="base.menu_sales" name="Solutions"
 			action="action_list_solutions"/>
 
 		<record model="ir.ui.view" id="solution_form_view">
