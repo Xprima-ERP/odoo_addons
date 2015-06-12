@@ -73,9 +73,6 @@ class SalesOrder(models.Model):
 
         order_products = set([line.product_id.id for line in order.order_line])
 
-        if order_products - all_ids:
-            raise SalesOrder.ValidateError('Products not part of solution')
-
         # Add missing line items from mandatory products
 
         missing_products = self.pool.get(
@@ -84,6 +81,15 @@ class SalesOrder(models.Model):
             cr, user, list(mandatory_ids - order_products), context=context)
 
         order_line_obj = self.pool.get(order.order_line._name)
+
+        deleteids = order_products - all_ids
+
+        for line_id in order_line_obj.search(
+            cr, user, [
+                ('order_id', '=', record_id),
+                ('product_id', 'in', list(deleteids))]
+        ):
+            order_line_obj.unlink(cr, user, line_id)
 
         for product in missing_products:
             order_line_obj.create(
@@ -95,6 +101,8 @@ class SalesOrder(models.Model):
                     name=product.name,
                     product_uom_qty=1.0),
                 context=context)
+
+
 
 
 class SolutionConfigurator(models.TransientModel):
@@ -170,7 +178,7 @@ class SolutionConfigurator(models.TransientModel):
             if line.product_id.id in selected_products:
                 continue
 
-            # Optional prouct not selected anymore.
+            # Optional product not selected anymore.
             # Delete line from order.
             removed_lines.append(line)
 
