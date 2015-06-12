@@ -5,6 +5,8 @@ from openerp.tools.translate import _
 
 
 class Solution(models.Model):
+    """ Solution model that regroup products together"""
+
     _name = 'xpr_solution_builder.solution'
 
     name = fields.Char(required=True)
@@ -21,6 +23,8 @@ class Solution(models.Model):
 
 
 class SalesOrder(models.Model):
+    """ Override of sale.order to add solution field"""
+
     _inherit = "sale.order"
 
     solution = fields.Many2one('xpr_solution_builder.solution', string='Solution')
@@ -95,7 +99,13 @@ class SalesOrder(models.Model):
 
 class SolutionConfigurator(models.TransientModel):
 
-    """Solution Configurator wizard"""
+    """ 
+        Solution Configurator wizard.
+
+        Loaded to select optional product from related solution
+        Updates order lines of sales order whenever
+        products are added or removed.
+    """
 
     _name = 'xpr_solution_builder.solution_configurator'
 
@@ -188,6 +198,7 @@ class SolutionConfigurator(models.TransientModel):
 
     @api.onchange('dummy')
     def onchange_dummy(self):
+        # dummy is used to force a refresh in the view
         return {}
 
     @api.onchange('solution')
