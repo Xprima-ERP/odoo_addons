@@ -1,49 +1,44 @@
-from osv import osv,fields
+from openerp import models, fields, api
+from openerp.tools.translate import _
 
-class term_term(osv.osv):
+
+class term_term(models.Model):
     _name = "term.term"
     _description = "Terms and conditions"
 
-    _columns = {
-        'name' : fields.char('Name', size=64, required=True ),
-        'pdf': fields.binary('PDF File', help="The PDF file to attach to the report", required=True),
-        'mode': fields.selection([('begin','Before report'),('end','After report'),('duplex','Every other page')], string="Insertion mode", required=True),
-        'term_rule_ids' : fields.one2many('term.rule','term_id','Uses',help='reports where the term is used')
-    }
-term_term()
+    name = fields.Char('Name', size=64, required=True )
+    pdf = fields.Binary('PDF File', help="The PDF file to attach to the report", required=True)
+    mode = fields.Selection([('begin','Before report'),('end','After report'),('duplex','Every other page')], string="Insertion mode", required=True)
+    term_rule_ids = fields.One2many('term.rule','term_id','Uses',help='reports where the term is used')
 
-class term_rule(osv.osv):
+
+class term_rule(models.Model):
     _name = 'term.rule'
     _description = 'Rules to define where the linked term is to be used.'
 
-    _columns = {
-        'sequence': fields.integer('Sequence'),
-        'term_id' : fields.many2one('term.term','Term', required=True),
-        'company_id' : fields.many2one('res.company','Company'),
-        'report_id' : fields.many2one('ir.actions.report.xml', 'Report', required=True),
-        'report_name': fields.related('report_id','report_name', type="char", size=64, string='Report Name', readonly=True),
-        'condition' : fields.char('Condition', size=128, help='condition on when to print the therm'),
-    }
+    sequence = fields.Integer('Sequence')
+    term_id = fields.Many2one('term.term','Term', required=True)
+    company_id = fields.Many2one('res.company','Company')
+    report_id = fields.Many2one('ir.actions.report.xml', 'Report', required=True)
+    report_name = fields.Char('Report Name', size=64, readonly=True, related="report_id.report_name")
+    
+    condition = fields.Char('Condition', size=128, help='condition on when to print the therm')
 
     _defaults = {
-        'company_id': lambda self,cr,uid,c: self.pool.get('res.company')._company_default_get(cr, uid, 'term.rule', context=c),
+        'company_id': lambda self,cr,uid,c: self.pool.get('res.company')._company_default_get(cr, uid, 'term.rule', context=c)
     }
-term_rule()
 
-class report_xml(osv.osv):
+
+class report_xml(models.Model):
     _inherit = 'ir.actions.report.xml'
 
-    _columns = {
-        'term_rule_ids' : fields.one2many('term.rule','report_id',help='List of possible terms to be added.')
-    }
-report_xml()
+    term_rule_ids = fields.One2many('term.rule','report_id',help='List of possible terms to be added.')
 
-class res_company(osv.osv):
+
+class res_company(models.Model):
     _inherit = 'res.company'
 
-    _columns = {
-        'term_rule_ids' : fields.one2many('term.rule','company_id',help='List of terms for this company.')
-    }
-res_company()
+    term_rule_ids = fields.One2many('term.rule','company_id',help='List of terms for this company.')
+
 
 # vim:sts=4:et

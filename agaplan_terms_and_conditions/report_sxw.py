@@ -1,7 +1,7 @@
-from osv import osv
-import pooler
-from report.report_sxw import report_sxw
-from tools.safe_eval import safe_eval
+
+from openerp import pooler
+from openerp.report.report_sxw import report_sxw
+from openerp.tools.safe_eval import safe_eval
 
 import time
 import base64
@@ -15,7 +15,7 @@ except ImportError:
 try:
     from pyPdf import PdfFileWriter, PdfFileReader
 except ImportError:
-    raise osv.except_osv(
+    raise Exception(
         "agaplan_terms_and_conditions needs pyPdf",
         """To install the module "agaplan_terms_and_conditions" please ask your administrator to install the pyPdf package."""
     )
