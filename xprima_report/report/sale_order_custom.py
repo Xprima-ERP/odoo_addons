@@ -19,22 +19,30 @@
 #
 ##############################################################################
 
-from sale.report import sale_order
 from openerp.report import report_sxw
-from netsvc import Service
+import time
 
-
-class order(sale_order.order):
-    def __init__(self, cr, uid, name, context):
+class order(report_sxw.rml_parse):
+    def __init__(self, cr, uid, name, context=None):
         super(order, self).__init__(cr, uid, name, context=context)
+        self.localcontext.update({
+            'time': time, 
+            'show_discount':self._show_discount,
+        })
 
-# delete report
-if 'report.sale.order' in Service._services.keys():
-    del Service._services['report.sale.order']
+    def _show_discount(self, uid, context=None):
+        cr = self.cr
+        try: 
+            group_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'sale', 'group_discount_per_so_line')[1]
+        except:
+            return False
+        return group_id in [x.id for x in self.pool.get('res.users').browse(cr, uid, uid, context=context).groups_id]
 
-report_sxw.report_sxw('report.sale.order',
-                      'sale.order',
-                      'addons/xprima_report/report/sale_order_xprima.rml',
-                      parser=order,
-                      header='external')
+# Used to have some code that removed the current report.sale.order here. Cannot stay on module init.
 
+report_sxw.report_sxw(
+	'report.sale.order',
+	'sale.order',
+	'addons/xprima_report/report/sale_order_xprima.rml',
+	parser=order,
+	header='external')

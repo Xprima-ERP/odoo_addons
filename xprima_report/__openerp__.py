@@ -23,20 +23,21 @@
 {
     'name': 'xprima_report',
     'version': '0.1',
-    'author': 'Savoir-faire Linux',
-    'maintainer': 'Savoir-faire Linux',
+    'author': 'Xprima',
+    'maintainer': 'Xprima',
     'website': 'http://www.savoirfairelinux.com',
     'license': 'AGPL-3',
     'category': 'Others',
-    'summary': 'All custom report of Xprima',
+    'summary': 'Xprimas custom reports',
     'description': """
 Client
 ======
-This module contains customize report of Xprima.
+This module contains Xprimas customized report.
 
 Contributors
 ------------
-* Mathieu Benoit (mathieu.benoit@savoirfairelinux.com)
+* Mathieu Benoit (mathieu.benoit@savoirfairelinux.com) version 7.0
+* Charles De Lean (cdelean@xprima.com) port 8.0
 """,
     'depends': [
         'sale',
