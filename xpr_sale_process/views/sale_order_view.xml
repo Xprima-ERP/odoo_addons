@@ -53,7 +53,7 @@
 				'search_default_my_sale_orders_filter': 0
 				}
 			</field>
-			<field name="domain">[('state', 'in', ('contract_not_presented', 'contract_approved', 'contract_not_approved'))]</field>
+			<field name="domain">[('state', 'in', ('contract_not_presented', 'contract_not_approved', 'contract_approved'))]</field>
 			<field name="help" type="html">
 				<p class="oe_view_nocontent_create">
 					Click to create a quotation that can be converted into a sales order.
