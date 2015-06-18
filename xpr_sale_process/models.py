@@ -21,7 +21,7 @@ class SaleOrder(models.Model):
             ('done', 'Done'),
             ('need_manager_approval', 'Need Manager Approval'),
             ('manager_approved', 'Manager Approved'),
-            ('manager_not_approved', 'Manager not Approved'),
+            ('manager_not_approved', 'Manager Declined'),
             ('contract_not_presented', 'Contract not Presented to Customer'),
             ('contract_approved', 'Contract Approved by Customer'),
             ('contract_not_approved', 'Contract not Approved by Customer'),
