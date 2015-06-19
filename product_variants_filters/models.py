@@ -12,41 +12,45 @@ class Product(models.Model):
         Calls super().create_variant_ids and delete variants that are not
         included in the filters
         """
+
         result = super(Product, self).create_variant_ids(cr, uid, ids, context)
 
-        if result:
+        if not result:
+            return result
 
-            templates = self.browse(cr, uid, ids, context=context)
-            product_obj = self.pool.get("product.product")
+        templates = self.browse(cr, uid, ids, context=context)
+        product_obj = self.pool.get("product.product")
 
-            variants_to_remove = []
+        variants_to_remove = []
 
-            for template in templates:
-                # Whe don't want to delete the product associated to the
-                # template
-                if template.product_variant_count > 1:
-                    # Load accepted combinations for this product.template
-                    filter_obj = self.pool.get('pvf.filter')
-                    args = [('template_id', '=', template.id)]
-                    filter_ids = filter_obj.search(cr, uid, args)
-                    filters = filter_obj.browse(
-                        cr,
-                        uid,
-                        filter_ids,
-                        context=context
-                    )
+        for template in templates:
+            # We don't want to delete the product associated to the template
 
-                    # Filter out the non logical combinations
-                    for prod_variant in template.product_variant_ids:
-                        var_attribute_value = prod_variant.attribute_value_ids
-                        if var_attribute_value not in [
-                            _filter.product_attribute_value_ids for _filter in
-                            filters
-                        ]:
-                            variants_to_remove.append(prod_variant.id)
+            if template.product_variant_count <= 1:
+                continue
 
-                    # Remove the non logical variants
-                    product_obj.unlink(cr, uid, variants_to_remove, context=context)
+            # Load accepted combinations for this product.template
+            filter_obj = self.pool.get('pvf.filter')
+            args = [('template_id', '=', template.id)]
+            filter_ids = filter_obj.search(cr, uid, args)
+            filters = filter_obj.browse(
+                cr,
+                uid,
+                filter_ids,
+                context=context
+            )
+
+            # Filter out the non logical combinations
+            for prod_variant in template.product_variant_ids:
+                var_attribute_value = prod_variant.attribute_value_ids
+                if var_attribute_value not in [
+                    _filter.product_attribute_value_ids for _filter in
+                    filters
+                ]:
+                    variants_to_remove.append(prod_variant.id)
+
+            # Remove the non logical variants
+            product_obj.unlink(cr, uid, variants_to_remove, context=context)
 
         return result
 
