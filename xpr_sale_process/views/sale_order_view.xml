@@ -66,9 +66,15 @@
 
 		<menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman,base.group_sale_manager"/>
 
-		<record id="sale.menu_sale_order" model="ir.ui.menu">
+		 		
+		<!--
+			Now hidden
+
+			<record id="sale.menu_sale_order" model="ir.ui.menu">
 			<field name="groups_id" eval="[(6, 0, [ref('base.group_system')])]"/>
-		</record>
+		</record> -->
+		
+		<delete id="sale.menu_sale_order" model="ir.ui.menu" />
 
 		<record id="sale.action_quotations" model="ir.actions.act_window">
 			<field name="domain">[('state','in',('draft','sent','cancel','need_manager_approval', 'manager_approved', 'manager_not_approved', 'need_availability_check'))]</field>

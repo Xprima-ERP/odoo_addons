@@ -21,7 +21,7 @@
 ##############################################################################
 
 {
-    'name': 'xprima_report',
+    'name': 'Xprima Reports',
     'version': '0.1',
     'author': 'Xprima',
     'maintainer': 'Xprima',

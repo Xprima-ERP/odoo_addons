@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Product Variants Filters",
+    'name': "Xprima Product Variants Filters",
 
     'summary': """
     Filters product variants to produce only logical combinations
