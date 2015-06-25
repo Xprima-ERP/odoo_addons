@@ -15,31 +15,31 @@
 
      	<!-- Delete standard unused transitions -->
 
-     	<delete id="trans_draft_sent" model="workflow.transition" />
-        <delete id="trans_draft_router" model="workflow.transition" />
-        <delete id="trans_sent_router" model="workflow.transition" />
-        <delete id="trans_sent_cancel" model="workflow.transition" />
-        <delete id="trans_router_wait_invoice" model="workflow.transition" />
-        <delete id="trans_wait_invoice_all_lines_invoiced" model="workflow.transition" />
-        <delete id="trans_wait_invoice_cancel2" model="workflow.transition" />
-        <delete id="trans_wait_invoice_invoice_manual" model="workflow.transition" />
-        <delete id="trans_invoice_invoice_end" model="workflow.transition" />
-        <delete id="trans_invoice_invoice_except" model="workflow.transition" />
-        <delete id="trans_invoice_except_invoice" model="workflow.transition" />
-        <delete id="trans_invoice_except_invoice_end" model="workflow.transition" />
-        <delete id="trans_invoice_except_invoice_cancel" model="workflow.transition" />
-        <delete id="trans_invoice_end_done" model="workflow.transition" />
+     	<delete id="sale.trans_draft_sent" model="workflow.transition" />
+        <delete id="sale.trans_draft_router" model="workflow.transition" />
+        <delete id="sale.trans_sent_router" model="workflow.transition" />
+        <delete id="sale.trans_sent_cancel" model="workflow.transition" />
+        <delete id="sale.trans_router_wait_invoice" model="workflow.transition" />
+        <delete id="sale.trans_wait_invoice_all_lines_invoiced" model="workflow.transition" />
+        <delete id="sale.trans_wait_invoice_cancel2" model="workflow.transition" />
+        <delete id="sale.trans_wait_invoice_invoice_manual" model="workflow.transition" />
+        <delete id="sale.trans_invoice_invoice_end" model="workflow.transition" />
+        <delete id="sale.trans_invoice_invoice_except" model="workflow.transition" />
+        <delete id="sale.trans_invoice_except_invoice" model="workflow.transition" />
+        <delete id="sale.trans_invoice_except_invoice_end" model="workflow.transition" />
+        <delete id="sale.trans_invoice_except_invoice_cancel" model="workflow.transition" />
+        <delete id="sale.trans_invoice_end_done" model="workflow.transition" />
 
      	<!-- Delete standard unused activities -->
 
-        <delete id="act_router" model="workflow.activity" />
-        <delete id="act_wait_invoice" model="workflow.activity" />
-        <delete id="act_done" model="workflow.activity" />
-        <delete id="act_cancel2" model="workflow.activity" />
-        <delete id="act_invoice" model="workflow.activity" />
-        <delete id="act_invoice_except" model="workflow.activity" />
-        <delete id="act_invoice_end" model="workflow.activity" />
-        <delete id="act_invoice_cancel" model="workflow.activity" />
+        <delete id="sale.act_router" model="workflow.activity" />
+        <delete id="sale.act_wait_invoice" model="workflow.activity" />
+        <delete id="sale.act_done" model="workflow.activity" />
+        <delete id="sale.act_cancel2" model="workflow.activity" />
+        <delete id="sale.act_invoice" model="workflow.activity" />
+        <delete id="sale.act_invoice_except" model="workflow.activity" />
+        <delete id="sale.act_invoice_end" model="workflow.activity" />
+        <delete id="sale.act_invoice_cancel" model="workflow.activity" />
           
 
         <!-- Custom activities -->
