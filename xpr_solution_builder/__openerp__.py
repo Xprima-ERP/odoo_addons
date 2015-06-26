@@ -20,7 +20,7 @@
     """,
 
     'author': "Xprima Corp",
-    'website': "http://www.auto123.com",
+    'website': "http://www.xprima.com",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/master/openerp
@@ -30,7 +30,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'product', 'sale'],
+    'depends': ['base', 'product', 'sale', 'sale_stock'],
 
     # always loaded
     'data': [

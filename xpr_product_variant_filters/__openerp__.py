@@ -7,8 +7,7 @@
     """,
 
     'description': """
-       Given a list of logical combinations, filter out non logical combinations
-    of products variants
+       Permits to specify specific attribute combinations when generating product variants.
     """,
 
     'author': "Xprima",
