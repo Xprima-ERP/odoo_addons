@@ -6,7 +6,7 @@
         id="sale.report_sale_order"
         model="sale.order"
         name="sale.order"
-        rml="xprima_report/report/sale_order_xprima.rml"
+        rml="xpr_report/report/sale_order_xprima.rml"
         string="Quotation / Order"
         header="True"
         usage="default"/>
