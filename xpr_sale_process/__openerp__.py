@@ -25,6 +25,7 @@
         'base',
         'sale',
         'hr',
+        'email_template',
     ],
 
     # always loaded

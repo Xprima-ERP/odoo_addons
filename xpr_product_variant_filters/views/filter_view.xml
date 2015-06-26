@@ -1,6 +1,6 @@
 <openerp>
 	<data>
-                <record id="pvf_filter_form_view" model="ir.ui.view">
+        <record id="pvf_filter_form_view" model="ir.ui.view">
 			<field name="name">pvf.filter.form</field>
 			<field name="model">pvf.filter</field>
 			<field name="mode">primary</field>
@@ -16,7 +16,7 @@
 			</field>
 		</record>
 
-                <record id="pvf_filter_tree_view" model="ir.ui.view">
+        <record id="pvf_filter_tree_view" model="ir.ui.view">
 			<field name="name">pvf.filter.tree</field>
 			<field name="model">pvf.filter</field>
 			<field name="arch" type="xml">

@@ -13,6 +13,15 @@
 				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
 					<button type="workflow" name="sig_availability_checked" string="Availability Checked" states="need_availability_check" />
 				</xpath>
+
+				<xpath expr="/form/header/button[@name='sig_availability_checked']" position="after">
+					<button type="workflow" name="sig_availability_not_checked" string="Not Available" states="need_availability_check" />
+				</xpath>
+
+				<xpath expr="/form/header/button[@name='sig_availability_not_checked']" position="after">
+					<button type="workflow" name="sig_cancel" string="Lost" states="contract_not_approved" />
+				</xpath>
+
 				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
 					<button type="workflow" name="sig_manager_approved" string="Approve" states="need_manager_approval" groups="base.group_sale_manager" />
 				</xpath>
@@ -20,7 +29,7 @@
 					<button type="workflow" name="sig_manager_not_approved" string="Not Approved" states="need_manager_approval"  groups="base.group_sale_manager"/>
 				</xpath>
 				<xpath expr="/form/header/button[@name='sig_manager_not_approved']" position="after">
-					<button type="workflow" name="sig_cancel" string="Cancel" states="contract_not_presented" />
+					<button type="workflow" name="sig_contract_reopened" string="Reopen" states="contract_not_presented" />
 				</xpath>
 				<xpath expr="/form/header/button[@name='action_button_confirm' and @states='draft']" position="attributes">
 					<attribute name="states"></attribute>
@@ -53,7 +62,7 @@
 				'search_default_my_sale_orders_filter': 0
 				}
 			</field>
-			<field name="domain">[('state', 'in', ('contract_not_presented', 'contract_approved', 'contract_not_approved'))]</field>
+			<field name="domain">[('state', 'in', ('contract_not_presented', 'contract_not_approved', 'contract_approved'))]</field>
 			<field name="help" type="html">
 				<p class="oe_view_nocontent_create">
 					Click to create a quotation that can be converted into a sales order.
@@ -66,9 +75,15 @@
 
 		<menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman,base.group_sale_manager"/>
 
-		<record id="sale.menu_sale_order" model="ir.ui.menu">
+		 		
+		<!--
+			Now hidden
+
+			<record id="sale.menu_sale_order" model="ir.ui.menu">
 			<field name="groups_id" eval="[(6, 0, [ref('base.group_system')])]"/>
-		</record>
+		</record> -->
+		
+		<delete id="sale.menu_sale_order" model="ir.ui.menu" />
 
 		<record id="sale.action_quotations" model="ir.actions.act_window">
 			<field name="domain">[('state','in',('draft','sent','cancel','need_manager_approval', 'manager_approved', 'manager_not_approved', 'need_availability_check'))]</field>

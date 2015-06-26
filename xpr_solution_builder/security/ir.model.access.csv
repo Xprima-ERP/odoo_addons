@@ -1,0 +1,2 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_xpr_solution_builder_solution,access_xpr_solution_builder_solution,model_xpr_solution_builder_solution,,1,0,0,0

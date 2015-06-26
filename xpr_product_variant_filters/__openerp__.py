@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Product Variants Filters",
+    'name': "Xprima Product Variants Filters",
 
     'summary': """
     Filters product variants to produce only logical combinations
     """,
 
     'description': """
-       Given a list of logical combinations, filter out non logical combinations
-    of products variants
+       Permits to specify specific attribute combinations when generating product variants.
     """,
 
     'author': "Xprima",
