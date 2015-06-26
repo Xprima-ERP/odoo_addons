@@ -40,6 +40,10 @@ class Product(models.Model):
                 context=context
             )
 
+            if not filters.exists():
+                # No filters set. Use default behavior.
+                continue
+
             # Filter out the non logical combinations
             for prod_variant in template.product_variant_ids:
                 var_attribute_value = prod_variant.attribute_value_ids
