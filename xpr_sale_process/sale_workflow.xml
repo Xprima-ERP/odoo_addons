@@ -60,7 +60,7 @@
 			<field name="name">Manager Approval Needed</field>
 			<field name="wkf_id" ref="sale.wkf_sale"/>
 			<field name="kind">function</field>
-			<field name="action">write({'state':'need_manager_approval'})</field>
+			<field name="action">notify_manager_approval()</field>
 		</record>
 
 		<record model="workflow.activity" id="act_manager_approved">

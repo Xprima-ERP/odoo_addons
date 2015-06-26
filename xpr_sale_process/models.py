@@ -98,6 +98,29 @@ class SaleOrder(models.Model):
                 return True
         return False
 
+    # api.one
+    def notify_manager_approval(self):
+        self.write({'state':'need_manager_approval'})
+        
+        #args = [("user_id", "=", self.env.user.id)]
+        #hr_approver = self.env["hr.employee"].search(args)
+        args = [("user_id", "=", self.user_id.id)]
+        hr_owner = self.env["hr.employee"].search(args)
+
+        #hr_owner.parent_id != hr_approver:
+
+        self.env['mail.message'].create({
+            'type': 'notification',
+            #'author_id': 
+            'partner_ids': [(4, hr_owner.id)],
+            'record_name': self.name,
+            'model': 'sale.order',
+            'subject': 'Devis &agrave; approuver: {0}'.format(self.name),
+            'body': '<p>Vous avez &agrave; approuver le devis <b>{0}</b>.</p>'.format(self.name),
+            #'template': 
+            #'subtype_id': 
+        })
+
 
 class Product(models.Model):
     _name = 'product.template'
