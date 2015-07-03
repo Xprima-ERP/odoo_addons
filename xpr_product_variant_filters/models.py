@@ -58,7 +58,6 @@ class Product(models.Model):
 
         return result
 
-
 class Filter(models.Model):
     _name = 'pvf.filter'
 

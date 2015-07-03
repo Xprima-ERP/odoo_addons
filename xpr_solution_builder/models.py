@@ -103,8 +103,6 @@ class SalesOrder(models.Model):
                 context=context)
 
 
-
-
 class SolutionConfigurator(models.TransientModel):
 
     """ 

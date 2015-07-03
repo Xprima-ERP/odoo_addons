@@ -12,9 +12,9 @@
  'website': 'http://xprima.com',
  'license': 'AGPL-3',
  'depends': [
+      'sale', # Install manually because of wizard setup
       'hr',
       'crm',
-      'sale',
       'xpr_solution_builder',
       'xpr_sale_process',
       'xpr_product_variant_filters',
