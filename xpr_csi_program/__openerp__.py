@@ -5,7 +5,7 @@
  'summary': 'Xprima CSI Program',
  'description': 'Module that add CSI Program features for Xprima.',
  'category': 'Misc',
- 'author': 'Sebastien Delisle',
+ 'author': 'Xprima',
  'website': 'http://www.xprima.com',
  'license': 'AGPL-3',
  'depends': ['base', 'sale'],
