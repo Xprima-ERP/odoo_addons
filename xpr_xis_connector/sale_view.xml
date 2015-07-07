@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE openerp SYSTEM "openerp.dtd">
+<openerp>
+  <data>
+    <!-- Sale Order -->
+    <record id="view_order_form_xprima" model="ir.ui.view">
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field name="arch" type="xml">
+        <data>
+          <xpath expr="//field[@name='date_order']/.." position="after">
+            <group>
+              <field name="starting_date" />
+              <field name="xis_quote_id" readonly="1" string="XIS Contract Number" />
+            </group>
+          </xpath>
+          <xpath expr="//field[@name='partner_id']" position="attributes">
+              <attribute name="domain">[('customer','=',True),('is_company','=',True)]</attribute>
+          </xpath>
+          <xpath expr="(//field[@name='tax_id'])[1]" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="(//field[@name='tax_id'])[2]" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//field[@name='amount_tax']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+          <xpath expr="//field[@name='client_order_ref']" position="attributes">
+              <attribute name="invisible">1</attribute>
+          </xpath>
+        </data>
+      </field>
+    </record>
+  </data>
+</openerp>

@@ -1,0 +1,16 @@
+id,groups_id/id
+hr_attendance.menu_hr_time_tracking,base.group_system
+project.menu_project_dashboard,base.group_system
+hr.menu_hr_reporting,base.group_system
+hr.menu_hr_dashboard,base.group_system
+crm.menu_crm_leads,base.group_system
+sale.menu_sale_order,base.group_system
+account_analytic_analysis.menu_action_account_analytic_overdue_all,base.group_system
+base.menu_invoiced,base.group_system
+product_custom_attributes.open_product_wizard,base.group_system
+sale.menu_dashboard_sales,base.group_system
+account.menu_finance_reporting,base.group_system
+account_analytic_analysis.menu_template_of_contract_action,base.group_system
+crm.menu_crm_case_section_act,base.group_system
+base.menu_base_config,"base.group_system,__export__.res_groups_61"
+product.menu_product_category_action_form,"__export__.res_groups_61,base.group_no_one"
