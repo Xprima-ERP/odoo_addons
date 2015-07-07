@@ -21,6 +21,7 @@
       'agaplan_terms_and_conditions',
       'xpr_report',
       'xpr_xis_connector',
+      'xpr_csi_program',
 
       # From 7.0 version
 
@@ -43,7 +44,7 @@
       # 'xpr_hd_ticket',
       # 'no_customer_auto_follow',
       # 'xpr_seo',
-      # 'xpr_csi_program',
+     
       # 'xpr_casa',
       # 'hr_employee_auto_create',
       # 'reps_nocreate_dealer',
