@@ -46,11 +46,12 @@ Contributors
         'sale',
         'hr',
         'xpr_dealer_group',
+        'xpr_dropdowns_values',
 
-        #'partner_history',
+        #'partner_history', # Not ported in 8.0
         #'account',
         #'salesforce_data_mapping',
-        #'xprima_dropdowns_values',
+        
         #'partner_category_description',
         #'sale_package_configurator',
         #'contract_isp',

@@ -1,0 +1,323 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* xprima_dropdowns_values
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20130714-231029\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-19 12:37+0000\n"
+"PO-Revision-Date: 2013-07-19 12:37+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_dropdowns_values
+msgid "Dropdowns Values"
+msgstr "Valeurs menus déroulants"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_business_relationship
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_business_relationship
+msgid "Partner Business Relationships"
+msgstr "Relations d'affaire des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_case_origin
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_case_origin
+msgid "Case Origin"
+msgstr "Provenance des cas"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_customermask
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_customermask
+msgid "Customer Of"
+msgstr "Client de"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_business_type
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_business_type
+msgid "Partner Business Type"
+msgstr "Type d'affaire des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_market
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_market
+msgid "Partner Market"
+msgstr "Marché des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_region
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_region
+msgid "Partner Region"
+msgstr "Region des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_site_type
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_site_type
+msgid "Partner Site Type"
+msgstr "Type de site des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_make_atv
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_make_atv
+msgid "Partner Make ATV"
+msgstr "Marque VTT des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_make_snowmobile
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_make_snowmobile
+msgid "Partner Make Snowmobile"
+msgstr "Marque de motoneige des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_make_watercraft
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_make_watercraft
+msgid "Partner Make Watercraft"
+msgstr "Marque de véhicule marin des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_make_car
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_make_car
+msgid "Partner Make Car"
+msgstr "Marque de véhicule des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_make_moto
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_make_moto
+msgid "Partner Make Moto"
+msgstr "Marque de moto des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_portalmask
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_portalmask
+msgid "Partner Portalmask"
+msgstr "Portalmask des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_telephone_choice
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_telephone_choice
+msgid "Partner Telephone Choice"
+msgstr "Choix téléphoniques des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_categorization_field
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_categorization_field
+msgid "Partner Categorization Field"
+msgstr "Champ de catégorisation des partenaires"
+
+#. module: xprima_dropdowns_values
+#: field:partner_business_relationship,name:0
+#: field:partner_industry,name:0
+#: field:account_verification_status,name:0
+#: field:partner_business_type,name:0
+#: field:partner_market,name:0
+#: field:partner_region,name:0
+#: field:partner_site_type,name:0
+#: field:partner_make_atv,name:0
+#: field:partner_make_snowmobile,name:0
+#: field:partner_make_watercraft,name:0
+#: field:partner_make_car,name:0
+#: field:partner_make_moto,name:0
+#: field:partner_portalmask,name:0
+#: field:partner_telephone_choice,name:0
+#: field:partner_categorization_field,name:0
+#: field:case_origin,name:0
+msgid "Name"
+msgstr "Nom"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_relationship,name:xprima_dropdowns_values.partner_business_relationship_test_account
+msgid "Test Account"
+msgstr "Test account"
+
+#. module: xprima_dropdowns_values
+#: model:case_origin,name:xprima_dropdowns_values.case_origin_email
+msgid "Email"
+msgstr "Courriel"
+
+#. module: xprima_dropdowns_values
+#: model:case_origin,name:xprima_dropdowns_values.case_origin_fax
+msgid "Fax"
+msgstr "Fax"
+
+#. module: xprima_dropdowns_values
+#: model:case_origin,name:xprima_dropdowns_values.case_origin_internal
+msgid "Internal"
+msgstr "Interne"
+
+#. module: xprima_dropdowns_values
+#: model:case_origin,name:xprima_dropdowns_values.case_origin_phone
+msgid "Phone"
+msgstr "Téléphone"
+
+#. module: xprima_dropdowns_values
+#: model:case_origin,name:xprima_dropdowns_values.case_origin_web
+msgid "Web"
+msgstr "Web"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_relationship,name:xprima_dropdowns_values.partner_business_relationship_prospect
+msgid "Prospect"
+msgstr "Piste"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_relationship,name:xprima_dropdowns_values.partner_business_relationship_existing_customer
+msgid "Existing Customer"
+msgstr "Client existant"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_relationship,name:xprima_dropdowns_values.partner_business_relationship_past_customer
+msgid "Past Customer"
+msgstr "Ancien client"
+
+#. module: xprima_dropdowns_values
+#: model:partner_industry,name:xprima_dropdowns_values.partner_industry_new_dealerships
+msgid "New Dealerships"
+msgstr "Concessionnaires de véhicules neufs"
+
+#. module: xprima_dropdowns_values
+#: model:partner_industry,name:xprima_dropdowns_values.partner_industry_used_dealerships
+msgid "Used Dealerships"
+msgstr "Concessionnaires de véhicules usagés"
+
+#. module: xprima_dropdowns_values
+#: model:partner_industry,name:xprima_dropdowns_values.partner_industry_moto_atv_dealerships
+msgid "Moto/ATV Dealerships"
+msgstr "Concessionnaires de motos et VTT"
+
+#. module: xprima_dropdowns_values
+#: model:partner_industry,name:xprima_dropdowns_values.partner_industry_rv_dealerships
+msgid "RV Dealerships"
+msgstr "Concessionnaires de VR"
+
+#. module: xprima_dropdowns_values
+#: model:partner_industry,name:xprima_dropdowns_values.partner_industry_it_support
+msgid "IT Support"
+msgstr "Support IT"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_partner_industry
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_partner_industry
+msgid "Partner Industries"
+msgstr "Industries des partenaires"
+
+#. module: xprima_dropdowns_values
+#: model:ir.ui.menu,name:xprima_dropdowns_values.menu_account_verification_status
+#: model:ir.actions.act_window,name:xprima_dropdowns_values.action_model_account_verification_status
+msgid "Account Verification Status"
+msgstr "État de la vérification du compte"
+
+#. module: xprima_dropdowns_values
+#: model:account_verification_status,name:xprima_dropdowns_values.account_verification_status_complete
+msgid "Complete"
+msgstr "Complet"
+
+#. module: xprima_dropdowns_values
+#: model:account_verification_status,name:xprima_dropdowns_values.account_verification_status_verifying
+msgid "Verifying"
+msgstr "En vérification"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_type,name:xprima_dropdowns_values.partner_business_type_new_car
+msgid "New Car"
+msgstr "Nouvelle voiture"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_type,name:xprima_dropdowns_values.partner_business_type_used_car
+msgid "Used Car"
+msgstr "Voiture usagée"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_type,name:xprima_dropdowns_values.partner_business_type_new_moto
+msgid "New Moto"
+msgstr "Nouvelle moto"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_type,name:xprima_dropdowns_values.partner_business_type_used_moto
+msgid "Used Moto"
+msgstr "Moto usagée"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_type,name:xprima_dropdowns_values.partner_business_type_new_atv
+msgid "New ATV"
+msgstr "Nouveau VTT"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_type,name:xprima_dropdowns_values.partner_business_type_used_atv
+msgid "Used ATV"
+msgstr "VTT usagé"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_type,name:xprima_dropdowns_values.partner_business_type_new_snowmobile
+msgid "New Snowmobile"
+msgstr "Nouvelle motoneige"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_type,name:xprima_dropdowns_values.partner_business_type_used_snowmobile
+msgid "Used Snowmobile"
+msgstr "Motoneige usagée"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_type,name:xprima_dropdowns_values.partner_business_type_new_watercraft
+msgid "New Watercraft"
+msgstr "Nouveau Véhicule marin"
+
+#. module: xprima_dropdowns_values
+#: model:partner_business_type,name:xprima_dropdowns_values.partner_business_type_used_watercraft
+msgid "Used Watercraft"
+msgstr "Véhicule marin usagé"
+
+#. module: xprima_dropdowns_values
+#: model:partner_site_type,name:xprima_dropdowns_values.partner_site_type_has_website_with_us
+msgid "Has Website With Us"
+msgstr "A un site web avec nous"
+
+#. module: xprima_dropdowns_values
+#: model:partner_site_type,name:xprima_dropdowns_values.partner_site_type_has_a_link_or_portals_to_their_site
+msgid "Has a link or portals to their site"
+msgstr "A un lien ou un portail pour son site"
+
+#. module: xprima_dropdowns_values
+#: model:partner_site_type,name:xprima_dropdowns_values.partner_site_type_does_not_have_a_website
+msgid "Does not have a website"
+msgstr "N'a pas de site web"
+
+#. module: xprima_dropdowns_values
+#: model:partner_telephone_choice,name:xprima_dropdowns_values.partner_telephone_choice_phone
+msgid "Phone"
+msgstr "Téléphone"
+
+#. module: xprima_dropdowns_values
+#: model:partner_telephone_choice,name:xprima_dropdowns_values.partner_telephone_choice_toll_free
+msgid "Toll Free"
+msgstr "Sans frais"
+
+#. module: xprima_dropdowns_values
+#: model:partner_telephone_choice,name:xprima_dropdowns_values.partner_telephone_choice_evolio_call_tracking
+msgid "Evolio Call Tracking"
+msgstr "Evolio Call Tracking"
+
+#. module: xprima_dropdowns_values
+#: model:partner_categorization_field,name:xprima_dropdowns_values.partner_categorization_field_duplicate_account
+msgid "Duplicate Account"
+msgstr "Compte dupliqué"
+
+#. module: xprima_dropdowns_values
+#: model:partner_categorization_field,name:xprima_dropdowns_values.partner_categorization_field_not_in_master_file__update_date_wit
+msgid "Not in Master File (Update Date within one Year)"
+msgstr "Non présent dans la fichier maître (date de mise-à-jour à l'intérieur d'un an)"
+
+#. module: xprima_dropdowns_values
+#: model:partner_categorization_field,name:xprima_dropdowns_values.partner_categorization_field_closed
+msgid "Closed"
+msgstr "Fermé"
+
+#. module: xprima_dropdowns_values
+#: model:partner_categorization_field,name:xprima_dropdowns_values.partner_categorization_field_not_in_master_file__update_date_gre
+msgid "Not in Master File (Update Date Greater than 1 Year)"
+msgstr "Non présent dans le fichier maître (date de mise-à-jour plus grande qu'un an)"
