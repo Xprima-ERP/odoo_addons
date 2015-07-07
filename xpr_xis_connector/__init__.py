@@ -20,16 +20,5 @@
 #
 ##############################################################################
 
-from . import product
-from . import res_partner
-from . import res_users
-from . import sale
-from . import partner_customermask_rel
-from . import partner_partner_business_type_rel
-from . import partner_partner_make_atv_rel
-from . import partner_partner_make_car_rel
-from . import partner_partner_make_moto_rel
-from . import partner_partner_make_snowmobile_rel
-from . import partner_partner_make_watercraft_rel
-from . import partner_portalmask_rel
+from . import models
 import wizard

@@ -20,6 +20,7 @@
       'xpr_product_variant_filters',
       'agaplan_terms_and_conditions',
       'xpr_report',
+      'xpr_xis_connector',
 
       # From 7.0 version
 
@@ -37,9 +38,7 @@
 
       #'sale_package_configurator',
       #'so_second_level_approval_and_discount',
-      #'xprima_report',
 
-      # 'xis_connector',
       # 'csv_noupdate',
       # 'xpr_hd_ticket',
       # 'no_customer_auto_follow',

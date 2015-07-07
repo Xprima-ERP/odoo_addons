@@ -22,10 +22,10 @@
 
 {
     'name': 'XIS Connector',
-    'version': '0.1',
-    'author': 'Savoir-faire Linux',
-    'maintainer': 'Savoir-faire Linux',
-    'website': 'http://www.savoirfairelinux.com',
+    'version': '0.2',
+    'author': 'Xprima',
+    'maintainer': 'Xprima',
+    'website': 'http://www.xprima.com',
     'license': 'AGPL-3',
     'category': 'Sale',
     'summary': 'Sync information to XIS',
@@ -38,6 +38,7 @@ Send information to system XIS when create/update field.
 Contributors
 ------------
 * Mathieu Benoit <mathieu.benoit@savoirfairelinux.com>
+* Charles De Lean <cdelean@xprima.com>
 """,
     'depends': [
         'base',
@@ -45,17 +46,14 @@ Contributors
         'dealergroup',
         'sale',
         'hr',
-        'account',
-        'partner_history',
-        'salesforce_data_mapping',
-        'xprima_dropdowns_values',
-        # launchpad: http://bazaar.launchpad.net/
-        # ~savoirfairelinux-openerp/partner-contact-management/
-        # partner_category_description/
-        'partner_category_description',
-        'sale_package_configurator',
-        'contract_isp',
-        'account_anglo_saxon',
+        #'account',
+        #'partner_history',
+        #'salesforce_data_mapping',
+        #'xprima_dropdowns_values',
+        #'partner_category_description',
+        #'sale_package_configurator',
+        #'contract_isp',
+        #'account_anglo_saxon',
     ],
     'external_dependencies': {
         'python': [],
@@ -63,11 +61,11 @@ Contributors
     'data': [
         #'res.groups.csv',
         'load_french.xml',
-        'product_view.xml',
-        'res_partner_view.xml',
-        'res_users_view.xml',
+        'views/product.xml',
+        'views/res_partner.xml',
+        'views/res_users.xml',
         #'ir.config_parameter.csv',
-        'sale_view.xml',
+        'views/sale.xml',
         #'ir.ui.menu.csv',
         #'security/ir.model.access.csv',
         #'ir.actions.act_window.csv',
