@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-{'name': 'Xprima modules',
+{'name': 'Xprima Modules',
  'version': '1.0',
  'summary': 'Xprima Module Dependencies',
  'description': """Contains all the Xprima dependencies

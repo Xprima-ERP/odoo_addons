@@ -22,22 +22,22 @@
 
 from openerp.osv import orm
 
+# Not using package
+# class package_configurator(orm.TransientModel):
+#     """Package Configurator wizard for XIS connector"""
 
-class package_configurator(orm.TransientModel):
-    """Package Configurator wizard for XIS connector"""
+#     _inherit = 'contract.service.configurator'
 
-    _inherit = 'contract.service.configurator'
+#     def do_done(self, cr, uid, ids, context=None):
+#         wizard = self.browse(cr, uid, ids[0], context=context)
+#         status = super(package_configurator, self).do_done(cr, uid, ids,
+#                                                            context=context)
+#         # force to do a write in sale_order
+#         sale_order_obj = self.pool.get('sale.order')
+#         sale_order_obj.write(cr,
+#                              uid,
+#                              [wizard.order_id.id],
+#                              {},
+#                              context=context)
 
-    def do_done(self, cr, uid, ids, context=None):
-        wizard = self.browse(cr, uid, ids[0], context=context)
-        status = super(package_configurator, self).do_done(cr, uid, ids,
-                                                           context=context)
-        # force to do a write in sale_order
-        sale_order_obj = self.pool.get('sale.order')
-        sale_order_obj.write(cr,
-                             uid,
-                             [wizard.order_id.id],
-                             {},
-                             context=context)
-
-        return status
+#         return status
