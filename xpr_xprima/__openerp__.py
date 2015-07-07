@@ -20,8 +20,8 @@
       'xpr_product_variant_filters',
       'agaplan_terms_and_conditions',
       'xpr_report',
-      'xpr_xis_connector',
-      'xpr_csi_program',
+      #'xpr_xis_connector',
+      #'xpr_csi_program',
 
       # From 7.0 version
 
