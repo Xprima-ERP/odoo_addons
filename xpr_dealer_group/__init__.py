@@ -20,33 +20,4 @@
 #
 ##############################################################################
 
-{
-    'name': 'DealerGroup',
-    'version': '0.1',
-    'author': 'Savoir-faire Linux',
-    'maintainer': 'Savoir-faire Linux',
-    'website': 'http://www.savoirfairelinux.com',
-    'license': 'AGPL-3',
-    'category': 'Partner',
-    'summary': 'DealerGroup',
-    'description': """
-DealerGroup module
-==================
-This module configure DealerGroup for the client.
-
-Contributors
-------------
-* Mathieu Benoit (mathieu.benoit@savoirfairelinux.com)
-""",
-    'depends': [
-        'partner_category_description',
-    ],
-    'external_dependencies': {
-        'python': [],
-    },
-    'data': [
-        'res_partner_view.xml',
-    ],
-    'installable': True,
-    'active': False,
-}
+from . import models

@@ -20,4 +20,33 @@
 #
 ##############################################################################
 
-from . import res_partner
+{
+    'name': 'Dealer Group',
+    'version': '0.2',
+    'author': 'Xprima',
+    'maintainer': 'Xprima',
+    'website': 'http://www.xprima.com',
+    'license': 'AGPL-3',
+    'category': 'Partner',
+    'summary': 'Xprima Dealer Group support',
+    'description': """
+DealerGroup module
+==================
+Xprimas Dealer Group support.
+
+Contributors
+------------
+* Mathieu Benoit (mathieu.benoit@savoirfairelinux.com)
+* Charles De Lean (cdelean@xprima.com)
+""",
+    'depends': [
+        #'partner_category_description',
+    ],
+    'external_dependencies': {
+        'python': [],
+    },
+    'data': [
+        'views/res_partner.xml',
+    ],
+    'installable': True,
+}

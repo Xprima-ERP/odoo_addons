@@ -43,9 +43,9 @@ Contributors
     'depends': [
         'base',
         'crm',
-        'dealergroup',
         'sale',
         'hr',
+        'xpr_dealer_group',
         #'account',
         #'partner_history',
         #'salesforce_data_mapping',
