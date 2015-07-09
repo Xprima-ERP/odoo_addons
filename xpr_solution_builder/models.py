@@ -36,7 +36,7 @@ class SalesOrder(models.Model):
 
         # override order lines
 
-        #self.order_line.unlink()
+        order.order_line = self.env['sale.order.line']
 
         sequence = 0
         for product in order.solution.products:
@@ -52,8 +52,7 @@ class SalesOrder(models.Model):
                 product_uom=product.uom_id,
                 sequence=sequence,
                 state=order.state,
-                )
-            )
+            ))
 
 
     def _get_discount_rate(self, order):
@@ -75,7 +74,8 @@ class SalesOrder(models.Model):
         discount_rate = self._get_discount_rate(order)
 
         for line in order.order_line:
-            line.discount = discount_rate
+            if line.solution_part == 1:
+                line.discount = discount_rate
 
 
     @api.onchange('solution')
