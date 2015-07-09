@@ -28,80 +28,80 @@ class SalesOrder(models.Model):
     _inherit = "sale.order"
 
     solution = fields.Many2one('xpr_solution_builder.solution', string='Solution')
+    rebate = fields.Float(string='Rebate', digits=(6,2))
 
-    #TODO: Use on_change('solution') and @constrains
+    def _apply_solution(self, order):
 
-    # Traditional ORM
-    def create(self, cr, user, vals, context=None):
-        record_id = super(SalesOrder, self).create(cr, user, vals, context)
+        discount_rate = self._get_discount_rate(order)
 
-        if not record_id:
-            return record_id
+        # override order lines
 
-        self.complete_line_items(cr, user, record_id, context)
-        return record_id
+        #self.order_line.unlink()
 
-    def write(self, cr, user, ids, vals, context=None):
+        sequence = 0
+        for product in order.solution.products:
+            sequence += 10
+            order.order_line += order.order_line.new(dict(
+                order_id=order.id,
+                product_id=product.id,
+                name=product.name,
+                product_uom_qty=1.0,
+                price_unit=product.list_price,
+                solution_part=1,
+                discount=discount_rate,
+                product_uom=product.uom_id,
+                sequence=sequence,
+                state=order.state,
+                )
+            )
 
-        result = super(SalesOrder, self).write(cr, user, ids, vals, context)
 
-        if not result:
-            return result
+    def _get_discount_rate(self, order):
 
-        for record_id in ids:
-            self.complete_line_items(cr, user, record_id, context)
+        if order.solution:
+            price = sum([
+                line.product_id.list_price * line.product_uom_qty
+                for line in order.order_line
+                if line.product_id.list_price > 0
+            ])
 
-        # result = True or Exception is raised
+            if price:
+                return 100.0 * order.rebate / max(price, order.rebate)
 
-        return result
+        return 0.0
 
-    def complete_line_items(self, cr, user, record_id, context):
+    def _apply_rebate(self, order):
 
-        order = self.browse(cr, user, record_id, context=context)
-        if not order.solution:
-            # No solution selected. No validation.
-            return
+        discount_rate = self._get_discount_rate(order)
 
-        solution = self.pool.get(
-            Solution._name
-        ).browse(
-            cr, user, order.solution.id,  context=context
-        )
+        for line in order.order_line:
+            line.discount = discount_rate
 
-        mandatory_ids = set(solution.products.ids)
-        all_ids = mandatory_ids | set(solution.options.ids)
 
-        order_products = set([line.product_id.id for line in order.order_line])
+    @api.onchange('solution')
+    def onchange_solution(self):
 
-        # Add missing line items from mandatory products
+        for order in self:
+            self._apply_solution(order)
 
-        missing_products = self.pool.get(
-            'product.product'
-        ).browse(
-            cr, user, list(mandatory_ids - order_products), context=context)
+        return {}
 
-        order_line_obj = self.pool.get(order.order_line._name)
+    @api.onchange('rebate')
+    def onchange_rebate(self):
+        for order in self:
+            self._apply_rebate(order)
 
-        deleteids = order_products - all_ids
+        return {}
 
-        for line_id in order_line_obj.search(
-            cr, user, [
-                ('order_id', '=', record_id),
-                ('product_id', 'in', list(deleteids))]
-        ):
-            order_line_obj.unlink(cr, user, line_id)
 
-        for product in missing_products:
-            order_line_obj.create(
-                cr,
-                user,
-                dict(
-                    order_id=order.id,
-                    product_id=product.id,
-                    name=product.name,
-                    product_uom_qty=1.0),
-                context=context)
+class SalesOrderLine(models.Model):
+    """ Override of sale.order to add solution field"""
 
+    _inherit = "sale.order.line"
+
+    # 0 Don't care
+    # 1 mandatory line
+    solution_part = fields.Integer() 
 
 class SolutionConfigurator(models.TransientModel):
 
