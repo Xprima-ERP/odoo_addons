@@ -75,7 +75,6 @@
                                             <!-- we should put a config wizard for these two fields -->
                                             <field name="address_allotment_id"/>
                                         </group>
-                                    -->
                                     </group>
                                     <label for="name"/>
                                     <field name="name"/>
@@ -138,7 +137,6 @@
                                             <!-- we should put a config wizard for these two fields -->
                                             <field name="address_allotment_id"/>
                                         </group>
-                                    -->
                                     </group>
                                     <label for="name"/>
                                     <field name="name"/>
