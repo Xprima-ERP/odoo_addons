@@ -11,6 +11,8 @@ class Solution(models.Model):
 
     name = fields.Char(required=True)
     description = fields.Char(required=True)
+    list_price = fields.Float(string='Solution Price', digits=(6,2))
+
     products = fields.Many2many(
         'product.product',
         'xpr_solution_builder_solution_mandatory_product_rel',
@@ -27,13 +29,13 @@ class SalesOrder(models.Model):
 
     _inherit = "sale.order"
 
-
     @api.depends('order_line')
     def _get_line_products(self):
 
         for record in self:
             record.order_line_products = self.env['sale.order.line']
             for line in record.order_line:
+                # Do not include integration line
                 if line.solution_part == 1:
                     record.order_line_products += line
 
@@ -41,27 +43,27 @@ class SalesOrder(models.Model):
     def _get_line_options(self):
 
         for record in self:
-            record.order_line_products = self.env['sale.order.line']
+            record.order_line_options = self.env['sale.order.line']
             for line in record.order_line:
-                if line.solution_part == 1:
-                    record.order_line_products += line
+                if line.solution_part == 2:
+                    record.order_line_options += line
 
     @api.depends('order_line')
     def _get_amount_products(self):
         for order in self:
             order.amount_products_untaxed = sum([
-                line.product_id.list_price * line.product_uom_qty
+                line.price_unit * line.product_uom_qty * (1.0 - line.discount / 100.0)
                 for line in order.order_line
-                if line.product_id.list_price > 0 and line.solution_part in [1, 3]
+                if line.solution_part in [1, 3]
             ])
 
     @api.depends('order_line')
     def _get_amount_options(self):
         for order in self:
-            order.amount_options_untaxed = price = sum([
-                line.product_id.list_price * line.product_uom_qty
+            order.amount_options_untaxed = sum([
+                line.price_unit * line.product_uom_qty
                 for line in order.order_line
-                if line.product_id.list_price > 0 and line.solution_part == 2
+                if line.solution_part == 2
             ])
 
     solution = fields.Many2one('xpr_solution_builder.solution', string='Solution')
@@ -80,9 +82,13 @@ class SalesOrder(models.Model):
 
         order.order_line = self.env['sale.order.line']
 
+        delta_price = order.solution.list_price
         sequence = 0
+
         for product in order.solution.products:
             sequence += 10
+            delta_price -= product.list_price
+
             order.order_line += order.order_line.new(dict(
                 order_id=order.id,
                 product_id=product.id,
@@ -96,15 +102,28 @@ class SalesOrder(models.Model):
                 state=order.state,
             ))
 
+        sequence += 10
+        order.order_line += order.order_line.new(dict(
+                order_id=order.id,
+                name="Solution integration",
+                price_unit=delta_price,
+                solution_part=3,
+                discount=discount_rate,
+                sequence=sequence,
+                state=order.state,
+            ))
+
     def _get_discount_rate(self, order):
 
         if order.solution:
             price = sum([
                 line.product_id.list_price * line.product_uom_qty
                 for line in order.order_line
-                if line.product_id.list_price > 0
+                if line.solution_part in [1,3]
             ])
 
+            # price == order.list_price
+            
             if price:
                 return 100.0 * order.rebate / max(price, order.rebate)
 
@@ -115,7 +134,7 @@ class SalesOrder(models.Model):
         discount_rate = self._get_discount_rate(order)
 
         for line in order.order_line:
-            if line.solution_part == 1:
+            if line.solution_part in [1,3]:
                 line.discount = discount_rate
 
 
