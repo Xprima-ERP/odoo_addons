@@ -27,8 +27,44 @@ class SalesOrder(models.Model):
 
     _inherit = "sale.order"
 
+
+    @api.depends('order_line')
+    def _get_line_products(self):
+        for record in self:
+            record.order_line_products = record.order_line.search([])
+
+    @api.depends('order_line')
+    def _get_line_options(self):
+        for record in self:
+            record.order_line_options = record.order_line #.search([('solution_part','=',2)])
+
+    @api.depends('order_line')
+    def _get_amount_products(self):
+        for order in self:
+            order.amount_products_untaxed = price = sum([
+                line.product_id.list_price * line.product_uom_qty
+                for line in order.order_line
+                if line.product_id.list_price > 0 and line.solution_part in [0,1]
+            ])
+
+    @api.depends('order_line')
+    def _get_amount_options(self):
+        for order in self:
+            order.amount_options_untaxed = price = sum([
+                line.product_id.list_price * line.product_uom_qty
+                for line in order.order_line
+                if line.product_id.list_price > 0 and line.solution_part == 2
+            ])
+
     solution = fields.Many2one('xpr_solution_builder.solution', string='Solution')
     rebate = fields.Float(string='Rebate', digits=(6,2))
+
+    order_line_products = fields.One2many('sale.order.line', compute=_get_line_products)
+    order_line_options = fields.One2many('sale.order.line', compute=_get_line_options)
+    amount_products_untaxed = fields.Float(string='Products', digits=(6,2), compute=_get_amount_products)
+    amount_options_untaxed = fields.Float(string='Options', digits=(6,2), compute=_get_amount_options)
+
+
 
     def _apply_solution(self, order):
 
@@ -99,8 +135,9 @@ class SalesOrderLine(models.Model):
 
     _inherit = "sale.order.line"
 
-    # 0 Don't care
+    # 0 Don't care (not solution)
     # 1 mandatory line
+    # 2 optional line
     solution_part = fields.Integer() 
 
 class SolutionConfigurator(models.TransientModel):
@@ -168,6 +205,9 @@ class SolutionConfigurator(models.TransientModel):
         removed_lines = []
 
         for line in self.order.order_line:
+            if line.solution_part != 2:
+                continue
+
             if line.product_id.id not in options:
                 continue
 
@@ -198,7 +238,8 @@ class SolutionConfigurator(models.TransientModel):
                     order_id=self.order.id,
                     product_id=product.id,
                     name=product.name,
-                    product_uom_qty=1.0))
+                    product_uom_qty=1.0,
+                    solution_part=2))
 
         return {}
 
