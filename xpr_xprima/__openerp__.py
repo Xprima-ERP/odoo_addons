@@ -1,11 +1,17 @@
 # -*- coding: utf-8 -*-
-{'name': 'Xprima Modules',
+{'name': 'Xprima Setup Module',
  'version': '1.0',
- 'summary': 'Xprima Module Dependencies',
- 'description': """Contains all the Xprima dependencies
-      Including its own cosum modules:
-      - Sales process
-      - Reports
+ 'summary': 'Installs all Xprimas modules and dependencies',
+ 'description': """
+Contains all the Xprima dependencies.
+Meant to build a db from scratch.
+Including its own custom modules:
+* Sales process
+* Reports
+* Worflow
+
+Note: Install the Sales and Management (sales) module manually first beause of wizard.
+
  """,
  'category': 'Misc',
  'author': 'Charles De Lean',
