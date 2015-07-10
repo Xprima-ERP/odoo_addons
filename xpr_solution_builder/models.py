@@ -31,12 +31,12 @@ class SalesOrder(models.Model):
     @api.depends('order_line')
     def _get_line_products(self):
         for record in self:
-            record.order_line_products = record.order_line.search([])
+            record.order_line_products = record.order_line.search([('solution_part','=',1), ('order_id', '=', record.id)])
 
     @api.depends('order_line')
     def _get_line_options(self):
         for record in self:
-            record.order_line_options = record.order_line #.search([('solution_part','=',2)])
+            record.order_line_options = record.order_line.search([('solution_part','=',2), ('order_id', '=', record.id)])
 
     @api.depends('order_line')
     def _get_amount_products(self):
@@ -44,7 +44,7 @@ class SalesOrder(models.Model):
             order.amount_products_untaxed = price = sum([
                 line.product_id.list_price * line.product_uom_qty
                 for line in order.order_line
-                if line.product_id.list_price > 0 and line.solution_part in [0,1]
+                if line.product_id.list_price > 0 and line.solution_part in [1, 3]
             ])
 
     @api.depends('order_line')
@@ -63,8 +63,6 @@ class SalesOrder(models.Model):
     order_line_options = fields.One2many('sale.order.line', compute=_get_line_options)
     amount_products_untaxed = fields.Float(string='Products', digits=(6,2), compute=_get_amount_products)
     amount_options_untaxed = fields.Float(string='Options', digits=(6,2), compute=_get_amount_options)
-
-
 
     def _apply_solution(self, order):
 
@@ -89,7 +87,6 @@ class SalesOrder(models.Model):
                 sequence=sequence,
                 state=order.state,
             ))
-
 
     def _get_discount_rate(self, order):
 
@@ -138,6 +135,7 @@ class SalesOrderLine(models.Model):
     # 0 Don't care (not solution)
     # 1 mandatory line
     # 2 optional line
+    # 3 price correction line
     solution_part = fields.Integer() 
 
 class SolutionConfigurator(models.TransientModel):
