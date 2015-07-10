@@ -30,18 +30,26 @@ class SalesOrder(models.Model):
 
     @api.depends('order_line')
     def _get_line_products(self):
+
         for record in self:
-            record.order_line_products = record.order_line.search([('solution_part','=',1), ('order_id', '=', record.id)])
+            record.order_line_products = self.env['sale.order.line']
+            for line in record.order_line:
+                if line.solution_part == 1:
+                    record.order_line_products += line
 
     @api.depends('order_line')
     def _get_line_options(self):
+
         for record in self:
-            record.order_line_options = record.order_line.search([('solution_part','=',2), ('order_id', '=', record.id)])
+            record.order_line_products = self.env['sale.order.line']
+            for line in record.order_line:
+                if line.solution_part == 1:
+                    record.order_line_products += line
 
     @api.depends('order_line')
     def _get_amount_products(self):
         for order in self:
-            order.amount_products_untaxed = price = sum([
+            order.amount_products_untaxed = sum([
                 line.product_id.list_price * line.product_uom_qty
                 for line in order.order_line
                 if line.product_id.list_price > 0 and line.solution_part in [1, 3]
