@@ -65,8 +65,8 @@
                                             <field name="price_unit"/>
                                             <field name="solution_part" invisible="1" />
                                             <field name="discount" invisible="1"/>
-                                            <label for="discount_money" /> <!--groups="sale.group_discount_per_so_line" -->
-                                            <div name="discount_money" > <!-- groups="sale.group_discount_per_so_line"-->
+                                            <label for="discount_money" groups="sale.group_discount_per_so_line" /> 
+                                            <div name="discount_money" groups="sale.group_discount_per_so_line" > 
                                                 <field name="discount_money" class="oe_inline"/> $
                                             </div>
                                         </group>
@@ -99,7 +99,7 @@
                                     <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible="1"/>
                                     <field name="solution_part" invisible="1" />
                                     <field name="discount" invisible="1"/>
-                                    <field name="discount_money" /> <!--groups="sale.group_discount_per_so_line"  -->
+                                    <field name="discount_money" groups="sale.group_discount_per_so_line" />
                                     <field name="price_subtotal"/>
                                 </tree>
                     </field>
@@ -219,6 +219,7 @@
                                     <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible="1"/>
 
                                     <field name="discount" groups="sale.group_discount_per_so_line" invisible="1" />
+                                    <field name="discount_money" groups="sale.group_discount_per_so_line"  />
                                     <field name="price_subtotal" invisible="1"/>
                                 </tree>
 					</field>
