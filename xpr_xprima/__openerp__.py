@@ -21,13 +21,19 @@ Note: Install the Sales and Management (sales) module manually first beause of w
       'sale', # Install manually because of wizard setup
       'hr',
       'crm',
+      'xpr_product',
       'xpr_solution_builder',
       'xpr_sale_process',
       'xpr_product_variant_filters',
       'agaplan_terms_and_conditions',
       'xpr_report',
+      #'xpr_dealer_group,
+      #'xpr_dropdowns_values',
       #'xpr_xis_connector',
       #'xpr_csi_program',
+      #'xpr_dealer_group,
+      #'xpr_dropdowns_values',
+
 
       # From 7.0 version
 
@@ -40,7 +46,7 @@ Note: Install the Sales and Management (sales) module manually first beause of w
       # 'web_adblock',
       # 'mass_editing',
       # 'audittrail',
-      # 'xprima_product',
+      
       #'xprima_sale_order',
 
       #'sale_package_configurator',

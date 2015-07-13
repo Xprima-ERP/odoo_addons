@@ -23,10 +23,28 @@ from openerp import models, fields, api
 class product_product(models.Model):
     _inherit = "product.product"
     
-    x_sf_id = fields.Char('Salesforce ID', size=18, select=True)
+    # Deprecated
+    #x_sf_id = fields.Char('Salesforce ID', size=18, select=True)
+
     x_region = fields.Char('Region', size=254)
     x_description_fr = fields.Char('Description FR', size=254)
     x_name_fr = fields.Char('Name FR', size=254)
+
+    # x_family = Reference to a 'x_family' attribute in OpenERP.
+    # Used for reports.
+    # Good chance will be replaced with other fields
+
+    # x_family attribute records have simply a name, which can be one of these:
+    # Visibility
+    # Advertising - One time
+    # Advertising
+    # Training
+    # Package option - One time
+    # Package option
+    # Package
+    # Monthly
+    # One Time
+
 
 
 # Not using pricelists anymore

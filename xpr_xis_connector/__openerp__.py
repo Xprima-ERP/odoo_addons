@@ -47,6 +47,7 @@ Contributors
         'hr',
         'xpr_dealer_group',
         'xpr_dropdowns_values',
+        #'xpr_product',
 
         #'partner_history', # Not ported in 8.0
         #'account',
