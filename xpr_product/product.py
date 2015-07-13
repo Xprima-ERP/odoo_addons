@@ -18,22 +18,21 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-from openerp.osv import osv, fields
+from openerp import models, fields, api
 
-
-class product_product(osv.osv):
+class product_product(models.Model):
     _inherit = "product.product"
-    _columns = {
-        'x_sf_id': fields.char('Salesforce ID', size=18, select=True),
-        'x_region': fields.char('Region', size=254),
-        'x_description_fr': fields.char('Description FR', size=254),
-        'x_name_fr': fields.char('Name FR', size=254),
-    }
+    
+    x_sf_id = fields.Char('Salesforce ID', size=18, select=True)
+    x_region = fields.Char('Region', size=254)
+    x_description_fr = fields.Char('Description FR', size=254)
+    x_name_fr = fields.Char('Name FR', size=254)
 
 
-class product_pricelist(osv.osv):
-    _inherit = "product.pricelist"
-    _columns = {
-        'x_sf_id': fields.char('Salesforce ID', size=18, select=True),
-        'x_description': fields.char('Description', size=254),
-    }
+# Not using pricelists anymore
+# class product_pricelist(osv.osv):
+#     _inherit = "product.pricelist"
+#     _columns = {
+#         'x_sf_id': fields.char('Salesforce ID', size=18, select=True),
+#         'x_description': fields.char('Description', size=254),
+#     }

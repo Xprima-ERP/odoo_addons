@@ -1,15 +1,18 @@
 # -*- coding: utf-8 -*-
 
 {'name': 'Xprima Product',
- 'version': '0.001',
+ 'version': '0.2',
  'summary': 'Xprima Product',
- 'description': 'Xprima Product',
+ 'description': """
+ Adds Xprimas product legacy fields and removes unwanted fields from views. 
+ This is the port of xprima_product module for OpenERP.
+ """,
  'category': 'misc',
- 'author': 'Sebastien Delisle',
+ 'author': 'Xprima',
  'website': 'www.xprima.com',
  'depends': [
              'product',
-             'contract_isp',
+             #'contract_isp',
  ],
  'data': [
      'product_view.xml',
