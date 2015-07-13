@@ -61,7 +61,7 @@ class SalesOrder(models.Model):
     def _get_amount_options(self):
         for order in self:
             order.amount_options_untaxed = sum([
-                line.price_unit * line.product_uom_qty
+                line.price_unit * line.product_uom_qty * (1.0 - line.discount / 100.0)
                 for line in order.order_line
                 if line.solution_part == 2
             ])
@@ -164,6 +164,22 @@ class SalesOrderLine(models.Model):
     # 2 optional line
     # 3 price correction line
     solution_part = fields.Integer() 
+
+    discount_money = fields.Float(string='Line Discount', digits=(6,2))
+
+    @api.onchange('discount')
+    def onchange_discount(self):
+        for order in self:
+            order.discount_money = order.price_unit * order.discount / 100.0
+
+    @api.onchange('discount_money')
+    def onchange_discount_money(self):
+        for order in self:
+            if order.solution_part != 2:
+                # Permit money discounts on optional lines
+                order.discount_money = 0
+            elif order.price_unit:
+                order.discount = 100.0 * order.discount_money / order.price_unit 
 
 class SolutionConfigurator(models.TransientModel):
 
