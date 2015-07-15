@@ -153,6 +153,22 @@ class SalesOrder(models.Model):
 
         return {}
 
+    @api.multi
+    def sale_solution_option_action(self):
+        for order in self:
+            # manage only one order
+
+            if not order.solution:
+                return {}
+
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'xpr_solution_builder.solution_configurator',
+                'views' : [[False, "form"]],
+                'target': 'new',
+                'view_id' : 'view_solution_configurator_wizard',
+                'context': {'order_id': order.id }
+            }
 
 class SalesOrderLine(models.Model):
     """ Override of sale.order to add solution field"""
@@ -197,7 +213,7 @@ class SolutionConfigurator(models.TransientModel):
         return self.env['sale.order'].browse(self._context.get('order_id'))
 
     def _default_solution(self):
-        return self.env['xpr_solution_builder.solution'].browse(self._context.get('solution_id'))
+        return self._default_order().solution
 
     def _default_products(self):
         order = self._default_order()

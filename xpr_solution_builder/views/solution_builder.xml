@@ -37,9 +37,11 @@
 			<field name="model">sale.order</field>
 			<field name="inherit_id" ref="sale.view_order_form"/>
 			<field name="arch" type="xml">
+
 				<field name="client_order_ref" position="after">	
 					<field name="solution" />
 					<field name="rebate" />
+                    <button name="sale_solution_option_action" type="object" string="Add Options"/>
 				</field>
 
 				<field name="order_line" position="replace">

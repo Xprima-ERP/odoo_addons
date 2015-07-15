@@ -34,47 +34,17 @@
 	</record>
 
 
-    <act_window id="action_solution_configurator"
-            name="Import Products from Solution"
-            src_model="sale.order"
-            res_model="xpr_solution_builder.solution_configurator"
-            view_type="form"
-            view_mode="form"
-            target="new"
-            key2="client_action_multi"/>
-
-    <record id="action_solution_configurator" model="ir.actions.act_window">
-        <field name="name">Import Products from Solution</field>
+<!--     <record id="action_solution_configurator" model="ir.actions.act_window">
+        <field name="name">Add Options</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="src_model">sale.order</field>
         <field name="res_model">xpr_solution_builder.solution_configurator</field>
         <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="view_solution_configurator_wizard" />
         <field name="target">new</field>
-         <field name="context">{'order_id': id, 'solution_id' : solution }</field> 
-    </record>
-    
-
-<!--  
-    <record id="view_order_form" model="ir.ui.view">
-      <field name="model">sale.order</field>
-      <field name="inherit_id" ref="sale.view_order_form"/>
-      <field name="arch" type="xml">
-       
-        <button name="invoice_recreate" position="before">
-           <button
-                name="action_solution_configurator"
-                type="action"
-                string="Optional Products"
-                states="draft"
-                groups="base.group_user"
-                />
-        </button>
-
-
-      </field>
+        <field name="context">{'order_id': id }</field> 
     </record> -->
+
 
      </data>
 </openerp>
