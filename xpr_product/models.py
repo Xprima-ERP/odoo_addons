@@ -24,11 +24,12 @@ class product_product(models.Model):
     _inherit = "product.product"
     
     # Deprecated
-    #x_sf_id = fields.Char('Salesforce ID', size=18, select=True)
+    # x_sf_id = fields.Char('Salesforce ID', size=18, select=True)
+    # x_region = fields.Char('Region', size=254)
 
-    x_region = fields.Char('Region', size=254)
     x_description_fr = fields.Char('Description FR', size=254)
     x_name_fr = fields.Char('Name FR', size=254)
+    x_one_time_payment = fields.Boolean('One Time Payment')
 
     # x_family = Reference to a 'x_family' attribute in OpenERP.
     # Used for reports.
