@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="0">
+        <menuitem id="menu_dropdowns_values" name="Dropdowns Values" parent="base.menu_custom" groups="base.group_no_one"/>
+
+        <record id="view_tree_partner_business_relationship" model="ir.ui.view">
+            <field name="model">partner_business_relationship</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_business_relationship" model="ir.actions.act_window">
+            <field name="name">Partner Business Relationship</field>
+            <field name="res_model">partner_business_relationship</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_business_relationship"/>
+        </record>
+        <menuitem action="action_model_partner_business_relationship" id="menu_partner_business_relationship" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_industry" model="ir.ui.view">
+            <field name="model">partner_industry</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_industry" model="ir.actions.act_window">
+            <field name="name">Partner Industries</field>
+            <field name="res_model">partner_industry</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_industry"/>
+        </record>
+        <menuitem action="action_model_partner_industry" id="menu_partner_industry" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_account_verification_status" model="ir.ui.view">
+            <field name="model">account_verification_status</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_account_verification_status" model="ir.actions.act_window">
+            <field name="name">Account Verification Status</field>
+            <field name="res_model">account_verification_status</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_account_verification_status"/>
+        </record>
+        <menuitem action="action_model_account_verification_status" id="menu_account_verification_status" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_customermask" model="ir.ui.view">
+            <field name="model">customermask</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_customermask" model="ir.actions.act_window">
+            <field name="name">Customer Of</field>
+            <field name="res_model">customermask</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_customermask"/>
+        </record>
+        <menuitem action="action_model_customermask" id="menu_customermask" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_business_type" model="ir.ui.view">
+            <field name="model">partner_business_type</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_business_type" model="ir.actions.act_window">
+            <field name="name">Partner Business Type</field>
+            <field name="res_model">partner_business_type</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_business_type"/>
+        </record>
+        <menuitem action="action_model_partner_business_type" id="menu_partner_business_type" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_market" model="ir.ui.view">
+            <field name="model">partner_market</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_market" model="ir.actions.act_window">
+            <field name="name">Partner Market</field>
+            <field name="res_model">partner_market</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_market"/>
+        </record>
+        <menuitem action="action_model_partner_market" id="menu_partner_market" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_region" model="ir.ui.view">
+            <field name="model">partner_region</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_region" model="ir.actions.act_window">
+            <field name="name">Partner Region</field>
+            <field name="res_model">partner_region</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_region"/>
+        </record>
+        <menuitem action="action_model_partner_region" id="menu_partner_region" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_site_type" model="ir.ui.view">
+            <field name="model">partner_site_type</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_site_type" model="ir.actions.act_window">
+            <field name="name">Partner Site Type</field>
+            <field name="res_model">partner_site_type</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_site_type"/>
+        </record>
+        <menuitem action="action_model_partner_site_type" id="menu_partner_site_type" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_make_atv" model="ir.ui.view">
+            <field name="model">partner_make_atv</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_make_atv" model="ir.actions.act_window">
+            <field name="name">Partner Make ATV</field>
+            <field name="res_model">partner_make_atv</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_make_atv"/>
+        </record>
+        <menuitem action="action_model_partner_make_atv" id="menu_partner_make_atv" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_make_snowmobile" model="ir.ui.view">
+            <field name="model">partner_make_snowmobile</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_make_snowmobile" model="ir.actions.act_window">
+            <field name="name">Partner Make Snowmobile</field>
+            <field name="res_model">partner_make_snowmobile</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_make_snowmobile"/>
+        </record>
+        <menuitem action="action_model_partner_make_snowmobile" id="menu_partner_make_snowmobile" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_make_watercraft" model="ir.ui.view">
+            <field name="model">partner_make_watercraft</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_make_watercraft" model="ir.actions.act_window">
+            <field name="name">Partner Make Watercraft</field>
+            <field name="res_model">partner_make_watercraft</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_make_watercraft"/>
+        </record>
+        <menuitem action="action_model_partner_make_watercraft" id="menu_partner_make_watercraft" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_make_car" model="ir.ui.view">
+            <field name="model">partner_make_car</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_make_car" model="ir.actions.act_window">
+            <field name="name">Partner Make Car</field>
+            <field name="res_model">partner_make_car</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_make_car"/>
+        </record>
+        <menuitem action="action_model_partner_make_car" id="menu_partner_make_car" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_make_moto" model="ir.ui.view">
+            <field name="model">partner_make_moto</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_make_moto" model="ir.actions.act_window">
+            <field name="name">Partner Make Moto</field>
+            <field name="res_model">partner_make_moto</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_make_moto"/>
+        </record>
+        <menuitem action="action_model_partner_make_moto" id="menu_partner_make_moto" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_portalmask" model="ir.ui.view">
+            <field name="model">partner_portalmask</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_portalmask" model="ir.actions.act_window">
+            <field name="name">Partner Portalmask</field>
+            <field name="res_model">partner_portalmask</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_portalmask"/>
+        </record>
+        <menuitem action="action_model_partner_portalmask" id="menu_partner_portalmask" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_telephone_choice" model="ir.ui.view">
+            <field name="model">partner_telephone_choice</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_telephone_choice" model="ir.actions.act_window">
+            <field name="name">Partner Telephone Choice</field>
+            <field name="res_model">partner_telephone_choice</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_telephone_choice"/>
+        </record>
+        <menuitem action="action_model_partner_telephone_choice" id="menu_partner_telephone_choice" parent="menu_dropdowns_values"/>
+
+        <record id="view_tree_partner_categorization_field" model="ir.ui.view">
+            <field name="model">partner_categorization_field</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_partner_categorization_field" model="ir.actions.act_window">
+            <field name="name">Partner Categorization Field</field>
+            <field name="res_model">partner_categorization_field</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_partner_categorization_field"/>
+        </record>
+        <menuitem action="action_model_partner_categorization_field" id="menu_partner_categorization_field" parent="menu_dropdowns_values"/>
+        <record id="view_tree_case_origin" model="ir.ui.view">
+            <field name="model">case_origin</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_case_origin" model="ir.actions.act_window">
+            <field name="name">Case Origin</field>
+            <field name="res_model">case_origin</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_case_origin"/>
+        </record>
+        <menuitem action="action_model_case_origin" id="menu_case_origin" parent="menu_dropdowns_values"/>
+        <record id="view_tree_dealer_group_group_type" model="ir.ui.view">
+            <field name="model">dealer_group_group_type</field>
+            <field name="arch" type="xml">
+                <tree string="Model Description">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_model_dealer_group_group_type" model="ir.actions.act_window">
+            <field name="name">Dealer Group Group Type</field>
+            <field name="res_model">dealer_group_group_type</field>
+            <field name="view_type">form</field>
+            <field name="context">{'manual':True}</field>
+            <field name="view_id" ref="view_tree_dealer_group_group_type"/>
+        </record>
+        <menuitem action="action_model_dealer_group_group_type" id="menu_dealer_group_group_type" parent="menu_dropdowns_values"/>
+    </data>
+</openerp>

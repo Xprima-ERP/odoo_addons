@@ -1,6 +1,11 @@
 {
     "name": "Terms and Conditions",
     "version": "0.1",
+
+    'summary': """
+    The Xprimas port of Terms And Conditions
+    """,
+
     "description": """
     Module that allows you to add custom pdf files to any report (e.g. Terms and Conditions)
     

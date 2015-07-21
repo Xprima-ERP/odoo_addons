@@ -11,6 +11,8 @@ class Solution(models.Model):
 
     name = fields.Char(required=True)
     description = fields.Char(required=True)
+    list_price = fields.Float(string='Solution Price', digits=(6,2))
+
     products = fields.Many2many(
         'product.product',
         'xpr_solution_builder_solution_mandatory_product_rel',
@@ -27,83 +29,173 @@ class SalesOrder(models.Model):
 
     _inherit = "sale.order"
 
+    @api.depends('order_line')
+    def _get_line_products(self):
+
+        for record in self:
+            record.order_line_products = self.env['sale.order.line']
+            for line in record.order_line:
+                # Do not include integration line
+                if line.solution_part == 1:
+                    record.order_line_products += line
+
+    @api.depends('order_line')
+    def _get_line_options(self):
+
+        for record in self:
+            record.order_line_options = self.env['sale.order.line']
+            for line in record.order_line:
+                if line.solution_part == 2:
+                    record.order_line_options += line
+
+    @api.depends('order_line')
+    def _get_amount_products(self):
+        for order in self:
+            order.amount_products_untaxed = sum([
+                line.price_unit * line.product_uom_qty * (1.0 - line.discount / 100.0)
+                for line in order.order_line
+                if line.solution_part in [1, 3]
+            ])
+
+    @api.depends('order_line')
+    def _get_amount_options(self):
+        for order in self:
+            order.amount_options_untaxed = sum([
+                line.price_unit * line.product_uom_qty * (1.0 - line.discount / 100.0)
+                for line in order.order_line
+                if line.solution_part == 2
+            ])
+
     solution = fields.Many2one('xpr_solution_builder.solution', string='Solution')
+    rebate = fields.Float(string='Rebate', digits=(6,2))
 
-    #TODO: Use on_change('solution') and @constrains
+    order_line_products = fields.One2many('sale.order.line', compute=_get_line_products)
+    order_line_options = fields.One2many('sale.order.line', compute=_get_line_options)
+    amount_products_untaxed = fields.Float(string='Products', digits=(6,2), compute=_get_amount_products)
+    amount_options_untaxed = fields.Float(string='Options', digits=(6,2), compute=_get_amount_options)
 
-    # Traditional ORM
-    def create(self, cr, user, vals, context=None):
-        record_id = super(SalesOrder, self).create(cr, user, vals, context)
+    def _apply_solution(self, order):
 
-        if not record_id:
-            return record_id
+        discount_rate = self._get_discount_rate(order)
 
-        self.complete_line_items(cr, user, record_id, context)
-        return record_id
+        # override order lines
 
-    def write(self, cr, user, ids, vals, context=None):
+        order.order_line = self.env['sale.order.line']
 
-        result = super(SalesOrder, self).write(cr, user, ids, vals, context)
+        delta_price = order.solution.list_price
+        sequence = 0
 
-        if not result:
-            return result
+        for product in order.solution.products:
+            sequence += 10
+            delta_price -= product.list_price
 
-        for record_id in ids:
-            self.complete_line_items(cr, user, record_id, context)
+            order.order_line += order.order_line.new(dict(
+                order_id=order.id,
+                product_id=product.id,
+                name=product.name,
+                product_uom_qty=1.0,
+                price_unit=product.list_price,
+                solution_part=1,
+                discount=discount_rate,
+                product_uom=product.uom_id,
+                sequence=sequence,
+                state=order.state,
+            ))
 
-        # result = True or Exception is raised
+        sequence += 10
+        order.order_line += order.order_line.new(dict(
+                order_id=order.id,
+                name="Solution integration",
+                price_unit=delta_price,
+                solution_part=3,
+                discount=discount_rate,
+                sequence=sequence,
+                state=order.state,
+            ))
 
-        return result
+    def _get_discount_rate(self, order):
 
-    def complete_line_items(self, cr, user, record_id, context):
+        if order.solution:
+            price = sum([
+                line.product_id.list_price * line.product_uom_qty
+                for line in order.order_line
+                if line.solution_part in [1,3]
+            ])
 
-        order = self.browse(cr, user, record_id, context=context)
-        if not order.solution:
-            # No solution selected. No validation.
-            return
+            # price == order.list_price
+            
+            if price:
+                return 100.0 * order.rebate / max(price, order.rebate)
 
-        solution = self.pool.get(
-            Solution._name
-        ).browse(
-            cr, user, order.solution.id,  context=context
-        )
+        return 0.0
 
-        mandatory_ids = set(solution.products.ids)
-        all_ids = mandatory_ids | set(solution.options.ids)
+    def _apply_rebate(self, order):
 
-        order_products = set([line.product_id.id for line in order.order_line])
+        discount_rate = self._get_discount_rate(order)
 
-        # Add missing line items from mandatory products
-
-        missing_products = self.pool.get(
-            'product.product'
-        ).browse(
-            cr, user, list(mandatory_ids - order_products), context=context)
-
-        order_line_obj = self.pool.get(order.order_line._name)
-
-        deleteids = order_products - all_ids
-
-        for line_id in order_line_obj.search(
-            cr, user, [
-                ('order_id', '=', record_id),
-                ('product_id', 'in', list(deleteids))]
-        ):
-            order_line_obj.unlink(cr, user, line_id)
-
-        for product in missing_products:
-            order_line_obj.create(
-                cr,
-                user,
-                dict(
-                    order_id=order.id,
-                    product_id=product.id,
-                    name=product.name,
-                    product_uom_qty=1.0),
-                context=context)
+        for line in order.order_line:
+            if line.solution_part in [1,3]:
+                line.discount = discount_rate
 
 
+    @api.onchange('solution')
+    def onchange_solution(self):
 
+        for order in self:
+            self._apply_solution(order)
+
+        return {}
+
+    @api.onchange('rebate')
+    def onchange_rebate(self):
+        for order in self:
+            self._apply_rebate(order)
+
+        return {}
+
+    @api.multi
+    def sale_solution_option_action(self):
+        for order in self:
+            # manage only one order
+
+            if not order.solution:
+                return {}
+
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'xpr_solution_builder.solution_configurator',
+                'views' : [[False, "form"]],
+                'target': 'new',
+                'view_id' : 'view_solution_configurator_wizard',
+                'context': {'order_id': order.id }
+            }
+
+class SalesOrderLine(models.Model):
+    """ Override of sale.order to add solution field"""
+
+    _inherit = "sale.order.line"
+
+    # 0 Don't care (not solution)
+    # 1 mandatory line
+    # 2 optional line
+    # 3 price correction line
+    solution_part = fields.Integer() 
+
+    discount_money = fields.Float(string='Line Discount', digits=(6,2))
+
+    @api.onchange('discount')
+    def onchange_discount(self):
+        for order in self:
+            order.discount_money = order.price_unit * order.discount / 100.0
+
+    @api.onchange('discount_money')
+    def onchange_discount_money(self):
+        for order in self:
+            if order.solution_part != 2:
+                # Permit money discounts on optional lines
+                order.discount_money = 0
+            elif order.price_unit:
+                order.discount = 100.0 * order.discount_money / order.price_unit 
 
 class SolutionConfigurator(models.TransientModel):
 
@@ -121,7 +213,7 @@ class SolutionConfigurator(models.TransientModel):
         return self.env['sale.order'].browse(self._context.get('order_id'))
 
     def _default_solution(self):
-        return self.env['xpr_solution_builder.solution'].browse(self._context.get('solution_id'))
+        return self._default_order().solution
 
     def _default_products(self):
         order = self._default_order()
@@ -170,6 +262,9 @@ class SolutionConfigurator(models.TransientModel):
         removed_lines = []
 
         for line in self.order.order_line:
+            if line.solution_part != 2:
+                continue
+
             if line.product_id.id not in options:
                 continue
 
@@ -200,7 +295,8 @@ class SolutionConfigurator(models.TransientModel):
                     order_id=self.order.id,
                     product_id=product.id,
                     name=product.name,
-                    product_uom_qty=1.0))
+                    product_uom_qty=1.0,
+                    solution_part=2))
 
         return {}
 
