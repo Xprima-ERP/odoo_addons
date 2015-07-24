@@ -146,8 +146,13 @@ class SalesOrder(models.Model):
     amount_options_untaxed = fields.Float(string='Options', digits=(6,2), compute=_get_amount_options)
 
     def _apply_solution(self, order):
+        """
+            Builds sales order using solution as template.
+        """
 
         discount_rate = self._get_discount_rate(order)
+
+        quantities = dict([(ex.product.id, ex.times) for ex in order.solution.products_extra])
 
         # override order lines
 
@@ -158,13 +163,14 @@ class SalesOrder(models.Model):
 
         for product in order.solution.products:
             sequence += 10
-            delta_price -= product.list_price
+            qty = quantities.get(product.id, 1.0)
+            delta_price -= product.list_price * qty
 
             order.order_line += order.order_line.new(dict(
                 order_id=order.id,
                 product_id=product.id,
                 name=product.name,
-                product_uom_qty=1.0,
+                product_uom_qty=qty,
                 price_unit=product.list_price,
                 solution_part=1,
                 discount=discount_rate,
