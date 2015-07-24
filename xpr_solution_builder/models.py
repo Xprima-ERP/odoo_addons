@@ -192,19 +192,15 @@ class SalesOrder(models.Model):
 
     def _get_discount_rate(self, order):
 
-        if order.solution:
-            price = sum([
-                line.product_id.list_price * line.product_uom_qty
-                for line in order.order_line
-                if line.solution_part in [1,3]
-            ])
+        if not order.solution:
+            return 0.0
 
-            # price == order.list_price
-            
-            if price:
-                return 100.0 * order.rebate / max(price, order.rebate)
+        price = order.solution.list_price
+        
+        if not price:
+            return 0.0
 
-        return 0.0
+        return 100.0 * order.rebate / max(price, order.rebate)
 
     def _apply_rebate(self, order):
 
