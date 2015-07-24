@@ -6,9 +6,10 @@
 Contains all the Xprima dependencies.
 Meant to build a db from scratch.
 Including its own custom modules:
-* Sales process
-* Reports
-* Workflow
+
+      - Sales process
+      - Reports
+      - Workflow
 
 Note: Install the Sales and Management (sales) module manually first beause of wizard.
 

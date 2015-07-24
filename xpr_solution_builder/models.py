@@ -18,14 +18,85 @@ class Solution(models.Model):
         'xpr_solution_builder_solution_mandatory_product_rel',
         string='Mandatory Products')
 
+    products_extra = fields.One2many(
+        'xpr_solution_builder.solution.line', 
+        'solution',
+        string='Mandatory Product Count')
+
     options = fields.Many2many(
         'product.product',
         'xpr_solution_builder_solution_optional_product_rel',
         string='Optional Products')
 
 
+    @api.onchange('products')
+    def _update_product_extras(self):
+        """
+        Takes care of synching the product_extras with products.
+        """
+        for solution in self:
+            new_set = set(solution.products.ids)
+            old_set = set([p.id for p in solution.products_extra.product])
+
+            if new_set == old_set:
+                continue
+
+            extras = self.env['xpr_solution_builder.solution.line']
+
+            # Keep common records
+            for ex in solution.products_extra:
+                if ex.product.id in new_set:
+                    extras += ex
+
+            # Add new ones
+            for product in solution.products:
+                if product.id not in new_set - old_set:
+                    continue
+
+                ex = extras.new()
+                ex.solution += solution
+                ex.product += product
+                ex.times = 1
+
+                extras += ex
+
+            # Assign new recordset
+            solution.products_extra = extras
+
+
+class SolutionProductLine(models.Model):
+    """
+        Solution line model. Permits additional info on
+        relation between solution line and mandatory product.
+        This model is in parallel of the products relation in order to add additional
+        parameters while using the same wizard as a many2many relation
+    """
+
+    _name = 'xpr_solution_builder.solution.line'
+    #_table = 'xpr_solution_builder_solution_mandatory_product_rel'
+
+    times = fields.Integer(default="1", string='Multiplier')
+
+    solution = fields.Many2one(
+        'xpr_solution_builder.solution', 
+        string='Solution',
+        readonly=True)
+
+    # Should always contain exactly 1 record.
+    product = fields.Many2one(
+        'product.product', 'Product', readonly=True)
+
+
 class SalesOrder(models.Model):
-    """ Override of sale.order to add solution field"""
+    """ 
+        Override of sale.order to add thse fields:
+        - solution
+        - rebate
+
+        Permits to:
+        - Apply rebate on mandatory item lines
+        - Calculate separate totals for mandatory and optional lines.
+    """
 
     _inherit = "sale.order"
 
@@ -66,7 +137,7 @@ class SalesOrder(models.Model):
                 if line.solution_part == 2
             ])
 
-    solution = fields.Many2one('xpr_solution_builder.solution', string='Solution')
+    solution = fields.Many2one('xpr_solution_builder.solution', string='Solution', required=True)
     rebate = fields.Float(string='Rebate', digits=(6,2))
 
     order_line_products = fields.One2many('sale.order.line', compute=_get_line_products)
@@ -75,8 +146,13 @@ class SalesOrder(models.Model):
     amount_options_untaxed = fields.Float(string='Options', digits=(6,2), compute=_get_amount_options)
 
     def _apply_solution(self, order):
+        """
+            Builds sales order using solution as template.
+        """
 
         discount_rate = self._get_discount_rate(order)
+
+        quantities = dict([(ex.product.id, ex.times) for ex in order.solution.products_extra])
 
         # override order lines
 
@@ -87,13 +163,14 @@ class SalesOrder(models.Model):
 
         for product in order.solution.products:
             sequence += 10
-            delta_price -= product.list_price
+            qty = quantities.get(product.id, 1.0)
+            delta_price -= product.list_price * qty
 
             order.order_line += order.order_line.new(dict(
                 order_id=order.id,
                 product_id=product.id,
                 name=product.name,
-                product_uom_qty=1.0,
+                product_uom_qty=qty,
                 price_unit=product.list_price,
                 solution_part=1,
                 discount=discount_rate,
@@ -115,19 +192,15 @@ class SalesOrder(models.Model):
 
     def _get_discount_rate(self, order):
 
-        if order.solution:
-            price = sum([
-                line.product_id.list_price * line.product_uom_qty
-                for line in order.order_line
-                if line.solution_part in [1,3]
-            ])
+        if not order.solution:
+            return 0.0
 
-            # price == order.list_price
-            
-            if price:
-                return 100.0 * order.rebate / max(price, order.rebate)
+        price = order.solution.list_price
+        
+        if not price:
+            return 0.0
 
-        return 0.0
+        return 100.0 * order.rebate / max(price, order.rebate)
 
     def _apply_rebate(self, order):
 
