@@ -36,7 +36,7 @@ class Solution(models.Model):
         """
         for solution in self:
             new_set = set(solution.products.ids)
-            old_set = set([p.id for p in solution.products_extra.product])
+            old_set = set([ex.product.id for ex in solution.products_extra])
 
             if new_set == old_set:
                 continue
@@ -75,7 +75,7 @@ class SolutionProductLine(models.Model):
     _name = 'xpr_solution_builder.solution.line'
     #_table = 'xpr_solution_builder_solution_mandatory_product_rel'
 
-    times = fields.Integer(default="1", string='Multiplier')
+    times = fields.Integer(default="1", string='Quantity')
 
     solution = fields.Many2one(
         'xpr_solution_builder.solution', 
