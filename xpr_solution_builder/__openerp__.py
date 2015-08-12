@@ -15,7 +15,13 @@
 
         - Attaches a solution to a sales order (quotation/contract)
 
-        - Replaces sales line population in sales order whenever a solution is selected.
+        - Replaces sales line population in sales order whenever a solution is selected
+
+        - Adds rebate applied on the mandatory items
+
+        - Replaces discounts in percentage for optional product with discounts in currency
+
+        - Splits mandatory and optional products in two groups in the sales order form view
         
     """,
 
