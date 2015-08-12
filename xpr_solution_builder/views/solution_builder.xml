@@ -261,9 +261,12 @@
 					<group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total">
                     	<field name="amount_options_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                     </group>
-
 				
 				</field>
+
+                <field name="amount_untaxed" position="replace" />
+                <field name="amount_tax" position="replace" />
+
 			</field>
 		</record>
 

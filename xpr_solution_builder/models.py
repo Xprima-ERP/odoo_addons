@@ -125,7 +125,7 @@ class SalesOrder(models.Model):
             order.amount_products_untaxed = sum([
                 line.price_unit * line.product_uom_qty * (1.0 - line.discount / 100.0)
                 for line in order.order_line
-                if line.solution_part in [1, 3]
+                if line.solution_part != 2
             ])
 
     @api.depends('order_line')
@@ -150,8 +150,6 @@ class SalesOrder(models.Model):
             Builds sales order using solution as template.
         """
 
-        discount_rate = self._get_discount_rate(order)
-
         quantities = dict([(ex.product.id, ex.times) for ex in order.solution.products_extra])
 
         # override order lines
@@ -173,7 +171,6 @@ class SalesOrder(models.Model):
                 product_uom_qty=qty,
                 price_unit=product.list_price,
                 solution_part=1,
-                discount=discount_rate,
                 product_uom=product.uom_id,
                 sequence=sequence,
                 state=order.state,
@@ -185,30 +182,32 @@ class SalesOrder(models.Model):
                 name="Solution integration",
                 price_unit=delta_price,
                 solution_part=3,
-                discount=discount_rate,
                 sequence=sequence,
                 state=order.state,
             ))
 
-    def _get_discount_rate(self, order):
-
-        if not order.solution:
-            return 0.0
-
-        price = order.solution.list_price
-        
-        if not price:
-            return 0.0
-
-        return 100.0 * order.rebate / max(price, order.rebate)
-
     def _apply_rebate(self, order):
 
-        discount_rate = self._get_discount_rate(order)
+        rebate_line = None
 
         for line in order.order_line:
-            if line.solution_part in [1,3]:
-                line.discount = discount_rate
+            if line.solution_part == 4:
+                rebate_line = line
+                break
+
+        rebate = -min(order.solution.list_price, order.rebate)
+
+        if rebate_line:
+            rebate_line.price_unit = rebate
+            return
+
+        order.order_line += order.order_line.new(dict(
+                order_id=order.id,
+                name="Solution rebate",
+                price_unit=rebate,
+                solution_part=4,
+                state=order.state,
+            ))
 
 
     @api.onchange('solution')
@@ -251,7 +250,9 @@ class SalesOrderLine(models.Model):
     # 0 Don't care (not solution)
     # 1 mandatory line
     # 2 optional line
-    # 3 price correction line
+    # 3 price correction line for mandatory products
+    # 4 order rebate
+
     solution_part = fields.Integer() 
 
     discount_money = fields.Float(string='Line Discount', digits=(6,2))
