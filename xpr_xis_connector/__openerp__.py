@@ -22,7 +22,7 @@
 
 {
     'name': 'XIS Connector',
-    'version': '0.2',
+    'version': '0.3',
     'author': 'Xprima',
     'maintainer': 'Xprima',
     'website': 'http://www.xprima.com',
@@ -34,6 +34,10 @@ XIS Connector
 =============
 
 Send information to system XIS when create/update field.
+
+This module is deprecated.
+
+Functionalities not related to XIS are to be migrated out of it.
 
 Contributors
 ------------
@@ -47,7 +51,7 @@ Contributors
         'hr',
         'xpr_dealer_group',
         'xpr_dropdowns_values',
-        #'xpr_product',
+        'xpr_product',
 
         #'partner_history', # Not ported in 8.0
         #'account',

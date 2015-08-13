@@ -33,95 +33,97 @@ _logger = logging.getLogger(__name__)
 class sale_order(orm.Model):
     _inherit = "sale.order"
 
-    def _get_family(self, cr, uid, context, name):
-        family_obj = self.pool.get('attribute.option')
-        one_time_family_id = family_obj.search(cr,
-                                               uid,
-                                               [('name',
-                                                 '=',
-                                                 name)],
-                                               limit=1,
-                                               context=context)[0]
-        family = family_obj.browse(cr, uid, one_time_family_id, context)
-        return family
+    # Deprecated. family will be x_replaced
+    # def _get_family(self, cr, uid, context, name):
+    #     family_obj = self.pool.get('attribute.option')
+    #     one_time_family_id = family_obj.search(cr,
+    #                                            uid,
+    #                                            [('name',
+    #                                              '=',
+    #                                              name)],
+    #                                            limit=1,
+    #                                            context=context)[0]
+    #     family = family_obj.browse(cr, uid, one_time_family_id, context)
+    #     return family
 
-    def _get_one_time_total(self, cr, uid, ids, field_name, arg, context):
-        one_time_fam_name = 'One Time'
-        ad_one_time_fam_name = 'Advertising - One time'
-        pack_one_time_fam_name = 'Package option - One time'
-        one_time_family = self._get_family(cr, uid, context, one_time_fam_name)
-        ad_one_time_family = self._get_family(cr,
-                                              uid,
-                                              context,
-                                              ad_one_time_fam_name)
-        pack_one_time_family = self._get_family(cr,
-                                                uid,
-                                                context,
-                                                pack_one_time_fam_name)
-        one_time_families = [one_time_family,
-                             ad_one_time_family,
-                             pack_one_time_family]
-        sale_orders = self.browse(cr, uid, ids, context)
-        one_time_totals = {}
-        one_time_total = 0.0
-        for sale_order in sale_orders:
-            for line in sale_order.order_line:
-                is_one_time = False
-                try:
-                    is_one_time = line.product_id.x_family in one_time_families
-                except AttributeError:
-                    pass
-                if is_one_time:
-                    one_time_total += line.price_subtotal
-            one_time_totals[sale_order.id] = one_time_total
-            one_time_total = 0.0
-        return one_time_totals
+    # Moved in xpr_product
+    # def _get_one_time_total(self, cr, uid, ids, field_name, arg, context):
+    #     one_time_fam_name = 'One Time'
+    #     ad_one_time_fam_name = 'Advertising - One time'
+    #     pack_one_time_fam_name = 'Package option - One time'
+    #     one_time_family = self._get_family(cr, uid, context, one_time_fam_name)
+    #     ad_one_time_family = self._get_family(cr,
+    #                                           uid,
+    #                                           context,
+    #                                           ad_one_time_fam_name)
+    #     pack_one_time_family = self._get_family(cr,
+    #                                             uid,
+    #                                             context,
+    #                                             pack_one_time_fam_name)
+    #     one_time_families = [one_time_family,
+    #                          ad_one_time_family,
+    #                          pack_one_time_family]
+    #     sale_orders = self.browse(cr, uid, ids, context)
+    #     one_time_totals = {}
+    #     one_time_total = 0.0
+    #     for sale_order in sale_orders:
+    #         for line in sale_order.order_line:
+    #             is_one_time = False
+    #             try:
+    #                 is_one_time = line.product_id.x_family in one_time_families
+    #             except AttributeError:
+    #                 pass
+    #             if is_one_time:
+    #                 one_time_total += line.price_subtotal
+    #         one_time_totals[sale_order.id] = one_time_total
+    #         one_time_total = 0.0
+    #     return one_time_totals
 
-
-    def _get_monthly_total(self, cr, uid, ids, field_name, arg, context):
-        monthly_fam_name = 'Monthly'
-        package_fam_name = 'Package'
-        advert_fam_name = 'Advertising'
-        pack_option_fam_name = 'Package option'
-        monthly_family = self._get_family(cr, uid, context, monthly_fam_name)
-        package_family = self._get_family(cr, uid, context, package_fam_name)
-        advert_family = self._get_family(cr, uid, context, advert_fam_name)
-        p_option_family = self._get_family(cr,
-                                           uid,
-                                           context,
-                                           pack_option_fam_name)
-        monthly_families = [monthly_family,
-                            package_family,
-                            p_option_family,
-                            advert_family]
-        sale_orders = self.browse(cr, uid, ids, context)
-        monthly_totals = {}
-        monthly_total = 0.0
-        for sale_order in sale_orders:
-            for line in sale_order.order_line:
-                is_monthly = False
-                try:
-                    is_monthly = line.product_id.x_family in monthly_families
-                except AttributeError:
-                    pass
-                if is_monthly:
-                    monthly_total += line.price_subtotal/line.product_uom_qty
-            monthly_totals[sale_order.id] = monthly_total
-            monthly_total = 0.0
-        return monthly_totals
+    # Moved in xpr_product
+    # def _get_monthly_total(self, cr, uid, ids, field_name, arg, context):
+    #     monthly_fam_name = 'Monthly'
+    #     package_fam_name = 'Package'
+    #     advert_fam_name = 'Advertising'
+    #     pack_option_fam_name = 'Package option'
+    #     monthly_family = self._get_family(cr, uid, context, monthly_fam_name)
+    #     package_family = self._get_family(cr, uid, context, package_fam_name)
+    #     advert_family = self._get_family(cr, uid, context, advert_fam_name)
+    #     p_option_family = self._get_family(cr,
+    #                                        uid,
+    #                                        context,
+    #                                        pack_option_fam_name)
+    #     monthly_families = [monthly_family,
+    #                         package_family,
+    #                         p_option_family,
+    #                         advert_family]
+    #     sale_orders = self.browse(cr, uid, ids, context)
+    #     monthly_totals = {}
+    #     monthly_total = 0.0
+    #     for sale_order in sale_orders:
+    #         for line in sale_order.order_line:
+    #             is_monthly = False
+    #             try:
+    #                 is_monthly = line.product_id.x_family in monthly_families
+    #             except AttributeError:
+    #                 pass
+    #             if is_monthly:
+    #                 monthly_total += line.price_subtotal/line.product_uom_qty
+    #         monthly_totals[sale_order.id] = monthly_total
+    #         monthly_total = 0.0
+    #     return monthly_totals
 
     _columns = {
         'xis_quote_id': fields.integer(string='XIS quote id'),
-        'one_time_total': fields.function(_get_one_time_total,
-                                          type='float',
-                                          obj='sale.order',
-                                          method=True,
-                                          string='One Time Total'),
-        'monthly_total': fields.function(_get_monthly_total,
-                                         type='float',
-                                         obj='sale.order',
-                                         method=True,
-                                         string='Monthly Total'),
+        # 'one_time_total': fields.function(_get_one_time_total,
+        #                                   type='float',
+        #                                   obj='sale.order',
+        #                                   method=True,
+        #                                   string='One Time Total'),
+        # 'monthly_total': fields.function(_get_monthly_total,
+        #                                  type='float',
+        #                                  obj='sale.order',
+        #                                  method=True,
+        #                                  string='Monthly Total'),
         'starting_date': fields.date('Starting Date'),
     }
 
