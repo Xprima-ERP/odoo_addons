@@ -5,7 +5,7 @@
  'summary': 'Xprima Product',
  'description': """
  Adapts product to Xprimas needs.
- Adds custom fields and removes unwanted fields from views. 
+ Adds custom fields and removes unwanted fields from views.
  This was originally the xprima_product module for OpenERP.
 
  Presently, it permits:

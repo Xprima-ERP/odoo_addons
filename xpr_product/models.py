@@ -20,9 +20,10 @@
 
 from openerp import models, fields, api
 
+
 class product_product(models.Model):
     _inherit = "product.template"
-    
+
     # Deprecated
     # x_sf_id = fields.Char('Salesforce ID', size=18, select=True)
     # x_region = fields.Char('Region', size=254)
@@ -51,15 +52,23 @@ class sale_order(models.Model):
     _inherit = "sale.order"
 
     def _get_one_time_total(self):
-    
-        for sale_order in self:
-            sale_order.one_time_total = sum([line.price_subtotal for line in sale_order.order_line if line.product_id.one_time_payment])
 
+        for sale_order in self:
+            sale_order.one_time_total = sum([
+                line.price_subtotal for line in sale_order.order_line
+                if line.product_id.one_time_payment
+            ])
 
     def _get_monthly_total(self):
 
         for sale_order in self:
-            sale_order.monthly_total = sum([line.price_subtotal for line in sale_order.order_line if not line.product_id.one_time_payment])
+            sale_order.monthly_total = sum([
+                line.price_subtotal for line in sale_order.order_line
+                if not line.product_id.one_time_payment
+            ])
 
-    one_time_total = fields.Float(string='One Time Total', digits=(6,2), compute=_get_one_time_total)
-    monthly_total = fields.Float(string='Monthly Total', digits=(6,2), compute=_get_monthly_total)
+    one_time_total = fields.Float(
+        string='One Time Total', digits=(6, 2), compute=_get_one_time_total)
+
+    monthly_total = fields.Float(
+        string='Monthly Total', digits=(6, 2), compute=_get_monthly_total)
