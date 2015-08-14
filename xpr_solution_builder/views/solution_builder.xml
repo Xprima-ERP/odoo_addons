@@ -117,7 +117,6 @@
                                         <group>
                                             <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
                                             <field name="th_weight"/>
-                                            <!-- we should put a config wizard for these two fields -->
                                             <field name="address_allotment_id"/>
                                         </group>
                                     </group>
@@ -175,7 +174,6 @@
                                         <group>
                                             <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
                                             <field name="th_weight"/>
-                                            <!-- we should put a config wizard for these two fields -->
                                             <field name="address_allotment_id"/>
                                         </group>
                                     </group>
@@ -237,7 +235,6 @@
                                         <group>
                                             <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
                                             <field name="th_weight"/>
-                                            <!-- we should put a config wizard for these two fields -->
                                             <field name="address_allotment_id"/>
                                         </group>
                                     </group>

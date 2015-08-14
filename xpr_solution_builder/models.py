@@ -11,7 +11,7 @@ class Solution(models.Model):
 
     name = fields.Char(required=True)
     description = fields.Char(required=True)
-    list_price = fields.Float(string='Solution Price', digits=(6,2))
+    list_price = fields.Float(string='Solution Price', digits=(6, 2))
 
     products = fields.Many2many(
         'product.product',
@@ -104,12 +104,13 @@ class Solution(models.Model):
             # Assign new recordset
             solution.options_extra = extras
 
+
 class SolutionProductLine(models.Model):
     """
-        Solution line model. Permits additional info on
-        relation between solution line and mandatory product.
-        This model is in parallel of the products relation in order to add additional
-        parameters while using the same wizard as a many2many relation
+    Solution line model. Permits additional info on
+    relation between solution line and mandatory product.
+    This model is in parallel of the products relation in order to add
+    additional parameters while using the same wizard as a many2many relation
     """
 
     _name = 'xpr_solution_builder.solution.line'
@@ -118,7 +119,7 @@ class SolutionProductLine(models.Model):
     times = fields.Integer(default="1", string='Quantity')
 
     solution = fields.Many2one(
-        'xpr_solution_builder.solution', 
+        'xpr_solution_builder.solution',
         string='Solution',
         readonly=True)
 
@@ -129,10 +130,10 @@ class SolutionProductLine(models.Model):
 
 class SolutionOptionLine(models.Model):
     """
-        Solution optional line model. Permits additional info on
-        relation between solution line and optional products.
-        This model is in parallel of the options relation in order to add additional
-        parameters while using the same wizard as a many2many relation
+    Solution optional line model. Permits additional info on
+    relation between solution line and optional products.
+    This model is in parallel of the options relation in order to add
+    additional parameters while using the same wizard as a many2many relation
     """
 
     _name = 'xpr_solution_builder.solution.option'
@@ -142,24 +143,23 @@ class SolutionOptionLine(models.Model):
     sticky = fields.Boolean(string='Cannot be removed')
 
     solution = fields.Many2one(
-        'xpr_solution_builder.solution', 
+        'xpr_solution_builder.solution',
         string='Solution',
         readonly=True)
 
     # Should always contain exactly 1 record.
-    product = fields.Many2one(
-        'product.product', 'Product', readonly=True)
+    product = fields.Many2one('product.product', 'Product', readonly=True)
 
 
 class SalesOrder(models.Model):
-    """ 
-        Override of sale.order to add thse fields:
-        - solution
-        - rebate
+    """
+    Override of sale.order to add thse fields:
+    - solution
+    - rebate
 
-        Permits to:
-        - Apply rebate on mandatory item lines
-        - Calculate separate totals for mandatory and optional lines.
+    Permits to:
+    - Apply rebate on mandatory item lines
+    - Calculate separate totals for mandatory and optional lines.
     """
 
     _inherit = "sale.order"
@@ -183,38 +183,53 @@ class SalesOrder(models.Model):
                 if line.solution_part == 2:
                     record.order_line_options += line
 
+    def _get_line_amount(self, line):
+        line_base = line.price_unit * line.product_uom_qty
+        return line_base * (1.0 - line.discount / 100.0)
+
     @api.depends('order_line')
     def _get_amount_products(self):
+
         for order in self:
             order.amount_products_untaxed = sum([
-                line.price_unit * line.product_uom_qty * (1.0 - line.discount / 100.0)
-                for line in order.order_line
-                if line.solution_part != 2
+                self._get_line_amount(line)
+                for line in order.order_line if line.solution_part != 2
             ])
 
     @api.depends('order_line')
     def _get_amount_options(self):
+
         for order in self:
             order.amount_options_untaxed = sum([
-                line.price_unit * line.product_uom_qty * (1.0 - line.discount / 100.0)
-                for line in order.order_line
-                if line.solution_part == 2
+                self._get_line_amount(line)
+                for line in order.order_line if line.solution_part == 2
             ])
 
-    solution = fields.Many2one('xpr_solution_builder.solution', string='Solution', required=True)
-    rebate = fields.Float(string='Rebate', digits=(6,2))
+    solution = fields.Many2one(
+        'xpr_solution_builder.solution', string='Solution', required=True)
 
-    order_line_products = fields.One2many('sale.order.line', compute=_get_line_products)
-    order_line_options = fields.One2many('sale.order.line', compute=_get_line_options)
-    amount_products_untaxed = fields.Float(string='Products', digits=(6,2), compute=_get_amount_products)
-    amount_options_untaxed = fields.Float(string='Options', digits=(6,2), compute=_get_amount_options)
+    rebate = fields.Float(string='Rebate', digits=(6, 2))
+
+    order_line_products = fields.One2many(
+        'sale.order.line', compute=_get_line_products)
+
+    order_line_options = fields.One2many(
+        'sale.order.line', compute=_get_line_options)
+
+    amount_products_untaxed = fields.Float(
+        string='Products', digits=(6, 2), compute=_get_amount_products)
+
+    amount_options_untaxed = fields.Float(
+        string='Options', digits=(6, 2), compute=_get_amount_options)
 
     def _apply_solution(self, order):
         """
             Builds sales order using solution as template.
         """
 
-        quantities = dict([(ex.product.id, ex.times) for ex in order.solution.products_extra])
+        quantities = dict([
+            (ex.product.id, ex.times) for ex in order.solution.products_extra
+        ])
 
         # override order lines
 
@@ -222,8 +237,13 @@ class SalesOrder(models.Model):
 
         delta_price = order.solution.list_price
         sequence = 0
+        mandatory_products = list(order.solution.products) + [
+            item.product for item in self.solution.options_extra
+            if item.sticky
+        ]
 
-        for product in list(order.solution.products) + [item.product for item in self.solution.options_extra if item.sticky]:
+        for product in mandatory_products:
+
             sequence += 10
             qty = quantities.get(product.id, 1.0)
             delta_price -= product.list_price * qty
@@ -242,13 +262,13 @@ class SalesOrder(models.Model):
 
         sequence += 10
         order.order_line += order.order_line.new(dict(
-                order_id=order.id,
-                name="Solution integration",
-                price_unit=delta_price,
-                solution_part=3,
-                sequence=sequence,
-                state=order.state,
-            ))
+            order_id=order.id,
+            name="Solution integration",
+            price_unit=delta_price,
+            solution_part=3,
+            sequence=sequence,
+            state=order.state,
+        ))
 
     def _apply_rebate(self, order):
 
@@ -266,13 +286,12 @@ class SalesOrder(models.Model):
             return
 
         order.order_line += order.order_line.new(dict(
-                order_id=order.id,
-                name="Solution rebate",
-                price_unit=rebate,
-                solution_part=4,
-                state=order.state,
-            ))
-
+            order_id=order.id,
+            name="Solution rebate",
+            price_unit=rebate,
+            solution_part=4,
+            state=order.state,
+        ))
 
     @api.onchange('solution')
     def onchange_solution(self):
@@ -300,11 +319,12 @@ class SalesOrder(models.Model):
             return {
                 'type': 'ir.actions.act_window',
                 'res_model': 'xpr_solution_builder.solution_configurator',
-                'views' : [[False, "form"]],
+                'views': [[False, "form"]],
                 'target': 'new',
-                'view_id' : 'view_solution_configurator_wizard',
-                'context': {'order_id': order.id }
+                'view_id': 'view_solution_configurator_wizard',
+                'context': {'order_id': order.id}
             }
+
 
 class SalesOrderLine(models.Model):
     """ Override of sale.order to add solution field"""
@@ -317,32 +337,34 @@ class SalesOrderLine(models.Model):
     # 3 price correction line for mandatory products
     # 4 order rebate
 
-    solution_part = fields.Integer() 
-
-    discount_money = fields.Float(string='Line Discount', digits=(6,2))
+    solution_part = fields.Integer()
+    discount_money = fields.Float(string='Line Discount', digits=(6, 2))
 
     @api.onchange('discount')
     def onchange_discount(self):
+
         for order in self:
-            order.discount_money = order.price_unit * order.discount / 100.0
+            order.discount_money = order.price_unit * order.discount / 100
 
     @api.onchange('discount_money')
     def onchange_discount_money(self):
+
         for order in self:
             if order.solution_part != 2:
-                # Permit money discounts on optional lines
+                # Permit money discounts on optional lines only
                 order.discount_money = 0
             elif order.price_unit:
-                order.discount = 100.0 * order.discount_money / order.price_unit 
+                order.discount = 100 * order.discount_money / order.price_unit
+
 
 class SolutionConfigurator(models.TransientModel):
 
-    """ 
-        Solution Configurator wizard.
+    """
+    Solution Configurator wizard.
 
-        Loaded to select optional product from related solution
-        Updates order lines of sales order whenever
-        products are added or removed.
+    Loaded to select optional product from related solution
+    Updates order lines of sales order whenever
+    products are added or removed.
     """
 
     _name = 'xpr_solution_builder.solution_configurator'
@@ -365,13 +387,18 @@ class SolutionConfigurator(models.TransientModel):
 
         options = set([item.id for item in solution.options])
         products = set([line.product_id.id for line in order.order_line])
-        stickies = set([item.product.id for item in solution.options_extra if item.sticky])
+        stickies = set([
+            item.product.id for item in solution.options_extra if item.sticky
+        ])
 
         defaults = (options & products) | stickies
 
         if not defaults - stickies:
             # No lines yet in order. Propose default selected products.
-            defaults = options & set([item.product.id for item in solution.options_extra if item.selected_default or item.sticky])
+            defaults = options & set([
+                item.product.id for item in solution.options_extra
+                if item.selected_default or item.sticky
+            ])
 
         return sorted(defaults)
 
@@ -401,10 +428,12 @@ class SolutionConfigurator(models.TransientModel):
 
         options = set([item.id for item in self.solution.options])
 
-        selected_products = set(
-            [product.id for product in self.products]) - set(
-            [item.product.id for item in self.solution.options_extra if item.sticky]
-        )
+        selected_products = set([
+            product.id for product in self.products
+        ]) - set([
+            item.product.id for item in self.solution.options_extra
+            if item.sticky
+        ])
 
         products_in_order = set()
 
