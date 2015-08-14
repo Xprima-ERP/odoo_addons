@@ -2,7 +2,7 @@
 {
     'name': 'Xprima Setup Module',
     'version': '1.0',
-    'summary': 'Installs all Xprimas modules and dependencies',
+    'summary': 'Installs Xprimas modules, dependencies and config',
     'description': """
 Contains all the Xprima dependencies and config.
 Meant to build a db from scratch.
@@ -27,28 +27,29 @@ Config sets Sales Order id format (C prefix). Sales orders are contracts.
         'sale',  # Install manually because of wizard setup
         'hr',
         'crm',
-        'agaplan_terms_and_conditions',
+        'agaplan_terms_and_conditions',  # Xprima port for Odoo
         'xpr_product',
         'xpr_solution_builder',
         'xpr_sale_process',
-        'xpr_product_variant_filters',
+        'xpr_product_variant_filters',  # Deprecated ?
         'xpr_report',
-        #'xpr_dealer_group,
+        #'xpr_dealer_group, # Seems that only dealer group name is to be ported
         #'xpr_dropdowns_values',
-        #'xpr_xis_connector',
+        #'xpr_xis_connector', # Will be dropped. No rush to port.
         #'xpr_csi_program',
         #'xpr_dealer_group,
         #'xpr_dropdowns_values',
 
-
         # From 7.0 version
 
-        # 'project',
-        # 'purchase',
-        # 'canadian_provinces',
+        # 'project', # Abandoned, was for helpdesk.
+        # 'xpr_hd_ticket', # Helpdesk abandoned bridge.
+
+        # 'purchase', # Not useful. Drop it.
+        # 'canadian_provinces', # Depecrated. Not using provinces anymore.
 
         # 'partner_history',
-        # 'product_custom_attributes',
+        # 'product_custom_attributes', # Replaced by xpr_solution_builder
         # 'web_adblock',
         # 'mass_editing',
         # 'audittrail',
@@ -59,10 +60,8 @@ Config sets Sales Order id format (C prefix). Sales orders are contracts.
         #'so_second_level_approval_and_discount',
 
         # 'csv_noupdate',
-        # 'xpr_hd_ticket',
         # 'no_customer_auto_follow',
         # 'xpr_seo',
-
         # 'xpr_casa',
         # 'hr_employee_auto_create',
         # 'reps_nocreate_dealer',
