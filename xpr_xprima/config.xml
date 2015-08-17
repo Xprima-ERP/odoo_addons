@@ -2,11 +2,84 @@
 <openerp>
     <data>
 
+        <!-- Xprima prefix for sale orders -->
         <record id="contract_prefix" model="ir.sequence">
             <field name="name">Contract</field>
             <field name="code">sale.order</field>
             <field name="prefix">C</field>
-            <field name="padding">3</field>
+            <field name="padding">5</field>
+            <!-- <field name="number_next">20000</field> -->
+        </record>
+
+        <!-- Removing create buttons from sale order views -->
+        <record id="sale_order_remove_create_form" model="ir.ui.view">
+            <field name="name">sale.order.form.remove.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_remove_create_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree.remove.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="quotation_remove_create_tree" model="ir.ui.view">
+            <field name="name">quotation.tree.remove.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Keeping create buttons for admin -->
+        <record id="sale_order_keep_create_form" model="ir.ui.view">
+            <field name="name">sale.order.form.keep.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="xpr_xprima.sale_order_remove_create_form"/>
+            <field name="groups_id" search="[('name','=','Manager')]" />
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">true</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_keep_create_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree.keep.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="xpr_xprima.sale_order_remove_create_tree"/>
+            <field name="groups_id" search="[('name','=','Manager')]" />
+            <field name="arch" type="xml">
+                 <xpath expr="//tree" position="attributes">
+                    <attribute name="create">true</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="quotation_keep_create_tree" model="ir.ui.view">
+            <field name="name">quotation.tree.keep.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="xpr_xprima.quotation_remove_create_tree"/>
+            <field name="groups_id" search="[('name','=','Manager')]" />
+            <field name="arch" type="xml">
+                 <xpath expr="//tree" position="attributes">
+                    <attribute name="create">true</attribute>
+                </xpath>
+            </field>
         </record>
 
     </data>
