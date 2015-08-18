@@ -478,8 +478,8 @@ class res_partner(osv.osv):
         "dayspastdue": fields.integer("TTR Access Cut Off"),
         "dpd_override": fields.date("Override Until"),
         "hours_bank": fields.float("Hours Bank", digits=(13, 1)),
-        "is_dealer": fields.boolean("Is Dealer"),
-        "is_member": fields.boolean("Is Member"),
+        "is_dealer": fields.boolean("Is Dealer"), # Deprecated
+        "is_member": fields.boolean("Is Member"), # Deprecated
         "membertype": fields.many2many("partner_business_type",
                                        "partner_partner_business_type_rel",
                                        "partner_id",
@@ -869,8 +869,8 @@ class _PartnerRequest():
             # '45.548255',
             'geolat': p.geolat or 'null',
             'geolon': p.geolon or 'null',
-            'isdealer': isdealer,
-            'ismember': ismember,
+            #'isdealer': isdealer, # Deprecated
+            #'ismember': ismember, # Deprecated
 
             # force to take 'en' of 'en_US'
             'language': p.lang and p.lang[:2] or 'null',
