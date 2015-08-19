@@ -1,17 +1,22 @@
 # -*- coding: utf-8 -*-
 
 {'name': 'Xprima Product',
- 'version': '0.2',
+ 'version': '0.3',
  'summary': 'Xprima Product',
  'description': """
- Adds Xprimas product legacy fields and removes unwanted fields from views. 
- This is the port of xprima_product module for OpenERP.
+ Adapts product to Xprimas needs.
+ Adds custom fields and removes unwanted fields from views.
+ This was originally the xprima_product module for OpenERP.
+
+ Presently, it permits:
+ - To mark a product as payable only one time
  """,
  'category': 'misc',
  'author': 'Xprima',
  'website': 'www.xprima.com',
  'depends': [
              'product',
+             'sale',
              #'contract_isp',
  ],
  'data': [

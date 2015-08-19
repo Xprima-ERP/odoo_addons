@@ -33,95 +33,21 @@ _logger = logging.getLogger(__name__)
 class sale_order(orm.Model):
     _inherit = "sale.order"
 
-    def _get_family(self, cr, uid, context, name):
-        family_obj = self.pool.get('attribute.option')
-        one_time_family_id = family_obj.search(cr,
-                                               uid,
-                                               [('name',
-                                                 '=',
-                                                 name)],
-                                               limit=1,
-                                               context=context)[0]
-        family = family_obj.browse(cr, uid, one_time_family_id, context)
-        return family
-
-    def _get_one_time_total(self, cr, uid, ids, field_name, arg, context):
-        one_time_fam_name = 'One Time'
-        ad_one_time_fam_name = 'Advertising - One time'
-        pack_one_time_fam_name = 'Package option - One time'
-        one_time_family = self._get_family(cr, uid, context, one_time_fam_name)
-        ad_one_time_family = self._get_family(cr,
-                                              uid,
-                                              context,
-                                              ad_one_time_fam_name)
-        pack_one_time_family = self._get_family(cr,
-                                                uid,
-                                                context,
-                                                pack_one_time_fam_name)
-        one_time_families = [one_time_family,
-                             ad_one_time_family,
-                             pack_one_time_family]
-        sale_orders = self.browse(cr, uid, ids, context)
-        one_time_totals = {}
-        one_time_total = 0.0
-        for sale_order in sale_orders:
-            for line in sale_order.order_line:
-                is_one_time = False
-                try:
-                    is_one_time = line.product_id.x_family in one_time_families
-                except AttributeError:
-                    pass
-                if is_one_time:
-                    one_time_total += line.price_subtotal
-            one_time_totals[sale_order.id] = one_time_total
-            one_time_total = 0.0
-        return one_time_totals
-
-
-    def _get_monthly_total(self, cr, uid, ids, field_name, arg, context):
-        monthly_fam_name = 'Monthly'
-        package_fam_name = 'Package'
-        advert_fam_name = 'Advertising'
-        pack_option_fam_name = 'Package option'
-        monthly_family = self._get_family(cr, uid, context, monthly_fam_name)
-        package_family = self._get_family(cr, uid, context, package_fam_name)
-        advert_family = self._get_family(cr, uid, context, advert_fam_name)
-        p_option_family = self._get_family(cr,
-                                           uid,
-                                           context,
-                                           pack_option_fam_name)
-        monthly_families = [monthly_family,
-                            package_family,
-                            p_option_family,
-                            advert_family]
-        sale_orders = self.browse(cr, uid, ids, context)
-        monthly_totals = {}
-        monthly_total = 0.0
-        for sale_order in sale_orders:
-            for line in sale_order.order_line:
-                is_monthly = False
-                try:
-                    is_monthly = line.product_id.x_family in monthly_families
-                except AttributeError:
-                    pass
-                if is_monthly:
-                    monthly_total += line.price_subtotal/line.product_uom_qty
-            monthly_totals[sale_order.id] = monthly_total
-            monthly_total = 0.0
-        return monthly_totals
+    # Deprecated. family will be x_replaced
+    # def _get_family(self, cr, uid, context, name):
+    #     family_obj = self.pool.get('attribute.option')
+    #     one_time_family_id = family_obj.search(cr,
+    #                                            uid,
+    #                                            [('name',
+    #                                              '=',
+    #                                              name)],
+    #                                            limit=1,
+    #                                            context=context)[0]
+    #     family = family_obj.browse(cr, uid, one_time_family_id, context)
+    #     return family
 
     _columns = {
         'xis_quote_id': fields.integer(string='XIS quote id'),
-        'one_time_total': fields.function(_get_one_time_total,
-                                          type='float',
-                                          obj='sale.order',
-                                          method=True,
-                                          string='One Time Total'),
-        'monthly_total': fields.function(_get_monthly_total,
-                                         type='float',
-                                         obj='sale.order',
-                                         method=True,
-                                         string='Monthly Total'),
         'starting_date': fields.date('Starting Date'),
     }
 
@@ -350,12 +276,13 @@ class res_partner(osv.osv):
                        context=None):
         split_char = ','
         makes_widget = {
-                        'partner_make_car': makes_car,
-                        'partner_make_moto': makes_moto,
-                        'partner_make_atv': makes_atv,
-                        'partner_make_watercraft': makes_watercraft,
-                        'partner_make_snowmobile': makes_snowmobile,
-                       }
+            'partner_make_car': makes_car,
+            'partner_make_moto': makes_moto,
+            'partner_make_atv': makes_atv,
+            'partner_make_watercraft': makes_watercraft,
+            'partner_make_snowmobile': makes_snowmobile,
+        }
+
         for _id in ids:
             make_names = []
             for _model_name, _widget in makes_widget.items():
@@ -585,7 +512,7 @@ class res_partner(osv.osv):
                                                            s_args,
                                                            context=context)[0]
                         except IndexError:
-                           continue
+                            continue
                         user_hr = hr_emp_obj.browse(cr,
                                                     uid,
                                                     user_id_hr,
@@ -1067,7 +994,6 @@ class _PartnerCategoryRelRequest():
         return data
 
 
-
 class product_product(osv.osv):
     _inherit = "product.product"
     _columns = {
@@ -1126,6 +1052,7 @@ class PartnerPartnerMakeMotoRel(osv.Model):
     _columns = {"partner_id": fields.integer("partner_id"),
                 _pmmi: fields.integer(_pmmi), }
 
+
 class PartnerPartnerMakeSnowmobileRel(osv.Model):
 
     """
@@ -1157,5 +1084,3 @@ class PartnerPartnerPortalmaskRel(osv.Model):
     _ppi = "partner_portalmask_id"
     _columns = {"partner_id": fields.integer("partner_id"),
                 _ppi: fields.integer(_ppi), }
-
-
