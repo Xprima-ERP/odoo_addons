@@ -30,7 +30,7 @@ This module:
     # /addons/base/module/module_data.xml
     # for the full list
     'category': 'Sales',
-    'version': '0.2',
+    'version': '0.2.1',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'product', 'sale'],
@@ -41,6 +41,7 @@ This module:
         'templates.xml',
         'views/solution_builder.xml',
         'views/solution_configurator.xml',
+        'views/sale_order.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
