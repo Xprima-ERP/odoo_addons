@@ -22,7 +22,7 @@
 
 {
     'name': 'Xprima Reports',
-    'version': '0.1',
+    'version': '0.2',
     'author': 'Xprima',
     'maintainer': 'Xprima',
     'website': 'http://www.savoirfairelinux.com',
@@ -41,6 +41,7 @@ Contributors
 """,
     'depends': [
         'sale',
+        'xpr_product'
     ],
     'external_dependencies': {
         'python': [],

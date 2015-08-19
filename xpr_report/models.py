@@ -1,8 +1,9 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2004-2010 Tiny SPRL (<http://tiny.be>).
+#    This module copyright (C) 2010 - 2014 Savoir-faire Linux
+#    (<http://www.savoirfairelinux.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -19,30 +20,34 @@
 #
 ##############################################################################
 
-from openerp.report import report_sxw
-import time
 
 class order(report_sxw.rml_parse):
     def __init__(self, cr, uid, name, context=None):
         super(order, self).__init__(cr, uid, name, context=context)
         self.localcontext.update({
-            'time': time, 
-            'show_discount':self._show_discount,
+            'time': time,
+            'show_discount': self._show_discount,
         })
 
     def _show_discount(self, uid, context=None):
-        cr = self.cr
-        try: 
-            group_id = self.pool.get('ir.model.data').get_object_reference(cr, uid, 'sale', 'group_discount_per_so_line')[1]
-        except:
-            return False
-        return group_id in [x.id for x in self.pool.get('res.users').browse(cr, uid, uid, context=context).groups_id]
+        # cr = self.cr
+        # try:
+        #     group_id = self.pool.get(
+        #         'ir.model.data'
+        #     ).get_object_reference(
+        #         cr, uid, 'sale', 'group_discount_per_so_line'
+        #     )[1]
+        # except:
+        #     return False
 
-# Used to have some code that removed the current report.sale.order here. Cannot stay on module init.
+        # user = self.pool.get('res.users').browse(cr, uid, uid, context=context)
+        # return group_id in [x.id for x in user.groups_id]
+
+        return True
 
 report_sxw.report_sxw(
-	'report.sale.order',
-	'sale.order',
-	'addons/xprima_report/report/sale_order_xprima.rml',
-	parser=order,
-	header='external')
+    'report.sale.order',
+    'sale.order',
+    'addons/xprima_report/report/sale_order_xprima.rml',
+    parser=order,
+    header='external')
