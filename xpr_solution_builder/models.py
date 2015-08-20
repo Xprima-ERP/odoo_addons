@@ -100,6 +100,12 @@ class SalesOrder(models.Model):
 
     _inherit = "sale.order"
 
+    def onchange_pricelist_id(
+        self, cr, uid, ids, pricelist_id, return_lines, context={}):
+        # Override default behavior that fires useless warning.
+        # Pricelists are not used.
+        return {}
+
     @api.depends('order_line')
     def _get_line_products(self):
 
