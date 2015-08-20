@@ -104,7 +104,14 @@ class SalesOrder(models.Model):
         self, cr, uid, ids, pricelist_id, return_lines, context={}):
         # Override default behavior that fires useless warning.
         # Pricelists are not used.
-        return {}
+
+        res = super(SalesOrder, self).onchange_pricelist_id(
+            cr, uid, ids, pricelist_id, return_lines, context)
+
+        if 'warning' in res:
+            res.pop('warning')
+
+        return res
 
     @api.depends('order_line')
     def _get_line_products(self):
