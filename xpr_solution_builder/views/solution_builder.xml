@@ -119,7 +119,7 @@
                                         <field name="invoice_lines"/>
                                     </div>
                         </form>
-                        <tree string="Sales Order Lines" create="false" delete="false">
+                        <tree string="Sales Order Lines" create="false" delete="false" editable="bottom">
                                     <field name="sequence" widget="handle"/>
                                     <field name="state" invisible="1"/>
                                     <field name="th_weight" invisible="1"/>
@@ -288,7 +288,6 @@
 					</field>
 				</field>
 		</record>
-
 
 	</data>
 </openerp>
