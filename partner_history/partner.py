@@ -91,8 +91,11 @@ class mail_message(models.Model):
         'message_partner_rel', 'message_id', 'partner_id',
         'Partners')
 
-    object_name = fields.Char(string='Object Name', size=64, store=True, compute=_get_object_name)
-    body_txt = fields.Text(string='Content', store=True, compute=_get_body_txt)
+    object_name = fields.Char(
+        string='Object Name', size=64, store=True, compute=_get_object_name)
+
+    body_txt = fields.Text(
+        string='Content', store=True, compute=_get_body_txt)
 
     _order = 'date desc'
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#################################################################################
+###############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    Copyright (C) 2013 Julius Network Solutions SARL <contact@julius.fr>
@@ -17,32 +17,33 @@
 #    You should have received a copy of the GNU General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#################################################################################
+###############################################################################
 
 {
-    "name" : "Partner History Module", 
-    "version" : "0.2",
-    "author" : "Xprima",
-    "website" : "http://julius.fr",
-    "category" : "Customs Modules",
+    "name": "Partner History Module",
+    "version": "0.2",
+    "author": "Xprima",
+    "website": "http://julius.fr",
+    "category": "Customs Modules",
 
-    "depends" : [
+    "depends": [
         "base",
         "crm",
         "sale",
     ],
     "description": """
-        Create a history for the partner 
+        Create a history for the partner
         using different message form linked table
 
-        This module is a port to Odoo of Partner History Module from Julius Network Solutions.
+        This module is a port to Odoo of Partner History Module
+        from Julius Network Solutions.
     """,
-    "demo" : [],
-    "data" : [
-          "partner.xml",
+    "demo": [],
+    "data": [
+        "partner.xml",
     ],
-    'installable' : True,
-    'active' : False,
+    'installable': True,
+    'active': False,
 }
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
