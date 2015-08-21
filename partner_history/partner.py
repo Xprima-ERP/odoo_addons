@@ -19,11 +19,11 @@
 #
 #################################################################################
 
-from osv import fields, orm
-from tools.translate import _
+from openerp import models, fields, api
+from openerp.tools.translate import _
 from openerp.tools import ustr
 
-class mail_message(orm.Model):
+class mail_message(models.Model):
     _inherit = 'mail.message'
 
     def compute_partner(self, cr, uid, active_model='res.partner', model='mail.message', res_id=1, context=None):
@@ -84,12 +84,13 @@ class mail_message(orm.Model):
                 result[message.id] = body_txt
         return result
     
-    _columns = {
-        'partner_ids': fields.many2many('res.partner', 'message_partner_rel', 'message_id', 'partner_id', 'Partners'),
-        'object_name': fields.function(_get_object_name, type='char', string='Object Name', size=64, store=True),
-        'body_txt': fields.function(_get_body_txt, type='text', string='Content', store=True),
-    }
-    
+
+    # Fields
+
+    partner_ids = fields.Many2many('res.partner', 'message_partner_rel', 'message_id', 'partner_id', 'Partners')
+    object_name = fields.Char(string='Object Name', size=64, store=True, compute=_get_object_name)
+    body_txt = fields.Text(string='Content', store=True, compute=_get_body_txt)
+
     _order= 'date desc'
     
     def create(self, cr, uid, vals, context=None):
@@ -101,13 +102,16 @@ class mail_message(orm.Model):
             vals.update({'partner_ids': [(6, 0, target_ids)],})
         return super(mail_message, self).create(cr, uid, vals, context=context)
 
-class res_partner(orm.Model):
+class res_partner(models.Model):
     _inherit = 'res.partner'
     
     def _get_message(self, cr, uid, ids, field_name, arg, context=None):
         if context is None:
             context = {}
         result = {}
+
+        return self.env['mail.message']
+
         message_obj = self.pool.get('mail.message')
         for partner in self.browse(cr, uid, ids, context=context):
             target_ids = message_obj.search(cr, uid, [
@@ -117,9 +121,8 @@ class res_partner(orm.Model):
             result[partner.id] = target_ids
         return result
     
-    _columns = {
-        # History follow-up #
-        'history_ids': fields.function(_get_message, type='many2many', relation="mail.message", string="Related Messages"),
-    }
+    # Fields
+
+    history_ids = fields.Many2many("mail.message", string="Related Messages", computed=_get_message)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

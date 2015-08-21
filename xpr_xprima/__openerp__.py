@@ -28,6 +28,7 @@ Config sets Sales Order id format (C prefix). Sales orders are contracts.
         'hr',
         'crm',
         'agaplan_terms_and_conditions',  # Xprima port for Odoo
+        'partner_history', # Xprima port for Odoo
         'xpr_product',
         'xpr_solution_builder',
         'xpr_sale_process',
@@ -48,7 +49,7 @@ Config sets Sales Order id format (C prefix). Sales orders are contracts.
         # 'purchase', # Not useful. Drop it.
         # 'canadian_provinces', # Depecrated. Not using provinces anymore.
 
-        # 'partner_history',
+        
         # 'product_custom_attributes', # Replaced by xpr_solution_builder
         # 'web_adblock',
         # 'mass_editing',
