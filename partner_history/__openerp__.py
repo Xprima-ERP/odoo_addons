@@ -21,10 +21,11 @@
 
 {
     "name" : "Partner History Module", 
-    "version" : "0.1",
-    "author" : "Julius Network Solutions",
+    "version" : "0.2",
+    "author" : "Xprima",
     "website" : "http://julius.fr",
     "category" : "Customs Modules",
+
     "depends" : [
         "base",
         "crm",
@@ -33,6 +34,8 @@
     "description": """
         Create a history for the partner 
         using different message form linked table
+
+        This module is a port to Odoo of Partner History Module from Julius Network Solutions.
     """,
     "demo" : [],
     "data" : [
