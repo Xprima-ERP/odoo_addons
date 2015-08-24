@@ -35,7 +35,7 @@ XIS Connector
 
 Send information to system XIS when create/update field.
 
-This module is deprecated.
+The XIS update is to be deprecated eventually.
 
 Functionalities not related to XIS are to be migrated out of it.
 
@@ -53,10 +53,8 @@ Contributors
         'xpr_dropdowns_values',
         'xpr_product',
 
-        #'partner_history', # Not ported in 8.0
         #'account',
         #'salesforce_data_mapping',
-        
         #'partner_category_description',
         #'sale_package_configurator',
         #'contract_isp',

@@ -7,9 +7,6 @@
                 <xpath expr="//page[@string='History']" position="attributes">
                     <attribute name="string">Task History</attribute>
                 </xpath>
-                <xpath expr="//page[@string='Flat History']" position="attributes">
-                    <attribute name="string">Full History</attribute>
-                </xpath>
                 <xpath expr="//field[@name='parent_id' and @placeholder='Company']/../field[@name='category_id' and @widget='many2many_tags']" position="replace">
                     <field name="category_id" widget="many2many_tags" placeholder="Dealergroups..." domain="[('parent_id','!=',False)]" attrs="{'invisible': [('is_company','=', False)]}"/>
                 </xpath>
