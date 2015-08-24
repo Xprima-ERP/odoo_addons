@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from openerp import models, fields, api
+import openerp.addons.decimal_precision as dp
 from openerp.tools.translate import _
 
 
@@ -163,6 +164,20 @@ class SalesOrder(models.Model):
     """
 
     _inherit = "sale.order"
+
+    def onchange_pricelist_id(
+        self, cr, uid, ids, pricelist_id, return_lines, context={}
+    ):
+        # Override default behavior that fires useless warning.
+        # Pricelists are not used.
+
+        res = super(SalesOrder, self).onchange_pricelist_id(
+            cr, uid, ids, pricelist_id, return_lines, context)
+
+        if 'warning' in res:
+            res.pop('warning')
+
+        return res
 
     @api.depends('order_line')
     def _get_line_products(self):
@@ -331,6 +346,38 @@ class SalesOrderLine(models.Model):
 
     _inherit = "sale.order.line"
 
+    @api.onchange('discount_money')
+    def onchange_discount_money(self):
+        """
+        Permit money discounts on optional lines only.
+        Update discount for consistency and to trigger update events.
+        """
+
+        for line in self:
+            if (
+                line.solution_part == 2
+                and line.price_unit and line.product_uom_qty
+            ):
+                line.discount = (
+                    100.0 * line.discount_money
+                    / line.product_uom_qty / line.price_unit
+                )
+            else:
+                line.discount_money = 0
+
+        return {}
+
+    def _amount_line(self):
+        """
+        Override from sales order line in sale module
+        Disables taxes and replaces discount
+        """
+
+        for line in self:
+            line.price_subtotal = (
+                line.price_unit * line.product_uom_qty - line.discount_money
+            )
+
     # 0 Don't care (not solution)
     # 1 mandatory line
     # 2 optional line
@@ -340,21 +387,13 @@ class SalesOrderLine(models.Model):
     solution_part = fields.Integer()
     discount_money = fields.Float(string='Line Discount', digits=(6, 2))
 
-    @api.onchange('discount')
-    def onchange_discount(self):
-
-        for order in self:
-            order.discount_money = order.price_unit * order.discount / 100
-
-    @api.onchange('discount_money')
-    def onchange_discount_money(self):
-
-        for order in self:
-            if order.solution_part != 2:
-                # Permit money discounts on optional lines only
-                order.discount_money = 0
-            elif order.price_unit:
-                order.discount = 100 * order.discount_money / order.price_unit
+    # Override required to redirect to new compute function.
+    # Otherwise, function pointer still points to overriden version.
+    price_subtotal = fields.Float(
+        digits=(6, 2),
+        string='Subtotal',
+        digits_compute=dp.get_precision('Account'),
+        compute=_amount_line)
 
 
 class SolutionConfigurator(models.TransientModel):
