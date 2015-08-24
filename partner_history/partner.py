@@ -27,34 +27,68 @@ from openerp.tools import ustr
 class mail_message(models.Model):
     _inherit = 'mail.message'
 
-    def compute_partner(self, cr, uid, active_model='res.partner', model='mail.message', res_id=1, context=None):
+    def compute_partner(
+        self, cr, uid,
+        active_model='res.partner', model='mail.message', res_id=1,
+        context=None
+    ):
+
         if context is None:
             context = {}
+
         target_ids = []
         current_obj = self.pool.get(model)
-        cr.execute("SELECT name FROM ir_model_fields WHERE relation='" + active_model + "' and model = '" + model + "' and ttype not in ('many2many', 'one2many');")
+        cr.execute((
+            "SELECT name FROM ir_model_fields WHERE relation='{active_model}' "
+            "and model = '{model}' and ttype not in ('many2many', 'one2many');"
+        ).format(active_model=active_model, model=model))
+
         for name in cr.fetchall():
-            current_data = current_obj.read(cr, uid, res_id, [str(name[0])], context=context)
+            current_data = current_obj.read(
+                cr, uid, res_id, [str(name[0])], context=context)
+
             if current_data.get(str(name[0])):
                 var = current_data.get(str(name[0]))
                 if var:
                     target_ids.append(var[0])
 
-        cr.execute("select name, model from ir_model_fields where relation='" + model + "' and ttype in ('many2many') and model = '" + active_model + "';")
+        cr.execute((
+            "select name, model from ir_model_fields where relation='{model}' "
+            " and ttype in ('many2many') and model='{active_model}';"
+        ).format(active_model=active_model, model=model))
+
         for field, model in cr.fetchall():
-            field_data = self.pool.get(model) and self.pool.get(model)._columns.get(field, False) \
-                            and (isinstance(self.pool.get(model)._columns[field], fields.many2many) \
-                            or isinstance(self.pool.get(model)._columns[field], fields.function) \
-                            and self.pool.get(model)._columns[field].store) \
-                            and self.pool.get(model)._columns[field] \
-                            or False
-            if field_data:
-                model_m2m, rel1, rel2 = field_data._sql_names(self.pool.get(model))
-                requete = "SELECT "+rel1+" FROM "+ model_m2m+" WHERE "+ rel2+" ="+str(res_id)+";"
-                cr.execute(requete)
-                sec_target_ids = cr.fetchall()
-                for sec_target_id in sec_target_ids:
-                    target_ids.append(sec_target_id[0])
+            field_data = (
+                self.pool.get(model)
+                and self.pool.get(model)._columns.get(field, False)
+                and (
+                    isinstance(
+                        self.pool.get(model)._columns[field], fields.many2many)
+                    or isinstance(
+                        self.pool.get(model)._columns[field], fields.function)
+                    and self.pool.get(model)._columns[field].store
+                )
+                and self.pool.get(model)._columns[field]
+                or False
+            )
+
+            if not field_data:
+                continue
+
+            model_m2m, rel1, rel2 = field_data._sql_names(self.pool.get(model))
+            requete = (
+                "SELECT {rel1} FROM {model_m2m} WHERE {rel2}={res_id};"
+            ).format(
+                rel1=rel1,
+                model_m2m=model_m2m,
+                rel2=rel2,
+                res_id=str(res_id))
+
+            cr.execute(requete)
+            sec_target_ids = cr.fetchall()
+            for sec_target_id in sec_target_ids:
+                target_ids.append(sec_target_id[0])
+
         return target_ids
 
     @api.depends('model')
@@ -64,7 +98,8 @@ class mail_message(models.Model):
 
         for message in self:
 
-            model_ids = model_obj.search([('model', '=', message.model)], limit=1)
+            model_ids = model_obj.search(
+                [('model', '=', message.model)], limit=1)
 
             if not model_ids:
                 continue
@@ -103,7 +138,12 @@ class mail_message(models.Model):
         if not vals.get('partner_ids'):
             target_ids = []
             if vals.get('res_id') and vals.get('model'):
-                target_ids = self.compute_partner(cr, uid, active_model='res.partner', model=vals.get('model'), res_id=vals.get('res_id'), context=context)
+                target_ids = self.compute_partner(
+                    cr, uid,
+                    active_model='res.partner',
+                    model=vals.get('model'), res_id=vals.get('res_id'),
+                    context=context)
+
                 target_ids = list(set(target_ids))
             vals.update({'partner_ids': [(6, 0, target_ids)], })
         return super(mail_message, self).create(cr, uid, vals, context=context)
