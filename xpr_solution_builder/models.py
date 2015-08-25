@@ -367,6 +367,7 @@ class SalesOrderLine(models.Model):
 
         return {}
 
+    @api.onchange('price_unit', 'product_uom_qty', 'discount_money')
     def _amount_line(self):
         """
         Override from sales order line in sale module
