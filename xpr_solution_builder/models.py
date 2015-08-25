@@ -283,7 +283,7 @@ class SalesOrderLine(models.Model):
 
         return {}
 
-    @api.onchange('price_unit', 'product_uom_qty' ,'discount_money')
+    @api.onchange('price_unit', 'product_uom_qty', 'discount_money')
     def _amount_line(self):
         """
         Override from sales order line in sale module
@@ -291,7 +291,15 @@ class SalesOrderLine(models.Model):
         """
 
         for line in self:
-            line.price_subtotal = max(0, line.price_unit * line.product_uom_qty - line.discount_money)
+            amount = line.price_unit * line.product_uom_qty
+            if line.discount_money:
+                # Disounts should never permit to go negative.
+                line.price_subtotal = max(
+                    0,
+                    amount - line.discount_money)
+            else:
+                # Rebates may already be negative (and discount == 0)
+                line.price_subtotal = amount
 
     # 0 Don't care (not solution)
     # 1 mandatory line
