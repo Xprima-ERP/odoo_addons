@@ -117,7 +117,7 @@ class SolutionProductLine(models.Model):
     _name = 'xpr_solution_builder.solution.line'
     #_table = 'xpr_solution_builder_solution_mandatory_product_rel'
 
-    times = fields.Integer(default="1", string='Quantity')
+    times = fields.Integer(default=1, string='Quantity')
 
     solution = fields.Many2one(
         'xpr_solution_builder.solution',
@@ -275,12 +275,17 @@ class SalesOrder(models.Model):
                 state=order.state,
             ))
 
+        unit = self.env['product.uom'].search(
+            [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
+
         sequence += 10
         order.order_line += order.order_line.new(dict(
             order_id=order.id,
             name="Solution integration",
             price_unit=delta_price,
             solution_part=3,
+            product_uom_qty=1,
+            product_uom=unit.id,
             sequence=sequence,
             state=order.state,
         ))
@@ -300,12 +305,17 @@ class SalesOrder(models.Model):
             rebate_line.price_unit = rebate
             return
 
+        unit = self.env['product.uom'].search(
+            [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
+
         order.order_line += order.order_line.new(dict(
             order_id=order.id,
             name="Solution rebate",
             price_unit=rebate,
             solution_part=4,
             state=order.state,
+            product_uom_qty=1,
+            product_uom=unit.id,
         ))
 
     @api.onchange('solution')
@@ -375,9 +385,15 @@ class SalesOrderLine(models.Model):
         """
 
         for line in self:
-            line.price_subtotal = (
-                line.price_unit * line.product_uom_qty - line.discount_money
-            )
+            amount = line.price_unit * line.product_uom_qty
+            if line.discount_money:
+                # Disounts should never permit to go negative.
+                line.price_subtotal = max(
+                    0,
+                    amount - line.discount_money)
+            else:
+                # Rebates may already be negative (and discount == 0)
+                line.price_subtotal = amount
 
     # 0 Don't care (not solution)
     # 1 mandatory line
@@ -385,8 +401,9 @@ class SalesOrderLine(models.Model):
     # 3 price correction line for mandatory products
     # 4 order rebate
 
-    solution_part = fields.Integer()
-    discount_money = fields.Float(string='Line Discount', digits=(6, 2))
+    solution_part = fields.Integer(default=0)
+    discount_money = fields.Float(
+        string='Line Discount', digits=(6, 2), default=0)
 
     # Override required to redirect to new compute function.
     # Otherwise, function pointer still points to overriden version.
