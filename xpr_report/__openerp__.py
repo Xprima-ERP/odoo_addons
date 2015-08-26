@@ -34,6 +34,8 @@ Client
 ======
 This module contains Xprimas customized report.
 
+Includes Xprimas config of Terms and conditions.
+
 Contributors
 ------------
 * Mathieu Benoit (mathieu.benoit@savoirfairelinux.com) version 7.0
@@ -48,6 +50,7 @@ Contributors
     },
     'data': [
         'sale_order_custom_report.xml',
+        'terms_and_conditions.xml',
     ],
     'installable': True,
 }
