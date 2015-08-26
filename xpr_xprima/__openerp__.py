@@ -15,8 +15,6 @@ Including its own custom modules:
 
 Note: Install the Sales and Management (sales) module manually first
 because of wizard.
-
-Config sets Sales Order id format (C prefix). Sales orders are contracts.
 """,
 
     'category': 'Misc',
@@ -35,10 +33,10 @@ Config sets Sales Order id format (C prefix). Sales orders are contracts.
         'xpr_product_variant_filters',  # Deprecated ?
         'xpr_report',
         'xpr_dealer_group',
+
         #'xpr_dropdowns_values',
         #'xpr_xis_connector', # Will be dropped. No rush to port.
         #'xpr_csi_program',
-        #'xpr_dealer_group,
         #'xpr_dropdowns_values',
 
         # From 7.0 version
@@ -56,7 +54,7 @@ Config sets Sales Order id format (C prefix). Sales orders are contracts.
 
         #'xprima_sale_order',
 
-        #'sale_package_configurator',
+        #'sale_package_configurator', # Replaced by xpr_solution_builder
         #'so_second_level_approval_and_discount',
 
         # 'csv_noupdate',

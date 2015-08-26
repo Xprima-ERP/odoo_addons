@@ -7,7 +7,12 @@
     """,
 
     'description': """
-    A module that implement the Xprima Sale Process
+Xprima Sale Process Worflow
+
+Setup:
+
+- Config sets Sales Order id format (C prefix). Sales orders are contracts.
+- Quotes can be created directly in views only if user is a manager
     """,
 
     'author': "Xprima",
@@ -18,7 +23,7 @@
     # module/module_data.xml
     # for the full list
     'category': 'Sales',
-    'version': '0.1',
+    'version': '0.2',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -30,8 +35,6 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        'templates.xml',
         'sale_workflow.xml',
         'views/sale_order_view.xml',
         'views/product_view.xml',
