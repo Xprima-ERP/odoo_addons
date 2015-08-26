@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE openerp SYSTEM "openerp.dtd">
+<openerp>
+  <data>
+    <record id="adwords" model="product.category">
+       <field name="name">AdWords</field>
+       <field name="parent_id" ref="product.product_category_all"/>
+    </record>
+
+    <record id="banner" model="product.category">
+       <field name="name">Banner</field>
+       <field name="parent_id" ref="product.product_category_all"/>
+    </record>
+
+    <record id="seo" model="product.category">
+       <field name="name">SEO</field>
+       <field name="parent_id" ref="product.product_category_all"/>
+    </record>
+
+    <record id="website" model="product.category">
+       <field name="name">Website</field>
+       <field name="parent_id" ref="product.product_category_all"/>
+    </record>
+
+  </data>
+</openerp>

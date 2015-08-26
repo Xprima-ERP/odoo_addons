@@ -29,23 +29,9 @@ class product_product(models.Model):
     # x_region = fields.Char('Region', size=254)
     # x_description_fr = fields.Char('Description FR', size=254)
     # x_name_fr = fields.Char('Name FR', size=254)
+    # x_family = Reference in OpenERP. Replaced by product category.
 
     one_time_payment = fields.Boolean('One Time Payment')
-
-    # x_family = Reference to a 'x_family' attribute in OpenERP.
-    # Used for reports.
-    # Good chance will be replaced with other fields
-
-    # x_family attribute records have simply a name, which can be one of these:
-    # Visibility
-    # Advertising - One time
-    # Advertising
-    # Training
-    # Package option - One time
-    # Package option
-    # Package
-    # Monthly
-    # One Time
 
 
 class sale_order(models.Model):
