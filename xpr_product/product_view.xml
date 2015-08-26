@@ -1,17 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE openerp SYSTEM "openerp.dtd">
 <openerp>
-  <data noupdate="0">
+  <data>
     <record id="product_template_only_form_view" model="ir.ui.view">
       <field name="model">product.template</field>
       <field name="inherit_id" ref="product.product_template_only_form_view"/>
       <field name="arch" type="xml">
+
+        <field name="type" position="replace">
+          <!-- Don't need type. We do need category.-->
+          <field name="type" invisible="1" />
+          <field name="categ_id"/>
+        </field>
+
+        <field name="purchase_ok" position="replace">
+          <field name="purchase_ok" invisible="1" />
+        </field>
+
+        <label for="purchase_ok" position="replace">
+          <label for="purchase_ok" invisible="1" />
+        </label>
+
+        <field name="sale_ok" position="replace">
+          <field name="sale_ok" invisible="1" />
+        </field>
+
+        <label for="sale_ok" position="replace">
+          <label for="sale_ok" invisible="1" />
+        </label>
+
       	<xpath expr="//div[@name='options']/div" position="after">
 	    	<div>
               	<field name="one_time_payment"/>
               	<label for="one_time_payment"/>
             </div>
         </xpath>
+
+
+        <page string="Procurements" position="replace"/>
+        <page string="Inventory" position="replace"/>
+
+      </field>
+    </record>
+
+    <record id="product_normal_form_view" model="ir.ui.view">
+      <field name="model">product.product</field>
+      <field name="inherit_id" ref="product.product_normal_form_view"/>
+      <field name="arch" type="xml">
+
+        <field name="type" position="replace">
+          <!-- Don't need type. We do need category.-->
+          <field name="type" invisible="1" />
+          <field name="categ_id"/>
+        </field>
+
+        <field name="purchase_ok" position="replace">
+          <field name="purchase_ok" invisible="1" />
+        </field>
+
+        <label for="purchase_ok" position="replace">
+          <label for="purchase_ok" invisible="1" />
+        </label>
+
+        <field name="sale_ok" position="replace">
+          <field name="sale_ok" invisible="1" />
+        </field>
+
+        <label for="sale_ok" position="replace">
+          <label for="sale_ok" invisible="1" />
+        </label>
+
+        <xpath expr="//div[@name='options']/div" position="after">
+        <div>
+                <field name="one_time_payment"/>
+                <label for="one_time_payment"/>
+            </div>
+        </xpath>
+
+        <page string="Procurements" position="replace"/>
+        <page string="Inventory" position="replace"/>
+
       </field>
     </record>
   </data>
