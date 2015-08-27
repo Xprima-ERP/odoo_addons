@@ -368,6 +368,12 @@ class SalesOrderLine(models.Model):
                 line.solution_part == 2
                 and line.price_unit and line.product_uom_qty
             ):
+                line.discount_money = max(
+                    0,
+                    min(
+                        line.discount_money,
+                        line.product_uom_qty * line.price_unit))
+
                 line.discount = (
                     100.0 * line.discount_money
                     / line.product_uom_qty / line.price_unit
