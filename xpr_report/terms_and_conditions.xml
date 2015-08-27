@@ -64,58 +64,57 @@
 
           <record id="term_rule_website_en" model="term.rule" >
             <field name="term_id" ref="term_website_en" />
-            <field name="report_id" ref="sale.report_sale_order" />
-            <field name="condition">"Website" in [line.product_id.categ_term.name for line in object.order_line if line.product_id and line.product_id.categ_term] and (object.partner_id.lang=="en_US")
+            <field name="report_id" ref="xpr_report.report_sale_order" />
+            <field name="condition">"Website" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="en_US"
             </field>
          </record>
 
          <record id="term_rule_website_fr" model="term.rule" >
             <field name="term_id" ref="term_website_fr" />
-            <field name="report_id" ref="sale.report_sale_order" />
-            <field name="condition">"Website" in [line.product_id.categ_term.name for line in object.order_line if line.product_id and line.product_id.categ_term]  and (object.partner_id.lang=="fr_FR")
+            <field name="report_id" ref="xpr_report.report_sale_order" />
+            <field name="condition">"Website" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="fr_FR"
             </field>
          </record>
 
         <record id="term_rule_banner_en" model="term.rule" >
             <field name="term_id" ref="term_banner_en" />
-            <field name="report_id" ref="sale.report_sale_order" />
-            <field name="condition">"Banner" in [line.product_id.categ_term.name for line in object.order_line if line.product_id and line.product_id.categ_term] and (object.partner_id.lang=="en_US")
+            <field name="report_id" ref="xpr_report.report_sale_order" />
+            <field name="condition">"Banner" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="en_US"
             </field>
          </record>
 
         <record id="term_rule_banner_fr" model="term.rule" >
             <field name="term_id" ref="term_banner_fr" />
-            <field name="report_id" ref="sale.report_sale_order" />
-            <field name="condition">"Banner" in [line.product_id.categ_term.name for line in object.order_line if line.product_id and line.product_id.categ_term]  and (object.partner_id.lang=="fr_FR")
+            <field name="report_id" ref="xpr_report.report_sale_order" />
+            <field name="condition">"Banner" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="fr_FR"
             </field>
         </record>
 
         <record id="term_rule_adwords_en" model="term.rule" >
             <field name="term_id" ref="term_adwords_en" />
-            <field name="report_id" ref="sale.report_sale_order" />
-            <field name="condition">"AdWords" in [line.product_id.categ_term.name for line in object.order_line if line.product_id and line.product_id.categ_term] and (object.partner_id.lang=="en_US")
+            <field name="report_id" ref="xpr_report.report_sale_order" />
+            <field name="condition">"AdWords" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="en_US"
             </field>
          </record>
 
          <record id="term_rule_adwords_fr" model="term.rule" >
             <field name="term_id" ref="term_adwords_fr" />
-            <field name="report_id" ref="sale.report_sale_order" />
-            <field name="condition">"AdWords" in [line.product_id.categ_term.name for line in object.order_line if line.product_id and line.product_id.categ_term]  and (object.partner_id.lang=="fr_FR")
+            <field name="report_id" ref="xpr_report.report_sale_order" />
+            <field name="condition">"AdWords" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="fr_FR"
             </field>
          </record>
 
-
           <record id="term_rule_seo_en" model="term.rule" >
             <field name="term_id" ref="term_seo_en" />
-            <field name="report_id" ref="sale.report_sale_order" />
-            <field name="condition">"SEO" in [line.product_id.categ_term.name for line in object.order_line if line.product_id and line.product_id.categ_term] and (object.partner_id.lang=="en_US")
+            <field name="report_id" ref="xpr_report.report_sale_order" />
+            <field name="condition">"SEO" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang == "en_US"
             </field>
          </record>
 
          <record id="term_rule_seo_fr" model="term.rule" >
             <field name="term_id" ref="term_seo_fr" />
-            <field name="report_id" ref="sale.report_sale_order" />
-            <field name="condition">"SEO" in [line.product_id.categ_term.name for line in object.order_line if line.product_id and line.product_id.categ_term]  and (object.partner_id.lang=="fr_FR")
+            <field name="report_id" ref="xpr_report.report_sale_order" />
+            <field name="condition">"SEO" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang == "fr_FR"
             </field>
          </record>
 
