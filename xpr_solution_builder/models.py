@@ -137,7 +137,7 @@ class SalesOrder(models.Model):
     def _get_amount_products(self):
         for order in self:
             order.amount_products_untaxed = sum([
-                line.price_unit * line.product_uom_qty * (1.0 - line.discount / 100.0)
+                line.price_unit * line.product_uom_qty - line.discount_money
                 for line in order.order_line
                 if line.solution_part != 2
             ])
@@ -146,7 +146,7 @@ class SalesOrder(models.Model):
     def _get_amount_options(self):
         for order in self:
             order.amount_options_untaxed = sum([
-                line.price_unit * line.product_uom_qty * (1.0 - line.discount / 100.0)
+                line.price_unit * line.product_uom_qty - line.discount_money
                 for line in order.order_line
                 if line.solution_part == 2
             ])
