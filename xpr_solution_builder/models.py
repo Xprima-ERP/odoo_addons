@@ -200,7 +200,7 @@ class SalesOrder(models.Model):
 
     def _get_line_amount(self, line):
         line_base = line.price_unit * line.product_uom_qty
-        return line_base * (1.0 - line.discount / 100.0)
+        return line_base - line.discount_money
 
     @api.depends('order_line')
     def _get_amount_products(self):
