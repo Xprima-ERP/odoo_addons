@@ -1,6 +1,6 @@
 {
     "name": "Terms and Conditions",
-    "version": "0.1",
+    "version": "0.2",
 
     'summary': """
     The Xprimas port of Terms And Conditions

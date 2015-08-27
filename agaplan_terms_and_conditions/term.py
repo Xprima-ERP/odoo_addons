@@ -22,7 +22,7 @@ class term_rule(models.Model):
     report_id = fields.Many2one('ir.actions.report.xml', 'Report', required=True)
     report_name = fields.Char('Report Name', size=64, readonly=True, related="report_id.report_name")
     
-    condition = fields.Char('Condition', size=128, help='condition on when to print the therm')
+    condition = fields.Text('Condition', help='condition on when to print the term')
 
     _defaults = {
         'company_id': lambda self,cr,uid,c: self.pool.get('res.company')._company_default_get(cr, uid, 'term.rule', context=c)
