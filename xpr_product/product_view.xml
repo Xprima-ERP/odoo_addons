@@ -10,7 +10,7 @@
         <field name="type" position="replace">
           <!-- Don't need type. We do need category.-->
           <field name="type" invisible="1" />
-          <field name="categ_id"/>
+          <field name="categ_term"/>
         </field>
 
         <field name="purchase_ok" position="replace">

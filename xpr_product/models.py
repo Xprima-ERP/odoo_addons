@@ -33,6 +33,15 @@ class product_product(models.Model):
 
     one_time_payment = fields.Boolean('One Time Payment')
 
+    # Different field than categ_id.
+    # There is much logic attached to that other field.
+    # Furthermore, this one is optional.
+    categ_term = fields.Many2one(
+        'product.category',
+        'Category',
+        domain="[('type','=','normal')]",
+        help="Select category for the current product")
+
 
 class sale_order(models.Model):
     _inherit = "sale.order"
