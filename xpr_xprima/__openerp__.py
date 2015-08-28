@@ -25,6 +25,7 @@ because of wizard.
         'sale',  # Install manually because of wizard setup
         'hr',
         'crm',
+        'auditlog',
         'agaplan_terms_and_conditions',  # Xprima port for Odoo
         'partner_history',  # Xprima port for Odoo
         'xpr_product',
