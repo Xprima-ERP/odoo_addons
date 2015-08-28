@@ -209,6 +209,10 @@
                     </group>
                 </xpath>
 
+                <field name="note" position="replace">
+                <field name="note" class="oe_inline" placeholder="Comments"/>
+                </field>
+
 			</field>
 		</record>
 
