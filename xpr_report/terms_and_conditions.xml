@@ -76,33 +76,19 @@
             </field>
          </record>
 
-        <record id="term_rule_banner_en" model="term.rule" >
+        <record id="term_rule_advertising_en" model="term.rule" >
             <field name="term_id" ref="term_banner_en" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
-            <field name="condition">"Banner" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="en_US"
+            <field name="condition">"Advertising" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="en_US"
             </field>
          </record>
 
-        <record id="term_rule_banner_fr" model="term.rule" >
+        <record id="term_rule_advertising_fr" model="term.rule" >
             <field name="term_id" ref="term_banner_fr" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
-            <field name="condition">"Banner" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="fr_FR"
+            <field name="condition">"Advertising" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="fr_FR"
             </field>
         </record>
-
-        <record id="term_rule_adwords_en" model="term.rule" >
-            <field name="term_id" ref="term_adwords_en" />
-            <field name="report_id" ref="xpr_report.report_sale_order" />
-            <field name="condition">"AdWords" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="en_US"
-            </field>
-         </record>
-
-         <record id="term_rule_adwords_fr" model="term.rule" >
-            <field name="term_id" ref="term_adwords_fr" />
-            <field name="report_id" ref="xpr_report.report_sale_order" />
-            <field name="condition">"AdWords" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="fr_FR"
-            </field>
-         </record>
 
           <record id="term_rule_seo_en" model="term.rule" >
             <field name="term_id" ref="term_seo_en" />
