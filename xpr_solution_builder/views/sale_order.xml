@@ -11,7 +11,7 @@
 
 				<field name="client_order_ref" position="after">	
 					<field name="solution" />
-					<field name="rebate" />
+					<field name="solution_discount" />
                     <button name="sale_solution_option_action" type="object" string="Add Options"/>
 				</field>
 

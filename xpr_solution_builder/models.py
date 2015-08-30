@@ -156,10 +156,10 @@ class SalesOrder(models.Model):
     """
     Override of sale.order to add thse fields:
     - solution
-    - rebate
+    - solution discount
 
     Permits to:
-    - Apply rebate on mandatory item lines
+    - Apply solution discount on mandatory item lines
     - Calculate separate totals for mandatory and optional lines.
     """
 
@@ -223,7 +223,8 @@ class SalesOrder(models.Model):
     solution = fields.Many2one(
         'xpr_solution_builder.solution', string='Solution', required=True)
 
-    rebate = fields.Float(string='Rebate', digits=(6, 2))
+    solution_discount = fields.Float(
+        string='Solution Discount ($)', digits=(6, 2))
 
     order_line_products = fields.One2many(
         'sale.order.line', compute=_get_line_products)
@@ -290,19 +291,20 @@ class SalesOrder(models.Model):
             state=order.state,
         ))
 
-    def _apply_rebate(self, order):
+    def _apply_solution_discount(self, order):
 
-        rebate_line = None
+        solution_discount_line = None
 
         for line in order.order_line:
             if line.solution_part == 4:
-                rebate_line = line
+                solution_discount_line = line
                 break
 
-        rebate = -min(order.solution.list_price, order.rebate)
+        solution_discount = -min(
+            order.solution.list_price, order.solution_discount)
 
-        if rebate_line:
-            rebate_line.price_unit = rebate
+        if solution_discount_line:
+            solution_discount_line.price_unit = solution_discount
             return
 
         unit = self.env['product.uom'].search(
@@ -310,8 +312,8 @@ class SalesOrder(models.Model):
 
         order.order_line += order.order_line.new(dict(
             order_id=order.id,
-            name="Solution rebate",
-            price_unit=rebate,
+            name="Solution discount",
+            price_unit=solution_discount,
             solution_part=4,
             state=order.state,
             product_uom_qty=1,
@@ -326,10 +328,10 @@ class SalesOrder(models.Model):
 
         return {}
 
-    @api.onchange('rebate')
-    def onchange_rebate(self):
+    @api.onchange('solution_discount')
+    def onchange_solution_discount(self):
         for order in self:
-            self._apply_rebate(order)
+            self._apply_solution_discount(order)
 
         return {}
 
@@ -392,24 +394,25 @@ class SalesOrderLine(models.Model):
 
         for line in self:
             amount = line.price_unit * line.product_uom_qty
-            if line.discount_money:
-                # Disounts should never permit to go negative.
+            if line.discount_money > 0:
+                # Discounts should never permit to go negative.
                 line.price_subtotal = max(
                     0,
                     amount - line.discount_money)
-            else:
-                # Rebates may already be negative (and discount == 0)
-                line.price_subtotal = amount
+                continue
+
+            # Subtotal may already be negative (with discount == 0)
+            line.price_subtotal = amount
 
     # 0 Don't care (not solution)
     # 1 mandatory line
     # 2 optional line
     # 3 price correction line for mandatory products
-    # 4 order rebate
+    # 4 solution discount
 
     solution_part = fields.Integer(default=0)
     discount_money = fields.Float(
-        string='Line Discount', digits=(6, 2), default=0)
+        string='Discount ($)', digits=(6, 2), default=0)
 
     # Override required to redirect to new compute function.
     # Otherwise, function pointer still points to overriden version.

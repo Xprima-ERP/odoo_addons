@@ -255,7 +255,7 @@
           <para style="terp_tblheader_Details_Right"><b>Unit Price</b></para>
         </td>
         <td>
-          <para style="terp_tblheader_Details_Centre"><b>[[not show_discount(user.id) and removeParentNode('para') ]]Disc.($)</b></para>
+          <para style="terp_tblheader_Details_Centre"><b>Discount($)</b></para>
         </td>
         <td>
           <para style="terp_tblheader_Details_Right"><b>Price</b></para>
@@ -284,7 +284,7 @@
             <para style="terp_default_Right_9">[[ formatLang(line.price_unit , digits=get_digits(dp='Product Price'))]]</para>
           </td>
           <td>
-            <para style="terp_default_Centre_9">[[show_discount(user.id) and formatLang(line.discount_amount, digits=get_digits(dp='Discount')) or '']]</para>
+            <para style="terp_default_Centre_9">[[ line.solution_part  == 2 and formatLang(line.discount_money, digits=get_digits(dp='Account')) or '' ]]</para>
           </td>
           <td>
             <para style="terp_default_Right_9">[[ formatLang(line.price_subtotal, digits=get_digits(dp='Account'), currency_obj=o.pricelist_id.currency_id) ]] </para>
