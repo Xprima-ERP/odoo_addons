@@ -47,7 +47,7 @@ class sale_order(orm.Model):
     #     return family
 
     _columns = {
-        'xis_quote_id': fields.integer(string='XIS quote id'),
+        'xis_quote_id': fields.integer(string='XIS quote id'), # Migrated to client_order_ref
         'starting_date': fields.date('Starting Date'),
     }
 
