@@ -295,22 +295,20 @@ class SalesOrder(models.Model):
 
         solution_discount_line = None
 
+        lines = self.env['sale.order.line']
+
         for line in order.order_line:
-            if line.solution_part == 4:
-                solution_discount_line = line
-                break
+            if line.solution_part != 4:
+                lines += line
+                continue
 
         solution_discount = -min(
             order.solution.list_price, order.solution_discount)
 
-        if solution_discount_line:
-            solution_discount_line.price_unit = solution_discount
-            return
-
         unit = self.env['product.uom'].search(
             [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
 
-        order.order_line += order.order_line.new(dict(
+        lines += order.order_line.new(dict(
             order_id=order.id,
             name="Solution discount",
             price_unit=solution_discount,
@@ -319,6 +317,8 @@ class SalesOrder(models.Model):
             product_uom_qty=1,
             product_uom=unit.id,
         ))
+
+        order.order_line = lines
 
     @api.onchange('solution')
     def onchange_solution(self):
