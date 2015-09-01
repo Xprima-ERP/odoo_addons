@@ -53,31 +53,59 @@ class SaleOrder(models.Model):
     )
 
     def check_manager_approval_needed(self):
-        approval_needed = self._check_discount()
-        if not approval_needed:
-            approval_needed = self._check_product_approver_needed()
-        return approval_needed
 
-    def _check_discount(self):
+        if self.solution_discount:
+            return True
+
         for line in self.order_line:
             if line.discount:
                 return True
+
         return False
 
-    def _check_product_approver_needed(self):
+    def check_product_availability_needed(self):
+        """
+        Return True if product availability check is required and False if not.
+        """
         for line in self.order_line:
-            if line.product_id.approver_groups:
+
+            if not line.product_id:
+                continue
+
+            category = line.product_id.categ_term
+
+            if not category:
+                continue
+
+            if category.approval_group:
                 return True
+
         return False
 
     def has_rights_to_approve(self):
         """
         Return True if the user triggering this method has the right to approve
-        the associated quote. The user has the right if he is the manager of
+        the associated quote. The user has the right if he is some admin
+        or if as a sales manager, is also the manager of
         the salesperson associated to the quote. An AccessError exception is
-        raised if approver doesn't have the rights so he gets a warning in
-        the web interface.
+        raised if sales manager is trying to approve a quote outside his team
         """
+
+        discount_all = self.env.ref('xpr_sale_process.discount_all')
+        sales_manager = self.env.ref('base.group_sale_manager')
+
+        is_sales_manager = False
+        for group in self.env.user.groups_id:
+            if group.id == discount_all.id:
+                return True
+
+            if group.id == sales_manager.id:
+                is_sales_manager = True
+                break
+
+        if not is_sales_manager:
+            return False
+
         args = [("user_id", "=", self.env.user.id)]
         hr_approver = self.env["hr.employee"].search(args)
         args = [("user_id", "=", self.user_id.id)]
@@ -85,18 +113,10 @@ class SaleOrder(models.Model):
 
         if hr_owner.parent_id == hr_approver:
             return True
+
         raise AccessError("You cannot approve this quote, because you are not"
                           " set as %s's manager in the system"
                           % hr_owner.user_id.name)
-
-    def check_product_availability_needed(self):
-        """
-        Return True if product availability check is required and False if not.
-        """
-        for order_line in self.order_line:
-            if order_line.product_id.availability_groups:
-                return True
-        return False
 
     # api.one
     def notify_manager_approval(self):
@@ -125,19 +145,10 @@ class SaleOrder(models.Model):
         })
 
 
-class Product(models.Model):
-    _name = 'product.template'
-    _inherit = "product.template"
+class ProductCategory(models.Model):
+    _inherit = "product.category"
 
-    approver_groups = fields.Many2many(
-        comodel_name="res.groups",
-        string="Approver Groups",
-        relation="product_to_approver_group"
-    )
-
-    availability_groups = fields.Many2many(
-        comodel_name="res.groups",
-        string="Availability Groups",
-        relation="product_to_availability_group",
-        help="Ask person from this group for product availability",
-    )
+    approval_group = fields.Many2one(
+        'res.groups',
+        'Approval Group',
+        help="Group of users that must approve products of this category")
