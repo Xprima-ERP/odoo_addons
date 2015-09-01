@@ -3,8 +3,7 @@
     <data>
 		<record model="res.groups" id="advertisement">
 			<field name="name">Advertisement</field>
-			<field name="comment">The user has rights to approve availability of advertising products</field>
-			<field name="users" eval="[(4, ref('base.user_root'))]" />
+			<field name="comment">The user is responsible of approving quotes with advertising products</field>
 			<field name="category_id" ref="base.module_category_sales_management"/>
 		</record>
 

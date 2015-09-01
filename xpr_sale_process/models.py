@@ -119,6 +119,43 @@ class SaleOrder(models.Model):
             " set as %s's manager in the system"
             % hr_owner.user_id.name)
 
+    def notify_availability_check(self):
+        self.write({'state': 'need_availability_check'})
+
+        destination_ids = set()
+
+        for line in self.order_line:
+
+            if not line.product_id:
+                continue
+
+            category = line.product_id.categ_term
+
+            if not category:
+                continue
+
+            if not category.approval_group:
+                continue
+
+            destination_ids |= set([
+                u.id for u in category.approval_group.users])
+
+        body = """
+<p>Vous avez &agrave; approuver le devis <b>{0}</b> pour disponibilite.</p>
+        """.format(self.name)
+
+        self.env['mail.message'].create({
+            'type': 'notification',
+            #'author_id':
+            'partner_ids': [(4, uid) for uid in destination_ids],
+            'record_name': self.name,
+            'model': 'sale.order',
+            'subject': 'Devis &agrave; approuver: {0}'.format(self.name),
+            'body': body,
+            #'template':
+            #'subtype_id':
+        })
+
     # api.one
     def notify_manager_approval(self):
         self.write({'state': 'need_manager_approval'})
