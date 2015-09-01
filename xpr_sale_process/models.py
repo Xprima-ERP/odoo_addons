@@ -114,9 +114,10 @@ class SaleOrder(models.Model):
         if hr_owner.parent_id == hr_approver:
             return True
 
-        raise AccessError("You cannot approve this quote, because you are not"
-                          " set as %s's manager in the system"
-                          % hr_owner.user_id.name)
+        raise AccessError(
+            "You cannot approve this quote, because you are not"
+            " set as %s's manager in the system"
+            % hr_owner.user_id.name)
 
     # api.one
     def notify_manager_approval(self):
