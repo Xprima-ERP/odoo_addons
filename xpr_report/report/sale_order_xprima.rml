@@ -270,7 +270,7 @@
       <blockTable colWidths="89.0,226.0,55.0,60.0,50.0,55.0" style="Table5">
         <tr>
           <td>
-            <para style="terp_default_9">[[line.product_id.default_code and ('[' + format(line.product_id.default_code) + ']') or '']] [[ line.product_id.name ]]</para>
+            <para style="terp_default_9">[[line.product_id.default_code and ('[' + format(line.product_id.default_code) + ']') or '']] [[ line.product_id.name ]] [[line.product_id.attribute_value_ids and ("(" +  ", ".join([v.name for v in line.product_id.attribute_value_ids]) + ")") or '']]</para>
           </td>
           <td>
             <para style="terp_default_9">[[ format(line.name) ]] </para>
