@@ -996,6 +996,7 @@ class _PartnerCategoryRelRequest():
 
 class product_product(osv.osv):
     _inherit = "product.product"
+    # Deprecated. Use default_code (internal reference) instead.
     _columns = {
         'xis_product_code': fields.char('XIS product code', size=30),
     }

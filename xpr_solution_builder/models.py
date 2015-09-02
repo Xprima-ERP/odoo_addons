@@ -233,7 +233,7 @@ class SalesOrder(models.Model):
         'sale.order.line', compute=_get_line_options)
 
     amount_products_untaxed = fields.Float(
-        string='Products', digits=(6, 2), compute=_get_amount_products)
+        string='Solution', digits=(6, 2), compute=_get_amount_products)
 
     amount_options_untaxed = fields.Float(
         string='Options', digits=(6, 2), compute=_get_amount_options)
@@ -276,20 +276,21 @@ class SalesOrder(models.Model):
                 state=order.state,
             ))
 
-        unit = self.env['product.uom'].search(
-            [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
+        if delta_price != 0:
+            unit = self.env['product.uom'].search(
+                [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
 
-        sequence += 10
-        order.order_line += order.order_line.new(dict(
-            order_id=order.id,
-            name="Solution integration",
-            price_unit=delta_price,
-            solution_part=3,
-            product_uom_qty=1,
-            product_uom=unit.id,
-            sequence=sequence,
-            state=order.state,
-        ))
+            sequence += 10
+            order.order_line += order.order_line.new(dict(
+                order_id=order.id,
+                name="Solution integration",
+                price_unit=delta_price,
+                solution_part=3,
+                product_uom_qty=1,
+                product_uom=unit.id,
+                sequence=sequence,
+                state=order.state,
+            ))
 
     def _apply_solution_discount(self, order):
 
@@ -305,18 +306,19 @@ class SalesOrder(models.Model):
         solution_discount = -min(
             order.solution.list_price, order.solution_discount)
 
-        unit = self.env['product.uom'].search(
-            [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
+        if solution_discount != 0:
+            unit = self.env['product.uom'].search(
+                [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
 
-        lines += order.order_line.new(dict(
-            order_id=order.id,
-            name="Solution discount",
-            price_unit=solution_discount,
-            solution_part=4,
-            state=order.state,
-            product_uom_qty=1,
-            product_uom=unit.id,
-        ))
+            lines += order.order_line.new(dict(
+                order_id=order.id,
+                name="Solution discount",
+                price_unit=solution_discount,
+                solution_part=4,
+                state=order.state,
+                product_uom_qty=1,
+                product_uom=unit.id,
+            ))
 
         order.order_line = lines
 
