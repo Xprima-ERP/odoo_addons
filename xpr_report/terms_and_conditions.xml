@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
 
-    <data noupdate="1">
+    <data >
         <!--
         Term and conditions.
 
@@ -21,26 +21,14 @@
             <field name="pdf"> </field>
          </record>
 
-        <record id="term_banner_fr" model="term.term">
-            <field name="name">Banner_fr</field>
+        <record id="term_advertising_fr" model="term.term">
+            <field name="name">Advertising_fr</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
          </record>
 
-         <record id="term_banner_en" model="term.term">
-            <field name="name">Banner_en</field>
-            <field name="mode">end</field>
-            <field name="pdf"> </field>
-         </record>
-
-        <record id="term_adwords_fr" model="term.term">
-            <field name="name">AdWords_fr</field>
-            <field name="mode">end</field>
-            <field name="pdf"> </field>
-         </record>
-
-         <record id="term_adwords_en" model="term.term">
-            <field name="name">AdWords_en</field>
+         <record id="term_advertising_en" model="term.term">
+            <field name="name">Advertising_en</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
          </record>
@@ -77,14 +65,14 @@
          </record>
 
         <record id="term_rule_advertising_en" model="term.rule" >
-            <field name="term_id" ref="term_banner_en" />
+            <field name="term_id" ref="term_advertising_en" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
             <field name="condition">"Advertising" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="en_US"
             </field>
          </record>
 
         <record id="term_rule_advertising_fr" model="term.rule" >
-            <field name="term_id" ref="term_banner_fr" />
+            <field name="term_id" ref="term_advertising_fr" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
             <field name="condition">"Advertising" in [line.product_id.categ_term.name for order in object for line in order.order_line if line.product_id and line.product_id.categ_term] and object.partner_id.lang=="fr_FR"
             </field>
