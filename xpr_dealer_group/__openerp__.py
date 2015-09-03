@@ -21,7 +21,7 @@
 ##############################################################################
 
 {
-    'name': 'Dealer Group',
+    'name': 'Xprima Dealer Group',
     'version': '0.2',
     'author': 'Xprima',
     'maintainer': 'Xprima',
