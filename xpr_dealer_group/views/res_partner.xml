@@ -3,6 +3,7 @@
 <openerp>
   <data>
     <!-- Categories -->
+    <!--
     <record id="dc_view_partner_category_form" model="ir.ui.view">
       <field name="model">res.partner.category</field>
       <field name="inherit_id" ref="base.view_partner_category_form"/>
@@ -13,26 +14,28 @@
         <field name="parent_id" position="replace">
           <field name="parent_id" domain="[('parent_id', '=', False)]" string="Dealergroup Type" />
         </field>
-        <!--
         <group col="4" position="after">
           <group>
             <field name="certification"/>
           </group>
         </group>
-        -->
       </field>
     </record>
+    -->
 
     <!-- partners -->
-    <record id="dc_view_partner_form" model="ir.ui.view">
+  <record id="dc_view_partner_form" model="ir.ui.view">
       <field name="model">res.partner</field>
-      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="inherit_id" ref="partner_history.view_partner_form_history"/>
       <field name="arch" type="xml">
-        <field name="category_id" position="replace">
+        <xpath expr="//page[@string='Flat History']" position="attributes">
+          <attribute name="string">Full History</attribute>
+        </xpath>
+        <!-- <field name="category_id" position="replace">
             <field name="category_id" widget="many2many_tags" placeholder="Tags..." domain="[('parent_id', '!=', False)]" attrs="{'invisible': [('is_company','=', False)]}"/>
-        </field>
-      </field>
-    </record>
+        </field> -->
+    </field>
+  </record>
 
     <!-- menu -->
     <!--

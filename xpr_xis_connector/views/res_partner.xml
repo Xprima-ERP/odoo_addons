@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?> <!DOCTYPE openerp SYSTEM "openerp.dtd"> <openerp> <data noupdate="0"> <!-- Partners -->
-<!--
+
         <record id="xis_view_partner_form" model="ir.ui.view">
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="partner_history.view_partner_form_history"/>
             <field name="arch" type="xml">
                 <xpath expr="//page[@string='History']" position="attributes">
                     <attribute name="string">Task History</attribute>
-                </xpath>
-                <xpath expr="//page[@string='Flat History']" position="attributes">
-                    <attribute name="string">Full History</attribute>
                 </xpath>
                 <xpath expr="//field[@name='parent_id' and @placeholder='Company']/../field[@name='category_id' and @widget='many2many_tags']" position="replace">
                     <field name="category_id" widget="many2many_tags" placeholder="Dealergroups..." domain="[('parent_id','!=',False)]" attrs="{'invisible': [('is_company','=', False)]}"/>
@@ -150,8 +147,7 @@
                 </xpath>
             </field>
         </record>
- -->
- 
+
         <!-- Categories -->
         <record id="dc_view_partner_category_form" model="ir.ui.view">
           <field name="model">res.partner.category</field>

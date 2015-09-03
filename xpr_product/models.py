@@ -20,38 +20,50 @@
 
 from openerp import models, fields, api
 
+
 class product_product(models.Model):
     _inherit = "product.template"
-    
+
     # Deprecated
     # x_sf_id = fields.Char('Salesforce ID', size=18, select=True)
     # x_region = fields.Char('Region', size=254)
     # x_description_fr = fields.Char('Description FR', size=254)
     # x_name_fr = fields.Char('Name FR', size=254)
+    # x_family = Reference in OpenERP. Replaced by product category.
 
     one_time_payment = fields.Boolean('One Time Payment')
 
-    # x_family = Reference to a 'x_family' attribute in OpenERP.
-    # Used for reports.
-    # Good chance will be replaced with other fields
-
-    # x_family attribute records have simply a name, which can be one of these:
-    # Visibility
-    # Advertising - One time
-    # Advertising
-    # Training
-    # Package option - One time
-    # Package option
-    # Package
-    # Monthly
-    # One Time
+    # Different field than categ_id.
+    # There is much logic attached to that other field.
+    # Furthermore, this one is optional.
+    categ_term = fields.Many2one(
+        'product.category',
+        'Category',
+        domain="[('type','=','normal')]",
+        help="Select category for the current product")
 
 
+class sale_order(models.Model):
+    _inherit = "sale.order"
 
-# Not using pricelists anymore
-# class product_pricelist(osv.osv):
-#     _inherit = "product.pricelist"
-#     _columns = {
-#         'x_sf_id': fields.char('Salesforce ID', size=18, select=True),
-#         'x_description': fields.char('Description', size=254),
-#     }
+    def _get_one_time_total(self):
+
+        for sale_order in self:
+            sale_order.one_time_total = sum([
+                line.price_subtotal for line in sale_order.order_line
+                if line.product_id.one_time_payment
+            ])
+
+    def _get_monthly_total(self):
+
+        for sale_order in self:
+            sale_order.monthly_total = sum([
+                line.price_subtotal for line in sale_order.order_line
+                if not line.product_id.one_time_payment
+            ])
+
+    one_time_total = fields.Float(
+        string='One Time Total', digits=(6, 2), compute=_get_one_time_total)
+
+    monthly_total = fields.Float(
+        string='Monthly Total', digits=(6, 2), compute=_get_monthly_total)

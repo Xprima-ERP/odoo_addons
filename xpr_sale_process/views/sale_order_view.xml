@@ -1,5 +1,93 @@
 <openerp>
+
 	<data>
+        <!-- Xprima prefix for sale orders -->
+        <record id="contract_prefix" model="ir.sequence">
+            <field name="name">Contract</field>
+            <field name="code">sale.order</field>
+            <field name="prefix">C</field>
+            <field name="padding">5</field>
+            <!-- <field name="number_next">20000</field> -->
+        </record>
+
+    </data>
+    <data>
+
+        <!-- Removing create buttons from sale order views -->
+        <record id="sale_order_remove_create_form" model="ir.ui.view">
+            <field name="name">sale.order.form.remove.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_remove_create_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree.remove.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="quotation_remove_create_tree" model="ir.ui.view">
+            <field name="name">quotation.tree.remove.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//tree" position="attributes">
+                    <attribute name="create">false</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Keeping create buttons for admin -->
+        <record id="sale_order_keep_create_form" model="ir.ui.view">
+            <field name="name">sale.order.form.keep.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_order_remove_create_form"/>
+            <field name="groups_id" search="[('name','=','Manager')]" />
+            <field name="arch" type="xml">
+                <xpath expr="//form" position="attributes">
+                    <attribute name="create">true</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="sale_order_keep_create_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree.keep.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_order_remove_create_tree"/>
+            <field name="groups_id" search="[('name','=','Manager')]" />
+            <field name="arch" type="xml">
+                 <xpath expr="//tree" position="attributes">
+                    <attribute name="create">true</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="quotation_keep_create_tree" model="ir.ui.view">
+            <field name="name">quotation.tree.keep.create</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="quotation_remove_create_tree"/>
+            <field name="groups_id" search="[('name','=','Manager')]" />
+            <field name="arch" type="xml">
+                 <xpath expr="//tree" position="attributes">
+                    <attribute name="create">true</attribute>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+
+	<data>
+
 		<!--TODO add new sale.order states to default list view-->
 
 		<record id="sale_order_xprima_sale_process_view" model="ir.ui.view">
@@ -9,28 +97,21 @@
 			<field name="arch" type="xml">
 				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
 					<button type="workflow" name="sig_check_approval_needed" string="Send for Approval" states="draft,manager_not_approved,contract_not_approved" />
-				</xpath>
-				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
-					<button type="workflow" name="sig_availability_checked" string="Availability Checked" states="need_availability_check" />
-				</xpath>
 
-				<xpath expr="/form/header/button[@name='sig_availability_checked']" position="after">
-					<button type="workflow" name="sig_availability_not_checked" string="Not Available" states="need_availability_check" />
-				</xpath>
+					<button type="workflow" name="sig_availability_checked" string="Availability Checked" states="need_availability_check" groups="xpr_sale_process.advertisement" />
 
-				<xpath expr="/form/header/button[@name='sig_availability_not_checked']" position="after">
-					<button type="workflow" name="sig_cancel" string="Lost" states="contract_not_approved" />
-				</xpath>
+					<button type="workflow" name="sig_availability_not_checked" string="Not Available" states="need_availability_check" groups="xpr_sale_process.advertisement" />
 
-				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
+					<button type="workflow" name="sig_cancel" string="Lost" states="contract_not_approved" groups="base.group_sale_manager"/>
+
 					<button type="workflow" name="sig_manager_approved" string="Approve" states="need_manager_approval" groups="base.group_sale_manager" />
-				</xpath>
-				<xpath expr="/form/header/button[@name='sig_manager_approved']" position="after">
+
 					<button type="workflow" name="sig_manager_not_approved" string="Not Approved" states="need_manager_approval"  groups="base.group_sale_manager"/>
-				</xpath>
-				<xpath expr="/form/header/button[@name='sig_manager_not_approved']" position="after">
+
 					<button type="workflow" name="sig_contract_reopened" string="Reopen" states="contract_not_presented" />
+
 				</xpath>
+
 				<xpath expr="/form/header/button[@name='action_button_confirm' and @states='draft']" position="attributes">
 					<attribute name="states"></attribute>
 					<attribute name="attrs">{"invisible": True}</attribute>
@@ -41,10 +122,11 @@
 				</xpath>
 				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
 					<button type="workflow" name="sig_customer_approved" string="Customer Approved" states="contract_not_presented" />
-				</xpath>
-				<xpath expr="/form/header/button[@name='sig_customer_approved']" position="after">
+
 					<button type="workflow" name="sig_customer_not_approved" string="Customer not Approved" states="contract_not_presented" />
+
 				</xpath>
+
 				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="attributes">
 					<attribute name="states">contract_not_presented,contract_approved</attribute>
 				</xpath>
@@ -74,8 +156,7 @@
 		</record>
 
 		<menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman,base.group_sale_manager"/>
-
-		 		
+	
 		<!--
 			Now hidden
 

@@ -187,6 +187,9 @@
     <para style="terp_default_8">
       <font color="white"> </font>
     </para>
+    <para style="terp_default_9">
+      <b>Solution :</b>[[ o.solution.name ]]
+    </para>
     <!--<para style="terp_header"><b>[[ o.state not in ['draft','sent'] and removeParentNode('para') ]] Quotation N° [[ o.name ]]</b></para>
     <para style="terp_header"><b>[[ o.state in ['draft','sent'] and removeParentNode('para') ]] Order N° [[ o.name ]]</b></para>-->
     <para style="terp_header"><font color="red">[[ o.state not in ['draft', 'discounted', '2nd_approval'] and removeParentNode('para') ]] Quotation (for approval) N° [[ o.name ]]</font></para>
@@ -216,7 +219,7 @@
     <blockTable colWidths="107.0,107.0,107.0,107.0,107.0" style="Table3">
       <tr>
         <td>
-          <para style="terp_default_Centre_8">[[ o.xis_quote_id or o.client_order_ref ]]</para>
+          <para style="terp_default_Centre_8">[[ o.client_order_ref ]]</para>
         </td>
         <td>
           <para style="terp_default_Centre_8">[[ formatLang(o.date_order,date = True) ]]</para>
@@ -255,7 +258,7 @@
           <para style="terp_tblheader_Details_Right"><b>Unit Price</b></para>
         </td>
         <td>
-          <para style="terp_tblheader_Details_Centre"><b>[[not show_discount(user.id) and removeParentNode('para') ]]Disc.($)</b></para>
+          <para style="terp_tblheader_Details_Centre"><b>Discount($)</b></para>
         </td>
         <td>
           <para style="terp_tblheader_Details_Right"><b>Price</b></para>
@@ -267,10 +270,10 @@
       <blockTable colWidths="89.0,226.0,55.0,60.0,50.0,55.0" style="Table5">
         <tr>
           <td>
-            <para style="terp_default_9">[['[']][[format(line.product_id.xis_product_code)]][[']']][[ format(line.product_id.name) ]]</para>
+            <para style="terp_default_9">[[line.product_id.default_code and ('[' + format(line.product_id.default_code) + ']') or '']] [[ line.product_id.name ]] [[line.product_id.attribute_value_ids and ("(" +  ", ".join([v.name for v in line.product_id.attribute_value_ids]) + ")") or '']]</para>
           </td>
           <td>
-            <para style="terp_default_9">[[ format(line.product_id.description_sale) ]] </para>
+            <para style="terp_default_9">[[ format(line.name) ]] </para>
           </td>
           <!--
           <td>
@@ -281,13 +284,13 @@
             <para style="terp_default_Right_9">[[ formatLang(line.product_uos and line.product_uos_qty or line.product_uom_qty) ]] [[ line.product_uos and line.product_uos.name or line.product_uom.name ]]</para>
           </td>
           <td>
-            <para style="terp_default_Right_9">[[ formatLang(line.price_unit , digits=get_digits(dp='Product Price'))]]</para>
+            <para style="terp_default_Right_9">[[ line.solution_part  == 2 and formatLang(line.price_unit , digits=get_digits(dp='Product Price')) or '' ]]</para>
           </td>
           <td>
-            <para style="terp_default_Centre_9">[[show_discount(user.id) and formatLang(line.discount_amount, digits=get_digits(dp='Discount')) or '']]</para>
+            <para style="terp_default_Centre_9">[[ line.solution_part  == 2 and formatLang(line.discount_money, digits=get_digits(dp='Account')) or '' ]]</para>
           </td>
           <td>
-            <para style="terp_default_Right_9">[[ formatLang(line.price_subtotal, digits=get_digits(dp='Account'), currency_obj=o.pricelist_id.currency_id) ]] </para>
+            <para style="terp_default_Right_9">[[ line.solution_part  == 3 and formatLang(o.solution.list_price, digits=get_digits(dp='Account')) or line.solution_part != 1 and formatLang(line.price_subtotal, digits=get_digits(dp='Account'), currency_obj=o.pricelist_id.currency_id) or '' ]] </para>
           </td>
         </tr>
       </blockTable>
@@ -327,7 +330,7 @@
           <para style="terp_default_Bold_9"><b>Total :</b></para>
         </td>
         <td>
-          <para style="terp_default_Right_9_Bold"><b>[[ formatLang(o.untaxed_total, dp='Account', currency_obj=o.pricelist_id.currency_id) ]]</b></para>
+          <para style="terp_default_Right_9_Bold"><b>[[ formatLang(o.amount_untaxed, dp='Account', currency_obj=o.pricelist_id.currency_id) ]]</b></para>
         </td>
       </tr>
     </blockTable>

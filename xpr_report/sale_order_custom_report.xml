@@ -2,7 +2,6 @@
 <openerp>
   <data>
 
-
 <!-- Vanilla setup
 
     <report
@@ -35,7 +34,7 @@
         id="report_sale_order"
         auto="True"
         model="sale.order"
-        name="sale.order"
+        name="xpr_report.report_saleorder"
         string="Quotation / Order"
         rml="xpr_report/report/sale_order_xprima.rml"
         header="True"

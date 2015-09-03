@@ -47,7 +47,7 @@
 			<field name="name">Availability Check</field>
 			<field name="wkf_id" ref="sale.wkf_sale"/>
 			<field name="kind">function</field>
-			<field name="action">write({'state':'need_availability_check'})</field>
+			<field name="action">notify_availability_check()</field>
 		</record>
 
 		<record model="workflow.activity" id="act_check_manager_approval_needed">
@@ -137,7 +137,7 @@
 
 		<record id="trans_act_check_p_a_act_draft" model="workflow.transition">
 			<field name="act_from" ref="act_check_product_availability"/>
-			<field name="act_to" ref="sale.act_draft"/>
+			<field name="act_to" ref="act_manager_not_approved"/>
 			<field name="signal">sig_availability_not_checked</field>
 		</record>
 

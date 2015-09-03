@@ -32,7 +32,9 @@
     'description': """
 DealerGroup module
 ==================
-Xprimas Dealer Group support.
+Xprimas partner support.
+Adds dealer group support.
+Still under development.
 
 Contributors
 ------------
@@ -40,6 +42,7 @@ Contributors
 * Charles De Lean (cdelean@xprima.com)
 """,
     'depends': [
+        'partner_history',
         #'partner_category_description',
     ],
     'external_dependencies': {
