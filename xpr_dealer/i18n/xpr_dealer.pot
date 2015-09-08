@@ -1,6 +1,6 @@
 # Translation of OpenERP Server.
 # This file contains the translation of the following modules:
-#	* dealergroup
+#	* xpr_dealer
 #
 msgid ""
 msgstr ""
@@ -15,45 +15,45 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: dealergroup
-#: model:ir.ui.menu,name:dealergroup.menu_certification_form
+#. module: xpr_dealer
+#: model:ir.ui.menu,name:xpr_dealer.menu_certification_form
 msgid "Certifications"
 msgstr ""
 
-#. module: dealergroup
+#. module: xpr_dealer
 #: field:res.partner.category.certification,description:0
 msgid "Description"
 msgstr ""
 
-#. module: dealergroup
+#. module: xpr_dealer
 #: field:res.partner.category,certification:0
 msgid "Certification"
 msgstr ""
 
-#. module: dealergroup
-#: model:ir.actions.act_window,help:dealergroup.action_certification_form
+#. module: xpr_dealer
+#: model:ir.actions.act_window,help:xpr_dealer.action_certification_form
 msgid "<p class=\"oe_view_nocontent_create\">\n"
 "          Click to create a new certification for partner category.\n"
 "        </p>\n"
 "      "
 msgstr ""
 
-#. module: dealergroup
-#: model:ir.model,name:dealergroup.model_res_partner_category_certification
+#. module: xpr_dealer
+#: model:ir.model,name:xpr_dealer.model_res_partner_category_certification
 msgid "Partner Categories Certifications"
 msgstr ""
 
-#. module: dealergroup
-#: model:ir.actions.act_window,name:dealergroup.action_certification_form
+#. module: xpr_dealer
+#: model:ir.actions.act_window,name:xpr_dealer.action_certification_form
 msgid "Partner Category Certifications"
 msgstr ""
 
-#. module: dealergroup
-#: model:ir.model,name:dealergroup.model_res_partner_category
+#. module: xpr_dealer
+#: model:ir.model,name:xpr_dealer.model_res_partner_category
 msgid "Partner Categories"
 msgstr ""
 
-#. module: dealergroup
+#. module: xpr_dealer
 #: field:res.partner.category.certification,name:0
 msgid "Certification Name"
 msgstr ""
