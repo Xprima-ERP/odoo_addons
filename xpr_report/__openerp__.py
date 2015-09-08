@@ -51,6 +51,7 @@ Contributors
     'data': [
         'sale_order_custom_report.xml',
         'terms_and_conditions.xml',
+        'companies.xml',
     ],
     'installable': True,
 }

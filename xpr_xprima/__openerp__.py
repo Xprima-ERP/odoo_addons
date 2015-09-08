@@ -67,7 +67,8 @@ because of wizard.
     ],
 
     'data': [
-        'config.xml'
+        'config.xml',
+        'companies.xml',
     ],
     'demo': [],
     'installable': True,
