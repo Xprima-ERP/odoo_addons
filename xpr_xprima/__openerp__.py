@@ -33,7 +33,7 @@ because of wizard.
         'xpr_sale_process',
 
         'xpr_report',
-        'xpr_dealer_group',
+        #'xpr_dealer_group',
         #'xpr_dropdowns_values',
         #'xpr_xis_connector', # Legacy. Will be dropped eventually
 
