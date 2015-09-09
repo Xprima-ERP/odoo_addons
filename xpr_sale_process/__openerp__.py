@@ -13,7 +13,7 @@ Setup:
 
 - Config sets Sales Order id format (C prefix). Sales orders are contracts.
 - Quotes can be created directly in views only if user is a manager
-- Advertisement and All Discounts Sales groups
+- Advertising and All Discounts Sales groups
     """,
 
     'author': "Xprima",
