@@ -65,7 +65,6 @@ Contributors
     'data': [
         #'res.groups.csv',
         #'views/product.xml',
-        'views/res_partner.xml',
         #'views/res_user.xml',
         #'ir.config_parameter.csv',
         #'views/sale.xml',
