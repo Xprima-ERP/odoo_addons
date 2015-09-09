@@ -69,7 +69,6 @@ Contributors
         #'ir.config_parameter.csv',
         #'views/sale.xml',
         #'ir.ui.menu.csv',
-        #'security/ir.model.access.csv',
         #'ir.actions.act_window.csv',
         #'product.pricelist.csv',
     ],
