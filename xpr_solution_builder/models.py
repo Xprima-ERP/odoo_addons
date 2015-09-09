@@ -267,7 +267,7 @@ class SalesOrder(models.Model):
             order.order_line += order.order_line.new(dict(
                 order_id=order.id,
                 product_id=product.id,
-                name=product.description_sale,
+                name=product.description_sale or ' ',
                 product_uom_qty=qty,
                 price_unit=product.list_price,
                 solution_part=1,
@@ -540,7 +540,7 @@ class SolutionConfigurator(models.TransientModel):
                 dict(
                     order_id=self.order.id,
                     product_id=product.id,
-                    name=product.description_sale,
+                    name=product.description_sale or ' ',
                     product_uom_qty=1.0,
                     solution_part=2))
 
