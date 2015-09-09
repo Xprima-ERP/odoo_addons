@@ -64,7 +64,6 @@ Contributors
     },
     'data': [
         #'res.groups.csv',
-        'load_french.xml',
         #'views/product.xml',
         'views/res_partner.xml',
         #'views/res_user.xml',

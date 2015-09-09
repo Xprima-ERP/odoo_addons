@@ -33,9 +33,10 @@ because of wizard.
         'xpr_sale_process',
 
         'xpr_report',
-        #'xpr_dealer_group',
-        #'xpr_dropdowns_values',
-        #'xpr_xis_connector', # Legacy. Will be dropped eventually
+        'xpr_dealer',
+        #'xpr_dealer_group', # Merged into xpr_dealer
+        #'xpr_dropdowns_values', # Merged into xpr_dealer
+        #'xpr_xis_connector', # Legacy. Will be stripped, then dropped.
 
         #'xpr_product_variant_filters',  # Deprecated
         #'xpr_csi_program', # Later
@@ -69,6 +70,7 @@ because of wizard.
     'data': [
         'config.xml',
         'companies.xml',
+        'load_french.xml',
     ],
     'demo': [],
     'installable': True,
