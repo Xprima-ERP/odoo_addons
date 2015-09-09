@@ -49,8 +49,7 @@ Contributors
         'crm',
         'sale',
         'hr',
-        'xpr_dealer_group',
-        'xpr_dropdowns_values',
+        'xpr_dealer',
         'xpr_product',
 
         #'account',
