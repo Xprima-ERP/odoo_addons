@@ -30,6 +30,74 @@ from sets import Set
 _logger = logging.getLogger(__name__)
 
 
+class dealer_category_certification(orm.Model):
+    _description = 'Dealer Certifications'
+    # 'res.partner.category.certification'
+    _name = 'res.partner.category.certification'
+
+    _columns = {
+        'name': fields.char('Name', required=True, size=64, translate=True)
+        'description': fields.text('Description', translate=True)
+        'automatic': fields.boolean('Automatic', default=False)
+    }
+
+class dealer_category(orm.Model):
+
+    """Extension of a category, that permits
+    to describe a group of certifications for a dealer"""
+
+    # 'res.partner.category
+    _name = 'xpr_xis_connector.dealer.group'
+    name = fields.Char('Name', required=True, size=64, translate=True)
+
+    _columns = {
+        'certification': fields.many2many(
+        'xpr_dealer.dealer.certification',
+        'dealer_certification_certification_rel',
+        'category_id',
+        'certification_id',
+        'Certification'),  # Not used yet
+
+        'xis_certification_id': fields.integer('XIS certification id')
+    }
+
+    # Deprecated.
+    # 'x_sf_id': fields.char('Salesforce ID', size=18, select=True),
+
+    # Based on client comments, not used anymore.
+    # 'x_salesperson': fields.many2one('res.users','Salesperson'),
+
+    # Duplicate of 'name' field. Deprecated.
+    # 'x_dealergroup': fields.char('Dealergroup', size=254),
+
+    # Deprecated. Import description after changing language
+    # 'x_description_fr': fields.char('Description FR', size=254),
+
+    # Legacy id for xis_connector
+    
+
+
+class dealer(orm.Model):
+
+    _inherit = 'xpr_dealer.dealer'
+
+    # xis_dc renamed as code
+
+    # Already in phone field
+    # "area_code": fields.char("Area Code", size=3), # For XIS
+
+    _columns = {
+        'owner': fields.char(
+            "Dealership Owner",
+            size=45,
+            help="This field is there for the synchronization to XIS")
+
+        'owneremail': fields.char(
+            "Dealership Owner Email",
+            size=240,
+            help="This field is there for the synchronization to XIS")
+    }
+
 class sale_order(orm.Model):
     _inherit = "sale.order"
 

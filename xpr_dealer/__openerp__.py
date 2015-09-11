@@ -21,20 +21,19 @@
 ##############################################################################
 
 {
-    'name': 'Xprima Dealer Group',
-    'version': '0.2',
+    'name': 'Xprima Dealer',
+    'version': '0.1',
     'author': 'Xprima',
     'maintainer': 'Xprima',
     'website': 'http://www.xprima.com',
     'license': 'AGPL-3',
     'category': 'Partner',
-    'summary': 'Xprima Dealer Group support',
+    'summary': 'Brings additional data for partners that are dealers',
     'description': """
 DealerGroup module
 ==================
 Xprimas partner support.
 Adds dealer group support.
-Still under development.
 
 Contributors
 ------------
