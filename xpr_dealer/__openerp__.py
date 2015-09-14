@@ -48,7 +48,9 @@ Contributors
         'python': [],
     },
     'data': [
+        'security/ir.model.access.csv',
         'views/res_partner.xml',
+        'res_partners_categories.xml',
     ],
     'installable': True,
 }

@@ -1,0 +1,995 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+<data>
+
+    <record model="ir.actions.act_window" id="dealer_category_action">
+        <field name="name">Dealer Categories</field>
+        <field name="res_model">res.partner.category</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="dealer_category_menu" name="Dealer Categories"
+                  parent="base.menu_sales"
+                  action="dealer_category_action"/>
+
+</data>
+<data>
+     <record model="res.partner.category" id="category_dealer">
+        <field name="name">Dealer</field>
+     </record>
+     <record model="res.partner.category" id="category_dealer_new">
+        <field name="name">New Dealerships</field>
+        <field name="parent_id" ref="category_dealer" />
+     </record>
+     <record model="res.partner.category" id="category_dealer_used">
+        <field name="name">Used Dealerships</field>
+        <field name="parent_id" ref="category_dealer" />
+     </record>
+</data>
+<data>
+
+     <record model="res.partner.category" id="category_dealer_car">
+        <field name="name">Car</field>
+        <field name="parent_id" ref="category_dealer" />
+     </record>
+
+     <record model="res.partner.category" id="category_dealer_car_acura">
+        <field name="name">Acura</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_amgeneral">
+        <field name="name">AMGeneral</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_astonmartin">
+        <field name="name">Aston Martin</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_audi">
+        <field name="name">Audi</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_bentley">
+        <field name="name">Bentley</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_bmw">
+        <field name="name">BMW</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_bugatti">
+        <field name="name">Bugatti</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_buick">
+        <field name="name">Buick</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_cadillac">
+        <field name="name">Cadillac</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_campagna">
+        <field name="name">Campagna</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_chevrolet">
+        <field name="name">Chevrolet</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_chrysler">
+        <field name="name">Chrysler</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_daewoo">
+        <field name="name">Daewoo</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_dodge">
+        <field name="name">Dodge</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_ferrari">
+        <field name="name">Ferrari</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_fiat">
+        <field name="name">Fiat</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_ford">
+        <field name="name">Ford</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_fordsvt">
+        <field name="name">FordSVT</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_freightliner">
+        <field name="name">Freightliner</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_gmc">
+        <field name="name">GMC</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_hino">
+        <field name="name">Hino</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_holiday">
+        <field name="name">Holiday</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_honda">
+        <field name="name">Honda</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_hummer">
+        <field name="name">Hummer</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_hyundai">
+        <field name="name">Hyundai</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_infiniti">
+        <field name="name">Infiniti</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_international">
+        <field name="name">International</field>
+        <field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_isuzu">
+        <field name="name">Isuzu</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_jaguar">
+        <field name="name">Jaguar</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_jeep">
+        <field name="name">Jeep</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_kenworth">
+        <field name="name">Kenworth</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_kia">
+        <field name="name">Kia</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_lada">
+        <field name="name">Lada</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_lamborghini">
+        <field name="name">Lamborghini</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_landRover">
+        <field name="name">LandRover</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_lexus">
+        <field name="name">Lexus</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_lincoln">
+        <field name="name">Lincoln</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_lotus">
+        <field name="name">Lotus</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_mack">
+        <field name="name">Mack</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_maserati">
+        <field name="name">Maserati</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_maybach">
+        <field name="name">Maybach</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_mazda">
+        <field name="name">Mazda</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_mercedes">
+        <field name="name">Mercedes</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_mini">
+        <field name="name">MINI</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_mitsubishi">
+        <field name="name">Mitsubishi</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_navistar">
+        <field name="name">Navistar</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_nissan">
+        <field name="name">Nissan</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_peterbilt">
+        <field name="name">Peterbilt</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_pontiac">
+        <field name="name">Pontiac</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_porsche">
+        <field name="name">Porsche</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_ram">
+        <field name="name">Ram</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_rolls_royce">
+        <field name="name">Rolls-Royce</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_s_s_i_">
+        <field name="name">S.S.I.</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_Saab">
+        <field name="name">Saab</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_saturn">
+        <field name="name">Saturn</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_scion">
+        <field name="name">Scion</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_smart">
+        <field name="name">Smart</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_spyker">
+        <field name="name">Spyker</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_subaru">
+        <field name="name">Subaru</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_suzuki">
+        <field name="name">Suzuki</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_toyota">
+        <field name="name">Toyota</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_volkswagen">
+        <field name="name">Volkswagen</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_volvo">
+        <field name="name">Volvo</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_car_westernStar">
+        <field name="name">WesternStar</field>
+		<field name="parent_id" ref="category_dealer_car" />
+    </record>
+
+</data>
+<data>
+    <record model="res.partner.category" id="category_dealer_moto">
+        <field name="name">Moto</field>
+        <field name="parent_id" ref="category_dealer" />
+     </record>
+
+    <record model="res.partner.category" id="category_dealer_moto_american_hotrod">
+        <field name="name">American Hotrod</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_aprilia">
+        <field name="name">Aprilia</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_benelli">
+        <field name="name">Benelli</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_bmw">
+        <field name="name">BMW</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_buell">
+        <field name="name">Buell</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_campagna">
+        <field name="name">Campagna</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_can_am">
+        <field name="name">Can-Am</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_chironex">
+        <field name="name">Chironex</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_cmi_motor">
+        <field name="name">CMI-Motor</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_cpi">
+        <field name="name">CPI</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_derbi">
+        <field name="name">Derbi</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_ducati">
+        <field name="name">Ducati</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_eton">
+        <field name="name">Eton</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_gas_gas">
+        <field name="name">Gas Gas</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_harley_davidson">
+        <field name="name">Harley-Davidson</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_hellbound_steel">
+        <field name="name">Hellbound Steel</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_honda">
+        <field name="name">Honda</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_husaberg">
+        <field name="name">Husaberg</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_husqvarna">
+        <field name="name">Husqvarna</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_hyosung">
+        <field name="name">Hyosung</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_indian">
+        <field name="name">Indian</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_junior">
+        <field name="name">Junior</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_kasea">
+        <field name="name">Kasea</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_kawasaki">
+        <field name="name">Kawasaki</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_keeway">
+        <field name="name">Keeway</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_ktm">
+        <field name="name">KTM</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_kymco">
+        <field name="name">Kymco</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_lem">
+        <field name="name">LEM</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_nordik_motor">
+        <field name="name">Nordik Motor</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_moto_guzzi">
+        <field name="name">Moto Guzzi</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_occ">
+        <field name="name">OCC</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_pagsta">
+        <field name="name">Pagsta</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_peugeot">
+        <field name="name">Peugeot</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_pgo">
+        <field name="name">PGO</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_piaggio">
+        <field name="name">Piaggio</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_pitster_pro">
+        <field name="name">Pitster Pro</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_precision_cycle_works">
+        <field name="name">Precision Cycle Works</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_pro_one">
+        <field name="name">Pro-One</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_ridley">
+        <field name="name">Ridley</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_saxon">
+        <field name="name">Saxon</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_sherco">
+        <field name="name">Sherco</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_sym">
+        <field name="name">Sym</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_suzuki">
+        <field name="name">Suzuki</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_tgb">
+        <field name="name">TGB</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_tm">
+        <field name="name">TM</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_travertson">
+        <field name="name">Travertson</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_triumph">
+        <field name="name">Triumph</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_ural">
+        <field name="name">Ural</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_vespa">
+        <field name="name">Vespa</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_victory">
+        <field name="name">Victory</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_vor">
+        <field name="name">VOR</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_moto_yamaha">
+        <field name="name">Yamaha</field>
+		<field name="parent_id" ref="category_dealer_moto" />
+    </record>
+</data>
+
+<data>
+    <record model="res.partner.category" id="category_dealer_atv">
+        <field name="name">ATV</field>
+        <field name="parent_id" ref="category_dealer" />
+     </record>
+
+    <record model="res.partner.category" id="category_dealer_atv_arctic_cat">
+        <field name="name">Arctic Cat</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_bombardier">
+        <field name="name">Bombardier</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_bombardier_brp">
+        <field name="name">Bombardier (BRP)</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_can_am">
+        <field name="name">Can-Am</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_e_ton">
+        <field name="name">E-Ton</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_gas_gas">
+        <field name="name">Gas Gas</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_honda">
+        <field name="name">Honda</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_kawasaki">
+        <field name="name">Kawasaki</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_nordic_motor">
+        <field name="name">Nordic Motor</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_pgo">
+        <field name="name">PGO</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_polaris">
+        <field name="name">Polaris</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_suzuki">
+        <field name="name">Suzuki</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_atv_yamaha">
+        <field name="name">Yamaha</field>
+		<field name="parent_id" ref="category_dealer_atv" />
+    </record>
+       
+</data>
+    
+<data>
+    <record model="res.partner.category" id="category_dealer_snowmobile">
+        <field name="name">Snowmobile</field>
+        <field name="parent_id" ref="category_dealer" />
+    </record>    
+
+    <record model="res.partner.category" id="category_dealer_snowmobile_artic_cat">
+        <field name="name">Artic Cat</field>
+		<field name="parent_id" ref="category_dealer_snowmobile" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_snowmobile_polaris">
+        <field name="name">Polaris</field>
+		<field name="parent_id" ref="category_dealer_snowmobile" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_snowmobile_ski_doo">
+        <field name="name">Ski-Doo</field>
+		<field name="parent_id" ref="category_dealer_snowmobile" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_snowmobile_snow_hawk">
+        <field name="name">Snow-Hawk</field>
+		<field name="parent_id" ref="category_dealer_snowmobile" />
+    </record>
+</data>
+
+<data>
+    <record model="res.partner.category" id="category_dealer_watercraft">
+        <field name="name">Watercraft</field>
+        <field name="parent_id" ref="category_dealer" />
+    </record>
+
+    <record model="res.partner.category" id="category_dealer_watercraft_honda">
+        <field name="name">Honda</field>
+		<field name="parent_id" ref="category_dealer_watercraft" />
+        </record>
+    <record model="res.partner.category" id="category_dealer_watercraft_kawasaki">
+        <field name="name">Kawasaki</field>
+		<field name="parent_id" ref="category_dealer_watercraft" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_watercraft_sea_doo">
+        <field name="name">Sea-Doo</field>
+		<field name="parent_id" ref="category_dealer_watercraft" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_watercraft_yamaha">
+        <field name="name">Yamaha</field>
+		<field name="parent_id" ref="category_dealer_watercraft" />
+    </record>
+
+</data>
+<!--
+        <record id="partner_business_relationship_test_account" model="partner_business_relationship">
+        <field name="name">Test Account</field>
+        </record>
+        <record id="partner_business_relationship_prospect" model="partner_business_relationship">
+        <field name="name">Prospect</field>
+        </record>
+        <record id="partner_business_relationship_existing_customer" model="partner_business_relationship">
+        <field name="name">Existing Customer</field>
+        </record>
+        <record id="partner_business_relationship_past_customer" model="partner_business_relationship">
+        <field name="name">Past Customer</field>
+        </record>
+        <record id="partner_industry_new_dealerships" model="partner_industry">
+        <field name="name">New Dealerships</field>
+        </record>
+        <record id="partner_industry_used_dealerships" model="partner_industry">
+        <field name="name">Used Dealerships</field>
+        </record>
+        <record id="partner_industry_moto_atv_dealerships" model="partner_industry">
+        <field name="name">Moto/ATV Dealerships</field>
+        </record>
+        <record id="partner_industry_rv_dealerships" model="partner_industry">
+        <field name="name">RV Dealerships</field>
+        </record>
+        <record id="partner_industry_it_support" model="partner_industry">
+        <field name="name">IT Support</field>
+        </record>
+      
+        <record id="customermask_Auto123" model="customermask">
+        <field name="name">Auto123</field>
+        </record>
+        <record id="customermask_CCAQ" model="customermask">
+        <field name="name">CCAQ</field>
+        </record>
+       
+        <record id="partner_market_calgary" model="partner_market">
+        <field name="name">Calgary</field>
+        </record>
+        <record id="partner_market_edmonton" model="partner_market">
+        <field name="name">Edmonton</field>
+        </record>
+        <record id="partner_market_gta" model="partner_market">
+        <field name="name">gta</field>
+        </record>
+        <record id="partner_market_montreal" model="partner_market">
+        <field name="name">Montreal</field>
+        </record>
+        <record id="partner_market_osprey" model="partner_market">
+        <field name="name">Osprey</field>
+        </record>
+        <record id="partner_market_ottawa" model="partner_market">
+        <field name="name">Ottawa</field>
+        </record>
+        <record id="partner_market_regina" model="partner_market">
+        <field name="name">Regina</field>
+        </record>
+        <record id="partner_market_saskatoon" model="partner_market">
+        <field name="name">Saskatoon</field>
+        </record>
+        <record id="partner_market_vancouver" model="partner_market">
+        <field name="name">Vancouver</field>
+        </record>
+        <record id="partner_market_victoria" model="partner_market">
+        <field name="name">Victoria</field>
+        </record>
+        <record id="partner_market_windsor" model="partner_market">
+        <field name="name">Windsor</field>
+        </record>
+        <record id="partner_market_winnipeg" model="partner_market">
+        <field name="name">Winnipeg</field>
+        </record>
+        <record id="partner_market_nanaimo" model="partner_market">
+        <field name="name">Nanaimo</field>
+        </record>
+        <record id="partner_region_medicine_hat" model="partner_region">
+        <field name="name">Medicine Hat (div#1)</field>
+        <field name="code">MH</field>
+        </record>
+        <record id="partner_region_lethbridge" model="partner_region">
+        <field name="name">Lethbridge (div#2)</field>
+        <field name="code">LB</field>
+        </record>
+        <record id="partner_region_fort_macleod" model="partner_region">
+        <field name="name">Fort Macleod (div#3)</field>
+        <field name="code">FM</field>
+        </record>
+        <record id="partner_region_hanna" model="partner_region">
+        <field name="name">Hanna (div#4)</field>
+        <field name="code">HA</field>
+        </record>
+        <record id="partner_region_drumheller" model="partner_region">
+        <field name="name">Drumheller (div#5)</field>
+        <field name="code">DH</field>
+        </record>
+        <record id="partner_region_calgary" model="partner_region">
+        <field name="name">Calgary (div#6)</field>
+        <field name="code">CA</field>
+        </record>
+        <record id="partner_region_stettler" model="partner_region">
+        <field name="name">Stettler (div#7)</field>
+        <field name="code">ST</field>
+        </record>
+        <record id="partner_region_red_deer" model="partner_region">
+        <field name="name">Red Deer (div#8)</field>
+        <field name="code">RD</field>
+        </record>
+        <record id="partner_region_rocky_mountain_house" model="partner_region">
+        <field name="name">Rocky Mountain House (div#9)</field>
+        <field name="code">RM</field>
+        </record>
+        <record id="partner_region_camrose_lloydminster" model="partner_region">
+        <field name="name">Camrose-Lloydminster (div#10)</field>
+        <field name="code">CL</field>
+        </record>
+        <record id="partner_region_edmonton" model="partner_region">
+        <field name="name">Edmonton (div#11)</field>
+        <field name="code">ED</field>
+        </record>
+        <record id="partner_region_st_paul" model="partner_region">
+        <field name="name">St. Paul (div#12)</field>
+        <field name="code">SP</field>
+        </record>
+        <record id="partner_region_athabasca" model="partner_region">
+        <field name="name">Athabasca (div#13)</field>
+        <field name="code">AT</field>
+        </record>
+        <record id="partner_region_edson" model="partner_region">
+        <field name="name">Edson (div#14)</field>
+        <field name="code">EN</field>
+        </record>
+        <record id="partner_region_banff" model="partner_region">
+        <field name="name">Banff (div#15)</field>
+        <field name="code">BA</field>
+        </record>
+        <record id="partner_region_fort_mcMurray" model="partner_region">
+        <field name="name">Fort McMurray (div#16)</field>
+        <field name="code">FO</field>
+        </record>
+        <record id="partner_region_slave_lake" model="partner_region">
+        <field name="name">Slave Lake (div #17)</field>
+        <field name="code">SL</field>
+        </record>
+        <record id="partner_region_grande_cache" model="partner_region">
+        <field name="name">Grande Cache (div#18)</field>
+        <field name="code">GC</field>
+        </record>
+        <record id="partner_region_grande_prairie" model="partner_region">
+        <field name="name">Grande Prairie (div#19)</field>
+        <field name="code">GP</field>
+        </record>
+        <record id="partner_region_barrie" model="partner_region">
+        <field name="name">Barrie</field>
+        <field name="code">BR</field>
+        </record>
+        <record id="partner_region_hamilton" model="partner_region">
+        <field name="name">Hamilton</field>
+        <field name="code">HM</field>
+        </record>
+        <record id="partner_region_kenora" model="partner_region">
+        <field name="name">Kenora</field>
+        <field name="code">KN</field>
+        </record>
+        <record id="partner_region_kingston" model="partner_region">
+        <field name="name">Kingston</field>
+        <field name="code">KT</field>
+        </record>
+        <record id="partner_region_kitchener_waterloo" model="partner_region">
+        <field name="name">Kitchener/Waterloo</field>
+        <field name="code">KW</field>
+        </record>
+        <record id="partner_region_london" model="partner_region">
+        <field name="name">London</field>
+        <field name="code">LD</field>
+        </record>
+        <record id="partner_region_manitoulin_island" model="partner_region">
+        <field name="name">Manitoulin Island</field>
+        <field name="code">MI</field>
+        </record>
+        <record id="partner_region_moose_factory" model="partner_region">
+        <field name="name">Moose Factory</field>
+        <field name="code">MF</field>
+        </record>
+        <record id="partner_region_niagara_falls" model="partner_region">
+        <field name="name">Niagara Falls</field>
+        <field name="code">NF</field>
+        </record>
+        <record id="partner_region_north_bay" model="partner_region">
+        <field name="name">North Bay</field>
+        <field name="code">NB</field>
+        </record>
+        <record id="partner_region_0ttawa" model="partner_region">
+        <field name="name">Ottawa</field>
+        <field name="code">OT</field>
+        </record>
+        <record id="partner_region_owen_sound" model="partner_region">
+        <field name="name">Owen Sound</field>
+        <field name="code">OS</field>
+        </record>
+        <record id="partner_region_sudbury" model="partner_region">
+        <field name="name">Sudbury</field>
+        <field name="code">SB</field>
+        </record>
+        <record id="partner_region_sarnia" model="partner_region">
+        <field name="name">Sarnia</field>
+        <field name="code">SN</field>
+        </record>
+        <record id="partner_region_sault_ste_marie" model="partner_region">
+        <field name="name">Sault Ste. Marie</field>
+        <field name="code">SS</field>
+        </record>
+        <record id="partner_region_thunder_bay" model="partner_region">
+        <field name="name">Thunder Bay</field>
+        <field name="code">TB</field>
+        </record>
+        <record id="partner_region_timmins" model="partner_region">
+        <field name="name">Timmins</field>
+        <field name="code">TM</field>
+        </record>
+        <record id="partner_region_toronto" model="partner_region">
+        <field name="name">Toronto</field>
+        <field name="code">TO</field>
+        </record>
+        <record id="partner_region_windsor" model="partner_region">
+        <field name="name">Windsor</field>
+        <field name="code">WS</field>
+        </record>
+        <record id="partner_region_abitibi_temiscamingue" model="partner_region">
+        <field name="name">Abitibi/Témiscamingue</field>
+        <field name="code">AB</field>
+        </record>
+        <record id="partner_region_bois_francs" model="partner_region">
+        <field name="name">Bois-Francs</field>
+        <field name="code">BO</field>
+        </record>
+        <record id="partner_region_bas_saint_laurent" model="partner_region">
+        <field name="name">Bas-Saint-Laurent</field>
+        <field name="code">BS</field>
+        </record>
+        <record id="partner_region_chaudiere_appalaches" model="partner_region">
+        <field name="name">Chaudière-Appalaches</field>
+        <field name="code">CH</field>
+        </record>
+        <record id="partner_region_cote_nord" model="partner_region">
+        <field name="name">Côte-Nord</field>
+        <field name="code">CO</field>
+        </record>
+        <record id="partner_region_estrie" model="partner_region">
+        <field name="name">Estrie</field>
+        <field name="code">ES</field>
+        </record>
+        <record id="partner_region_gaspesie_iles_de_la_madeleine" model="partner_region">
+        <field name="name">Gaspésie/Iles de la Madeleine</field>
+        <field name="code">GA</field>
+        </record>
+        <record id="partner_region_laurentides" model="partner_region">
+        <field name="name">Laurentides</field>
+        <field name="code">LR</field>
+        </record>
+        <record id="partner_region_lanaudiere" model="partner_region">
+        <field name="name">Lanaudière</field>
+        <field name="code">LA</field>
+        </record>
+        <record id="partner_region_laval" model="partner_region">
+        <field name="name">Laval</field>
+        <field name="code">LV</field>
+        </record>
+        <record id="partner_region_mauricie" model="partner_region">
+        <field name="name">Mauricie</field>
+        <field name="code">MA</field>
+        </record>
+        <record id="partner_region_monteregie" model="partner_region">
+        <field name="name">Montérégie</field>
+        <field name="code">MO</field>
+        </record>
+        <record id="partner_region_montreal" model="partner_region">
+        <field name="name">Montréal</field>
+        <field name="code">MT</field>
+        </record>
+        <record id="partner_region_nord_du_quebec" model="partner_region">
+        <field name="name">Nord-du-Québec</field>
+        <field name="code">NO</field>
+        </record>
+        <record id="partner_region_outaouais" model="partner_region">
+        <field name="name">Outaouais</field>
+        <field name="code">OU</field>
+        </record>
+        <record id="partner_region_quebec" model="partner_region">
+        <field name="name">Québec</field>
+        <field name="code">QC</field>
+        </record>
+        <record id="partner_region_saguenay_lac_st_jean" model="partner_region">
+        <field name="name">Saguenay/Lac-St-Jean</field>
+        <field name="code">SA</field>
+        </record>
+        <record id="partner_site_type_has_website_with_us" model="partner_site_type">
+        <field name="name">Has Website With Us</field>
+        </record>
+        <record id="partner_site_type_has_a_link_or_portals_to_their_site" model="partner_site_type">
+        <field name="name">Has a link or portals to their site</field>
+        </record>
+        <record id="partner_site_type_does_not_have_a_website" model="partner_site_type">
+        <field name="name">Does not have a website</field>
+        </record>
+        
+        
+        <record id="partner_portalmask_auto123_network" model="partner_portalmask">
+        <field name="name">Auto123 Network</field>
+        </record>
+        <record id="partner_portalmask_ammq___aqvl" model="partner_portalmask">
+        <field name="name">AMMQ / AQVL</field>
+        </record>
+        <record id="partner_portalmask_gm_optimum___enabled_sites" model="partner_portalmask">
+        <field name="name">GM Optimum - Enabled Sites</field>
+        </record>
+        <record id="partner_portalmask_hyundai_cpo" model="partner_portalmask">
+        <field name="name">Hyundai CPO</field>
+        </record>
+        <record id="partner_portalmask_mucda_portal" model="partner_portalmask">
+        <field name="name">MUCDA Portal</field>
+        </record>
+        <record id="partner_telephone_choice_phone" model="partner_telephone_choice">
+        <field name="name">Phone</field>
+        </record>
+        <record id="partner_telephone_choice_toll_free" model="partner_telephone_choice">
+        <field name="name">Toll Free</field>
+        </record>
+        <record id="partner_telephone_choice_evolio_call_tracking" model="partner_telephone_choice">
+        <field name="name">Evolio Call Tracking</field>
+        </record>
+        <record id="partner_categorization_field_duplicate_account" model="partner_categorization_field">
+        <field name="name">Duplicate Account</field>
+        </record>
+        <record id="partner_categorization_field_not_in_master_file__update_date_wit" model="partner_categorization_field">
+        <field name="name">Not in Master File (Update Date within one Year)</field>
+        </record>
+        <record id="partner_categorization_field_closed" model="partner_categorization_field">
+        <field name="name">Closed</field>
+        </record>
+        <record id="partner_categorization_field_not_in_master_file__update_date_gre" model="partner_categorization_field">
+        <field name="name">Not in Master File (Update Date Greater than 1 Year)</field>
+        </record>
+        <record id="case_origin_email" model="case_origin">
+        <field name="name">Email</field>
+        </record>
+        <record id="case_origin_fax" model="case_origin">
+        <field name="name">Fax</field>
+        </record>
+        <record id="case_origin_internal" model="case_origin">
+        <field name="name">Internal</field>
+        </record>
+        <record id="case_origin_phone" model="case_origin">
+        <field name="name">Phone</field>
+        </record>
+        <record id="case_origin_web" model="case_origin">
+        <field name="name">Web</field>
+        </record>
+        <record id="dealer_group_goup_type_primary_group" model="dealer_group_group_type">
+        <field name="name">Primary Group</field>
+        </record>
+        <record id="dealer_group_goup_type_dealer_sub_group" model="dealer_group_group_type">
+        <field name="name">Dealer Sub-Group</field>
+        </record>
+        <record id="dealer_group_goup_type_dealer_association" model="dealer_group_group_type">
+        <field name="name">Dealer Association</field>
+        </record>
+        <record id="dealer_group_goup_type_marketing_association" model="dealer_group_group_type">
+        <field name="name">Marketing Association</field>
+        </record>
+        <record id="dealer_group_goup_type_automatic_certification" model="dealer_group_group_type">
+        <field name="name">Automatic Certification</field>
+        </record>
+        <record id="dealer_group_goup_type_manual_certification" model="dealer_group_group_type">
+        <field name="name">Manual Certification</field>
+        </record>
+    -->
+</openerp>

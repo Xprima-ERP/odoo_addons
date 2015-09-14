@@ -130,12 +130,19 @@ class Dealer(models.Model):
         res = [(r['name'], r['name']) for r in res]
         return res
 
-    partner = fields.Many2one(
-        'res.partner',
-        string='Related partner')
+    # 'xis_dc': fields.char('XIS dealer code', size=254),
+    # TODO: This code is used by some non dealer companies.
+    # Confirm their codes can be dropped.
 
-    #'xis_dc': fields.char('XIS dealer code', size=254),
+    partner = fields.One2many(
+        'res.partner',
+        'dealer',
+        string="Related partner"
+    )
+
     code = fields.Char('Dealer code', size=254, required=True)
+
+    corpname = fields.Char("Legal Name", size=128)
 
     quoteflag = fields.Boolean("Send Quotes")
     responsible = fields.Char("Responsible", size=80)
@@ -147,30 +154,28 @@ class Dealer(models.Model):
     billing_street = fields.Char(
         "Billing Street",
         size=128,
-        required=False),
-    # Unused and outright evil.
-    # "billing_street2": fields.char("Billing Street2",
-    #                                size=128,
-    #                                required=False),
+        required=False)
+
+    # Unused. Kept because there is a street2 field.
+    billing_street2 = fields.Char(
+        "Billing Street2",
+        size=128,
+        required=False)
 
     billing_city = fields.Char("Billing City", size=128, required=False)
     billing_state_id = fields.Many2one(
         "res.country.state",
         "Billing State")
 
-    billing_zip = fields.Char("ZIP Billing", size=24, required=False),
+    billing_zip = fields.Char("ZIP Billing", size=24, required=False)
 
     billing_country_id = fields.Many2one(
         "res.country",
         "Billing Country")
 
-    corpname = fields.Char("Legal Name", size=128)
-
-
-    # TODO: Check if website can be translatable.
+    # TODO: Make 'website' translatable.
     # "website_french": fields.char(
     #  "Website French", size=254, help="Website of Partner or Company"),
-
 
     # TODO: port to categories
     # 'xis_makes': fields.char('XIS Makes', size=254),
@@ -242,22 +247,6 @@ class Dealer(models.Model):
     #     "partner_make_moto_id",
     #     "Moto Makes")
 
-    # Looks like a field that can be deduced
-    # portalmask = fields.Many2many(
-    #     "partner_portalmask",
-    #     "partner_partner_portalmask_rel",
-    #     "partner_id",
-    #     "partner_portalmask_id",
-    #     "Used Cars On")
-
-    # telephone_choice_id = fields.Many2one(
-    #     "partner_telephone_choice",
-    #     "Phone Choice")
-
-    # categorization_field_id = fields.Many2one(
-    #     "partner_categorization_field",
-    #     "Categorization Field")
-
     # business_relationship_id = fields.Many2one(
     #     "partner_business_relationship",
     #     "Business Relationship",
@@ -271,6 +260,25 @@ class Dealer(models.Model):
     #     "customermask_id",
     #     "Customer of")
 
+    # Looks like a field that can be deduced
+    # portalmask = fields.Many2many(
+    #     "partner_portalmask",
+    #     "partner_partner_portalmask_rel",
+    #     "partner_id",
+    #     "partner_portalmask_id",
+    #     "Used Cars On")
+
+    # Doesn't seem to be used very much.
+    # telephone_choice_id = fields.Many2one(
+    #     "partner_telephone_choice",
+    #     "Phone Choice")
+
+    # Should not port. Data is not reliable.
+    # categorization_field_id = fields.Many2one(
+    #     "partner_categorization_field",
+    #     "Categorization Field")
+
+    # Not used often
     # membertype = fields.Many2many(
     #     "partner_business_type",
     #     "partner_partner_business_type_rel",
@@ -278,15 +286,20 @@ class Dealer(models.Model):
     #     "partner_business_type_id",
     #     "Business Types")
 
+    # Not used often
     # industry_id = fields.Many2one(
     #     "partner_industry",
     #     "Industry",
     #     selection=_sel_func_industry,
     #     required=False)
 
+    # Not used often
     # market = fields.Selection(_sel_func_market, "Market")
 
+    # Not used often
     # region = fields.Selection(_sel_func_region, "Region")
+
+    # Not used often
     # site_type_id = fields.Many2one("partner_site_type", "Site Type")
 
 
@@ -294,10 +307,10 @@ class Partner(models.Model):
 
     _inherit = "res.partner"
 
-    dealer = fields.One2many(
+    dealer = fields.Many2one(
         'xpr_dealer.dealer',
-        'partner',
-        string='Dealer Info')
+        string='Dealer Info',
+        ondelete='cascade')
 
     # "is_dealer": fields.boolean("Is Dealer"),  # TODO: Calculate
     # "is_member": fields.boolean("Is Member"),  # TODO: Calculate
