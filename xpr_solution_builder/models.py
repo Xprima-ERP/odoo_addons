@@ -277,8 +277,7 @@ class SalesOrder(models.Model):
             ))
 
         if delta_price != 0:
-            unit = self.env['product.uom'].search(
-                [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
+            unit = self.env.ref('product.product_uom_categ_unit')
 
             sequence += 10
             order.order_line += order.order_line.new(dict(
@@ -307,8 +306,7 @@ class SalesOrder(models.Model):
             order.solution.list_price, order.solution_discount)
 
         if solution_discount != 0:
-            unit = self.env['product.uom'].search(
-                [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
+            unit = self.env.ref('product.product_uom_categ_unit')
 
             lines += order.order_line.new(dict(
                 order_id=order.id,
