@@ -14,6 +14,7 @@
         </xpath>
 
         <field name="category_id" position="before">
+            <field name="code" attrs="{'invisible': [('is_company','=', False)], 'required' : [('is_company','=', True)]}"/>
             <label for="dealer" string="Is a Dealer" attrs="{'invisible': [('is_company','=', False)]}"/>
             <field name="dealer" widget="many2onebutton" attrs="{'invisible': [('is_company','=', False)]}" />
         </field>
@@ -30,7 +31,6 @@
             <group>
           
                 <group>
-                <field name="code"/>
                 <field name="corpname"/>
                 <field name="responsible"/>
                 <field name="quoteflag"/>
@@ -39,6 +39,8 @@
                 <group>
                    <field name="tollfree"/>
                    <field name="callsource_tollfree"/>
+                   <field name="website_french"/>
+                   <field name="additional_website"/>
                 </group>
          
                 <group>
@@ -53,7 +55,13 @@
                   <field name="geolat"/>
                   <field name="geolon"/>
                 </group>
+                <group>
+                  <field name="makes" widget="many2many_tags"
+                    domain="['|', ('id', 'child_of', %(category_dealer_car)d), ('id', 'child_of', %(category_dealer_moto)d), ('id', 'child_of', %(category_dealer_atv)d), ('id', 'child_of', %(category_dealer_snowmobile)d), ('id', 'child_of', %(category_dealer_watercraft)d)]"/>
 
+                    <field name="industries" widget="many2many_tags"
+                    domain="[('parent_id', '=', %(category_dealer)d)]"/>
+                </group>
           </group>
           </sheet>
         </form>

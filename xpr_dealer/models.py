@@ -130,17 +130,11 @@ class Dealer(models.Model):
         res = [(r['name'], r['name']) for r in res]
         return res
 
-    # 'xis_dc': fields.char('XIS dealer code', size=254),
-    # TODO: This code is used by some non dealer companies.
-    # Confirm their codes can be dropped.
-
     partner = fields.One2many(
         'res.partner',
         'dealer',
         string="Related partner"
     )
-
-    code = fields.Char('Dealer code', size=254, required=True)
 
     corpname = fields.Char("Legal Name", size=128)
 
@@ -174,78 +168,30 @@ class Dealer(models.Model):
         "Billing Country")
 
     # TODO: Make 'website' translatable.
-    # "website_french": fields.char(
-    #  "Website French", size=254, help="Website of Partner or Company"),
+    website_french = fields.Char(
+        "Website French", size=254, help="Website of Partner or Company")
+
+    additional_website = fields.Char("Additional Website", size=254)
 
     # TODO: port to categories
     # 'xis_makes': fields.char('XIS Makes', size=254),
 
-    #################################################
-    # Fields that look fishy and useless.
-    #
+    makes = fields.Many2many(
+        'res.partner.category',
+        'dealer_partner_category_make_rel',
+        string="Makes",
+        #domain=[('id', 'child_of', self.env.ref('category_dealer_car'))]
+    )
 
-    # "account_verification_status_id": fields.many2one(
-    #     "account_verification_status",
-    #     "Account Verification Status"),
-
-    # "pin": fields.char("PIN", size=16, required=False,
-    #   help="This field is used by the helpdesk "\
-    #       "when a dealer wants to modify his infos."),
-    # "site_online_date": fields.date("Site Online Date"),
-    # "additional_website": fields.char("Additional Website", size=254),
-
-    # "dayspastdue": fields.integer("TTR Access Cut Off"),
-    # "dpd_override": fields.date("Override Until"),
-    # "hours_bank": fields.float("Hours Bank", digits=(13, 1)),
-
-    # "ttr_access": fields.boolean("TakeTheRoad Access"),
-    # "user10": fields.char("User10", size=10),
-    # "user12": fields.char("User12", size=12),
-    # "user12e": fields.char("User12e", size=12),
-    # "user40": fields.char("User40", size=40),
-    # "user40e": fields.char("User40e", size=40),
-    # "user80": fields.char("User80", size=80),
-
-    # "cbb_free_trial_sept_2013": fields.boolean("CBB Free Trial Sept 2013"),
-
+    industries = fields.Many2many(
+        'res.partner.category',
+        'dealer_partner_category_industry_rel',
+        string="Industries",
+        #domain=[('id', 'child_of', self.env.ref('category_dealer_car'))]
+    )
     #####################################################
     # Editable manual fields. Selections or multi select.
     # Import these as partner categories
-
-    # makes_atv = fields.Many2many(
-    #     "partner_make_atv",
-    #     "partner_partner_make_atv_rel",
-    #     "partner_id",
-    #     "partner_make_atv_id",
-    #     "ATV Makes")
-
-    # makes_snowmobile = fields.Many2many(
-    #     "partner_make_snowmobile",
-    #     "partner_partner_make_snowmobile_rel",
-    #     "partner_id",
-    #     "partner_make_snowmobile_id",
-    #     "Snowmobile Makes")
-
-    # makes_watercraft = fields.Many2many(
-    #     "partner_make_watercraft",
-    #     "partner_partner_make_watercraft_rel",
-    #     "partner_id",
-    #     "partner_make_watercraft_id",
-    #     "Watercraft Makes")
-
-    # makes_car = fields.Many2many(
-    #     "partner_make_car",
-    #     "partner_partner_make_car_rel",
-    #     "partner_id",
-    #     "partner_make_car_id",
-    #     "Car Makes")
-
-    # makes_moto = fields.Many2many(
-    #     "partner_make_moto",
-    #     "partner_partner_make_moto_rel",
-    #     "partner_id",
-    #     "partner_make_moto_id",
-    #     "Moto Makes")
 
     # business_relationship_id = fields.Many2one(
     #     "partner_business_relationship",
@@ -312,5 +258,16 @@ class Partner(models.Model):
         string='Dealer Info',
         ondelete='cascade')
 
+    # 'xis_dc': fields.char('XIS dealer code', size=254),
+    code = fields.Char('Code', size=254)  # Required for companies. Unique.
+
     # "is_dealer": fields.boolean("Is Dealer"),  # TODO: Calculate
     # "is_member": fields.boolean("Is Member"),  # TODO: Calculate
+
+    _sql_constraints = [
+        (
+            'uniq_code',
+            'unique(code)',
+            "A code already exists with this name. Code must be unique."
+        ),
+    ]

@@ -95,7 +95,14 @@ class dealer(orm.Model):
         'owneremail': fields.char(
             "Dealership Owner Email",
             size=240,
-            help="This field is there for the synchronization to XIS")
+            help="This field is there for the synchronization to XIS"),
+
+        "user10": fields.char("User10", size=10),
+        "user12": fields.char("User12", size=12),
+        "user12e": fields.char("User12e", size=12),
+        "user40": fields.char("User40", size=40),
+        "user40e": fields.char("User40e", size=40),
+        "user80": fields.char("User80", size=80),
     }
 
 class sale_order(orm.Model):
