@@ -31,105 +31,6 @@ class Dealer(models.Model):
     # Extracted from res.partner
     _name = 'xpr_dealer.dealer'
 
-    def _convert_ids_to_make_names(
-        self, cr, uid, model_name, ids, context=None
-    ):
-        '''
-        convert a list of ids to a list on make names.
-        '''
-        partner_make_obj = self.pool.get(model_name)
-        makes_names = partner_make_obj.browse(
-            cr, uid, ids, context=context)
-        return [make.name for make in makes_names]
-
-    def onchange_makes(
-        self, cr, uid, ids,
-        makes_car,
-        makes_moto,
-        makes_atv,
-        makes_watercraft,
-        makes_snowmobile,
-        context=None
-    ):
-        split_char = ','
-        makes_widget = {
-            'partner_make_car': makes_car,
-            'partner_make_moto': makes_moto,
-            'partner_make_atv': makes_atv,
-            'partner_make_watercraft': makes_watercraft,
-            'partner_make_snowmobile': makes_snowmobile,
-        }
-
-        for _id in ids:
-            make_names = []
-            for _model_name, _widget in makes_widget.items():
-                widget = _widget[0]
-                make_ids = widget[2]
-                make_names.extend(self._convert_ids_to_make_names(
-                    cr,
-                    uid,
-                    _model_name,
-                    make_ids))
-
-            s_make_names = Set(make_names)
-            partner = self.browse(cr, uid, _id)
-            xis_makes = []
-            if partner.xis_makes:
-                str_xis_makes = partner.xis_makes
-                xis_makes = str_xis_makes.split(split_char)
-            s_xis_makes = Set(xis_makes)
-
-            # Check if we need to remove or add to xis_makes.
-            # If make_names has mode elements than xis_makes its and add.
-            # Else it's a remove.
-            if len(s_make_names) > len(xis_makes):
-                s_make_names.difference_update(xis_makes)
-                xis_makes.extend(s_make_names)
-            else:
-                s_xis_makes.difference_update(s_make_names)
-                for make in s_xis_makes:
-                    xis_makes.remove(make)
-            vals = {'xis_makes': split_char.join(xis_makes)}
-            self.write(cr, uid, _id, vals)
-        return {'value': {}, 'domain': {}}
-
-    def onchange_customer_of(self, cr, uid, ids, customermask_ids):
-        value = {}
-        value['is_member'] = False
-        if customermask_ids:
-            is_customer_of_auto123 = 1 in customermask_ids[0][2]
-            if is_customer_of_auto123:
-                value['is_member'] = True
-        return {'value': value, 'domain': {}}
-
-    def _sel_func_business_relationship(self, cr, uid, context=None):
-        obj = self.pool.get("partner_business_relationship")
-        ids = obj.search(cr, uid, [])
-        res = obj.read(cr, uid, ids, ["name", "id"], context)
-        res = [(r["id"], r["name"]) for r in res]
-        return res
-
-    def _sel_func_industry(self, cr, uid, context=None):
-        obj = self.pool.get('partner_industry')
-        ids = obj.search(cr, uid, [])
-        res = obj.read(cr, uid, ids, ['name', 'id'], context)
-        res = [(r['id'], r['name']) for r in res]
-        return res
-
-    def _sel_func_market(self, cr, uid, context=None):
-        obj = self.pool.get('partner_market')
-        ids = obj.search(cr, uid, [])
-        res = obj.read(cr, uid, ids, ['name'], context)
-        res = [(r['name'], r['name']) for r in res]
-        return res
-
-    def _sel_func_region(self, cr, uid, context=None):
-        obj = self.pool.get('partner_region')
-        ids = obj.search(cr, uid, [])
-        res = obj.read(cr, uid, ids, ['name'], context)
-        res = [(r['name'], r['name']) for r in res]
-        return res
-
     partner = fields.One2many(
         'res.partner',
         'dealer',
@@ -173,80 +74,55 @@ class Dealer(models.Model):
 
     additional_website = fields.Char("Additional Website", size=254)
 
-    # TODO: port to categories
+    # TODO: port to categories. Order of makes is important for XIS
     # 'xis_makes': fields.char('XIS Makes', size=254),
+
+    # Industry translations
+    #     en
+    #  New Car
+    #  Used Car
+    #  New Moto
+    #  Used Moto
+    #  New ATV
+    #  Used ATV
+    #  New Snowmobile
+    #  Used Snowmobile
+    #  New Watercraft
+    #  Used Watercraft
+    # fr
+    #  Nouvelle voiture
+    #  Voiture usagée
+    #  Nouvelle moto
+    #  Moto usagée
+    #  Nouveau VTT
+    #  VTT usagé
+    #  Nouvelle motoneige
+    #  Motoneige usagée
+    #  Nouveau Véhicule marin
+    #  Véhicule marin usagé
 
     makes = fields.Many2many(
         'res.partner.category',
         'dealer_partner_category_make_rel',
         string="Makes",
-        #domain=[('id', 'child_of', self.env.ref('category_dealer_car'))]
     )
 
-    industries = fields.Many2many(
+    business = fields.Many2many(
         'res.partner.category',
-        'dealer_partner_category_industry_rel',
-        string="Industries",
-        #domain=[('id', 'child_of', self.env.ref('category_dealer_car'))]
+        'dealer_partner_category_business_rel',
+        string="Business",
     )
-    #####################################################
-    # Editable manual fields. Selections or multi select.
-    # Import these as partner categories
 
-    # business_relationship_id = fields.Many2one(
-    #     "partner_business_relationship",
-    #     "Business Relationship",
-    #     selection=_sel_func_business_relationship
-    #     required=False)
+    # Old customermask
+    customer = fields.Many2many(
+        'res.partner.category',
+        'dealer_partner_category_customer_rel',
+        string="Customer Of",
+    )
 
-    # customermask_ids = fields.Many2many(
-    #     "customermask",
-    #     "partner_customermask_rel",
-    #     "partner_id",
-    #     "customermask_id",
-    #     "Customer of")
-
-    # Looks like a field that can be deduced
-    # portalmask = fields.Many2many(
-    #     "partner_portalmask",
-    #     "partner_partner_portalmask_rel",
-    #     "partner_id",
-    #     "partner_portalmask_id",
-    #     "Used Cars On")
-
-    # Doesn't seem to be used very much.
-    # telephone_choice_id = fields.Many2one(
-    #     "partner_telephone_choice",
-    #     "Phone Choice")
-
-    # Should not port. Data is not reliable.
-    # categorization_field_id = fields.Many2one(
-    #     "partner_categorization_field",
-    #     "Categorization Field")
-
-    # Not used often
-    # membertype = fields.Many2many(
-    #     "partner_business_type",
-    #     "partner_partner_business_type_rel",
-    #     "partner_id",
-    #     "partner_business_type_id",
-    #     "Business Types")
-
-    # Not used often
-    # industry_id = fields.Many2one(
-    #     "partner_industry",
-    #     "Industry",
-    #     selection=_sel_func_industry,
-    #     required=False)
-
-    # Not used often
-    # market = fields.Selection(_sel_func_market, "Market")
-
-    # Not used often
-    # region = fields.Selection(_sel_func_region, "Region")
-
-    # Not used often
-    # site_type_id = fields.Many2one("partner_site_type", "Site Type")
+    # TODO: Make this field computable
+    # business_relationship
+    # "Prospect" "Existing Customer" "Past Customer"
 
 
 class Partner(models.Model):
@@ -261,8 +137,11 @@ class Partner(models.Model):
     # 'xis_dc': fields.char('XIS dealer code', size=254),
     code = fields.Char('Code', size=254)  # Required for companies. Unique.
 
-    # "is_dealer": fields.boolean("Is Dealer"),  # TODO: Calculate
-    # "is_member": fields.boolean("Is Member"),  # TODO: Calculate
+    # TODO: dealer != null
+    # "is_dealer": fields.boolean("Is Dealer"),
+
+    # TODO: has 'Auto123' in customer
+    # "is_member": fields.boolean("Is Member"),
 
     _sql_constraints = [
         (

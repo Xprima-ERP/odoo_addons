@@ -57,10 +57,13 @@
                 </group>
                 <group>
                   <field name="makes" widget="many2many_tags"
-                    domain="['|', ('id', 'child_of', %(category_dealer_car)d), ('id', 'child_of', %(category_dealer_moto)d), ('id', 'child_of', %(category_dealer_atv)d), ('id', 'child_of', %(category_dealer_snowmobile)d), ('id', 'child_of', %(category_dealer_watercraft)d)]"/>
+                    domain="[('parent_id', 'child_of', %(category_dealer_industry)d)"/>
 
-                    <field name="industries" widget="many2many_tags"
-                    domain="[('parent_id', '=', %(category_dealer)d)]"/>
+                    <field name="business" widget="many2many_tags"
+                    domain="[('parent_id', '=', %(category_dealer_business)d)]"/>
+
+                    <field name="customer" widget="many2many_tags"
+                    domain="[('parent_id', '=', %(category_dealer_customer)d)]"/>
                 </group>
           </group>
           </sheet>

@@ -12,6 +12,15 @@
                   parent="base.menu_sales"
                   action="dealer_category_action"/>
 
+    <record model="ir.actions.act_window" id="dealer_action">
+        <field name="name">Dealers</field>
+        <field name="res_model">xpr_dealer.dealer</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="dealer_menu" name="Dealers"
+                  parent="base.menu_sales"
+                  action="dealer_action"/>
+
 </data>
 <data>
     <!-- Not a dealer category. TODO: move in a different module -->
@@ -24,13 +33,24 @@
      <record model="res.partner.category" id="category_dealer">
         <field name="name">Dealer</field>
      </record>
+
+    <record model="res.partner.category" id="category_dealer_industry">
+        <field name="name">Industry</field>
+        <field name="parent_id" ref="category_dealer" />
+     </record>
+
+    <record model="res.partner.category" id="category_dealer_business">
+        <field name="name">Business</field>
+        <field name="parent_id" ref="category_dealer" />
+     </record>
+
      <record model="res.partner.category" id="category_dealer_new">
         <field name="name">New</field>
-        <field name="parent_id" ref="category_dealer" />
+        <field name="parent_id" ref="category_dealer_business" />
      </record>
      <record model="res.partner.category" id="category_dealer_used">
         <field name="name">Used</field>
-        <field name="parent_id" ref="category_dealer" />
+        <field name="parent_id" ref="category_dealer_business" />
      </record>
 
 <!--      <record model="res.partner.category" id="category_dealer_rv">
@@ -42,7 +62,7 @@
 
      <record model="res.partner.category" id="category_dealer_car">
         <field name="name">Car</field>
-        <field name="parent_id" ref="category_dealer" />
+        <field name="parent_id" ref="category_dealer_industry" />
      </record>
 
      <record model="res.partner.category" id="category_dealer_car_acura">
@@ -323,7 +343,7 @@
 <data>
     <record model="res.partner.category" id="category_dealer_moto">
         <field name="name">Moto</field>
-        <field name="parent_id" ref="category_dealer" />
+        <field name="parent_id" ref="category_dealer_industry" />
      </record>
 
     <record model="res.partner.category" id="category_dealer_moto_american_hotrod">
@@ -539,7 +559,7 @@
 <data>
     <record model="res.partner.category" id="category_dealer_atv">
         <field name="name">ATV</field>
-        <field name="parent_id" ref="category_dealer" />
+        <field name="parent_id" ref="category_dealer_industry" />
      </record>
 
     <record model="res.partner.category" id="category_dealer_atv_arctic_cat">
@@ -600,7 +620,7 @@
 <data>
     <record model="res.partner.category" id="category_dealer_snowmobile">
         <field name="name">Snowmobile</field>
-        <field name="parent_id" ref="category_dealer" />
+        <field name="parent_id" ref="category_dealer_industry" />
     </record>    
 
     <record model="res.partner.category" id="category_dealer_snowmobile_artic_cat">
@@ -624,7 +644,7 @@
 <data>
     <record model="res.partner.category" id="category_dealer_watercraft">
         <field name="name">Watercraft</field>
-        <field name="parent_id" ref="category_dealer" />
+        <field name="parent_id" ref="category_dealer_industry" />
     </record>
 
     <record model="res.partner.category" id="category_dealer_watercraft_honda">
@@ -645,26 +665,28 @@
     </record>
 
 </data>
-<!--
-        <record id="partner_business_relationship_test_account" model="partner_business_relationship">
-        <field name="name">Test Account</field>
-        </record>
-        <record id="partner_business_relationship_prospect" model="partner_business_relationship">
-        <field name="name">Prospect</field>
-        </record>
-        <record id="partner_business_relationship_existing_customer" model="partner_business_relationship">
-        <field name="name">Existing Customer</field>
-        </record>
-        <record id="partner_business_relationship_past_customer" model="partner_business_relationship">
-        <field name="name">Past Customer</field>
-        </record>
-        <record id="customermask_Auto123" model="customermask">
+
+<data>
+    <record model="res.partner.category" id="category_dealer_customer">
+        <field name="name">Customer</field>
+        <field name="parent_id" ref="category_dealer" />
+    </record>
+
+    <record model="res.partner.category" id="category_dealer_customer_auto123" >
         <field name="name">Auto123</field>
-        </record>
-        <record id="customermask_CCAQ" model="customermask">
+        <field name="parent_id" ref="category_dealer_customer" />
+    </record>
+    <record  model="res.partner.category" id="category_dealer_customer_ccaq">
         <field name="name">CCAQ</field>
-        </record>
-       
+        <field name="parent_id" ref="category_dealer_customer" />
+    </record>
+    <record  model="res.partner.category" id="category_dealer_customer_tada">
+        <field name="name">TADA</field>
+        <field name="parent_id" ref="category_dealer_customer" />
+    </record>
+
+</data>
+<!--
         <record id="partner_market_calgary" model="partner_market">
         <field name="name">Calgary</field>
         </record>

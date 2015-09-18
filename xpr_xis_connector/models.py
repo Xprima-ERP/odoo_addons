@@ -83,8 +83,74 @@ class dealer(orm.Model):
 
     # xis_dc renamed as code
 
+    # Code to update xis_makes field whenever a make is selected.
+    # def onchange_makes(
+    #     self, cr, uid, ids,
+    #     makes_car,
+    #     makes_moto,
+    #     makes_atv,
+    #     makes_watercraft,
+    #     makes_snowmobile,
+    #     context=None
+    # ):
+    #     split_char = ','
+    #     makes_widget = {
+    #         'partner_make_car': makes_car,
+    #         'partner_make_moto': makes_moto,
+    #         'partner_make_atv': makes_atv,
+    #         'partner_make_watercraft': makes_watercraft,
+    #         'partner_make_snowmobile': makes_snowmobile,
+    #     }
+
+    #     for _id in ids:
+    #         make_names = []
+    #         for _model_name, _widget in makes_widget.items():
+    #             widget = _widget[0]
+    #             make_ids = widget[2]
+    #             make_names.extend(self._convert_ids_to_make_names(
+    #                 cr,
+    #                 uid,
+    #                 _model_name,
+    #                 make_ids))
+
+    #         s_make_names = Set(make_names)
+    #         partner = self.browse(cr, uid, _id)
+    #         xis_makes = []
+    #         if partner.xis_makes:
+    #             str_xis_makes = partner.xis_makes
+    #             xis_makes = str_xis_makes.split(split_char)
+    #         s_xis_makes = Set(xis_makes)
+
+    #         # Check if we need to remove or add to xis_makes.
+    #         # If make_names has mode elements than xis_makes its and add.
+    #         # Else it's a remove.
+    #         if len(s_make_names) > len(xis_makes):
+    #             s_make_names.difference_update(xis_makes)
+    #             xis_makes.extend(s_make_names)
+    #         else:
+    #             s_xis_makes.difference_update(s_make_names)
+    #             for make in s_xis_makes:
+    #                 xis_makes.remove(make)
+    #         vals = {'xis_makes': split_char.join(xis_makes)}
+    #         self.write(cr, uid, _id, vals)
+    #     return {'value': {}, 'domain': {}}
+
     # Already in phone field
     # "area_code": fields.char("Area Code", size=3), # For XIS
+
+    # Doesn't seem to be used very much.
+    # telephone_choice_id = fields.Many2one(
+    #     "partner_telephone_choice",
+    #     "Phone Choice")
+
+    # Not used often
+    # market = fields.Selection(_sel_func_market, "Market")
+
+    # Not used often
+    # region = fields.Selection(_sel_func_region, "Region")
+
+    # Not used often
+    # site_type_id = fields.Many2one("partner_site_type", "Site Type")
 
     _columns = {
         'owner': fields.char(
@@ -103,6 +169,14 @@ class dealer(orm.Model):
         "user40": fields.char("User40", size=40),
         "user40e": fields.char("User40e", size=40),
         "user80": fields.char("User80", size=80),
+
+        "portalmask": fields.many2many(
+            "partner_portalmask",
+            "partner_partner_portalmask_rel",
+            "partner_id",
+            "partner_portalmask_id",
+            "Used Cars On")
+
     }
 
 class sale_order(orm.Model):
