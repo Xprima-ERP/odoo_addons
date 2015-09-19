@@ -30,7 +30,7 @@
     'category': 'Partner',
     'summary': 'Brings additional data for partners that are dealers',
     'description': """
-DealerGroup module
+Dealer module
 ==================
 Xprimas partner support.
 Adds dealer group support.
@@ -44,9 +44,6 @@ Contributors
         'partner_history',
         #'partner_category_description',
     ],
-    'external_dependencies': {
-        'python': [],
-    },
     'data': [
         'security/ir.model.access.csv',
         'res_partners_categories.xml',

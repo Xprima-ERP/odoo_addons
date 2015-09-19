@@ -22,6 +22,33 @@ from openerp import models, fields, api
 from openerp.tools.translate import _
 
 
+class Partner(models.Model):
+
+    _inherit = "res.partner"
+
+    dealer = fields.One2many(
+        'xpr_dealer.dealer',
+        'partner',
+        string='Dealer Info'
+        )
+    # 'xis_dc': fields.char('XIS dealer code', size=254),
+    code = fields.Char('Code', size=254)  # Required for companies. Unique.
+
+    # TODO: dealer != null
+    # "is_dealer": fields.boolean("Is Dealer"),
+
+    # TODO: has 'Auto123' in customer
+    # "is_member": fields.boolean("Is Member"),
+
+    _sql_constraints = [
+        (
+            'uniq_code',
+            'unique(code)',
+            "A code already exists with this name. Code must be unique."
+        ),
+    ]
+
+
 class Dealer(models.Model):
     """
     Additional Parnter data.
@@ -30,11 +57,15 @@ class Dealer(models.Model):
 
     # Extracted from res.partner
     _name = 'xpr_dealer.dealer'
+    _inherits = {
+        'res.partner': 'partner'
+    }
 
-    partner = fields.One2many(
+    partner = fields.Many2one(
         'res.partner',
-        'dealer',
-        string="Related partner"
+        string="Related partner",
+        required=True,
+        ondelete='cascade'
     )
 
     corpname = fields.Char("Legal Name", size=128)
@@ -123,30 +154,3 @@ class Dealer(models.Model):
     # TODO: Make this field computable
     # business_relationship
     # "Prospect" "Existing Customer" "Past Customer"
-
-
-class Partner(models.Model):
-
-    _inherit = "res.partner"
-
-    dealer = fields.Many2one(
-        'xpr_dealer.dealer',
-        string='Dealer Info',
-        ondelete='cascade')
-
-    # 'xis_dc': fields.char('XIS dealer code', size=254),
-    code = fields.Char('Code', size=254)  # Required for companies. Unique.
-
-    # TODO: dealer != null
-    # "is_dealer": fields.boolean("Is Dealer"),
-
-    # TODO: has 'Auto123' in customer
-    # "is_member": fields.boolean("Is Member"),
-
-    _sql_constraints = [
-        (
-            'uniq_code',
-            'unique(code)',
-            "A code already exists with this name. Code must be unique."
-        ),
-    ]
