@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="ab" model="res.country.state">
+            <field name="code">AB</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">Alberta</field>
+        </record>
+        <record id="bc" model="res.country.state">
+            <field name="code">BC</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">British Columbia</field>
+        </record>
+        <record id="mb" model="res.country.state">
+            <field name="code">MB</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">Manitoba</field>
+        </record>
+        <record id="nb" model="res.country.state">
+            <field name="code">NB</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">New Brunswick</field>
+        </record>
+        <!--The real province code for Newfoundland and Labrador is NL but was replaced to NF to correspond to Xprima XIS synch needs.-->
+        <record id="nl" model="res.country.state">
+            <field name="code">NF</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">Newfoundland and Labrador</field>
+        </record>
+        <record id="ns" model="res.country.state">
+            <field name="code">NS</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">Nova Scotia</field>
+        </record>
+        <record id="nt" model="res.country.state">
+            <field name="code">NT</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">Northwest Territories</field>
+        </record>
+        <record id="nu" model="res.country.state">
+            <field name="code">NU</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">Nunavut</field>
+        </record>
+        <record id="on" model="res.country.state">
+            <field name="code">ON</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">Ontario</field>
+        </record>
+        <record id="pe" model="res.country.state">
+            <field name="code">PE</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">Prince Edward Island</field>
+        </record>
+        <record id="qc" model="res.country.state">
+            <field name="code">QC</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">Quebec</field>
+        </record>
+        <record id="sk" model="res.country.state">
+            <field name="code">SK</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">Saskatchewan</field>
+        </record>
+        <record id="yt" model="res.country.state">
+            <field name="code">YT</field>
+            <field name="country_id" ref="base.ca"></field>
+            <field name="name">Yukon</field>
+        </record>
+    </data>
+</openerp>

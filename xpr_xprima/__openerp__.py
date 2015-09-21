@@ -28,6 +28,7 @@ because of wizard.
         'auditlog',
         'agaplan_terms_and_conditions',  # Xprima port for Odoo
         'partner_history',  # Xprima port for Odoo
+        'canadian_provinces',
         'xpr_product',
         'xpr_solution_builder',
         'xpr_sale_process',
