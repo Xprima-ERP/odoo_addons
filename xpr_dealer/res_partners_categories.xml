@@ -58,6 +58,51 @@
         <field name="parent_id" ref="category_dealer" />
      </record> -->
 </data>
+
+ <data>
+
+    <record model="res.partner.category" id="category_dealer_group">
+        <field name="name">Group</field>
+        <field name="parent_id" ref="category_dealer" />
+     </record>
+
+    <record model="res.partner.category" id="category_dealer_group_primary">
+        <field name="name">Primary Group</field>
+        <field name="parent_id" ref="category_dealer_group" />
+     </record>
+
+    <record model="res.partner.category" id="category_dealer_group_subgroup">
+        <field name="name">Sub-Group</field>
+        <field name="parent_id" ref="category_dealer_group" />
+     </record>
+
+    <record model="res.partner.category" id="category_dealer_group_association">
+        <field name="name">Dealer Association</field>
+        <field name="parent_id" ref="category_dealer_group" />
+     </record>
+
+    <record model="res.partner.category" id="category_dealer_group_marketing">
+        <field name="name">Marketing association</field>
+        <field name="parent_id" ref="category_dealer_group" />
+     </record>
+
+    <record model="res.partner.category" id="category_dealer_group_auto_certification">
+        <field name="name">Automatic certification</field>
+        <field name="parent_id" ref="category_dealer_group" />
+     </record>
+
+      <record model="res.partner.category" id="category_dealer_group_manual_certification">
+        <field name="name">Manual certification</field>
+        <field name="parent_id" ref="category_dealer_group" />
+     </record>
+
+
+       <record model="res.partner.category" id="category_dealer_group_group">
+        <field name="name">dealer group</field>
+        <field name="parent_id" ref="category_dealer_group" />
+     </record>
+</data>
+
 <data>
 
      <record model="res.partner.category" id="category_dealer_car">
@@ -981,18 +1026,6 @@
         <record id="partner_telephone_choice_evolio_call_tracking" model="partner_telephone_choice">
         <field name="name">Evolio Call Tracking</field>
         </record>
-        <record id="partner_categorization_field_duplicate_account" model="partner_categorization_field">
-        <field name="name">Duplicate Account</field>
-        </record>
-        <record id="partner_categorization_field_not_in_master_file__update_date_wit" model="partner_categorization_field">
-        <field name="name">Not in Master File (Update Date within one Year)</field>
-        </record>
-        <record id="partner_categorization_field_closed" model="partner_categorization_field">
-        <field name="name">Closed</field>
-        </record>
-        <record id="partner_categorization_field_not_in_master_file__update_date_gre" model="partner_categorization_field">
-        <field name="name">Not in Master File (Update Date Greater than 1 Year)</field>
-        </record>
         <record id="case_origin_email" model="case_origin">
         <field name="name">Email</field>
         </record>
@@ -1007,24 +1040,6 @@
         </record>
         <record id="case_origin_web" model="case_origin">
         <field name="name">Web</field>
-        </record>
-        <record id="dealer_group_goup_type_primary_group" model="dealer_group_group_type">
-        <field name="name">Primary Group</field>
-        </record>
-        <record id="dealer_group_goup_type_dealer_sub_group" model="dealer_group_group_type">
-        <field name="name">Dealer Sub-Group</field>
-        </record>
-        <record id="dealer_group_goup_type_dealer_association" model="dealer_group_group_type">
-        <field name="name">Dealer Association</field>
-        </record>
-        <record id="dealer_group_goup_type_marketing_association" model="dealer_group_group_type">
-        <field name="name">Marketing Association</field>
-        </record>
-        <record id="dealer_group_goup_type_automatic_certification" model="dealer_group_group_type">
-        <field name="name">Automatic Certification</field>
-        </record>
-        <record id="dealer_group_goup_type_manual_certification" model="dealer_group_group_type">
-        <field name="name">Manual Certification</field>
         </record>
     -->
 </openerp>

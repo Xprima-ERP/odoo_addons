@@ -4,7 +4,7 @@
     "name": "Canadian Provinces",
     "version": "1.000",
     "author": "Xprima",
-    "category": "Canadian Provinces",
+    "category": "Misc",
     "description": "A list of all the provinces in Canada.",
     "summary": "Canadian Provinces",
     "installable": True,
