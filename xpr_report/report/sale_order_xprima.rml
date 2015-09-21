@@ -273,7 +273,7 @@
             <para style="terp_default_9">[[line.product_id.default_code and ('[' + format(line.product_id.default_code) + ']') or '']] [[ line.product_id.name ]] [[line.product_id.attribute_value_ids and ("(" +  ", ".join([v.name for v in line.product_id.attribute_value_ids]) + ")") or '']]</para>
           </td>
           <td>
-            <para style="terp_default_9">[[ format(line.name) ]] </para>
+            <para style="terp_default_9">[[ line.solution_part  == 3 and 'Solution Price' or format(line.name) ]] </para>
           </td>
           <!--
           <td>
