@@ -255,7 +255,7 @@ class SalesOrder(models.Model):
         sequence = 0
         mandatory_products = list(order.solution.products) + [
             item.product for item in self.solution.options_extra
-            if item.sticky
+            if item.selected_default
         ]
 
         for product in mandatory_products:
