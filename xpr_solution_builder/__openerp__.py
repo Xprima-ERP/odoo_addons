@@ -20,6 +20,7 @@ This module:
 - Splits mandatory and optional products in two groups in the sales order form
 - Indicate number of items for mandatory products
 - Permits 'sticky' and 'selected by default' optional products
+- Provides starting date for web sites and advertising
     """,
 
     'author': "Xprima Corp",

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
 	<data>
-
 		<record model="ir.ui.view" id="sale_order_form">
 
 			<field name="name">order</field>
@@ -9,7 +8,8 @@
 			<field name="inherit_id" ref="sale_stock.view_order_form_inherit"/>
 			<field name="arch" type="xml">
 
-				<field name="client_order_ref" position="after">	
+				<field name="client_order_ref" position="after">
+                    <field name="starting_date" />	
 					<field name="solution" />
 					<field name="solution_discount" />
                     <button name="sale_solution_option_action" type="object" string="Add Options"/>
