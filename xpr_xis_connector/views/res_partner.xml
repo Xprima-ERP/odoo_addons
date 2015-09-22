@@ -17,8 +17,21 @@
                   <field name="user40"/>
                   <field name="user40e"/>
                   <field name="user80"/>
-                </group>
-        </xpath>
+            </group>
+            <group>
+                <field name="telephone_choice"/>
+                <field name="site_type"/>
+                <field name="owner"/>
+                <field name="owneremail"/>
+            </group>
+            <group>
+                <field name="market" widget="many2many_tags"
+                    domain="[('parent_id', 'child_of', %(category_dealer_market)d)]"/>
+                <field name="region" widget="many2many_tags"
+                    domain="[('parent_id', 'child_of', %(category_dealer_region)d)]"/>
+                <field name="portalmask" widget="many2many_tags"
+                    domain="[('parent_id', 'child_of', %(category_dealer_portal)d)]"/>
+            </group>
 
         
       </field>

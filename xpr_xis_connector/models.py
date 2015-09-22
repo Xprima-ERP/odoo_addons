@@ -23,43 +23,68 @@ import time
 import json
 import utils
 import xis_request
-from openerp.osv import osv, fields, orm
+from openerp import models, fields, api
 from openerp.tools.translate import _
 from sets import Set
 
 _logger = logging.getLogger(__name__)
 
 
-class dealer_category_certification(orm.Model):
-    _description = 'Dealer Certifications'
-    # 'res.partner.category.certification'
-    _name = 'res.partner.category.certification'
+class PartnerCategory(models.Model):
+    _inherit = "res.partner.category"
 
-    _columns = {
-        'name': fields.char('Name', required=True, size=64, translate=True)
-        'description': fields.text('Description', translate=True)
-        'automatic': fields.boolean('Automatic', default=False)
-    }
+    xis_info = fields.One2many(
+        'xpr_xis_connector.dealer.category',
+        'category',
+        string='Category Info'
+    )
 
-class dealer_category(orm.Model):
+    def create(self, cr, uid, vals, context=None):
+        status = super(PartnerCategory, self).create(
+            cr, uid, vals, context=context)
+
+        req = _PartnerCategoryRequest(self, cr, uid, status, context=context)
+        req.send_partner_category_xis()
+
+        return status
+
+    def write(self, cr, uid, ids, vals, context=None):
+        status = super(PartnerCategory, self).write(
+            cr, uid, ids, vals, context=context)
+
+        if type(ids) is long or type(ids) is int:
+            ids = [ids]
+
+        for id_r in ids:
+            req = _PartnerCategoryRequest(self, cr, uid, id_r, context=context)
+            req.send_partner_category_xis()
+
+        return status
+
+
+class DealerCategory(models.Model):
 
     """Extension of a category, that permits
-    to describe a group of certifications for a dealer"""
+    to describe a group of certifications or a region for a dealer"""
 
-    # 'res.partner.category
-    _name = 'xpr_xis_connector.dealer.group'
-    name = fields.Char('Name', required=True, size=64, translate=True)
-
-    _columns = {
-        'certification': fields.many2many(
-        'xpr_dealer.dealer.certification',
-        'dealer_certification_certification_rel',
-        'category_id',
-        'certification_id',
-        'Certification'),  # Not used yet
-
-        'xis_certification_id': fields.integer('XIS certification id')
+    _inherits = {
+        'res.partner.category': 'category'
     }
+
+    category = fields.Many2one(
+        'res.partner.category',
+        string="Related category",
+        required=True,
+        ondelete='cascade'
+    )
+
+    _name = 'xpr_xis_connector.dealer.category'
+
+    # Legacy id for xis_connector
+    xis_certification_id = fields.Integer('XIS certification id')
+
+    # Region code
+    region_code = fields.Char('Region Code')
 
     # Deprecated.
     # 'x_sf_id': fields.char('Salesforce ID', size=18, select=True),
@@ -73,127 +98,118 @@ class dealer_category(orm.Model):
     # Deprecated. Import description after changing language
     # 'x_description_fr': fields.char('Description FR', size=254),
 
-    # Legacy id for xis_connector
-    
 
-
-class dealer(orm.Model):
+class Dealer(models.Model):
 
     _inherit = 'xpr_dealer.dealer'
 
-    # xis_dc renamed as code
+    def _get_xis_makes(self):
 
-    # Code to update xis_makes field whenever a make is selected.
-    # def onchange_makes(
-    #     self, cr, uid, ids,
-    #     makes_car,
-    #     makes_moto,
-    #     makes_atv,
-    #     makes_watercraft,
-    #     makes_snowmobile,
-    #     context=None
-    # ):
-    #     split_char = ','
-    #     makes_widget = {
-    #         'partner_make_car': makes_car,
-    #         'partner_make_moto': makes_moto,
-    #         'partner_make_atv': makes_atv,
-    #         'partner_make_watercraft': makes_watercraft,
-    #         'partner_make_snowmobile': makes_snowmobile,
-    #     }
+        for dealer in self:
+            makes = set(m.name for m in dealer.makes)
+            #TODO: Check if order is important
+            dealer.xis_makes = ','.join(makes)
 
-    #     for _id in ids:
-    #         make_names = []
-    #         for _model_name, _widget in makes_widget.items():
-    #             widget = _widget[0]
-    #             make_ids = widget[2]
-    #             make_names.extend(self._convert_ids_to_make_names(
-    #                 cr,
-    #                 uid,
-    #                 _model_name,
-    #                 make_ids))
+        return {}
 
-    #         s_make_names = Set(make_names)
-    #         partner = self.browse(cr, uid, _id)
-    #         xis_makes = []
-    #         if partner.xis_makes:
-    #             str_xis_makes = partner.xis_makes
-    #             xis_makes = str_xis_makes.split(split_char)
-    #         s_xis_makes = Set(xis_makes)
+    def _get_area_code(self):
 
-    #         # Check if we need to remove or add to xis_makes.
-    #         # If make_names has mode elements than xis_makes its and add.
-    #         # Else it's a remove.
-    #         if len(s_make_names) > len(xis_makes):
-    #             s_make_names.difference_update(xis_makes)
-    #             xis_makes.extend(s_make_names)
-    #         else:
-    #             s_xis_makes.difference_update(s_make_names)
-    #             for make in s_xis_makes:
-    #                 xis_makes.remove(make)
-    #         vals = {'xis_makes': split_char.join(xis_makes)}
-    #         self.write(cr, uid, _id, vals)
-    #     return {'value': {}, 'domain': {}}
+        for dealer in self:
+            code = dealer.phone.replace('(', '').replace(')', '')
+            code = code.replace('-', '').strip()
 
-    # Already in phone field
-    # "area_code": fields.char("Area Code", size=3), # For XIS
+            if code[0] == '1':
+                code[1:4]
+            else:
+                code[:3]
 
-    # Doesn't seem to be used very much.
-    # telephone_choice_id = fields.Many2one(
-    #     "partner_telephone_choice",
-    #     "Phone Choice")
+            if len(code.strip()) == 3:
+                dealer.area_code = code
+            else:
+                dealer.area_code = ''
 
-    # Not used often
-    # market = fields.Selection(_sel_func_market, "Market")
+        return {}
 
-    # Not used often
-    # region = fields.Selection(_sel_func_region, "Region")
+    def _get_code(self):
+        for dealer in self:
+            dealer.xis_dc = dealer.code
 
-    # Not used often
-    # site_type_id = fields.Many2one("partner_site_type", "Site Type")
+    xis_makes = fields.Char(compute=_get_xis_makes)
 
-    _columns = {
-        'owner': fields.char(
-            "Dealership Owner",
-            size=45,
-            help="This field is there for the synchronization to XIS")
+    area_code = fields.Char(size=3, compute=_get_area_code)
 
-        'owneremail': fields.char(
-            "Dealership Owner Email",
-            size=240,
-            help="This field is there for the synchronization to XIS"),
+    telephone_choice = fields.Selection(
+        [
+            ("phone", "Phone"),
+            ("toll_free", "Toll Free"),
+            ("call_tracking", "Evolio Call")
+        ],
+        "Phone Choice"
+    )
 
-        "user10": fields.char("User10", size=10),
-        "user12": fields.char("User12", size=12),
-        "user12e": fields.char("User12e", size=12),
-        "user40": fields.char("User40", size=40),
-        "user40e": fields.char("User40e", size=40),
-        "user80": fields.char("User80", size=80),
+    site_type = fields.Selection(
+        [
+            ("has_website_with_us", "Has Website With Us"),
+            ("has_a_link_or_portals_to_their_site",
+                "Has a link or portals to their site"),
+            ("does_not_have_a_website", "Does not have a website")
+        ],
+        "Site Type"
+    )
 
-        "portalmask": fields.many2many(
-            "partner_portalmask",
-            "partner_partner_portalmask_rel",
-            "partner_id",
-            "partner_portalmask_id",
-            "Used Cars On")
+    # xis_dc redirects to 'code'
+    xis_dc = fields.Char(compute=_get_code)
 
-    }
+    owner = fields.Char(
+        "Dealership Owner",
+        size=45,
+        help="This field is there for the synchronization to XIS")
 
-class sale_order(orm.Model):
+    owneremail = fields.Char(
+        "Dealership Owner Email",
+        size=240,
+        help="This field is there for the synchronization to XIS")
+
+    user10 = fields.Char("User10", size=10)
+    user12 = fields.Char("User12", size=12)
+    user12e = fields.Char("User12e", size=12)
+    user40 = fields.Char("User40", size=40)
+    user40e = fields.Char("User40e", size=40)
+    user80 = fields.Char("User80", size=80)
+
+    market = fields.Many2many(
+        'res.partner.category',
+        'dealer_partner_category_market_rel',
+        string="Market",
+    )
+
+    region = fields.Many2many(
+        'xpr_xis_connector.dealer.group',
+        'dealer_partner_category_region_rel',
+        string="Region",
+    )
+
+    portalmask = fields.Many2many(
+        'res.partner.category',
+        'dealer_partner_category_portal_rel',
+        string="Used Cars On")
+
+
+class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    _columns = {
-        # Migrated to client_order_ref
-        'xis_quote_id': fields.integer(string='XIS quote id'),
-        'starting_date': fields.date('Starting Date'),
-    }
+    def _get_ref(self):
+        for order in self:
+            order.xis_quote_id = order.client_order_ref
+
+    xis_quote_id = fields.Integer(string='XIS quote id', compute=_get_ref)
 
     def __init__(self, pool, cr):
-        super(sale_order, self).__init__(pool, cr)
+        super(SaleOrder, self).__init__(pool, cr)
 
     def create(self, cr, uid, vals, context=None):
         xis_val = {}
-        status = super(sale_order, self).create(cr, uid, vals, context=context)
+        status = super(SaleOrder, self).create(cr, uid, vals, context=context)
 
         qt_xisid = None
         so_req = SaleOrderRequest(self, cr, uid, status, context=context)
@@ -204,14 +220,15 @@ class sale_order(orm.Model):
         # write to database
         if qt_xisid is not None:
             xis_val["xis_quote_id"] = qt_xisid
-            super(sale_order, self).write(cr, uid, status, xis_val,
-                                          context=context)
+            super(SaleOrder, self).write(
+                cr, uid, status, xis_val, context=context)
 
         return status
 
     def write(self, cr, uid, ids, vals, context=None):
-        status = super(sale_order, self).write(cr, uid, ids, vals,
-                                               context=context)
+        status = super(SaleOrder, self).write(
+            cr, uid, ids, vals, context=context)
+
         for r_id in ids:
             is_new = False
             xis_val = {}
@@ -220,30 +237,32 @@ class sale_order(orm.Model):
                 # ok, create a new one
                 qt_xisid = None
                 is_new = True
-            so_req = SaleOrderRequest(self, cr, uid,
-                                      r_id,
-                                      context=context,
-                                      xis_id=qt_xisid)
+            so_req = SaleOrderRequest(
+                self, cr, uid,
+                r_id,
+                context=context,
+                xis_id=qt_xisid)
+
             data = so_req.get_xis_field(so_req, is_update=True)
             if data:
                 xis_status, qt_xisid = so_req.send_quote_xis(data)
                 # write to database the xisid
                 if is_new and qt_xisid is not None:
                     xis_val["xis_quote_id"] = qt_xisid
-                    super(sale_order, self).write(cr, uid, r_id, xis_val,
-                                                  context=context)
+                    super(SaleOrder, self).write(
+                        cr, uid, r_id, xis_val, context=context)
 
         return status
 
-    def onchange_partner_id(self, cr, uid, ids, part, context=None):
-        result = super(sale_order, self).onchange_partner_id(cr,
-                                                             uid,
-                                                             ids,
-                                                             part,
-                                                             context)
-        empty_pricelist = {'pricelist_id': False}
-        result.get('value', {}).update(empty_pricelist)
-        return result
+    # def onchange_partner_id(self, cr, uid, ids, part, context=None):
+    #     result = super(sale_order, self).onchange_partner_id(cr,
+    #                                                          uid,
+    #                                                          ids,
+    #                                                          part,
+    #                                                          context)
+    #     empty_pricelist = {'pricelist_id': False}
+    #     result.get('value', {}).update(empty_pricelist)
+    #     return result
 
 
 class SaleOrderRequest():
@@ -387,13 +406,15 @@ class SaleOrderRequest():
         else:
             return self.dct_stage_asso.get(self.order.state)
 
-class res_partner(osv.osv):
+
+class Partner(models.Model):
 
     _inherit = "res.partner"
 
     def create(self, cr, uid, vals, context=None):
-        status = super(res_partner, self).create(cr, uid, vals,
-                                                 context=context)
+        status = super(Partner, self).create(
+            cr, uid, vals, context=context)
+
         if self.browse(cr, uid, status, context=context).customer:
             req = _PartnerRequest(self, cr, uid, status, context=context)
             req.send_partner_xis()
@@ -466,8 +487,9 @@ class res_partner(osv.osv):
             lst_old_cat = [[cat.id for cat in rec.category_id] for rec in
                            lst_rec]
 
-        status = super(res_partner, self).write(cr, uid, ids, vals,
-                                                context=context)
+        status = super(Partner, self).write(
+            cr, uid, ids, vals, context=context)
+
         if type(ids) is long or type(ids) is int:
             ids = [ids]
 
@@ -490,32 +512,6 @@ class res_partner(osv.osv):
                     req.send_partner_category_xis()
 
             i += 1
-
-        return status
-
-
-class res_partner_category(osv.Model):
-    _inherit = "res.partner.category"
-
-    def create(self, cr, uid, vals, context=None):
-        status = super(res_partner_category, self).create(cr, uid, vals,
-                                                          context=context)
-
-        req = _PartnerCategoryRequest(self, cr, uid, status, context=context)
-        req.send_partner_category_xis()
-
-        return status
-
-    def write(self, cr, uid, ids, vals, context=None):
-        status = super(res_partner_category, self).write(cr, uid, ids, vals,
-                                                         context=context)
-
-        if type(ids) is long or type(ids) is int:
-            ids = [ids]
-
-        for id_r in ids:
-            req = _PartnerCategoryRequest(self, cr, uid, id_r, context=context)
-            req.send_partner_category_xis()
 
         return status
 
@@ -600,7 +596,7 @@ class _PartnerRequest():
         # membertype are translated, the XIS api wants the englis terms.
         obj_partner_business_type = parent.pool.get('partner_business_type')
         pbt_ids = [type.id for type in self.partner.membertype]
-        # Set the languagu to english so we dont get the translated terms for
+        # Set the language to english so we dont get the translated terms for
         # the partner business types.
         if context:
             context.update({'lang': 'en_US'})
@@ -792,9 +788,10 @@ class _PartnerCategoryRequest():
 
     def _get_xis_field(self):
         # validate data
-        p = self.partner_category
+        p = self.parent.xis_info and self.parent.xis_info[0] or None
+
         # need a grouptype and id > 0
-        if not p.id or not p.parent_id or not p.name:
+        if not p or not p.id or not p.parent_id or not p.name:
             return None
         # get description
         lst_desc_fr = [desc.value for desc in self.lst_desc if
@@ -906,9 +903,12 @@ class _PartnerCategoryRelRequest():
         return data
 
 
-class product_product(osv.osv):
-    _inherit = "product.product"
-    # Deprecated. Use default_code (internal reference) instead.
-    _columns = {
-        'xis_product_code': fields.char('XIS product code', size=30),
-    }
+class Product(models.Model):
+    _inherit = "product.template"
+
+    def _get_code(self):
+        for p in self:
+            p.xis_product_code = p.default_code
+
+    xis_product_code = fields.Char(
+        'XIS product code', size=30, compute=_get_code)

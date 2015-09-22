@@ -22,7 +22,7 @@
 
 {
     'name': 'XIS Connector',
-    'version': '0.3',
+    'version': '0.4',
     'author': 'Xprima',
     'maintainer': 'Xprima',
     'website': 'http://www.xprima.com',
@@ -35,7 +35,7 @@ XIS Connector
 
 Send information to system XIS when create/update field.
 
-The XIS update is to be deprecated eventually.
+The XIS connector is to be deprecated eventually.
 
 Functionalities not related to XIS are to be migrated out of it.
 
@@ -66,11 +66,12 @@ Contributors
         #'res.groups.csv',
         #'views/product.xml',
         #'views/res_user.xml',
-        #'ir.config_parameter.csv',
+        'ir.config_parameter.csv',
         #'views/sale.xml',
         #'ir.ui.menu.csv',
         #'ir.actions.act_window.csv',
         #'product.pricelist.csv',
+        'res_partners_categories.xml',
     ],
     'demo': [],
     'test': [],
