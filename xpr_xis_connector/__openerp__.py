@@ -28,10 +28,10 @@
     'website': 'http://www.xprima.com',
     'license': 'AGPL-3',
     'category': 'Sale',
-    'summary': 'Sync information to XIS',
+    'summary': 'Sync information to Xprima XIS',
     'description': """
-XIS Connector
-=============
+Xprima XIS Connector
+====================
 
 Send information to system XIS when create/update field.
 
@@ -66,11 +66,10 @@ Contributors
         #'res.groups.csv',
         #'views/product.xml',
         #'views/res_user.xml',
+        'views/res_partner_categories.xml',
         'ir.config_parameter.csv',
         #'views/sale.xml',
         #'ir.ui.menu.csv',
-        #'ir.actions.act_window.csv',
-        #'product.pricelist.csv',
         'res_partners_categories.xml',
     ],
     'demo': [],
