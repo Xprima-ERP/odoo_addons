@@ -3,6 +3,11 @@
 
 
 <data>
+    <record model="res.partner.category" id="category_dealer_portal">
+        <field name="name">Portal</field>
+        <field name="parent_id" ref="xpr_dealer.category_dealer" />
+     </record>
+
     <record model="res.partner.category" id="category_dealer_market">
         <field name="name">Market</field>
         <field name="parent_id" ref="xpr_dealer.category_dealer" />
@@ -11,12 +16,7 @@
      <record model="res.partner.category" id="category_dealer_region">
         <field name="name">Region</field>
         <field name="parent_id" ref="xpr_dealer.category_dealer" />
-     </record>
-
-     <record model="res.partner.category" id="category_dealer_portal">
-        <field name="name">Portal</field>
-        <field name="parent_id" ref="xpr_dealer.category_dealer" />
-     </record>
+     </record>     
 </data>
 
 <data>
@@ -78,9 +78,9 @@
         <field name="name">Medicine Hat (div#1)</field>
         <field name="parent_id" ref="category_dealer_region" />
     </record>
-    <record model="xpr_xis_connector.dealer.category" id="extension_region_medicine_hat">
+    <record model="xpr_xis_connector.dealer.region" id="extension_region_medicine_hat">
         <field name="category" ref="category_dealer_region_medicine_hat" />
-        <field name="code">MH</field>
+        <field name="region_code">MH</field>
     </record>
     <!-- <record model="res.partner.category" id="category_dealer_region_lethbridge">
     <field name="name">Lethbridge (div#2)</field>
@@ -304,11 +304,11 @@
         <field name="name">Auto123 Network</field>
         <field name="parent_id" ref="category_dealer_portal" />
     </record>
-    <record model="res.partner.category" id="category_dealer_portalmask_ammq___aqvl">
+    <record model="res.partner.category" id="category_dealer_portalmask_ammq_aqvl">
         <field name="name">AMMQ / AQVL</field>
         <field name="parent_id" ref="category_dealer_portal" />
     </record>
-    <record model="res.partner.category" id="category_dealer_portalmask_gm_optimum___enabled_sites">
+    <record model="res.partner.category" id="category_dealer_portalmask_gm_optimum">
         <field name="name">GM Optimum - Enabled Sites</field>
         <field name="parent_id" ref="category_dealer_portal" />
     </record>
@@ -318,6 +318,10 @@
     </record>
     <record model="res.partner.category" id="category_dealer_portalmask_mucda_portal">
         <field name="name">MUCDA Portal</field>
+        <field name="parent_id" ref="category_dealer_portal" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_portalmask_cars_and_jobs">
+        <field name="name">Cars and Jobs</field>
         <field name="parent_id" ref="category_dealer_portal" />
     </record>
 </data>

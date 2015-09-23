@@ -33,11 +33,27 @@ _logger = logging.getLogger(__name__)
 class PartnerCategory(models.Model):
     _inherit = "res.partner.category"
 
-    xis_info = fields.One2many(
-        'xpr_xis_connector.dealer.category',
+    region = fields.One2many(
+        'xpr_xis_connector.dealer.region',
         'category',
-        string='Category Info'
+        string='Region Info'
     )
+
+    certification = fields.One2many(
+        'xpr_xis_connector.dealer.certification',
+        'category',
+        string='Certification Info'
+    )
+
+
+class DealerCategoryMixin():
+    _inherits = {
+        'res.partner.category': 'category'
+    }
+
+    def _get_name(self):
+        for dealer_cat in self:
+            dealer_cat.name = dealer_cat.category.name
 
     def create(self, cr, uid, vals, context=None):
         status = super(PartnerCategory, self).create(
@@ -61,42 +77,36 @@ class PartnerCategory(models.Model):
 
         return status
 
-
-class DealerCategory(models.Model):
-
-    """Extension of a category, that permits
-    to describe a group of certifications or a region for a dealer"""
-
-    _inherits = {
-        'res.partner.category': 'category'
-    }
-
     category = fields.Many2one(
         'res.partner.category',
-        string="Related category",
+        string="Category",
         required=True,
         ondelete='cascade'
     )
 
-    _name = 'xpr_xis_connector.dealer.category'
+    name = fields.Char(compute=_get_name)
 
-    # Legacy id for xis_connector
-    xis_certification_id = fields.Integer('XIS certification id')
+
+class DealerRegion(models.Model, DealerCategoryMixin):
+
+    """Extension of a category, that permits
+    to describe region for a dealer"""
+
+    _name = 'xpr_xis_connector.dealer.region'
 
     # Region code
     region_code = fields.Char('Region Code')
 
-    # Deprecated.
-    # 'x_sf_id': fields.char('Salesforce ID', size=18, select=True),
 
-    # Based on client comments, not used anymore.
-    # 'x_salesperson': fields.many2one('res.users','Salesperson'),
+class DealerCertification(models.Model, DealerCategoryMixin):
 
-    # Duplicate of 'name' field. Deprecated.
-    # 'x_dealergroup': fields.char('Dealergroup', size=254),
+    """Extension of a category, that permits
+    to describe certifications for a dealer"""
 
-    # Deprecated. Import description after changing language
-    # 'x_description_fr': fields.char('Description FR', size=254),
+    _name = 'xpr_xis_connector.dealer.certification'
+
+    # Region code
+    region_code = fields.Char('Region Code')
 
 
 class Dealer(models.Model):
@@ -184,7 +194,7 @@ class Dealer(models.Model):
     )
 
     region = fields.Many2many(
-        'xpr_xis_connector.dealer.group',
+        'res.partner.category',
         'dealer_partner_category_region_rel',
         string="Region",
     )
