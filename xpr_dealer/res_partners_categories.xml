@@ -82,17 +82,17 @@
      </record>
 
     <record model="res.partner.category" id="category_dealer_group_marketing">
-        <field name="name">Marketing association</field>
+        <field name="name">Marketing Association</field>
         <field name="parent_id" ref="category_dealer_group" />
      </record>
 
     <record model="res.partner.category" id="category_dealer_group_auto_certification">
-        <field name="name">Automatic certification</field>
+        <field name="name">Automatic Certification</field>
         <field name="parent_id" ref="category_dealer_group" />
      </record>
 
       <record model="res.partner.category" id="category_dealer_group_manual_certification">
-        <field name="name">Manual certification</field>
+        <field name="name">Manual Certification</field>
         <field name="parent_id" ref="category_dealer_group" />
      </record>
 
