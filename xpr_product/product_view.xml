@@ -82,5 +82,61 @@
 
       </field>
     </record>
+
+    <record id="product_template_normal_tree_view" model="ir.ui.view">
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+         <!--  
+          <field name="uom_id" position="replace" />
+         <field name="qty_available" position="replace" />
+          <field name="virtual_available" position="replace"/> -->
+
+          <field name="type" position="replace" />
+
+          <field name="categ_id" position="replace">
+            <field name="categ_term" />
+          </field>
+
+        </field>
+    </record>
+
+    <record id="product_product_normal_tree_view" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+
+
+          <field name="attribute_value_ids" position="replace" />
+          <field name="uom_id" position="replace" />
+          <field name="ean13" position="replace" />
+          <!-- <field name="qty_available" position="replace" /> 
+          <field name="virtual_available" position="replace"/>-->
+
+        </field>
+    </record>
+
+     <record id="product_quick_edit_tree_view" model="ir.ui.view">
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+              <field name="default_code" readonly="1"/>
+              <field name="name" readonly="1" />
+              <field name="categ_term" />
+              <field name="product_variant_count" />
+              <field name="description_sale" readonly="1" />
+          </tree>
+        </field>
+    </record>
+
+     <record model="ir.actions.act_window" id="quick_edit_template">
+            <field name="name">Products</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="product_quick_edit_tree_view" />
+            
+        </record>
+        <menuitem name="Products Category Edit" parent="base.menu_product" id="menu_quick_edit" action="quick_edit_template" />
+
   </data>
 </openerp>
