@@ -30,7 +30,8 @@ class Partner(models.Model):
         'xpr_dealer.dealer',
         'partner',
         string='Dealer Info'
-        )
+    )
+
     # 'xis_dc': fields.char('XIS dealer code', size=254),
     code = fields.Char('Code', size=254)  # Required for companies. Unique.
 

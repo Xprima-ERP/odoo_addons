@@ -13,10 +13,17 @@
           <attribute name="string">Full History</attribute>
         </xpath>
 
-        <field name="category_id" position="before">
+        <field name="category_id" position="replace">
             <field name="code" attrs="{'invisible': [('is_company','=', False)], 'required' : [('is_company','=', True)]}"/>
            <!--  <label for="dealer" string="Is a Dealer" attrs="{'invisible': [('is_company','=', False)]}"/>
             <field name="dealer" widget="many2onebutton" readonly="True" attrs="{'invisible': [('is_company','=', False)]}" /> -->
+
+            <field name="category_id" widget="many2many_tags" domain="[('parent_id','child_of', %(category_dealer_group)d )]"/>
+
+            <!--
+              , '|', ('id','child_of', %(category_dealer_association)d ), '|', ('id','child_of', %(category_dealer_marketing_association)d ), '|', ('id','child_of', %(category_dealer_certification_manual)d ), '|', ('id','child_of', %(category_dealer_certification_automatic)d )
+            -->
+
         </field>
 
     </field>

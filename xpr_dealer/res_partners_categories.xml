@@ -61,46 +61,60 @@
 
  <data>
 
+<!--
+    Eliminate Sub-Group, will go under Dealer/Group/X
+    Eliminate Primary Group. Will become X under Group
+
+    Dealer/Certification  - Manual Automatic
+    Dealer/Association
+    Dealer/Marketing Association
+
+-->
     <record model="res.partner.category" id="category_dealer_group">
         <field name="name">Group</field>
         <field name="parent_id" ref="category_dealer" />
      </record>
-
+<!-- 
     <record model="res.partner.category" id="category_dealer_group_primary">
         <field name="name">Primary Group</field>
         <field name="parent_id" ref="category_dealer_group" />
      </record>
 
     <record model="res.partner.category" id="category_dealer_group_subgroup">
-        <field name="name">Sub-Group</field>
+        <field name="name">Dealer Sub-Group</field>
         <field name="parent_id" ref="category_dealer_group" />
+     </record> -->
+
+    <record model="res.partner.category" id="category_dealer_association">
+        <field name="name">Association</field> <!-- Dealer Association-->
+        <field name="parent_id" ref="category_dealer" />
      </record>
 
-    <record model="res.partner.category" id="category_dealer_group_association">
-        <field name="name">Dealer Association</field>
-        <field name="parent_id" ref="category_dealer_group" />
-     </record>
-
-    <record model="res.partner.category" id="category_dealer_group_marketing">
+    <record model="res.partner.category" id="category_dealer_marketing_association">
         <field name="name">Marketing Association</field>
-        <field name="parent_id" ref="category_dealer_group" />
+        <field name="parent_id" ref="category_dealer" />
      </record>
 
-    <record model="res.partner.category" id="category_dealer_group_auto_certification">
-        <field name="name">Automatic Certification</field>
-        <field name="parent_id" ref="category_dealer_group" />
+     <record model="res.partner.category" id="category_dealer_certification">
+        <field name="name">Certification</field>
+        <field name="parent_id" ref="category_dealer" />
      </record>
 
-      <record model="res.partner.category" id="category_dealer_group_manual_certification">
-        <field name="name">Manual Certification</field>
-        <field name="parent_id" ref="category_dealer_group" />
+    <record model="res.partner.category" id="category_dealer_certification_automatic">
+        <field name="name">Automatic</field> <!-- Automatic Certification -->
+        <field name="parent_id" ref="category_dealer_certification" />
+     </record>
+
+      <record model="res.partner.category" id="category_dealer_certification_manual">
+        <field name="name">Manual</field> <!-- Manual Certification -->
+        <field name="parent_id" ref="category_dealer_certification" />
      </record>
 
 
-       <record model="res.partner.category" id="category_dealer_group_group">
+      <!--  <record model="res.partner.category" id="category_dealer_group_group">
         <field name="name">dealer group</field>
         <field name="parent_id" ref="category_dealer_group" />
-     </record>
+     </record> -->
 </data>
 
 <data>
