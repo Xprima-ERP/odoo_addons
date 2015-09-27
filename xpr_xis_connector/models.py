@@ -206,9 +206,8 @@ class SaleOrder(models.Model):
 
         qt_xisid = None
         so_req = SaleOrderRequest(self, cr, uid, status, context=context)
-        data = so_req.get_xis_field(so_req)
-        if data:
-            xis_status, qt_xisid = so_req.send_quote_xis(data)
+
+        xis_status, qt_xisid = so_req.execute(data)
 
         # write to database
         if qt_xisid is not None:
@@ -232,20 +231,20 @@ class SaleOrder(models.Model):
                 # ok, create a new one
                 qt_xisid = None
                 is_new = True
+
             so_req = SaleOrderRequest(
                 self, cr, uid,
                 r_id,
                 context=context,
-                xis_id=qt_xisid)
+                xis_id=qt_xisid,
+                is_update=True)
 
-            data = so_req.get_xis_field(so_req, is_update=True)
-            if data:
-                xis_status, qt_xisid = so_req.send_quote_xis(data)
-                # write to database the xisid
-                if is_new and qt_xisid is not None:
-                    xis_val["client_order_ref"] = qt_xisid
-                    super(SaleOrder, self).write(
-                        cr, uid, r_id, xis_val, context=context)
+            xis_status, qt_xisid = so_req.execute()
+            # write to database the xisid
+            if is_new and qt_xisid is not None:
+                xis_val["client_order_ref"] = qt_xisid
+                super(SaleOrder, self).write(
+                    cr, uid, r_id, xis_val, context=context)
 
         return status
 

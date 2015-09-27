@@ -36,7 +36,42 @@ class XisRequest():
         self.parent = parent
         self.param_pool = parent.pool.get('ir.config_parameter')
 
-    def send_request(self, model, url, values):
+    def _get_url(self, page_name):
+        # check configuration to active XIS connector
+        is_enable = False
+
+        lst_param = self.param_pool.search(
+            self.cr, self.uid, [('key', '=', 'xis.enable.connector')])
+
+        if lst_param:
+            param = self.param_pool.browse(
+                self.cr, self.uid, lst_param[0]).value
+
+            is_enable = param and (param == "1" or param.lower() == "true")
+
+        if not is_enable:
+            self._logger.debug("xis.domain.connector is not set.")
+            return None
+
+        domain = None
+
+        lst_param = self.param_pool.search(
+            self.cr, self.uid, [('key', '=', 'xis.domain.connector')])
+
+        if lst_param:
+            domain = self.param_pool.browse(
+                self.cr, self.uid, lst_param[0]).value
+
+        if not domain:
+            self._logger.debug("xis.domain.connector is not set.")
+            return None
+
+        # Live: xis.xprima.com
+        # Dev: xis-lb
+
+        return "https://{0}/ws/erp/{1}".format(domain, page_name)
+
+    def send_request(self, model, page_name, values):
         """
         Send POST request to giving url (if not contain GET request).
         Send an email if request contain error.
@@ -48,6 +83,7 @@ class XisRequest():
         self._logger.debug(values)
         code = 0
         data = ""
+
         for key, value in values.items():
             if type(value) is dict:
                 self.transfort_utf8_to_ascii_dict(value)
@@ -87,20 +123,10 @@ class XisRequest():
             data = data[:-1]
         self._logger.debug(data)
 
-        # check configuration to active XIS connector
-        is_enable = False
+        url = self._get_url(page_name)
 
-        lst_param = self.param_pool.search(self.cr, self.uid,
-                                           [('key', '=',
-                                             'xis.enable.connector')])
-        if lst_param:
-            param = self.param_pool.browse(self.cr, self.uid,
-                                           lst_param[0]).value
-            if param and (param == "1" or param.lower() == "true"):
-                is_enable = True
-
-        if not is_enable:
-            self._logger.debug("xis.enable.connector is false.")
+        if not url:
+            # Not configured
             return True, None
 
         # send request
@@ -189,11 +215,6 @@ class XISRequestWrapper():
         self.context = context
         self.parent = parent
 
-        # Dev
-        self.url = "https://xis.xprima.com/ws/erp/" + self.page_name
-        # Live
-        self.url = "https://xis-lb/ws/erp/" + self.page_name
-
     def execute(self):
         raise Exception("Not implemented")
 
@@ -222,15 +243,16 @@ class SaleOrderRequest(XISRequestWrapper):
     page_name = "proposal_sf.spy"
 
     def __init__(self, parent, cr, uid, r_id, context=None,
-                 xis_id=None):
+                 xis_id=None, is_update=False):
 
-        super(_PartnerRequest, self).__init__(parent, cr, uid, r_id, context)
+        super(SaleOrderRequest, self).__init__(parent, cr, uid, r_id, context)
 
         self.cr = cr
         self.uid = uid
         self.r_id = r_id
         self.context = context
         self.xis_id = xis_id
+        self.is_update = is_update
 
         # create pool
         self.pool_param = parent.pool.get('ir.config_parameter')
@@ -247,12 +269,21 @@ class SaleOrderRequest(XISRequestWrapper):
         self.partner_req = self.order.partner_id
         self.line_order = self.order.order_line
 
-    def execute(self, data):
+    def execute(self):
+
         qt_xisid = None
         xis_status = None
-        status, response = self.xis_request.send_request(self.model_xis,
-                                                         self.url,
-                                                         data)
+
+        data = self.get_xis_field()
+
+        if not data:
+            return xis_status, qt_xisid
+
+        status, response = self.xis_request.send_request(
+            self.model_xis,
+            self.page_name,
+            data)
+
         # validate response
         if response:
             dct_response = json.loads(response)
@@ -262,27 +293,28 @@ class SaleOrderRequest(XISRequestWrapper):
 
         return xis_status, qt_xisid
 
-    def get_xis_field(self, so_req, is_update=False):
-        ext_id = so_req.get_partner_ext_id()
+    def get_xis_field(self):
+        ext_id = self.get_partner_ext_id()
         # cannot do a transaction without ext id
-        if not ext_id or not so_req.get_dealer_code():
+        if not ext_id or not self.get_dealer_code():
             return
-        nb_item = so_req.get_order_line_size()
+
+        nb_item = self.get_order_line_size()
         data = {
             # "123" sample base dealercode
-            "qt_dc": so_req.get_dealer_code().strip(),
+            "qt_dc": self.get_dealer_code().strip(),
 
             # example of opportunity
             "qt_Opportunityid": 'null',
-            "qt_CreatedDate": so_req.get_last_modif_date(),
+            "qt_CreatedDate": self.get_last_modif_date(),
             "qt_Comments": self.order.note,
             "qt_IComments": self.order.note,
 
             # Marc Cassuto  Sales Rep 736
             "qt_user_external_id__c": ext_id,
-            "qt_StageName": so_req.get_state(is_update),
-            "qt_Language": so_req.get_language(),
-            "qt_LastModifiedDate": so_req.get_last_modif_date(),
+            "qt_StageName": self.get_state(),
+            "qt_Language": self.get_language(),
+            "qt_LastModifiedDate": self.get_last_modif_date(),
 
             # nb loop
             "num_line_item": nb_item,
@@ -332,8 +364,8 @@ class SaleOrderRequest(XISRequestWrapper):
         # get partner info
         return self.partner_req.xis_dc
 
-    def get_state(self, is_update=False):
-        if is_update:
+    def get_state(self):
+        if self.is_update:
             return "NoChange"
         else:
             return self.dct_stage_asso.get(self.order.state)
@@ -349,7 +381,7 @@ class PartnerRequest(XISRequestWrapper):
     page_name = "dealers_sf.spy"
 
     def __init__(self, parent, cr, uid, r_id, context=None):
-        super(_PartnerRequest, self).__init__(parent, cr, uid, r_id, context)
+        super(PartnerRequest, self).__init__(parent, cr, uid, r_id, context)
 
         utils.set_xis_fqdn(self, parent, cr, uid, context)
 
@@ -423,21 +455,24 @@ class PartnerRequest(XISRequestWrapper):
             context.update({'lang': 'en_US'})
         else:
             context = {'lang': 'en_US'}
-        result = obj_partner_business_type.read(cr,
-                                                uid,
-                                                pbt_ids,
-                                                fields=['name'],
-                                                context=context)
+        result = obj_partner_business_type.read(
+            cr,
+            uid,
+            pbt_ids,
+            fields=['name'],
+            context=context)
+
         membertype = [type.get('name') for type in result]
         self.str_membertype = ';'.join(membertype)
         # Build site type since it's translated and xis only accepts english.
         if self.partner.site_type_id.id:
             obj_site_type = parent.pool.get('partner_site_type')
-            self.site_type = obj_site_type.read(cr,
-                                                uid,
-                                                self.partner.site_type_id.id,
-                                                fields=['name'],
-                                                context=context).get('name')
+            self.site_type = obj_site_type.read(
+                cr,
+                uid,
+                self.partner.site_type_id.id,
+                fields=['name'],
+                context=context).get('name')
         else:
             self.site_type = 'null'
 
@@ -446,9 +481,11 @@ class PartnerRequest(XISRequestWrapper):
         if not data:
             return None
         xis_status = None
-        status, response = self.xis_request.send_request(self.model_xis,
-                                                         self.url,
-                                                         data)
+        status, response = self.xis_request.send_request(
+            self.model_xis,
+            self.page_name,
+            data)
+
         # validate response
         if response:
             dct_response = json.loads(response)
@@ -576,7 +613,7 @@ class PartnerCategoryRequest(XISRequestWrapper):
     page_name = "dealer_groups_sf.spy"
 
     def __init__(self, parent, cr, uid, r_id, context=None):
-        super(_PartnerCategoryRequest, self).__init__(
+        super(PartnerCategoryRequest, self).__init__(
             parent, cr, uid, r_id, context)
 
         # pool
@@ -594,9 +631,11 @@ class PartnerCategoryRequest(XISRequestWrapper):
         if not data:
             return None
         xis_status = None
-        status, response = self.xis_request.send_request(self.model_xis,
-                                                         self.url,
-                                                         data)
+        status, response = self.xis_request.send_request(
+            self.model_xis,
+            self.page_name,
+            data)
+
         # validate response
         if response:
             dct_response = json.loads(response)
@@ -655,7 +694,7 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         self, parent, cr, uid, r_id, context=None, add_id=[], rem_id=[]
     ):
 
-        super(_PartnerCategoryRelRequest, self).__init__(
+        super(PartnerCategoryRelRequest, self).__init__(
             parent, cr, uid, r_id, context)
 
         self.add_id = add_id
@@ -675,9 +714,11 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         if not data:
             return None
         xis_status = None
-        status, response = self.xis_request.send_request(self.model_xis,
-                                                         self.url,
-                                                         data)
+        status, response = self.xis_request.send_request(
+            self.model_xis,
+            self.page_name,
+            data)
+
         # validate response
         if response:
             dct_response = json.loads(response)

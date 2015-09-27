@@ -1,2 +1,3 @@
 "id","key","value"
-"__export__.ir_config_parameter_5","xis.enable.connector","False"
+"config_param_enable","xis.enable.connector","False"
+"config_param_domain","xis.domain.connector","xis-lb"
