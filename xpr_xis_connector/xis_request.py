@@ -612,10 +612,9 @@ class PartnerCategoryRequest(XISRequestWrapper):
 
         # pool
         translate = parent.env['ir.translation']
-        lst_translate = translate.search([
-            ('name', '=', 'res.partner.category,description'),
-            ('res_id', '=', parent.category.id)])
-        self.lst_desc = translate.browse(lst_translate)
+        self.lst_desc = translate.search([
+            ('name', '=', 'xpr_xis_connector.dealer.certification,description'),
+            ('res_id', '=', parent.id)])
 
         # model
         self.partner_category = parent.category
@@ -658,7 +657,7 @@ class PartnerCertificationRequest(PartnerCategoryRequest):
         p = self.parent
 
         # need a grouptype and id > 0
-        if p.category or not p.category.parent_id or not p.name:
+        if not p.category or not p.category.parent_id or not p.name:
             return None
 
         # get description
@@ -667,14 +666,14 @@ class PartnerCertificationRequest(PartnerCategoryRequest):
         if lst_desc_fr:
             desc_fr = lst_desc_fr[0]
         else:
-            desc_fr = ''  # p.description
+            desc_fr = p.description
 
         lst_desc_en = [desc.value for desc in self.lst_desc if
                        "en" in desc.lang]
         if lst_desc_en:
             desc_en = lst_desc_en[0]
         else:
-            desc_en = ''  # p.description
+            desc_en = p.description
 
         group = {
             'name': p.name,
@@ -689,6 +688,7 @@ class PartnerCertificationRequest(PartnerCategoryRequest):
             "dealergroup_desc": [group],
             "honeypot_roger": '1',  # security key
         }
+
         return data
 
 

@@ -27,6 +27,7 @@
             <field name="name"/>
             <field name="category"/>
             <field name="xis_certification_id"/>
+            <field name="description"/>
           </group>
         </sheet>
         </form>

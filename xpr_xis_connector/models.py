@@ -120,6 +120,7 @@ class DealerCertification(models.Model):
         return status
 
     name = fields.Char(compute=_get_name)
+    description = fields.Text('Description', translate=True)
 
     category = fields.Many2one(
         'res.partner.category',
