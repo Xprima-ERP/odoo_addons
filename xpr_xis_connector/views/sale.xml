@@ -10,7 +10,7 @@
         <data>
           <xpath expr="//field[@name='date_order']/.." position="after">
             <group>
-              <field name="xis_quote_id" readonly="1" string="XIS Contract Number" />
+              <field name="client_order_ref" readonly="1" string="XIS Contract Number" />
             </group>
           </xpath>
           <xpath expr="//field[@name='partner_id']" position="attributes">

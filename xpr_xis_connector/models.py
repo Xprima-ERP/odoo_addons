@@ -66,15 +66,20 @@ class DealerRegion(models.Model):
     @api.multi
     def write(self, vals):
         status = super(DealerRegion, self).write(vals)
-        xis_request.PartnerRegionRequest(self).execute()
+
+        for region in self:
+            xis_request.PartnerRegionRequest(region).execute()
+
         return status
 
-    @api.multi
+    @api.model
     def create(self, vals):
-        
-        status = super(DealerRegion, self).create(vals)
-        xis_request.PartnerRegionRequest(self).execute()
-        return status
+
+        region = super(DealerRegion, self).create(vals)
+
+        xis_request.PartnerRegionRequest(region).execute()
+
+        return region
 
     name = fields.Char(compute=_get_name)
 
@@ -108,16 +113,20 @@ class DealerCertification(models.Model):
 
     @api.multi
     def write(self, vals):
+
         status = super(DealerCertification, self).write(vals)
-        xis_request.PartnerCertificationRequest(self).execute()
+
+        for certification in self:
+            xis_request.PartnerCertificationRequest(certification).execute()
+
         return status
 
-    @api.multi
+    @api.model
     def create(self, vals):
-        
-        status = super(DealerCertification, self).create(vals)
-        xis_request.PartnerCertificationRequest(self).execute()
-        return status
+
+        certification = super(DealerCertification, self).create(vals)
+        xis_request.PartnerCertificationRequest(certification).execute()
+        return certification
 
     name = fields.Char(compute=_get_name)
     description = fields.Text('Description', translate=True)
@@ -181,77 +190,39 @@ class Dealer(models.Model):
 
 class SaleOrder(models.Model):
     """
-    Takes care of synching the xis_guote_id from XIS with the client_order_ref
+    Takes care of synching the client_order_ref with the XIS xis_quote_id
     """
 
     _inherit = "sale.order"
 
-    def _get_ref(self):
+    @api.multi
+    def write(self, vals):
+        """
+        If order ref is not initialized yet, get one from XIS and repair it.
+        """
+
+        status = super(SaleOrder, self).write(vals)
+
         for order in self:
-            order.xis_quote_id = order.client_order_ref
 
-    xis_quote_id = fields.Integer(string='XIS quote id', compute=_get_ref)
+            if order.client_order_ref:
+                continue
 
-    def __init__(self, pool, cr):
-        super(SaleOrder, self).__init__(pool, cr)
-
-    def create(self, cr, uid, vals, context=None):
-        xis_val = {}
-        status = super(SaleOrder, self).create(cr, uid, vals, context=context)
-
-        qt_xisid = None
-        so_req = SaleOrderRequest(self, cr, uid, status, context=context)
-
-        xis_status, qt_xisid = so_req.execute(data)
-
-        # write to database
-        if qt_xisid is not None:
-            xis_val["client_order_ref"] = qt_xisid
-            super(SaleOrder, self).write(
-                cr, uid, status, xis_val, context=context)
+            xis_request.SaleOrderRequest(
+                order, is_update=True).execute()
 
         return status
 
-    def write(self, cr, uid, ids, vals, context=None):
-        status = super(SaleOrder, self).write(
-            cr, uid, ids, vals, context=context)
+    @api.model
+    def create(self, vals):
+        """
+        Upon creation, get reference from XIS
+        """
+        order = super(SaleOrder, self).create(vals)
 
-        for r_id in ids:
-            is_new = False
-            xis_val = {}
-            qt_xisid = self.browse(
-                cr, uid, r_id, context=context).client_order_ref
+        xis_request.SaleOrderRequest(order).execute()
 
-            if not qt_xisid:
-                # ok, create a new one
-                qt_xisid = None
-                is_new = True
-
-            so_req = SaleOrderRequest(
-                self, cr, uid,
-                r_id,
-                context=context,
-                xis_id=qt_xisid,
-                is_update=True)
-
-            xis_status, qt_xisid = so_req.execute()
-            # write to database the xisid
-            if is_new and qt_xisid is not None:
-                xis_val["client_order_ref"] = qt_xisid
-                super(SaleOrder, self).write(
-                    cr, uid, r_id, xis_val, context=context)
-
-        return status
-
-    # def onchange_partner_id(self, cr, uid, ids, part, context=None):
-    #     result = super(sale_order, self).onchange_partner_id(cr,
-    #                                                          uid,
-    #                                                          ids,
-    #                                                          part,
-    #                                                          context)
-    #     empty_pricelist = {'pricelist_id': False}
-    #     result.get('value', {}).update(empty_pricelist)
-    #     return result
+        return order
 
 
 class Partner(models.Model):
@@ -386,3 +357,9 @@ class Partner(models.Model):
             i += 1
 
         return status
+
+
+class User(models.Model):
+    _inherit = "res.users"
+
+    xis_user_external_id = fields.Integer('XIS external user', required=True)

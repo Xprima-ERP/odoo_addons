@@ -21,6 +21,7 @@
 import urllib
 import urllib2
 import logging
+import time
 
 _logger = logging.getLogger(__name__)
 
@@ -208,7 +209,7 @@ class XISRequestWrapper(object):
 
     def __init__(self, parent):
         self.xis_request = XisRequest(parent)
-        self.parent = parent
+        self.order = parent
 
     def execute(self):
         raise Exception("Not implemented")
@@ -237,32 +238,15 @@ class SaleOrderRequest(XISRequestWrapper):
     model_xis = "XisDealerGroupDescUpdater"
     page_name = "proposal_sf.spy"
 
-    def __init__(self, parent, cr, uid, r_id, context=None,
-                 xis_id=None, is_update=False):
+    def __init__(self, parent, is_update=False):
 
-        super(SaleOrderRequest, self).__init__(parent, cr, uid, r_id, context)
+        super(SaleOrderRequest, self).__init__(parent)
 
-        self.cr = cr
-        self.uid = uid
-        self.r_id = r_id
-        self.context = context
-        self.xis_id = xis_id
         self.is_update = is_update
 
         # create pool
-        self.pool_param = parent.pool.get('ir.config_parameter')
-        self.pool_partner = parent.pool.get('res.partner')
-        self.pool_product = parent.pool.get('product.product')
-        self.pool_order_line = self.parent.pool.get('sale.order.line')
-
-        # model
-        self.order = self.parent.browse(
-            self.cr, self.uid,
-            self.r_id,
-            context=self.context)
-
-        self.partner_req = self.order.partner_id
-        self.line_order = self.order.order_line
+        self.config = parent.env['ir.config_parameter']
+        self.order = parent
 
     def execute(self):
 
@@ -272,7 +256,7 @@ class SaleOrderRequest(XISRequestWrapper):
         data = self.get_xis_field()
 
         if not data:
-            return xis_status, qt_xisid
+            return xis_status
 
         status, response = self.xis_request.send_request(
             self.model_xis,
@@ -286,15 +270,18 @@ class SaleOrderRequest(XISRequestWrapper):
                 qt_xisid = dct_response.get("qt_xisid")
                 xis_status = dct_response.get("status")
 
-        return xis_status, qt_xisid
+            if qt_xisid is not None:
+                self.order.client_order_ref = qt_xisid
+
+        return xis_status
 
     def get_xis_field(self):
         ext_id = self.get_partner_ext_id()
         # cannot do a transaction without ext id
-        if not ext_id or not self.get_dealer_code():
-            return
+        # if not ext_id or not self.get_dealer_code():
+        #     return
 
-        nb_item = self.get_order_line_size()
+        nb_item = len(self.order.order_line)
         data = {
             # "123" sample base dealercode
             "qt_dc": self.get_dealer_code().strip(),
@@ -318,52 +305,62 @@ class SaleOrderRequest(XISRequestWrapper):
         }
 
         i = 0
-        for i in range(nb_item):
-            data["qli_ProductCode_%s" % i] = so_req.get_product_code(i)
-            data["qli_ListPrice_%s" % i] = so_req.get_list_price(i)
-            data["qli_Quantity_%s" % i] = so_req.get_quantity(i)
-            # data["qli_Subtotal_%s" % i] = so_req.get_sub_total(i)
-            # data["qli_TotalPrice_%s" % i] = so_req.get_total_price(i)
-            data["qli_UnitPrice_%s" % i] = so_req.get_unit_price(i)
-            data["qli_Name_%s" % i] = so_req.get_product_name(i)
-            data["qli_Family_%s" % i] = 'null'
-            data["qli_Description_%s" % i] = so_req.get_description(i)
+        for line in self.order.order_line:
+            data.update({
+                "qli_ProductCode_%s" % i:
+                line.product_id.default_code or "",
 
-        xis_id = so_req.get_xis_id()
+                "qli_ListPrice_%s" % i:
+                int(line.product_uom_qty) * line.price_unit,
+
+                "qli_Quantity_%s" % i: line.product_uom_qty,
+                "qli_UnitPrice_%s" % i: line.price_unit,
+                "qli_Name_%s" % i: line.name,
+                "qli_Family_%s" % i: 'null',
+                "qli_Description_%s" % i: line.name,
+            })
+
+            i += 1
+
+        xis_id = self.get_xis_id()
         # check for debug xis_id
-        lst_param = self.pool_param.search(self.cr, self.uid,
-                                           [('key', '=',
-                                             'xis.debug.sale')])
-        if lst_param:
-            param = self.pool_param.browse(self.cr, self.uid,
-                                           lst_param[0]).value
-            if param and (param == "1" or param.lower() == "true"):
-                xis_id = "48305"
+
+        # lst_param = self.config.search([
+        #     ('key', '=', 'xis.debug.sale')])
+
+        # if lst_param:
+        #     param = lst_param[0]
+
+        #     if param and (param == "1" or param.lower() == "true"):
+        #         xis_id = "48305"
 
         if xis_id:
             data["qt_xisid"] = xis_id
+
         return data
 
     def get_xis_id(self):
-        return self.xis_id
+        return self.order.client_order_ref
 
     def get_language(self):
-        if self.context:
-            lan = self.context.get('lang', 'en')
-            lan = lan[:2]
-        else:
-            lan = 'en'
-        return lan
+        return self.order.env.context.get('lang', 'en')[:2]
 
     def get_dealer_code(self):
         # get partner info
-        return self.partner_req.code
+        return self.order.partner_id and self.order.partner_id.code or ''
 
     def get_state(self):
         if self.is_update:
             return "NoChange"
         else:
             return self.dct_stage_asso.get(self.order.state)
+
+    @staticmethod
+    def get_last_modif_date():
+        return time.strftime("%Y/%m/%d")
+
+    def get_partner_ext_id(self):
+        return self.order.user_id.xis_user_external_id
 
 
 class PartnerRequest(XISRequestWrapper):
@@ -410,14 +407,14 @@ class PartnerRequest(XISRequestWrapper):
         else:
             _state = self.partner.state_id
             if _state and self.partner.area_code:
-                dealerarea_state = parent.pool.get('res.country.state')
+                dealerarea_state = parent.env['res.country.state']
                 if _state:
                     dealerarea_state_code = dealerarea_state.browse(
                         cr, uid, _state.id, context=context).code
                 dealerarea_area_code = self.partner.area_code
                 dealerarea_region_code = False
                 if self.partner.region:
-                    obj_region = parent.pool.get('partner_region')
+                    obj_region = parent.env['partner_region']
                     region_id = obj_region.search(
                         cr, uid, [('name', '=', self.partner.region)])[0]
                     try:
@@ -442,7 +439,7 @@ class PartnerRequest(XISRequestWrapper):
         self.dealerarea = dealerarea
         # Build membertype
         # membertype are translated, the XIS api wants the englis terms.
-        obj_partner_business_type = parent.pool.get('partner_business_type')
+        obj_partner_business_type = parent.env['partner_business_type']
         pbt_ids = [type.id for type in self.partner.membertype]
         # Set the language to english so we dont get the translated terms for
         # the partner business types.
@@ -461,7 +458,7 @@ class PartnerRequest(XISRequestWrapper):
         self.str_membertype = ';'.join(membertype)
         # Build site type since it's translated and xis only accepts english.
         if self.partner.site_type_id.id:
-            obj_site_type = parent.pool.get('partner_site_type')
+            obj_site_type = parent.env['partner_site_type']
             self.site_type = obj_site_type.read(
                 cr,
                 uid,
@@ -613,7 +610,8 @@ class PartnerCategoryRequest(XISRequestWrapper):
         # pool
         translate = parent.env['ir.translation']
         self.lst_desc = translate.search([
-            ('name', '=', 'xpr_xis_connector.dealer.certification,description'),
+            ('name', '=',
+                'xpr_xis_connector.dealer.certification,description'),
             ('res_id', '=', parent.id)])
 
         # model
@@ -639,13 +637,12 @@ class PartnerCategoryRequest(XISRequestWrapper):
         return xis_status
 
     def _get_xis_field(self):
-        # raise notimplemeted
+        # raise Exception("not implemeted")
         return {}
 
 
 class PartnerRegionRequest(PartnerCategoryRequest):
     # Surprisingly, there is no XIS support for regions yet.
-    # Check if this is to be done.
     pass
 
 
@@ -715,7 +712,7 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         self.context = context
 
         # pool
-        self.partner_cat_pool = parent.pool.get("res.partner.category")
+        self.partner_cat_pool = parent.env["res.partner.category"]
 
         # model
         self.partner = parent.browse(cr, uid, r_id, context=context)
