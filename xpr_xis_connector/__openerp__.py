@@ -21,7 +21,7 @@
 ##############################################################################
 
 {
-    'name': 'XIS Connector',
+    'name': 'Xprima XIS Connector',
     'version': '0.4',
     'author': 'Xprima',
     'maintainer': 'Xprima',

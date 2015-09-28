@@ -20,6 +20,9 @@
 #
 import urllib
 import urllib2
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class XisRequest():
@@ -28,42 +31,36 @@ class XisRequest():
     Class to send request to XIS software. Using POST http request.
     """
 
-    def __init__(self, _logger, cr, uid, parent):
-        self.debug = True
-        self._logger = _logger
-        self.cr = cr
-        self.uid = uid
+    def __init__(self, parent):
         self.parent = parent
-        self.param_pool = parent.pool.get('ir.config_parameter')
+        self.param_pool = parent.env['ir.config_parameter']
 
     def _get_url(self, page_name):
         # check configuration to active XIS connector
         is_enable = False
 
-        lst_param = self.param_pool.search(
-            self.cr, self.uid, [('key', '=', 'xis.enable.connector')])
+        lst_param = self.param_pool.search([
+            ('key', '=', 'xis.enable.connector')])
 
         if lst_param:
-            param = self.param_pool.browse(
-                self.cr, self.uid, lst_param[0]).value
+            param = lst_param[0].value
 
             is_enable = param and (param == "1" or param.lower() == "true")
 
         if not is_enable:
-            self._logger.debug("xis.domain.connector is not set.")
+            _logger.debug("xis.domain.connector is not set.")
             return None
 
         domain = None
 
         lst_param = self.param_pool.search(
-            self.cr, self.uid, [('key', '=', 'xis.domain.connector')])
+            [('key', '=', 'xis.domain.connector')])
 
         if lst_param:
-            domain = self.param_pool.browse(
-                self.cr, self.uid, lst_param[0]).value
+            domain = lst_param[0].value
 
         if not domain:
-            self._logger.debug("xis.domain.connector is not set.")
+            _logger.debug("xis.domain.connector is not set.")
             return None
 
         # Live: xis.xprima.com
@@ -80,7 +77,7 @@ class XisRequest():
         status = False
         result = None
         response = None
-        self._logger.debug(values)
+        _logger.debug(values)
         code = 0
         data = ""
 
@@ -121,7 +118,7 @@ class XisRequest():
         if data and data[-1:] == "&":
             # remove last '&'
             data = data[:-1]
-        self._logger.debug(data)
+        _logger.debug(data)
 
         url = self._get_url(page_name)
 
@@ -140,12 +137,12 @@ class XisRequest():
             error = e
             code = e.code
             if hasattr(e, 'reason'):
-                self._logger.error('We failed to reach a server. Reason: %s' %
-                                   e.reason)
+                _logger.error(
+                    'We failed to reach a server. Reason: %s' % e.reason)
             elif hasattr(e, 'code'):
                 msg = 'The server couldn\'t fulfill the request. ' \
                       'Error code: %s' % code
-                self._logger.error(msg)
+                _logger.error(msg)
         finally:
             if not result:
                 contains_error = True
@@ -157,7 +154,7 @@ class XisRequest():
             if not status:
                 self.send_email(model, data, result, code, error=error,
                                 internal_error=contains_error)
-        self._logger.debug(result)
+        _logger.debug(result)
         return status, result
 
     @staticmethod
@@ -205,14 +202,12 @@ class XisRequest():
         mail_pool.send(self.cr, self.uid, [m_id], context=None)
 
 
-class XISRequestWrapper():
+class XISRequestWrapper(object):
 
     model_xis = "NoModel"  # Subclasses must override this field
-    page_name = "notset.spy"  # Invalid page. Must be overriden in subclass
 
-    def __init__(self, parent, cr, uid, r_id, context):
-        self.xis_request = xis_request.XisRequest(_logger, cr, uid, parent)
-        self.context = context
+    def __init__(self, parent):
+        self.xis_request = XisRequest(parent)
         self.parent = parent
 
     def execute(self):
@@ -362,7 +357,7 @@ class SaleOrderRequest(XISRequestWrapper):
 
     def get_dealer_code(self):
         # get partner info
-        return self.partner_req.xis_dc
+        return self.partner_req.code
 
     def get_state(self):
         if self.is_update:
@@ -394,23 +389,23 @@ class PartnerRequest(XISRequestWrapper):
         # don't follow the rule, and have to be hardcoded so as not to break
         # anything in XIS/TTR
         dealerarea_region_code = None
-        if self.partner.xis_dc == '905CADA':
+        if self.partner.code == '905CADA':
             dealerarea = '905'
-        elif self.partner.xis_dc == 'AUTO123MERC':
+        elif self.partner.code == 'AUTO123MERC':
             dealerarea = '514'
-        elif self.partner.xis_dc == 'CCAMA':
+        elif self.partner.code == 'CCAMA':
             dealerarea = 'CCAMA'
-        elif self.partner.xis_dc == 'PERSONALLA':
+        elif self.partner.code == 'PERSONALLA':
             dealerarea = 'LA'
-        elif self.partner.xis_dc == 'PERSONALMA':
+        elif self.partner.code == 'PERSONALMA':
             dealerarea = 'MA'
-        elif self.partner.xis_dc == 'PERSONALNWT':
+        elif self.partner.code == 'PERSONALNWT':
             dealerarea = 'NWT'
-        elif self.partner.xis_dc == 'PERSONALSA':
+        elif self.partner.code == 'PERSONALSA':
             dealerarea = 'SA'
-        elif self.partner.xis_dc == 'PERSONALYU':
+        elif self.partner.code == 'PERSONALYU':
             dealerarea = 'YU'
-        elif self.partner.xis_dc == '514AVANTIPLUS':
+        elif self.partner.code == '514AVANTIPLUS':
             dealerarea = '514'
         else:
             _state = self.partner.state_id
@@ -502,7 +497,7 @@ class PartnerRequest(XISRequestWrapper):
         # validate data
         p = self.partner
         _pux = p.user_id.xis_user_external_id
-        if not p.xis_dc or not _pux or not p.is_company:
+        if not p.code or not _pux or not p.is_company:
             return None
         state = p.state_id and p.state_id.name or None
         if not state or state == "Quebec":
@@ -552,7 +547,7 @@ class PartnerRequest(XISRequestWrapper):
             'customermask': s_customermasks or 'null',
             'dayspastdue': p.dayspastdue or 'null',
             'dealerarea': self.dealerarea or 'null',
-            'dealercode': p.xis_dc.strip() or 'null',
+            'dealercode': p.code.strip() or 'null',
             'dealeremail': 'null',  # must go from xis to OE.
             'dealername': p.name.strip() or 'null',
             'dealerurle': p.website or 'null',
@@ -612,24 +607,24 @@ class PartnerCategoryRequest(XISRequestWrapper):
     model_xis = "XisDealerGroupDescUpdater"
     page_name = "dealer_groups_sf.spy"
 
-    def __init__(self, parent, cr, uid, r_id, context=None):
-        super(PartnerCategoryRequest, self).__init__(
-            parent, cr, uid, r_id, context)
+    def __init__(self, parent):
+        super(PartnerCategoryRequest, self).__init__(parent)
 
         # pool
-        translate = parent.pool.get('ir.translation')
-        lst_translate = translate.search(cr, uid, [
+        translate = parent.env['ir.translation']
+        lst_translate = translate.search([
             ('name', '=', 'res.partner.category,description'),
-            ('res_id', '=', r_id)], context=context)
-        self.lst_desc = translate.browse(cr, uid, lst_translate)
+            ('res_id', '=', parent.category.id)])
+        self.lst_desc = translate.browse(lst_translate)
 
         # model
-        self.partner_category = parent.browse(cr, uid, r_id, context=context)
+        self.partner_category = parent.category
 
     def execute(self):
         data = self._get_xis_field()
         if not data:
             return None
+
         xis_status = None
         status, response = self.xis_request.send_request(
             self.model_xis,
@@ -645,34 +640,50 @@ class PartnerCategoryRequest(XISRequestWrapper):
         return xis_status
 
     def _get_xis_field(self):
+        # raise notimplemeted
+        return {}
+
+
+class PartnerRegionRequest(PartnerCategoryRequest):
+    # Surprisingly, there is no XIS support for regions yet.
+    # Check if this is to be done.
+    pass
+
+
+class PartnerCertificationRequest(PartnerCategoryRequest):
+
+    def _get_xis_field(self):
         # validate data
-        p = self.parent.xis_info and self.parent.xis_info[0] or None
+
+        p = self.parent
 
         # need a grouptype and id > 0
-        if not p or not p.id or not p.parent_id or not p.name:
+        if p.category or not p.category.parent_id or not p.name:
             return None
+
         # get description
         lst_desc_fr = [desc.value for desc in self.lst_desc if
                        "fr" in desc.lang]
         if lst_desc_fr:
             desc_fr = lst_desc_fr[0]
         else:
-            desc_fr = p.description
+            desc_fr = ''  # p.description
+
         lst_desc_en = [desc.value for desc in self.lst_desc if
                        "en" in desc.lang]
         if lst_desc_en:
             desc_en = lst_desc_en[0]
         else:
-            desc_en = p.description
-        # cert_id = 0 if not p.certification else p.certification[
-        #    0].xis_certification_id
-        cert_id = p.xis_certification_id
+            desc_en = ''  # p.description
+
         group = {
             'name': p.name,
-            'certification_id': cert_id,
+            'certification_id': p.xis_certification_id,
             'desc_en': desc_en,
             'desc_fr': desc_fr,
-            'grouptype': p.parent_id.name,
+            'grouptype': "{certification} {certification_root}".format(
+                certification=p.parent_id.name,
+                certification_root=p.parent_id.parent_id.name),
         }
         data = {
             "dealergroup_desc": [group],
@@ -731,7 +742,7 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         # validate data
         p = self.partner
         pcp = self.partner_cat_pool
-        if not p.is_company or not p.xis_dc:
+        if not p.is_company or not p.code:
             return None
 
         lst_group_add = []
@@ -739,7 +750,7 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         for r_id in self.add_id:
             rec = pcp.browse(self.cr, self.uid, r_id, context=self.context)
             group = {
-                'dealercode': p.xis_dc,
+                'dealercode': p.code,
                 'name': rec.name,
                 'grouptype': rec.parent_id.name,
             }
@@ -748,7 +759,7 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         for r_id in self.rem_id:
             rec = pcp.browse(self.cr, self.uid, r_id, context=self.context)
             group = {
-                'dealercode': p.xis_dc,
+                'dealercode': p.code,
                 'name': rec.name,
                 'grouptype': rec.parent_id.name,
             }

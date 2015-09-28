@@ -46,7 +46,7 @@
                     <page string="XIS Sync Information" attrs="{'invisible': [('is_company','=', False)]}">
                         <group>
                             <group>
-                                <field name="xis_dc" attrs="{'invisible': [('is_company','=', False)],'required': [('is_company','=', True)]}" />
+                                <field name="code" attrs="{'invisible': [('is_company','=', False)],'required': [('is_company','=', True)]}" />
                                 <field name="xis_makes" attrs="{'invisible': [('is_company','=', False)]}" readonly="True" />
                             </group>
                             <group>

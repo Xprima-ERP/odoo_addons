@@ -18,7 +18,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import logging
+
 import time
 import json
 import utils
@@ -26,8 +26,6 @@ import xis_request
 from openerp import models, fields, api
 from openerp.tools.translate import _
 from sets import Set
-
-_logger = logging.getLogger(__name__)
 
 
 class PartnerCategory(models.Model):
@@ -49,57 +47,37 @@ class PartnerCategory(models.Model):
     )
 
 
-class DealerCategoryMixin():
+class DealerRegion(models.Model):
     """
-    Common code for Dealer category extensions
+    Extension of a category, that permits
+    to describe region for a dealer
     """
 
     _inherits = {
         'res.partner.category': 'category'
     }
 
+    _name = 'xpr_xis_connector.dealer.region'
+
     def _get_name(self):
         for dealer_cat in self:
             dealer_cat.name = dealer_cat.category.name
 
-    def create(self, cr, uid, vals, context=None):
-        status = super(PartnerCategory, self).create(
-            cr, uid, vals, context=context)
-
-        req = xis_request.PartnerCategoryRequest(
-            self, cr, uid, status, context=context)
-
-        req.execute()
-
+    @api.multi
+    def write(self, vals):
+        status = super(DealerRegion, self).write(vals)
+        xis_request.PartnerRegionRequest(self).execute()
         return status
 
-    def write(self, cr, uid, ids, vals, context=None):
-        status = super(PartnerCategory, self).write(
-            cr, uid, ids, vals, context=context)
-
-        if type(ids) is long or type(ids) is int:
-            ids = [ids]
-
-        for id_r in ids:
-            req = xis_request.PartnerCategoryRequest(
-                self, cr, uid, id_r, context=context)
-
-            req.execute()
-
+    @api.multi
+    def create(self, vals):
+        
+        status = super(DealerRegion, self).create(vals)
+        xis_request.PartnerRegionRequest(self).execute()
         return status
 
     name = fields.Char(compute=_get_name)
 
-
-class DealerRegion(models.Model, DealerCategoryMixin):
-    """
-    Extension of a category, that permits
-    to describe region for a dealer
-    """
-
-    _name = 'xpr_xis_connector.dealer.region'
-
-    # TODO: Find a way to move this in mixin
     category = fields.Many2one(
         'res.partner.category',
         string="Category",
@@ -112,7 +90,7 @@ class DealerRegion(models.Model, DealerCategoryMixin):
     region_code = fields.Char('Region Code')
 
 
-class DealerCertification(models.Model, DealerCategoryMixin):
+class DealerCertification(models.Model):
     """
     Extension of a category, that permits
     to describe certifications for a dealer
@@ -120,7 +98,29 @@ class DealerCertification(models.Model, DealerCategoryMixin):
 
     _name = 'xpr_xis_connector.dealer.certification'
 
-    # TODO: Find a way to move this in mixin
+    _inherits = {
+        'res.partner.category': 'category'
+    }
+
+    def _get_name(self):
+        for dealer_cat in self:
+            dealer_cat.name = dealer_cat.category.name
+
+    @api.multi
+    def write(self, vals):
+        status = super(DealerCertification, self).write(vals)
+        xis_request.PartnerCertificationRequest(self).execute()
+        return status
+
+    @api.multi
+    def create(self, vals):
+        
+        status = super(DealerCertification, self).create(vals)
+        xis_request.PartnerCertificationRequest(self).execute()
+        return status
+
+    name = fields.Char(compute=_get_name)
+
     category = fields.Many2one(
         'res.partner.category',
         string="Category",
@@ -172,16 +172,10 @@ class Dealer(models.Model):
 
         return {}
 
-    def _get_code(self):
-        for dealer in self:
-            dealer.xis_dc = dealer.code
-
+    # xis_dc redirects is now 'code'
     xis_makes = fields.Char(compute=_get_xis_makes)
 
     area_code = fields.Char(size=3, compute=_get_area_code)
-
-    # xis_dc redirects to 'code'
-    xis_dc = fields.Char(compute=_get_code)
 
 
 class SaleOrder(models.Model):
@@ -391,20 +385,3 @@ class Partner(models.Model):
             i += 1
 
         return status
-
-
-class Product(models.Model):
-    """
-    Contains fields to expose dealers data for XIS updates.
-    At the last update, the remaining fields are actually duplicates.
-    This class could be deprecated.
-    """
-
-    _inherit = "product.template"
-
-    def _get_code(self):
-        for p in self:
-            p.xis_product_code = p.default_code
-
-    xis_product_code = fields.Char(
-        'XIS product code', size=30, compute=_get_code)

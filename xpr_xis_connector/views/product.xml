@@ -10,7 +10,7 @@
         <data>
           <xpath expr="//sheet/notebook/page[@string='Information']/group" position="after">
             <group>
-              <field name="xis_product_code"/>
+              <field name="default_code"/>
             </group>
           </xpath>
         </data>
