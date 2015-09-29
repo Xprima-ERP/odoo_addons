@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-  <data>
+  <data noupdate="1">
     <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_medicine_hat">
         <field name="category" ref="xpr_dealer.category_dealer_region_medicine_hat" />
         <field name="region_code">MH</field>

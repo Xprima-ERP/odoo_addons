@@ -372,13 +372,17 @@ class PartnerRequest(XISRequestWrapper):
     model_xis = "TTRDealerUpdater"
     page_name = "dealers_sf.spy"
 
-    def __init__(self, parent, cr, uid, r_id, context=None):
-        super(PartnerRequest, self).__init__(parent, cr, uid, r_id, context)
+    def __init__(self, parent, old_categories):
+        super(PartnerRequest, self).__init__(parent)
 
-        utils.set_xis_fqdn(self, parent, cr, uid, context)
+        self.old_categories = old_categories
+
+        # This is already supported in superclass
+        # utils.set_xis_fqdn(self, parent, cr, uid, context)
 
         # model
-        self.partner = parent.browse(cr, uid, r_id, context=context)
+        self.partner = parent
+
         # Build dealerarea (province_code + area_code [+region_code])
         dealerarea = ''
         # The dealerarea for '905CADA','AUTO123MERC','CCAMA','PERSONALLA',
@@ -409,17 +413,16 @@ class PartnerRequest(XISRequestWrapper):
             if _state and self.partner.area_code:
                 dealerarea_state = parent.env['res.country.state']
                 if _state:
-                    dealerarea_state_code = dealerarea_state.browse(
-                        cr, uid, _state.id, context=context).code
+                    dealerarea_state_code = _state.id.code
+
                 dealerarea_area_code = self.partner.area_code
                 dealerarea_region_code = False
                 if self.partner.region:
                     obj_region = parent.env['partner_region']
                     region_id = obj_region.search(
-                        cr, uid, [('name', '=', self.partner.region)])[0]
+                        [('name', '=', self.partner.region)])[0]
                     try:
-                        dealerarea_region_code = obj_region.browse(
-                            cr, uid, region_id, context=context).code
+                        dealerarea_region_code = region_id.code
                     except Exception:
                         pass
                 try:
@@ -443,16 +446,12 @@ class PartnerRequest(XISRequestWrapper):
         pbt_ids = [type.id for type in self.partner.membertype]
         # Set the language to english so we dont get the translated terms for
         # the partner business types.
-        if context:
-            context.update({'lang': 'en_US'})
-        else:
-            context = {'lang': 'en_US'}
+
+        self.env.context.update({'lang': 'en_US'})
+
         result = obj_partner_business_type.read(
-            cr,
-            uid,
             pbt_ids,
-            fields=['name'],
-            context=context)
+            fields=['name'])
 
         membertype = [type.get('name') for type in result]
         self.str_membertype = ';'.join(membertype)
@@ -460,19 +459,20 @@ class PartnerRequest(XISRequestWrapper):
         if self.partner.site_type_id.id:
             obj_site_type = parent.env['partner_site_type']
             self.site_type = obj_site_type.read(
-                cr,
-                uid,
                 self.partner.site_type_id.id,
-                fields=['name'],
-                context=context).get('name')
+                fields=['name']
+            ).get('name')
         else:
             self.site_type = 'null'
 
     def execute(self):
         data = self._get_xis_field()
-        if not data:
-            return None
+
         xis_status = None
+
+        if not data:
+            return xis_status
+
         status, response = self.xis_request.send_request(
             self.model_xis,
             self.page_name,
@@ -483,6 +483,16 @@ class PartnerRequest(XISRequestWrapper):
             dct_response = json.loads(response)
             if type(dct_response) is dict:
                 xis_status = dct_response.get("status")
+
+        if xis_status and (self.old_categories or self.partner.category_id):
+
+            new_categories = set([cat.id for self.partner.category_id])
+
+            if new_categories != self.old_categories:
+                PartnerCategoryRelRequest(
+                    self.partner,
+                    add_id=new_categories - self.old_categories,
+                    rem_id=self.old_categories - new_categories).execute()
 
         return xis_status
 
@@ -692,35 +702,31 @@ class PartnerCertificationRequest(PartnerCategoryRequest):
 class PartnerCategoryRelRequest(XISRequestWrapper):
 
     """
-    This private class merge model and vals and give method to request info.
+    This private class merges model and vals and give method to request info.
     """
 
     model_xis = "XisDealerGroupDescUpdater"
     page_name = "dealer_groups_sf.spy"
 
     def __init__(
-        self, parent, cr, uid, r_id, context=None, add_id=[], rem_id=[]
+        self, parent, add_id=set(), rem_id=set()
     ):
-
-        super(PartnerCategoryRelRequest, self).__init__(
-            parent, cr, uid, r_id, context)
+        super(PartnerCategoryRelRequest, self).__init__(parent)
 
         self.add_id = add_id
         self.rem_id = rem_id
-        self.cr = cr
-        self.uid = uid
-        self.context = context
 
         # pool
         self.partner_cat_pool = parent.env["res.partner.category"]
 
         # model
-        self.partner = parent.browse(cr, uid, r_id, context=context)
+        self.partner = parent
 
     def execute(self):
         data = self._get_xis_field()
         if not data:
             return None
+
         xis_status = None
         status, response = self.xis_request.send_request(
             self.model_xis,
@@ -737,30 +743,27 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
 
     def _get_xis_field(self):
         # validate data
-        p = self.partner
+
         pcp = self.partner_cat_pool
-        if not p.is_company or not p.code:
+
+        if not self.partner.is_company or not self.partner.code:
             return None
 
-        lst_group_add = []
-        lst_group_rem = []
-        for r_id in self.add_id:
-            rec = pcp.browse(self.cr, self.uid, r_id, context=self.context)
-            group = {
-                'dealercode': p.code,
+        lst_group_add = [
+            {
+                'dealercode': self.partner.code,
                 'name': rec.name,
                 'grouptype': rec.parent_id.name,
-            }
-            lst_group_add.append(group)
+            } for rec in pcp.browse(self.add_id)
+        ]
 
-        for r_id in self.rem_id:
-            rec = pcp.browse(self.cr, self.uid, r_id, context=self.context)
-            group = {
-                'dealercode': p.code,
+        lst_group_rem = [
+            {
+                'dealercode': self.partner.code,
                 'name': rec.name,
                 'grouptype': rec.parent_id.name,
-            }
-            lst_group_rem.append(group)
+            } for rec in pcp.browse(self.rem_id)
+        ]
 
         data = {
             "to_add": lst_group_add,

@@ -231,132 +231,98 @@ class Partner(models.Model):
     """
     _inherit = "res.partner"
 
-    def create(self, cr, uid, vals, context=None):
-        status = super(Partner, self).create(
-            cr, uid, vals, context=context)
+    @api.model
+    def create(self, vals):
+        """
+        Upon creation, updates XIS with new partner and its groups
+        """
+        partner = super(Partner, self).create(vals)
 
-        if self.browse(cr, uid, status, context=context).customer:
-            req = xis_request.PartnerRequest(
-                self, cr, uid, status, context=context)
+        xis_request.PartnerRequest(partner, set()).execute()
 
-            req.execute()
+        return partner
 
-            dct_cat_vals = vals.get("category_id")
-            if dct_cat_vals:
-                lst_new_cat = [cat[2] for cat in dct_cat_vals][0]
-                req = xis_request.PartnerCategoryRelRequest(
-                    self, cr, uid, status, context=context,
-                    add_id=lst_new_cat)
+    @api.multi
+    def write(self, vals):
+        """
+        Upon update, updates XIS with new fields and groups
+        """
 
-                req.execute()
+        if 'user_id' in vals:
+            # Check if user may be updated
+            for partner in self:
+                if not self.may_change_user(partner):
+                    # At least one partner may not be updated
+                    del vals['user_id']
+                    break
+
+        # Keep track of old category values if needed
+        lst_old_cat = dict()
+
+        dct_cat_vals = vals.get("category_id")
+
+        if dct_cat_vals:
+            for partner in self:
+                lst_old_cat[partner.id] = set([
+                    cat.id for cat in partner.category_id
+                ])
+
+        # Make the standard call
+        status = super(Partner, self).write(vals)
+
+        # Update XIS with new fields and categories
+        for partner in self:
+            if not partner.customer:
+                continue
+
+            xis_request.PartnerRequest(
+                partner, dct_cat_vals.get(partner.id)).execute()
 
         return status
 
-    def write(self, cr, uid, ids, vals, context=None):
+    def may_change_user(self, partner):
+        """
+        Write helper function. Determines
+        if user may be updated within context
+        """
+
         # Only the manager of the modifier can change
         # the user_id of this partner
 
-        if 'user_id' in vals:
-            authorized_modifiers_groups = [
-                'Helpdesk / Agent',
-                'Administration / Settings',
-                'Sales / Manager',
-                'Contact Creation',
-            ]
+        authorized_modifiers_groups = set([
+            #'Helpdesk / Agent',
+            #'Administration / Settings',
+            'Sales / Manager',
+            #'Contact Creation',
+        ])
 
-            users_obj = self.pool.get('res.users')
-            writer_user = users_obj.browse(cr, uid, uid)
-            user_groups = [group.full_name for group in writer_user.groups_id]
-            is_authorized = False
+        writer_user = self.env.user
+        user_groups = set([group.full_name for group in writer_user.groups_id])
 
-            for group in authorized_modifiers_groups:
-                if group not in user_groups:
-                    continue
+        for group in authorized_modifiers_groups & authorized_modifiers_groups:
 
-                if group != u'Sales / Manager':
-                    # This looks like a recent update.
-                    # Should update
-                    continue
+            # Need to be the manager of the user_id
+            # or the coach.
 
-                # Need to be the manager of the user_id
-                # or the coach.
+            hr_emp_obj = self.env['hr.employee']
+            s_args = [('user_id', '=', partner.user_id.id)]
+            try:
+                user_id_hr = hr_emp_obj.search(s_args)[0]
+            except IndexError:
+                continue
 
-                hr_emp_obj = self.pool.get('hr.employee')
-                partner = self.browse(cr, uid, ids[0])
-                s_args = [('user_id', '=', partner.user_id.id)]
-                try:
-                    user_id_hr = hr_emp_obj.search(
-                        cr,
-                        uid,
-                        s_args,
-                        context=context)[0]
+            user_hr = hr_emp_obj.browse(user_id_hr)
+            manager_hr = user_hr.parent_id
+            coach_hr = user_hr.coach_id
 
-                except IndexError:
-                    continue
+            if (
+                (manager_hr and uid == manager_hr.user_id.id)
+                or (coach_hr and uid == coach_hr.user_id.id)
+                or (partner.user_id and uid == partner.user_id.id)
+            ):
+                return True
 
-                user_hr = hr_emp_obj.browse(
-                    cr,
-                    uid,
-                    user_id_hr,
-                    context)
-
-                manager_hr = user_hr.parent_id
-                coach_hr = user_hr.coach_id
-
-                if manager_hr and uid == manager_hr.user_id.id:
-                    is_authorized = True
-                    break
-
-                if coach_hr and uid == coach_hr.user_id.id:
-                    is_authorized = True
-                    break
-
-                if partner.user_id and uid == partner.user_id.id:
-                    is_authorized = True
-                    break
-
-            if not is_authorized:
-                del vals['user_id']
-
-        dct_cat_vals = vals.get("category_id")
-        if dct_cat_vals:
-            lst_new_cat = [cat[2] for cat in dct_cat_vals]
-            lst_rec = self.browse(cr, uid, ids, context=context)
-            lst_old_cat = [[cat.id for cat in rec.category_id] for rec in
-                           lst_rec]
-
-        status = super(Partner, self).write(
-            cr, uid, ids, vals, context=context)
-
-        if type(ids) is long or type(ids) is int:
-            ids = [ids]
-
-        i = 0
-        for id_r in ids:
-            if self.browse(cr, uid, id_r, context=context).customer:
-                req = xis_request.PartnerRequest(
-                    self, cr, uid, id_r, context=context)
-
-                req.execute()
-
-                if dct_cat_vals:
-                    # add rel to dealer_group
-                    new_cat = lst_new_cat[i]
-                    old_cat = lst_old_cat[i]
-                    # diff dealergroup
-                    rem_cat = [x for x in old_cat if x not in set(new_cat)]
-                    add_cat = [x for x in new_cat if x not in set(old_cat)]
-                    req = xis_request.PartnerCategoryRelRequest(
-                        self, cr, uid, id_r,
-                        context=context,
-                        add_id=add_cat,
-                        rem_id=rem_cat)
-
-                    req.execute()
-
-            i += 1
-
-        return status
+        return False
 
 
 class User(models.Model):
