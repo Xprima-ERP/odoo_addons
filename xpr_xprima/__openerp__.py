@@ -35,9 +35,9 @@ because of wizard.
 
         'xpr_report',
         'xpr_dealer',
+        'xpr_xis_connector',
         #'xpr_dealer_group', # Merged into xpr_dealer
         #'xpr_dropdowns_values', # Merged into xpr_dealer
-        #'xpr_xis_connector', # Legacy. Will be stripped, then dropped.
 
         #'xpr_product_variant_filters',  # Deprecated
         #'xpr_csi_program', # Later
@@ -48,7 +48,6 @@ because of wizard.
         # 'xpr_hd_ticket', # Helpdesk abandoned bridge.
 
         # 'purchase', # Not useful. Drop it.
-        # 'canadian_provinces', # Depecrated. Not using provinces anymore.
 
         # 'product_custom_attributes', # Replaced by xpr_solution_builder
         # 'web_adblock',
