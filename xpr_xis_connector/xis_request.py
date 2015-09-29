@@ -388,16 +388,12 @@ class PartnerRequest(XISRequestWrapper):
     model_xis = "TTRDealerUpdater"
     page_name = "dealers_sf.spy"
 
-    def __init__(self, parent, old_categories):
-        super(PartnerRequest, self).__init__(parent)
+    def __init__(self, partner, old_categories=None):
+        super(PartnerRequest, self).__init__(partner)
 
+        self.partner = partner
+        self.dealer = self.partner.dealer
         self.old_categories = old_categories
-
-        # This is already supported in superclass
-        # utils.set_xis_fqdn(self, parent, cr, uid, context)
-
-        # model
-        self.partner = parent
 
     @staticmethod
     def get_last_modif_date():
@@ -409,7 +405,9 @@ class PartnerRequest(XISRequestWrapper):
         """
 
         # Build dealerarea (province_code + area_code [+region_code])
+
         dealerarea = 'null'
+
         # The dealerarea for '905CADA','AUTO123MERC','CCAMA','PERSONALLA',
         # 'PERSONALMA','PERSONALNWT','PERSONALSA','PERSONALYU','514AVANTIPLUS'
         # don't follow the rule, and have to be hardcoded so as not to break
@@ -435,166 +433,159 @@ class PartnerRequest(XISRequestWrapper):
             return '514'
 
         _state = self.partner.state_id
-        if not _state or not self.partner.area_code:
+
+        dealerarea_area_code = self.get_area_code()
+
+        if not _state or not dealerarea_area_code:
             return dealerarea
 
-        dealerarea_state_code = _state.id.code
-        dealerarea_area_code = self.partner.area_code
-        dealerarea_region_code = None
+        dealerarea_state_code = _state.code
 
-        if self.partner.region:
-            obj_region = self.partner.env['partner_region']
-            region_id = obj_region.search(
-                [('name', '=', self.partner.region)])[0]
-            try:
-                dealerarea_region_code = region_id.code
-            except Exception:
-                pass
-        try:
-            if dealerarea_region_code:
-                return "%s%s%s" % (
-                    dealerarea_state_code,
-                    dealerarea_area_code,
-                    dealerarea_region_code
-                )
-            else:
-                return "%s%s" % (
-                    dealerarea_state_code,
-                    dealerarea_area_code,
-                )
-        except Exception:
-            return 'null'
+        if self.dealer.region:
 
-        return dealerarea
+            return "%s%s%s" % (
+                dealerarea_state_code,
+                dealerarea_area_code,
+                self.dealer.region.region.region_code
+            )
 
-    def get_xis_data(self):
+        return "%s%s" % (
+            dealerarea_state_code,
+            dealerarea_area_code,
+        )
 
-        # Build membertype
-        # membertype are translated, the XIS api wants the englis terms.
-        obj_partner_business_type = self.partner.env['partner_business_type']
-        pbt_ids = [type.id for type in self.partner.membertype]
+    def get_member_type(self):
+        """
+        Build member type string.
+        """
         # Set the language to english so we dont get the translated terms for
         # the partner business types.
 
-        self.env.context.update({'lang': 'en_US'})
+        return ';'.join([
+            b.name for b in self.dealer.with_context(lang='en_US').business
+        ]) or 'null'
 
-        result = obj_partner_business_type.read(
-            pbt_ids,
-            fields=['name'])
+    def get_site_type(self):
 
-        membertype = [type.get('name') for type in result]
-        self.str_membertype = ';'.join(membertype)
         # Build site type since it's translated and xis only accepts english.
-        if self.partner.site_type_id.id:
-            obj_site_type = self.partner.env['partner_site_type']
-            self.site_type = obj_site_type.read(
-                self.partner.site_type_id.id,
-                fields=['name']
-            ).get('name')
-        else:
-            self.site_type = 'null'
 
-        # validate data
+        site = self.dealer.with_context(lang='en_US').site_type
+
+        return site or 'null'
+
+    def get_salesrep_ext_id(self):
+        # Get current user XIS id
+        return self.partner.env.user.xis_user_external_id
+
+    def get_state(self):
         p = self.partner
-        _pux = p.user_id.xis_user_external_id
-        if not p.code or not _pux or not p.is_company:
-            return None
+
         state = p.state_id and p.state_id.name or None
+
         if not state or state == "Quebec":
             state = "Québec"
         if state == "Newfoundland and Labrador":
             state = "Newfoundland"
-        # Build customermask data.
-        customermasks = []
-        for cm in p.customermask_ids:
-            customermasks.append(cm.name)
-        s_customermasks = ';'.join(customermasks)
-        # Build portalmask
-        portalmask = [mask.name for mask in p.portalmask]
-        str_portalmask = ';'.join(portalmask)
-        # Build quoteflag
-        if p.quoteflag:
-            quoteflag = 'true'
+
+        return state
+
+    def get_customermasks(self):
+        return ';'.join(cm.name for cm in self.dealer.customer) or 'null'
+
+    def get_portalmask(self):
+        return ';'.join(mask.name for mask in self.dealer.portalmask) or 'null'
+
+    def get_xis_makes(self):
+
+        makes = set(m.name for m in self.dealer.makes)
+        # TODO: Check if order is important
+        return ','.join(makes) or 'null'
+
+    def get_area_code(self):
+
+        code = self.partner.phone.replace('(', '').replace(')', '')
+        code = code.replace('-', '').strip()
+
+        if code[0] == '1':
+            code = code[1:4]
         else:
-            quoteflag = 'false'
-        # Build ttr
-        if p.ttr_access:
-            ttr_access = 'true'
-        else:
-            ttr_access = 'false'
-        # Build isdealer
-        if p.is_dealer:
-            isdealer = 'true'
-        else:
-            isdealer = 'false'
-        # Build ismember
-        if p.is_member:
-            ismember = 'true'
-        else:
-            ismember = 'false'
-        if p.market:
-            market = p.market.lower()
-        else:
-            market = 'null'
+            code = code[:3]
+
+        if len(code.strip()) == 3:
+            return code
+
+        return ''
+
+    def get_xis_data(self):
+
+        # Validate data. Must be a dealer and user must have an external id.
+        p = self.partner
+        xid = self.get_salesrep_ext_id()
+
+        if not p.code or not xid or not p.is_company or not self.dealer:
+            return None
+
+        market = self.dealer.market and self.dealer.market.name.lower()
+
         dealers = {
             'address': p.street or 'null',
             'buyit': 'false',
-            'callsource_tollfree': p.callsource_tollfree or 'null',
+            'callsource_tollfree': self.dealer.callsource_tollfree or 'null',
             'city': p.city or 'null',
-            'corpcontracts': p.pin or 'null',
-            'corpname': p.corpname or 'null',
-            'country': p.country and p.country.name or 'null',
-            'customermask': s_customermasks or 'null',
-            'dayspastdue': p.dayspastdue or 'null',
+            'corpcontracts': 'null',  # p.pin
+            'corpname': p.name or 'null',
+            'country': p.country_id and p.country_id.name or 'null',
+            'customermask': self.get_customermasks(),
+            'dayspastdue': 'null',  # p.dayspastdue
             'dealerarea': self.get_dealerarea(),
             'dealercode': p.code.strip() or 'null',
             'dealeremail': 'null',  # must go from xis to OE.
             'dealername': p.name.strip() or 'null',
             'dealerurle': p.website or 'null',
-            'dealerurlf': p.website_french or 'null',
-            'dpd_override': '%s 00:00:00' % (p.dpd_override,) or 'null',
+            'dealerurlf': self.dealer.website_french or 'null',
+            'dpd_override': 'null',  # '%s 00:00:00' % (p.dpd_override,)
             'fax': p.fax or 'null',
-            # '45.548255',
-            'geolat': p.geolat or 'null',
-            'geolon': p.geolon or 'null',
+            'geolat': self.dealer.geolat or 'null',
+            'geolon': self.dealer.geolon or 'null',
             #'isdealer': isdealer, # Deprecated
             #'ismember': ismember, # Deprecated
 
             # force to take 'en' of 'en_US'
             'language': p.lang and p.lang[:2] or 'null',
             'lastmoddate': self.get_last_modif_date(),
-            'makes': p.xis_makes or 'null',
+            'makes': self.get_xis_makes(),
             'market': market or 'null',
-            'membertype': self.str_membertype or 'null',
+            'membertype': self.get_member_type(),
             'newemail': 'null',  # This field must go from xis to OE.
-            'owner': p.owner or 'null',
-            'owneremail': p.owneremail or 'null',
+            'owner': self.dealer.owner or 'null',
+            'owneremail': self.dealer.owneremail or 'null',
 
             'phone': p.phone or 'null',
             'phone2': p.mobile or 'null',
-            'portalmask': str_portalmask or 'null',
+            'portalmask': self.get_portalmask(),
             'postalcode': self.partner.zip or 'null',
-            'province': state,
-            'quoteflag': quoteflag,
-            'responsible': p.responsible or 'null',
-            'salesguy': p.user_id.xis_user_external_id or 'null',
-            'sitetype': self.site_type or 'null',
-            'tollfree': p.tollfree or 'null',
-            'ttr': ttr_access,
+            'province': self.get_state(),
+            'quoteflag': self.dealer.quoteflag and 'true' or 'false',
+            'responsible': self.dealer.responsible or 'null',
+            'salesguy': xid or 'null',
+            'sitetype': self.get_site_type(),
+            'tollfree': self.dealer.tollfree or 'null',
+            'ttr': 'false',  # p.ttr_access and 'true' or 'false'
 
             'usedemail': 'null',
-            'user10': p.user10 or 'null',
-            'user12': p.user12 or 'null',
-            'user12e': p.user12e or 'null',
-            'user40': p.user40 or 'null',
-            'user40e': p.user40e or 'null',
-            'user80': p.user80 or 'null',
+            'user10': self.dealer.user10 or 'null',
+            'user12': self.dealer.user12 or 'null',
+            'user12e': self.dealer.user12e or 'null',
+            'user40': self.dealer.user40 or 'null',
+            'user40e': self.dealer.user40e or 'null',
+            'user80': self.dealer.user80 or 'null',
         }
 
         data = {
             "dealers": [dealers],
             "honeypot_cedric": 'Metallica Rules',  # security key
         }
+
         return data
 
     def process_response(self, dct_response):
@@ -607,7 +598,13 @@ class PartnerRequest(XISRequestWrapper):
 
         new_categories = set([cat.id for cat in self.partner.category_id])
 
-        if not xis_status or new_categories == self.old_categories:
+        if not xis_status:
+            return xis_status
+
+        if (
+            self.old_categories is None
+            or new_categories == self.old_categories
+        ):
             return xis_status
 
         PartnerCategoryRelRequest(
@@ -618,17 +615,13 @@ class PartnerRequest(XISRequestWrapper):
         return xis_status
 
 
-class PartnerCategoryRequest(XISRequestWrapper):
-
-    """
-    This private class merge model and vals and give method to request info.
-    """
+class PartnerCertificationRequest(XISRequestWrapper):
 
     model_xis = "XisDealerGroupDescUpdater"
     page_name = "dealer_groups_sf.spy"
 
     def __init__(self, parent):
-        super(PartnerCategoryRequest, self).__init__(parent)
+        super(PartnerCertificationRequest, self).__init__(parent)
 
         # pool
         translate = parent.env['ir.translation']
@@ -639,14 +632,6 @@ class PartnerCategoryRequest(XISRequestWrapper):
 
         # model
         self.partner_category = parent.category
-
-
-class PartnerRegionRequest(PartnerCategoryRequest):
-    # Surprisingly, there is no XIS support for regions yet.
-    pass
-
-
-class PartnerCertificationRequest(PartnerCategoryRequest):
 
     def get_xis_data(self):
         # validate data

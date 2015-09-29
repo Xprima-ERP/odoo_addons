@@ -156,8 +156,39 @@ class Dealer(models.Model):
     # business_relationship
     # "Prospect" "Existing Customer" "Past Customer"
 
-    ############### Begin of ill used fields
-    # Following fields are still useful but probably not set properly
+    site_type = fields.Selection(
+        [
+            ("has_website_with_us", "Has Website With Us"),
+            ("has_a_link_or_portals_to_their_site",
+                "Has a link or portals to their site"),
+            ("does_not_have_a_website", "Does not have a website")
+        ],
+        "Site Type"
+    )
+
+    telephone_choice = fields.Selection(
+        [
+            ("phone", "Phone"),
+            ("toll_free", "Toll Free"),
+            ("call_tracking", "Evolio Call")
+        ],
+        "Phone Choice"
+    )
+
+    region = fields.Many2one(
+        'res.partner.category',
+        string="Region",
+    )
+
+    portalmask = fields.Many2many(
+        'res.partner.category',
+        'dealer_partner_category_portal_rel',
+        string="Used Cars On")
+
+    market = fields.Many2one(
+        'res.partner.category',
+        string="Market",
+    )
 
     owner = fields.Char(
         "Dealership Owner",
@@ -169,47 +200,9 @@ class Dealer(models.Model):
         size=240,
         help="This field is there for the synchronization to XIS")
 
-    telephone_choice = fields.Selection(
-        [
-            ("phone", "Phone"),
-            ("toll_free", "Toll Free"),
-            ("call_tracking", "Evolio Call")
-        ],
-        "Phone Choice"
-    )
-
-    site_type = fields.Selection(
-        [
-            ("has_website_with_us", "Has Website With Us"),
-            ("has_a_link_or_portals_to_their_site",
-                "Has a link or portals to their site"),
-            ("does_not_have_a_website", "Does not have a website")
-        ],
-        "Site Type"
-    )
-
     user10 = fields.Char("User10", size=10)
     user12 = fields.Char("User12", size=12)
     user12e = fields.Char("User12e", size=12)
     user40 = fields.Char("User40", size=40)
     user40e = fields.Char("User40e", size=40)
     user80 = fields.Char("User80", size=80)
-
-    market = fields.Many2many(
-        'res.partner.category',
-        'dealer_partner_category_market_rel',
-        string="Market",
-    )
-
-    region = fields.Many2many(
-        'res.partner.category',
-        'dealer_partner_category_region_rel',
-        string="Region",
-    )
-
-    portalmask = fields.Many2many(
-        'res.partner.category',
-        'dealer_partner_category_portal_rel',
-        string="Used Cars On")
-
-    ############### End of ill used fields

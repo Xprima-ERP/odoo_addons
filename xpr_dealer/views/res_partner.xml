@@ -89,9 +89,9 @@
                     <field name="owneremail"/>
                 </group>
                 <group>
-                    <field name="market" widget="many2many_tags"
+                    <field name="market"
                         domain="[('parent_id', 'child_of', %(category_dealer_market)d)]"/>
-                    <field name="region" widget="many2many_tags"
+                    <field name="region" 
                         domain="[('parent_id', 'child_of', %(category_dealer_region)d)]"/>
                     <field name="portalmask" widget="many2many_tags"
                         domain="[('parent_id', 'child_of', %(category_dealer_portal)d)]"/>

@@ -63,24 +63,6 @@ class DealerRegion(models.Model):
         for dealer_cat in self:
             dealer_cat.name = dealer_cat.category.name
 
-    @api.multi
-    def write(self, vals):
-        status = super(DealerRegion, self).write(vals)
-
-        for region in self:
-            xis_request.PartnerRegionRequest(region).execute()
-
-        return status
-
-    @api.model
-    def create(self, vals):
-
-        region = super(DealerRegion, self).create(vals)
-
-        xis_request.PartnerRegionRequest(region).execute()
-
-        return region
-
     name = fields.Char(compute=_get_name)
 
     category = fields.Many2one(
@@ -146,48 +128,6 @@ class DealerCertification(models.Model):
     xis_certification_id = fields.Char('XIS Certification ID')
 
 
-class Dealer(models.Model):
-    """
-    Contains fields to expose dealers data for XIS updates.
-    At the last update, the remaining fields are actually duplicates.
-    This class could be deprecated.
-    """
-
-    _inherit = 'xpr_dealer.dealer'
-
-    def _get_xis_makes(self):
-
-        for dealer in self:
-            makes = set(m.name for m in dealer.makes)
-            #TODO: Check if order is important
-            dealer.xis_makes = ','.join(makes)
-
-        return {}
-
-    def _get_area_code(self):
-
-        for dealer in self:
-            code = dealer.phone.replace('(', '').replace(')', '')
-            code = code.replace('-', '').strip()
-
-            if code[0] == '1':
-                code[1:4]
-            else:
-                code[:3]
-
-            if len(code.strip()) == 3:
-                dealer.area_code = code
-            else:
-                dealer.area_code = ''
-
-        return {}
-
-    # xis_dc redirects is now 'code'
-    xis_makes = fields.Char(compute=_get_xis_makes)
-
-    area_code = fields.Char(size=3, compute=_get_area_code)
-
-
 class SaleOrder(models.Model):
     """
     Takes care of synching the client_order_ref with the XIS xis_quote_id
@@ -231,17 +171,6 @@ class Partner(models.Model):
     """
     _inherit = "res.partner"
 
-    @api.model
-    def create(self, vals):
-        """
-        Upon creation, updates XIS with new partner and its groups
-        """
-        partner = super(Partner, self).create(vals)
-
-        xis_request.PartnerRequest(partner, set()).execute()
-
-        return partner
-
     @api.multi
     def write(self, vals):
         """
@@ -270,13 +199,16 @@ class Partner(models.Model):
         # Make the standard call
         status = super(Partner, self).write(vals)
 
-        # Update XIS with new fields and categories
-        for partner in self:
-            if not partner.customer:
-                continue
+        if dct_cat_vals:
+            # Update XIS with new fields and categories
+            for partner in self:
+                if not partner.customer:
+                    continue
 
-            xis_request.PartnerRequest(
-                partner, dct_cat_vals.get(partner.id)).execute()
+                xis_request.PartnerRequest(
+                    partner,
+                    old_category=lst_old_cat.get(partner.id, set())
+                ).execute()
 
         return status
 
@@ -323,6 +255,55 @@ class Partner(models.Model):
                 return True
 
         return False
+
+
+class Dealer(models.Model):
+    """
+    Contains fields to expose dealers data for XIS updates.
+    At the last update, the remaining fields are actually duplicates.
+    This class could be deprecated.
+    """
+
+    _inherit = 'xpr_dealer.dealer'
+
+    @api.model
+    def create(self, vals):
+        """
+        Upon creation, updates XIS with new partner and its groups
+        """
+
+        dealer = super(Dealer, self).create(vals)
+
+        xis_request.PartnerRequest(dealer.partner).execute()
+
+        return dealer
+
+    @api.multi
+    def write(self, vals):
+        """
+        Upon update, updates XIS with new fields and groups
+        """
+
+        # Make the standard call
+        status = super(Dealer, self).write(vals)
+
+        for dealer in self:
+            xis_request.PartnerRequest(dealer.partner).execute()
+
+        return status
+
+    def _get_xis_makes(self):
+
+        for dealer in self:
+            makes = set(m.name for m in dealer.makes)
+            #TODO: Check if order is important
+            dealer.xis_makes = ','.join(makes)
+
+        return {}
+
+    # xis_dc redirects is now 'code'
+    xis_makes = fields.Char(compute=_get_xis_makes)
+
 
 
 class User(models.Model):
