@@ -211,8 +211,40 @@ class XISRequestWrapper(object):
         self.xis_request = XisRequest(parent)
         self.order = parent
 
+    def get_xis_data(self):
+        """
+        Override this to generate data to be sent to XIS
+        """
+        return {}
+
+    def process_response(self, dct_response):
+        """
+        Extend this to process response dictionnary from XIS.
+        Returns xis status by default
+        """
+        return dct_response.get("status")
+
     def execute(self):
-        raise Exception("Not implemented")
+
+        data = self.get_xis_data()
+        if not data:
+            return None
+
+        status, response = self.xis_request.send_request(
+            self.model_xis,
+            self.page_name,
+            data)
+
+        # validate response
+        if not response:
+            return None
+
+        dct_response = json.loads(response)
+
+        if type(dct_response) is not dict:
+            return None
+
+        return self.process_response(dct_response)
 
 
 class SaleOrderRequest(XISRequestWrapper):
@@ -248,32 +280,16 @@ class SaleOrderRequest(XISRequestWrapper):
         self.config = parent.env['ir.config_parameter']
         self.order = parent
 
-    def execute(self):
+    def process_response(self, dct_response):
+        """
+        Inits order ref from XIS
+        """
+        qt_xisid = dct_response.get("qt_xisid")
 
-        qt_xisid = None
-        xis_status = None
+        if qt_xisid is not None:
+            self.order.client_order_ref = qt_xisid
 
-        data = self.get_xis_field()
-
-        if not data:
-            return xis_status
-
-        status, response = self.xis_request.send_request(
-            self.model_xis,
-            self.page_name,
-            data)
-
-        # validate response
-        if response:
-            dct_response = json.loads(response)
-            if type(dct_response) is dict:
-                qt_xisid = dct_response.get("qt_xisid")
-                xis_status = dct_response.get("status")
-
-            if qt_xisid is not None:
-                self.order.client_order_ref = qt_xisid
-
-        return xis_status
+        return super(SaleOrderRequest, self).process_response(dct_response)
 
     def get_xis_field(self):
         ext_id = self.get_partner_ext_id()
@@ -383,66 +399,79 @@ class PartnerRequest(XISRequestWrapper):
         # model
         self.partner = parent
 
+    @staticmethod
+    def get_last_modif_date():
+        return time.strftime("%Y/%m/%d %H:%M:%S")
+
+    def get_dealerarea(self):
+        """
+        Date field helper. Calculates area code.
+        """
+
         # Build dealerarea (province_code + area_code [+region_code])
-        dealerarea = ''
+        dealerarea = 'null'
         # The dealerarea for '905CADA','AUTO123MERC','CCAMA','PERSONALLA',
         # 'PERSONALMA','PERSONALNWT','PERSONALSA','PERSONALYU','514AVANTIPLUS'
         # don't follow the rule, and have to be hardcoded so as not to break
         # anything in XIS/TTR
-        dealerarea_region_code = None
-        if self.partner.code == '905CADA':
-            dealerarea = '905'
-        elif self.partner.code == 'AUTO123MERC':
-            dealerarea = '514'
-        elif self.partner.code == 'CCAMA':
-            dealerarea = 'CCAMA'
-        elif self.partner.code == 'PERSONALLA':
-            dealerarea = 'LA'
-        elif self.partner.code == 'PERSONALMA':
-            dealerarea = 'MA'
-        elif self.partner.code == 'PERSONALNWT':
-            dealerarea = 'NWT'
-        elif self.partner.code == 'PERSONALSA':
-            dealerarea = 'SA'
-        elif self.partner.code == 'PERSONALYU':
-            dealerarea = 'YU'
-        elif self.partner.code == '514AVANTIPLUS':
-            dealerarea = '514'
-        else:
-            _state = self.partner.state_id
-            if _state and self.partner.area_code:
-                dealerarea_state = parent.env['res.country.state']
-                if _state:
-                    dealerarea_state_code = _state.id.code
 
-                dealerarea_area_code = self.partner.area_code
-                dealerarea_region_code = False
-                if self.partner.region:
-                    obj_region = parent.env['partner_region']
-                    region_id = obj_region.search(
-                        [('name', '=', self.partner.region)])[0]
-                    try:
-                        dealerarea_region_code = region_id.code
-                    except Exception:
-                        pass
-                try:
-                    if dealerarea_region_code:
-                        dealerarea = "%s%s%s" % (
-                            dealerarea_state_code,
-                            dealerarea_area_code,
-                            dealerarea_region_code
-                        )
-                    else:
-                        dealerarea = "%s%s" % (
-                            dealerarea_state_code,
-                            dealerarea_area_code,
-                        )
-                except Exception:
-                    dealerarea = 'null'
-        self.dealerarea = dealerarea
+        if self.partner.code == '905CADA':
+            return '905'
+        if self.partner.code == 'AUTO123MERC':
+            return '514'
+        if self.partner.code == 'CCAMA':
+            return 'CCAMA'
+        if self.partner.code == 'PERSONALLA':
+            return 'LA'
+        if self.partner.code == 'PERSONALMA':
+            return 'MA'
+        if self.partner.code == 'PERSONALNWT':
+            return 'NWT'
+        if self.partner.code == 'PERSONALSA':
+            return 'SA'
+        if self.partner.code == 'PERSONALYU':
+            return 'YU'
+        if self.partner.code == '514AVANTIPLUS':
+            return '514'
+
+        _state = self.partner.state_id
+        if not _state or not self.partner.area_code:
+            return dealerarea
+
+        dealerarea_state_code = _state.id.code
+        dealerarea_area_code = self.partner.area_code
+        dealerarea_region_code = None
+
+        if self.partner.region:
+            obj_region = self.partner.env['partner_region']
+            region_id = obj_region.search(
+                [('name', '=', self.partner.region)])[0]
+            try:
+                dealerarea_region_code = region_id.code
+            except Exception:
+                pass
+        try:
+            if dealerarea_region_code:
+                return "%s%s%s" % (
+                    dealerarea_state_code,
+                    dealerarea_area_code,
+                    dealerarea_region_code
+                )
+            else:
+                return "%s%s" % (
+                    dealerarea_state_code,
+                    dealerarea_area_code,
+                )
+        except Exception:
+            return 'null'
+
+        return dealerarea
+
+    def get_xis_data(self):
+
         # Build membertype
         # membertype are translated, the XIS api wants the englis terms.
-        obj_partner_business_type = parent.env['partner_business_type']
+        obj_partner_business_type = self.partner.env['partner_business_type']
         pbt_ids = [type.id for type in self.partner.membertype]
         # Set the language to english so we dont get the translated terms for
         # the partner business types.
@@ -457,7 +486,7 @@ class PartnerRequest(XISRequestWrapper):
         self.str_membertype = ';'.join(membertype)
         # Build site type since it's translated and xis only accepts english.
         if self.partner.site_type_id.id:
-            obj_site_type = parent.env['partner_site_type']
+            obj_site_type = self.partner.env['partner_site_type']
             self.site_type = obj_site_type.read(
                 self.partner.site_type_id.id,
                 fields=['name']
@@ -465,42 +494,6 @@ class PartnerRequest(XISRequestWrapper):
         else:
             self.site_type = 'null'
 
-    def execute(self):
-        data = self._get_xis_field()
-
-        xis_status = None
-
-        if not data:
-            return xis_status
-
-        status, response = self.xis_request.send_request(
-            self.model_xis,
-            self.page_name,
-            data)
-
-        # validate response
-        if response:
-            dct_response = json.loads(response)
-            if type(dct_response) is dict:
-                xis_status = dct_response.get("status")
-
-        if xis_status and (self.old_categories or self.partner.category_id):
-
-            new_categories = set([cat.id for self.partner.category_id])
-
-            if new_categories != self.old_categories:
-                PartnerCategoryRelRequest(
-                    self.partner,
-                    add_id=new_categories - self.old_categories,
-                    rem_id=self.old_categories - new_categories).execute()
-
-        return xis_status
-
-    @staticmethod
-    def get_last_modif_date():
-        return time.strftime("%Y/%m/%d %H:%M:%S")
-
-    def _get_xis_field(self):
         # validate data
         p = self.partner
         _pux = p.user_id.xis_user_external_id
@@ -553,7 +546,7 @@ class PartnerRequest(XISRequestWrapper):
             'country': p.country and p.country.name or 'null',
             'customermask': s_customermasks or 'null',
             'dayspastdue': p.dayspastdue or 'null',
-            'dealerarea': self.dealerarea or 'null',
+            'dealerarea': self.get_dealerarea(),
             'dealercode': p.code.strip() or 'null',
             'dealeremail': 'null',  # must go from xis to OE.
             'dealername': p.name.strip() or 'null',
@@ -604,6 +597,26 @@ class PartnerRequest(XISRequestWrapper):
         }
         return data
 
+    def process_response(self, dct_response):
+        """
+        If call is sucessful, updates categories if they have changed
+        """
+
+        xis_status = super(SaleOrderRequest, self).process_response(
+            dct_response)
+
+        new_categories = set([cat.id for cat in self.partner.category_id])
+
+        if not xis_status or new_categories == self.old_categories:
+            return xis_status
+
+        PartnerCategoryRelRequest(
+            self.partner,
+            add_id=new_categories - self.old_categories,
+            rem_id=self.old_categories - new_categories).execute()
+
+        return xis_status
+
 
 class PartnerCategoryRequest(XISRequestWrapper):
 
@@ -627,29 +640,6 @@ class PartnerCategoryRequest(XISRequestWrapper):
         # model
         self.partner_category = parent.category
 
-    def execute(self):
-        data = self._get_xis_field()
-        if not data:
-            return None
-
-        xis_status = None
-        status, response = self.xis_request.send_request(
-            self.model_xis,
-            self.page_name,
-            data)
-
-        # validate response
-        if response:
-            dct_response = json.loads(response)
-            if type(dct_response) is dict:
-                xis_status = dct_response.get("status")
-
-        return xis_status
-
-    def _get_xis_field(self):
-        # raise Exception("not implemeted")
-        return {}
-
 
 class PartnerRegionRequest(PartnerCategoryRequest):
     # Surprisingly, there is no XIS support for regions yet.
@@ -658,7 +648,7 @@ class PartnerRegionRequest(PartnerCategoryRequest):
 
 class PartnerCertificationRequest(PartnerCategoryRequest):
 
-    def _get_xis_field(self):
+    def get_xis_data(self):
         # validate data
 
         p = self.parent
@@ -722,32 +712,13 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         # model
         self.partner = parent
 
-    def execute(self):
-        data = self._get_xis_field()
-        if not data:
-            return None
-
-        xis_status = None
-        status, response = self.xis_request.send_request(
-            self.model_xis,
-            self.page_name,
-            data)
-
-        # validate response
-        if response:
-            dct_response = json.loads(response)
-            if type(dct_response) is dict:
-                xis_status = dct_response.get("status")
-
-        return xis_status
-
-    def _get_xis_field(self):
+    def get_xis_data(self):
         # validate data
 
         pcp = self.partner_cat_pool
 
         if not self.partner.is_company or not self.partner.code:
-            return None
+            return {}
 
         lst_group_add = [
             {
@@ -770,4 +741,5 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
             "to_remove": lst_group_rem,
             "honeypot_roger": '1',  # security key
         }
+
         return data
