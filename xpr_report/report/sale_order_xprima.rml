@@ -266,7 +266,7 @@
       </tr>
     </blockTable>
     <section>
-      <para style="terp_default_1">[[repeatIn(o.order_line,'line')]]</para>
+      <para style="terp_default_1">[[repeatIn(o.order_line_report(),'line')]]</para>
       <blockTable colWidths="89.0,226.0,55.0,60.0,50.0,55.0" style="Table5">
         <tr>
           <td>
