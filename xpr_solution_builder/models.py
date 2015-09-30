@@ -220,6 +220,17 @@ class SalesOrder(models.Model):
                 for line in order.order_line if line.solution_part == 2
             ])
 
+    def order_line_report(self):
+        """
+        Line ordering for reports.
+        This sorting function should be in the report parser.
+        """
+        sections = [1, 3, 4, 2, 0]
+        return sorted(
+            self.order_line,
+            key=lambda line: (
+                sections.index(line.solution_part), line.sequence, line.name))
+
     solution = fields.Many2one(
         'xpr_solution_builder.solution', string='Solution', required=True)
 
@@ -276,21 +287,20 @@ class SalesOrder(models.Model):
                 state=order.state,
             ))
 
-        if delta_price != 0:
-            unit = self.env['product.uom'].search(
-                [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
+        unit = self.env['product.uom'].search(
+            [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
 
-            sequence += 10
-            order.order_line += order.order_line.new(dict(
-                order_id=order.id,
-                name="Solution integration",
-                price_unit=delta_price,
-                solution_part=3,
-                product_uom_qty=1,
-                product_uom=unit.id,
-                sequence=sequence,
-                state=order.state,
-            ))
+        sequence += 10
+        order.order_line += order.order_line.new(dict(
+            order_id=order.id,
+            name="Solution integration",
+            price_unit=delta_price,
+            solution_part=3,
+            product_uom_qty=1,
+            product_uom=unit.id,
+            sequence=sequence,
+            state=order.state,
+        ))
 
     def _apply_solution_discount(self, order):
 
@@ -298,9 +308,11 @@ class SalesOrder(models.Model):
 
         lines = self.env['sale.order.line']
 
+        sequence = 0
         for line in order.order_line:
             if line.solution_part != 4:
                 lines += line
+                sequence = max(sequence, line.sequence)
                 continue
 
         solution_discount = -min(
@@ -318,6 +330,7 @@ class SalesOrder(models.Model):
                 state=order.state,
                 product_uom_qty=1,
                 product_uom=unit.id,
+                sequence=sequence + 10
             ))
 
         order.order_line = lines
@@ -507,7 +520,11 @@ class SolutionConfigurator(models.TransientModel):
 
         removed_lines = []
 
+        sequence = 10
         for line in self.order.order_line:
+
+            sequence = max(sequence, line.sequence)
+
             if line.solution_part != 2:
                 continue
 
@@ -531,18 +548,20 @@ class SolutionConfigurator(models.TransientModel):
 
         added_products = selected_products - products_in_order
 
-        # Go through products again and insert lines for newly selected ones.
+        # Go through products again =and insert lines for newly selected ones.
         for product in self.products:
             if product.id not in added_products:
                 continue
 
+            sequence += 10
             line.create(
                 dict(
                     order_id=self.order.id,
                     product_id=product.id,
                     name=product.description_sale or ' ',
                     product_uom_qty=1.0,
-                    solution_part=2))
+                    solution_part=2,
+                    sequence=sequence))
 
         return {}
 
