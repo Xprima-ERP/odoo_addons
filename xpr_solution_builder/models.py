@@ -550,7 +550,7 @@ class SolutionConfigurator(models.TransientModel):
 
         added_products = selected_products - products_in_order
 
-        # Go through products again =and insert lines for newly selected ones.
+        # Go through products again and insert lines for newly selected ones.
         for product in self.products:
             if product.id not in added_products:
                 continue
