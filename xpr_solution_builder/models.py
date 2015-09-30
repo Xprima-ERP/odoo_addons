@@ -287,20 +287,22 @@ class SalesOrder(models.Model):
                 state=order.state,
             ))
 
-        unit = self.env['product.uom'].search(
-            [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
+        if sequence:
+            # Add solution integration line of there are mandatory lines.
+            unit = self.env['product.uom'].search(
+                [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
 
-        sequence += 10
-        order.order_line += order.order_line.new(dict(
-            order_id=order.id,
-            name="Solution integration",
-            price_unit=delta_price,
-            solution_part=3,
-            product_uom_qty=1,
-            product_uom=unit.id,
-            sequence=sequence,
-            state=order.state,
-        ))
+            sequence += 10
+            order.order_line += order.order_line.new(dict(
+                order_id=order.id,
+                name="Solution integration",
+                price_unit=delta_price,
+                solution_part=3,
+                product_uom_qty=1,
+                product_uom=unit.id,
+                sequence=sequence,
+                state=order.state,
+            ))
 
     def _apply_solution_discount(self, order):
 
