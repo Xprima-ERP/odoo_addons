@@ -199,16 +199,17 @@ class Partner(models.Model):
         # Make the standard call
         status = super(Partner, self).write(vals)
 
-        if dct_cat_vals:
-            # Update XIS with new fields and categories
-            for partner in self:
-                if not partner.customer:
-                    continue
+        
+        # Update XIS with new fields and categories
+        # Done for dealers only.
+        for partner in self:
+            if not partner.customer or not partner.dealer:
+                continue
 
-                xis_request.PartnerRequest(
-                    partner,
-                    old_category=lst_old_cat.get(partner.id, set())
-                ).execute()
+            xis_request.DealerRequest(
+                partner.dealer[0],
+                old_categories=lst_old_cat.get(partner.id)
+            ).execute()
 
         return status
 
@@ -274,7 +275,7 @@ class Dealer(models.Model):
 
         dealer = super(Dealer, self).create(vals)
 
-        xis_request.PartnerRequest(dealer.partner).execute()
+        xis_request.DealerRequest(dealer).execute()
 
         return dealer
 
@@ -288,22 +289,9 @@ class Dealer(models.Model):
         status = super(Dealer, self).write(vals)
 
         for dealer in self:
-            xis_request.PartnerRequest(dealer.partner).execute()
+            xis_request.DealerRequest(dealer).execute()
 
         return status
-
-    def _get_xis_makes(self):
-
-        for dealer in self:
-            makes = set(m.name for m in dealer.makes)
-            #TODO: Check if order is important
-            dealer.xis_makes = ','.join(makes)
-
-        return {}
-
-    # xis_dc redirects is now 'code'
-    xis_makes = fields.Char(compute=_get_xis_makes)
-
 
 
 class User(models.Model):

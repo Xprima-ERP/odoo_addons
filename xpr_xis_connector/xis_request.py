@@ -228,7 +228,7 @@ class XISRequestWrapper(object):
 
         data = self.get_xis_data()
         if not data:
-            return None
+            return False
 
         status, response = self.xis_request.send_request(
             self.model_xis,
@@ -237,12 +237,13 @@ class XISRequestWrapper(object):
 
         # validate response
         if not response:
-            return None
+            # Default response to status update. Permits better dry runs.
+            return self.process_response({'status': status})
 
         dct_response = json.loads(response)
 
         if type(dct_response) is not dict:
-            return None
+            return False
 
         return self.process_response(dct_response)
 
@@ -379,7 +380,7 @@ class SaleOrderRequest(XISRequestWrapper):
         return self.order.user_id.xis_user_external_id
 
 
-class PartnerRequest(XISRequestWrapper):
+class DealerRequest(XISRequestWrapper):
 
     """
     This private class merge model and vals and give method to request info.
@@ -388,11 +389,11 @@ class PartnerRequest(XISRequestWrapper):
     model_xis = "TTRDealerUpdater"
     page_name = "dealers_sf.spy"
 
-    def __init__(self, partner, old_categories=None):
-        super(PartnerRequest, self).__init__(partner)
+    def __init__(self, dealer, old_categories=None):
+        super(DealerRequest, self).__init__(dealer)
 
-        self.partner = partner
-        self.dealer = self.partner.dealer
+        self.partner = dealer.partner
+        self.dealer = dealer
         self.old_categories = old_categories
 
     @staticmethod
@@ -593,13 +594,13 @@ class PartnerRequest(XISRequestWrapper):
         If call is sucessful, updates categories if they have changed
         """
 
-        xis_status = super(SaleOrderRequest, self).process_response(
+        xis_status = super(DealerRequest, self).process_response(
             dct_response)
-
-        new_categories = set([cat.id for cat in self.partner.category_id])
 
         if not xis_status:
             return xis_status
+
+        new_categories = set([cat.id for cat in self.partner.category_id])
 
         if (
             self.old_categories is None
@@ -703,7 +704,7 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         pcp = self.partner_cat_pool
 
         if not self.partner.is_company or not self.partner.code:
-            return {}
+            return None
 
         lst_group_add = [
             {
