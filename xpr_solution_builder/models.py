@@ -247,7 +247,7 @@ class SalesOrder(models.Model):
             (ex.product.id, ex.times) for ex in order.solution.products_extra
         ])
 
-        # override order lines
+        # Override order lines
 
         order.order_line = self.env['sale.order.line']
 
@@ -262,14 +262,14 @@ class SalesOrder(models.Model):
 
             sequence += 10
             qty = quantities.get(product.id, 1.0)
-            delta_price -= product.list_price * qty
+            delta_price -= product.lst_price * qty
 
             order.order_line += order.order_line.new(dict(
                 order_id=order.id,
                 product_id=product.id,
                 name=product.description_sale or ' ',
                 product_uom_qty=qty,
-                price_unit=product.list_price,
+                price_unit=product.lst_price,
                 solution_part=1,
                 product_uom=product.uom_id,
                 sequence=sequence,
