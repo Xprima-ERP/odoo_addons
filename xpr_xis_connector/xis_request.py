@@ -210,6 +210,7 @@ class XISRequestWrapper(object):
     def __init__(self, parent):
         self.xis_request = XisRequest(parent)
         self.order = parent
+        self.parent = parent
 
     def get_xis_data(self):
         """
