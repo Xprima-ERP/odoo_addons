@@ -264,12 +264,8 @@ class SalesOrder(models.Model):
 
         delta_price = order.solution.list_price
         sequence = 0
-        mandatory_products = list(order.solution.products) + [
-            item.product for item in self.solution.options_extra
-            if item.selected_default
-        ]
 
-        for product in mandatory_products:
+        for product in order.solution.products:
 
             sequence += 10
             qty = quantities.get(product.id, 1.0)
@@ -289,8 +285,7 @@ class SalesOrder(models.Model):
 
         if sequence:
             # Add solution integration line of there are mandatory lines.
-            unit = self.env['product.uom'].search(
-                [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
+            unit = self.env.ref('product.product_uom_categ_unit')
 
             sequence += 10
             order.order_line += order.order_line.new(dict(
@@ -300,6 +295,26 @@ class SalesOrder(models.Model):
                 solution_part=3,
                 product_uom_qty=1,
                 product_uom=unit.id,
+                sequence=sequence,
+                state=order.state,
+            ))
+
+        for product in [
+            item.product for item in self.solution.options_extra
+            if item.selected_default
+        ]:
+
+            sequence += 10
+            qty = quantities.get(product.id, 1.0)
+
+            order.order_line += order.order_line.new(dict(
+                order_id=order.id,
+                product_id=product.id,
+                name=product.description_sale or ' ',
+                product_uom_qty=qty,
+                price_unit=product.lst_price,
+                solution_part=2,
+                product_uom=product.uom_id,
                 sequence=sequence,
                 state=order.state,
             ))
@@ -321,8 +336,7 @@ class SalesOrder(models.Model):
             order.solution.list_price, order.solution_discount)
 
         if solution_discount != 0:
-            unit = self.env['product.uom'].search(
-                [('name', '=', 'Unit(s)'), ('factor', '=', '1')])[0]
+            unit = self.env.ref('product.product_uom_categ_unit')
 
             lines += order.order_line.new(dict(
                 order_id=order.id,
