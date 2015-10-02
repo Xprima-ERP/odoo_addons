@@ -61,8 +61,8 @@
         <field name="category" ref="xpr_dealer.category_dealer_region_banff" />
         <field name="region_code">BA</field>
     </record>
-    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_fort_mcMurray">
-        <field name="category" ref="xpr_dealer.category_dealer_region_fort_mcMurray" />
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_fort_mcmurray">
+        <field name="category" ref="xpr_dealer.category_dealer_region_fort_mcmurray" />
         <field name="region_code">FO</field>
     </record>
     <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_slave_lake">

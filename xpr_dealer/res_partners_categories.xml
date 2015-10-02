@@ -878,7 +878,7 @@
         <field name="name">Banff (div#15)</field>
         <field name="parent_id" ref="category_dealer_region" />
     </record>
-    <record model="res.partner.category" id="category_dealer_region_fort_mcMurray">
+    <record model="res.partner.category" id="category_dealer_region_fort_mcmurray">
         <field name="name">Fort McMurray (div#16)</field>
         <field name="parent_id" ref="category_dealer_region" />
     </record>
