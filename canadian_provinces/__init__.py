@@ -3,5 +3,3 @@
 """
 OpenERP module providing a list of all the provinces in Canada.
 """
-
-import res_state
