@@ -21,11 +21,9 @@
 
 import time
 import json
-import utils
 import xis_request
 from openerp import models, fields, api
 from openerp.tools.translate import _
-from sets import Set
 
 
 class PartnerCategory(models.Model):
@@ -199,7 +197,6 @@ class Partner(models.Model):
         # Make the standard call
         status = super(Partner, self).write(vals)
 
-        
         # Update XIS with new fields and categories
         # Done for dealers only.
         for partner in self:
