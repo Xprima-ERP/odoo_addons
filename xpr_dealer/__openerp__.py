@@ -21,37 +21,33 @@
 ##############################################################################
 
 {
-    'name': 'Xprima Reports',
-    'version': '0.2',
+    'name': 'Xprima Dealer',
+    'version': '0.1',
     'author': 'Xprima',
     'maintainer': 'Xprima',
-    'website': 'http://www.savoirfairelinux.com',
+    'website': 'http://www.xprima.com',
     'license': 'AGPL-3',
-    'category': 'Others',
-    'summary': 'Xprimas custom reports',
+    'category': 'Partner',
+    'summary': 'Brings additional data for partners that are dealers',
     'description': """
-Client
-======
-This module contains Xprimas customized report.
-
-Includes Xprimas config of Terms and conditions.
+Dealer module
+==================
+Xprimas partner support.
+Adds dealer group support.
 
 Contributors
 ------------
-* Mathieu Benoit (mathieu.benoit@savoirfairelinux.com) version 7.0
-* Charles De Lean (cdelean@xprima.com) port 8.0
+* Mathieu Benoit (mathieu.benoit@savoirfairelinux.com)
+* Charles De Lean (cdelean@xprima.com)
 """,
     'depends': [
-        'sale',
-        'xpr_product'
+        'partner_history',
+        #'partner_category_description',
     ],
-    'external_dependencies': {
-        'python': [],
-    },
     'data': [
-        'sale_order_custom_report.xml',
-        'terms_and_conditions.xml',
-        'companies.xml',
+        'security/ir.model.access.csv',
+        'res_partners_categories.xml',
+        'views/res_partner.xml',
     ],
     'installable': True,
 }

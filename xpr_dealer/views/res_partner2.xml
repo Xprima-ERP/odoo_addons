@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="utf-8"?> <!DOCTYPE openerp SYSTEM "openerp.dtd"> <openerp> <data noupdate="0"> <!-- Partners -->
+
+        <record id="xis_view_partner_form" model="ir.ui.view">
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="partner_history.view_partner_form_history"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@string='History']" position="attributes">
+                    <attribute name="string">Task History</attribute>
+                </xpath>
+                <xpath expr="//field[@name='parent_id' and @placeholder='Company']/../field[@name='category_id' and @widget='many2many_tags']" position="replace">
+                    <field name="category_id" widget="many2many_tags" placeholder="Dealergroups..." domain="[('parent_id','!=',False)]" attrs="{'invisible': [('is_company','=', False)]}"/>
+                </xpath>
+                <field name="website" position="replace"/>
+                <xpath expr="//field[@name='state_id']" position="replace">
+                    <field name="state_id" class="oe_no_button" placeholder="State" style="width: 37%%" options='{"no_open": True}' on_change="onchange_state(state_id)" attrs="{'readonly': [('use_parent_address','=',True)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="replace">
+                    <field name="user_id" attrs="{'required': [('is_company','=', True)]}" />
+                </xpath>
+                <page string="Contacts" position="after">
+                    <page string="Account Detail" attrs="{'invisible': [('is_company','=', False)]}">
+                        <group>
+                            <group>
+                                <field name="site_online_date" />
+                                <field name="customermask_ids" on_change="onchange_customer_of(customermask_ids)"/>
+                                <field name="hours_bank" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="site_type_id" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="area_code" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="region" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="market" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="account_verification_status_id" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                            <group>
+                                <field name="business_relationship_id" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="industry_id" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="pin" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="membertype" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="makes_car" on_change="onchange_makes(makes_car, makes_moto, makes_atv, makes_watercraft, makes_snowmobile)" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="makes_moto" on_change="onchange_makes(makes_car, makes_moto, makes_atv, makes_watercraft, makes_snowmobile)" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="makes_atv" on_change="onchange_makes(makes_car, makes_moto, makes_atv, makes_watercraft, makes_snowmobile)" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="makes_watercraft" on_change="onchange_makes(makes_car, makes_moto, makes_atv, makes_watercraft, makes_snowmobile)" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="makes_snowmobile" on_change="onchange_makes(makes_car, makes_moto, makes_atv, makes_watercraft, makes_snowmobile)" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                        </group>
+                    </page>
+                    <page string="XIS Sync Information" attrs="{'invisible': [('is_company','=', False)]}">
+                        <group>
+                            <group>
+                                <field name="code" attrs="{'invisible': [('is_company','=', False)],'required': [('is_company','=', True)]}" />
+                                <field name="xis_makes" attrs="{'invisible': [('is_company','=', False)]}" readonly="True" />
+                            </group>
+                            <group>
+                                <field name="is_dealer" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="is_member" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Methods of Contact" attrs="{'invisible': [('is_company','=', False)]}">
+                        <group>
+                            <group>
+                                <field name="callsource_tollfree" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="tollfree" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="telephone_choice_id" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="geolat" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="geolon" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                            <group>
+                                <field name="website" />
+                                <field name="website_french" attrs="{'invisible': [('is_company','=', False)]}"/>
+                                <field name="additional_website" attrs="{'invisible': [('is_company','=', False)]}"/>
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Dealer Information" attrs="{'invisible': [('is_company','=', False)]}">
+                        <group>
+                            <group>
+                                <field name="owner" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="owneremail" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                            <group>
+                                <field name="corpname" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="responsible" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Dealer Settings" attrs="{'invisible': [('is_company','=', False)]}">
+                        <group>
+                            <group>
+                                <field name="portalmask" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="cbb_free_trial_sept_2013" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                            <group>
+                                <field name="quoteflag" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="ttr_access" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                        </group>
+                    </page>
+                    <page string="User Fields (Used Car Software)" attrs="{'invisible': [('is_company','=', False)]}">
+                        <group>
+                            <group>
+                                <field name="user10" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="user12" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="user40" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="user80" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                            <group>
+                                <field name="user12e" attrs="{'invisible': [('is_company','=', False)]}" />
+                                <field name="user40e" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                        </group>
+                    </page>
+                    <page string="Accounting / TTR Access" attrs="{'invisible': [('is_company','=', False)]}">
+                        <group>
+                            <group>
+                                <field name="dayspastdue" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                            <group>
+                                <field name="dpd_override" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                        </group>
+                    </page>
+                    <page string="System Information" attrs="{'invisible': [('is_company','=', False)]}">
+                        <group>
+                            <group>
+                                <field name="categorization_field_id" attrs="{'invisible': [('is_company','=', False)]}" />
+                            </group>
+                        </group>
+                    </page>
+                </page>
+                <xpath expr="//field[@name='phone' and @placeholder]" position="replace">
+                    <field name="phone" placeholder="ex. (514) 748-8465"/>
+                </xpath>
+                <xpath expr="//label[@for='street' and @string='Address' and not(@attrs)]/.." position="after">
+                    <group id="billing_address_group">
+                        <label for="billing_street" string="Billing Address" attrs="{'invisible': [('is_company','=', False)]}"/>
+                        <div>
+                            <field name="billing_street" placeholder="Billing Street..." attrs="{'invisible': [('is_company','=', False)]}"/>
+                            <field name="billing_street2" attrs="{'invisible': [('is_company','=', False)]}"/>
+                            <div class="address_format">
+                                <field name="billing_city" placeholder="Billing City" style="width: 40%%" attrs="{'invisible': [('is_company','=', False)]}"/>
+                                <field name="billing_state_id" class="oe_no_button" placeholder="Billing State" style="width: 37%%" options='{"no_open": True}' on_change="onchange_state(billing_state_id)" attrs="{'invisible': [('is_company','=', False)]}"/>
+                                <field name="billing_zip" placeholder="ZIP Billing" style="width: 20%%" attrs="{'invisible': [('is_company','=', False)]}"/>
+                            </div>
+                                <field name="billing_country_id" placeholder="Billing Country" class="oe_no_button" options='{"no_open": True}' attrs="{'invisible': [('is_company','=', False)]}"/>
+                        </div>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Categories -->
+        <record id="dc_view_partner_category_form" model="ir.ui.view">
+          <field name="model">res.partner.category</field>
+          <field name="inherit_id" ref="base.view_partner_category_form"/>
+          <field name="arch" type="xml">
+            <group col="4" position="after">
+              <group>
+                <field name="xis_certification_id"/>
+              </group>
+            </group>
+          </field>
+        </record>
+
+        <!--This translation is there to bypass the fact that the translation is specified in the .po file
+        but with an empty string for translation and cannot be overriden-->
+        <record id="ir_translate_sales_director" model="ir.translation">
+             <field name="name">res.partner</field>
+             <field name="lang">fr_FR</field>
+             <field name="module">base</field>
+             <field name="src">e.g. Sales Director</field>
+             <field name="source">e.g. Sales Director</field>
+             <field name="state">translated</field>
+             <field name="type">view</field>
+             <field name="value">ex. Directeur des ventes</field>
+        </record>
+
+        <record id="action_dealergroup_form" model="ir.actions.act_window">
+            <field name="name">Dealer Group</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.category</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('parent_id','!=',False)]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Click to create a new Dealer Group.
+                </p>
+            </field>
+        </record>
+        <menuitem action="action_dealergroup_form" id="menu_dealergroup_form" name="DealerGroup" sequence="3" parent="base.menu_base_config" groups="base.group_no_one"/>
+    </data>
+</openerp>

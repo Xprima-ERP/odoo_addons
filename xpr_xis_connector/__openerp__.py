@@ -21,21 +21,21 @@
 ##############################################################################
 
 {
-    'name': 'XIS Connector',
-    'version': '0.3',
+    'name': 'Xprima XIS Connector',
+    'version': '0.4',
     'author': 'Xprima',
     'maintainer': 'Xprima',
     'website': 'http://www.xprima.com',
     'license': 'AGPL-3',
     'category': 'Sale',
-    'summary': 'Sync information to XIS',
+    'summary': 'Sync information to Xprima XIS',
     'description': """
-XIS Connector
-=============
+Xprima XIS Connector
+====================
 
 Send information to system XIS when create/update field.
 
-The XIS update is to be deprecated eventually.
+The XIS connector is to be deprecated eventually.
 
 Functionalities not related to XIS are to be migrated out of it.
 
@@ -49,8 +49,7 @@ Contributors
         'crm',
         'sale',
         'hr',
-        'xpr_dealer_group',
-        'xpr_dropdowns_values',
+        'xpr_dealer',
         'xpr_product',
 
         #'account',
@@ -65,16 +64,13 @@ Contributors
     },
     'data': [
         #'res.groups.csv',
-        'load_french.xml',
-        'views/product.xml',
-        'views/res_partner.xml',
+        #'views/product.xml',
         'views/res_user.xml',
-        #'ir.config_parameter.csv',
-        'views/sale.xml',
+        'views/res_partner_categories.xml',
+        'ir.config_parameter.csv',
+        #'views/sale.xml',
         #'ir.ui.menu.csv',
-        #'security/ir.model.access.csv',
-        #'ir.actions.act_window.csv',
-        #'product.pricelist.csv',
+        'res_partners_categories.xml',
     ],
     'demo': [],
     'test': [],

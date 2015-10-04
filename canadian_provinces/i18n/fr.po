@@ -1,0 +1,91 @@
+# Translation of OpenERP Server.
+# This file contains the translation of the following modules:
+#	* canada_provinces
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: OpenERP Server 7.0-20130714-231029\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-19 12:37+0000\n"
+"PO-Revision-Date: 2013-07-19 12:37+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.ab
+msgid "Alberta"
+msgstr "Alberta"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.bc
+msgid "British Columbia"
+msgstr "Colombie-Britannique"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.mb
+msgid "Manitoba"
+msgstr "Manitoba"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.nb
+msgid "New Brunswick"
+msgstr "Nouveau-Brunswick"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.nl
+msgid "Newfoundland and Labrador"
+msgstr "Terre-Neuve-et-Labrador"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.ns
+msgid "Nova Scotia"
+msgstr "Nouvelle-Écosse"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.nt
+msgid "Northwest Territories"
+msgstr "Territoires-du-Nord-Ouest"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.nu
+msgid "Nunavut"
+msgstr "Nunavut"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.on
+msgid "Ontario"
+msgstr "Ontario"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.pe
+msgid "Prince Edward Island"
+msgstr "Île-du-Prince-Édouard"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.qc
+msgid "Quebec"
+msgstr "Québec"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.sk
+msgid "Saskatchewan"
+msgstr "Saskatchewan"
+
+#. module: canadian_provinces
+#: model:res.country.state,name:canadian_provinces.yt
+msgid "Yukon"
+msgstr "Yukon"
+
+#. module: base
+#: model:ir.module.module,summary:base.module_canadian_provinces
+msgid "Canadian Provinces"
+msgstr "Provinces canadiennes"
+
+#. module: canadian_provinces
+#: model:ir.module.module,description:canadian_provinces
+msgid "A list of all the provinces in Canada."
+msgstr "Une liste de toutes les provinces du Canada."

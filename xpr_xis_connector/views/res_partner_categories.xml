@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE openerp SYSTEM "openerp.dtd">
+<openerp>
+  <data>
+
+     <record id="view_dealer_region_form" model="ir.ui.view">
+      <field name="model">xpr_xis_connector.dealer.region</field>
+      <field name="arch" type="xml">
+        <form string="Definition">
+          <sheet>
+          <group>
+          <field name="name"/>
+          <field name="category"/>
+          <field name="region_code"/>
+          </group>
+        </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="view_dealer_certification_form" model="ir.ui.view">
+      <field name="model">xpr_xis_connector.dealer.certification</field>
+      <field name="arch" type="xml">
+        <form string="Definition">
+          <sheet>
+          <group>
+            <field name="name"/>
+            <field name="category"/>
+            <field name="xis_certification_id"/>
+            <field name="description"/>
+          </group>
+        </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="region_action">
+        <field name="name">Regions</field>
+        <field name="res_model">xpr_xis_connector.dealer.region</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="certification_action">
+        <field name="name">Certifications</field>
+        <field name="res_model">xpr_xis_connector.dealer.certification</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="dealer_region_menu" name="Regions"
+                  parent="base.menu_sales"
+                  action="region_action"/>
+
+    <menuitem id="dealer_certification_menu" name="Certifications"
+                  parent="base.menu_sales"
+                  action="certification_action"/>
+
+    
+
+    <!-- Categories -->
+    <!--
+    <record id="dc_view_partner_category_form" model="ir.ui.view">
+      <field name="model">res.partner.category</field>
+      <field name="inherit_id" ref="base.view_partner_category_form"/>
+      <field name="arch" type="xml">
+        <field name="name" position="replace">
+          <field name="name" string="Dealergroup Name" />
+        </field>
+        <field name="parent_id" position="replace">
+          <field name="parent_id" domain="[('parent_id', '=', False)]" string="Dealergroup Type" />
+        </field>
+        <group col="4" position="after">
+          <group>
+            <field name="certification"/>
+          </group>
+        </group>
+      </field>
+    </record>
+    -->
+
+
+
+    <!-- menu -->
+    <!--
+    <record id="action_certification_form" model="ir.actions.act_window">
+      <field name="name">Partner Category Certifications</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">res.partner.category.certification</field>
+      <field name="view_type">form</field>
+      <field name="help" type="html">
+        <p class="oe_view_nocontent_create">
+          Click to create a new certification for partner category.
+        </p>
+      </field>
+    </record>
+    <menuitem action="action_certification_form" id="menu_certification_form" name="Certifications" sequence="3" parent="base.menu_base_config" groups="base.group_no_one"/>
+    -->
+  </data>
+</openerp>

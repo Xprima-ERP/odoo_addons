@@ -234,6 +234,8 @@ class SalesOrder(models.Model):
     solution = fields.Many2one(
         'xpr_solution_builder.solution', string='Solution', required=True)
 
+    starting_date = fields.Date('Starting Date')
+
     solution_discount = fields.Float(
         string='Solution Discount ($)', digits=(6, 2))
 
@@ -564,7 +566,7 @@ class SolutionConfigurator(models.TransientModel):
 
         added_products = selected_products - products_in_order
 
-        # Go through products again =and insert lines for newly selected ones.
+        # Go through products again and insert lines for newly selected ones.
         for product in self.products:
             if product.id not in added_products:
                 continue

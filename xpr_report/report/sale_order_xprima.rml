@@ -169,7 +169,7 @@
           </para>
         </td>
         <td>
-          <para style="terp_default_9">Dealercode: [[o.partner_id.xis_dc]]</para>
+          <para style="terp_default_9">Dealercode: [[o.partner_id.code]]</para>
           <para style="terp_default_9">[[ (o.partner_id and o.partner_id.title and o.partner_id.title.name) or '' ]] [[ (o.partner_id and o.partner_id.name) or '' ]]</para>
           <para style="terp_default_9">[[ o.partner_id and display_address(o.partner_id) ]] </para>
           <para style="terp_default_9">

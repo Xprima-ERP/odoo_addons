@@ -28,17 +28,19 @@ because of wizard.
         'auditlog',
         'agaplan_terms_and_conditions',  # Xprima port for Odoo
         'partner_history',  # Xprima port for Odoo
+        'canadian_provinces',
         'xpr_product',
         'xpr_solution_builder',
         'xpr_sale_process',
-        'xpr_product_variant_filters',  # Deprecated ?
-        'xpr_report',
-        'xpr_dealer_group',
 
-        #'xpr_dropdowns_values',
-        #'xpr_xis_connector', # Will be dropped. No rush to port.
-        #'xpr_csi_program',
-        #'xpr_dropdowns_values',
+        'xpr_report',
+        'xpr_dealer',
+        'xpr_xis_connector',
+        #'xpr_dealer_group', # Merged into xpr_dealer
+        #'xpr_dropdowns_values', # Merged into xpr_dealer
+
+        #'xpr_product_variant_filters',  # Deprecated
+        #'xpr_csi_program', # Later
 
         # From 7.0 version
 
@@ -46,12 +48,11 @@ because of wizard.
         # 'xpr_hd_ticket', # Helpdesk abandoned bridge.
 
         # 'purchase', # Not useful. Drop it.
-        # 'canadian_provinces', # Depecrated. Not using provinces anymore.
 
         # 'product_custom_attributes', # Replaced by xpr_solution_builder
         # 'web_adblock',
         # 'mass_editing',
-        # 'audittrail',
+        # 'audittrail', # auditlog seems to suffice.
 
         #'xprima_sale_order',
 
@@ -67,7 +68,9 @@ because of wizard.
     ],
 
     'data': [
-        'config.xml'
+        'config.xml',
+        'companies.xml',
+        'load_french.xml',
     ],
     'demo': [],
     'installable': True,
