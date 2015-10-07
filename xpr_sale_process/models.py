@@ -199,3 +199,9 @@ class ProductCategory(models.Model):
         'res.groups',
         'Approval Group',
         help="Group of users that must approve products of this category")
+
+
+class Lead(models.Model):
+    _inherit = "crm.lead"
+
+    partner_city = fields.Char(related="partner_id.city")

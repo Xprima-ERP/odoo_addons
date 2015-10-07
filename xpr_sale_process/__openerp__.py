@@ -40,6 +40,7 @@ Setup:
         'res_groups.xml',
         'views/sale_order_view.xml',
         'views/product_category_view.xml',
+        'views/opportunity.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
