@@ -215,6 +215,13 @@ class LeadMixin(object):
             {'solution': [('category', '=', self[0].category.id)]}
         }
 
+    @api.onchange('solution')
+    def _changed_solution(self):
+        for lead in self:
+            lead.name = lead.solution.name
+            lead.category = lead.solution.category
+
+
     category = fields.Many2one('product.category')
     solution = fields.Many2one('xpr_solution_builder.solution')
 

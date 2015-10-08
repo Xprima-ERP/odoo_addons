@@ -81,7 +81,7 @@ class Solution(models.Model):
             # Assign new recordset
             solution.options_extra = extras
 
-    @api.depends('products')
+    @api.depends('products', 'options')
     def _get_categories(self):
         for solution in self:
             solution.category = None

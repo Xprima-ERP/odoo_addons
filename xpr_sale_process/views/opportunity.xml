@@ -8,6 +8,15 @@
             <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
             <field name="arch" type="xml">
 
+                <field name="name" position="replace">
+                  <field name="name" invisible="1" />
+                </field>
+
+                <xpath expr="//label[@for='name']" position="replace">
+                    <field name="category"/>
+                    <field name="solution"/>
+                </xpath> 
+
                 <field name="partner_id" position="attributes">
                     <attribute name="domain">[('is_company','=','True')]</attribute>
                     <attribute name="required">True</attribute>
@@ -25,10 +34,7 @@
                     <field name="contact_name"/>
                 </field>
 
-                <field name="categ_ids" position="replace">
-                	<field name="category"/>
-                    <field name="solution"/>
-                </field>
+                <field name="categ_ids" position="replace" />
 
                 <xpath expr="//page[@string='Lead']" position="attributes">
                     <attribute name="invisible">1</attribute>
