@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from openerp.exceptions import AccessError
-from openerp import models, fields
+from openerp import models, fields, api
 
 
 class SaleOrder(models.Model):
@@ -199,3 +199,25 @@ class ProductCategory(models.Model):
         'res.groups',
         'Approval Group',
         help="Group of users that must approve products of this category")
+
+
+class Lead(models.Model):
+    """
+    Adds a solution in leads. Necessary to create quotes
+    """
+
+    _inherit = "crm.lead"
+
+    @api.depends('solution')
+    def _may_convert(self):
+        for lead in self:
+            lead.may_convert = lead.solution and True or False
+
+    @api.onchange('category')
+    def _changed_category(self):
+        return {'domain' : {'solution': [('category', '=', self[0].category.id)]}}
+
+    category = fields.Many2one('product.category', required=True)
+    solution = fields.Many2one('xpr_solution_builder.solution')
+
+    may_convert = fields.Boolean('May Convert', compute=_may_convert)

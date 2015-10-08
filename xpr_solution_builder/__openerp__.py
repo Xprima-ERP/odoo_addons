@@ -34,7 +34,7 @@ This module:
     'version': '0.2.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base', 'product', 'sale'],
+    'depends': ['base', 'sale', 'xpr_product'],
 
     # always loaded
     'data': [

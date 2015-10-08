@@ -32,6 +32,7 @@ Setup:
         'sale',
         'hr',
         'email_template',
+        'xpr_solution_builder',
     ],
 
     # always loaded
