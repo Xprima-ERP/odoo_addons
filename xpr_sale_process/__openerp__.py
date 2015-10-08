@@ -39,7 +39,7 @@ Setup:
     'data': [
         'sale_workflow.xml',
         'res_groups.xml',
-        'lead_stages.xml',
+        'crm.case.stage.csv',
         'views/sale_order_view.xml',
         'views/product_category_view.xml',
         'views/opportunity.xml',
