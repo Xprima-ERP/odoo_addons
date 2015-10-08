@@ -17,6 +17,7 @@
                     <field name="solution"/>
                 </xpath> 
 
+                <field name="probability" readonly="1"/>
                 <field name="partner_id" position="attributes">
                     <attribute name="domain">[('is_company','=','True')]</attribute>
                     <attribute name="required">True</attribute>
