@@ -257,6 +257,16 @@ class SalesOrder(models.Model):
             key=lambda line: (
                 sections.index(line.solution_part), line.sequence, line.name))
 
+    @api.model
+    def create(self, vals):
+        if 'solution' not in vals and 'solution' in self.env.context:
+            # Read solution from context.
+            # Happens when opportunity is converted.
+
+            vals['solution'] = self.env.context['solution']
+
+        return super(SalesOrder, self).create(vals)
+
     solution = fields.Many2one(
         'xpr_solution_builder.solution', string='Solution', required=True)
 

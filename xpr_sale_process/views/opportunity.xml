@@ -8,14 +8,6 @@
             <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
             <field name="arch" type="xml">
 
-                  <xpath expr="//button[@string='Create Quotation']" position="attributes">
-                     <attribute name="attrs">{'invisible': ['|', ('probability', '&lt;', 100), ('may_convert', '=', False)]}</attribute>
-                 </xpath>
-
-                 <xpath expr="//button[@string='Convert to Quotation']" position="attributes">
-                     <attribute name="attrs">{'invisible': ['|', ('probability', '=', 100), ('may_convert', '=', False)]}</attribute>
-                 </xpath>
-
                 <field name="partner_id" position="attributes">
                     <attribute name="domain">[('is_company','=','True')]</attribute>
                     <attribute name="required">True</attribute>
@@ -34,7 +26,6 @@
                 </field>
 
                 <field name="categ_ids" position="replace">
-                	<field name="may_convert"/>
                 	<field name="category"/>
                     <field name="solution"/>
                 </field>
@@ -46,9 +37,25 @@
             </field>
         </record>
 
-    </data>
+        <record model="ir.ui.view" id="make_sale_form">
 
-    <data>
+            <field name="name">make_sale_form</field>
+            <field name="model">crm.make.sale</field>
+            <field name="inherit_id" ref="sale_crm.view_crm_make_sale"/>
+            <field name="arch" type="xml">
+
+                <field name="partner_id" position="after">
+                    <field name="category"/>
+                    <field name="solution" required="1"/>
+                </field>
+
+                <xpath expr="//button[@name='makeOrder']" position="attributes">
+                    <attribute name="context">{'solution': solution}</attribute>
+                </xpath> 
+
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="lead_tree">
 
             <field name="name">lead_tree</field>
@@ -58,7 +65,6 @@
             <field name="arch" type="xml">
 
                 <field name="country_id" position="replace" />
-
             </field>
         </record>
 

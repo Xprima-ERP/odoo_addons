@@ -201,23 +201,76 @@ class ProductCategory(models.Model):
         help="Group of users that must approve products of this category")
 
 
-class Lead(models.Model):
+class LeadMixin(object):
     """
     Adds a solution in leads. Necessary to create quotes
     """
 
     _inherit = "crm.lead"
 
-    @api.depends('solution')
-    def _may_convert(self):
-        for lead in self:
-            lead.may_convert = lead.solution and True or False
-
     @api.onchange('category')
     def _changed_category(self):
-        return {'domain' : {'solution': [('category', '=', self[0].category.id)]}}
+        return {
+            'domain':
+            {'solution': [('category', '=', self[0].category.id)]}
+        }
 
-    category = fields.Many2one('product.category', required=True)
+    category = fields.Many2one('product.category')
     solution = fields.Many2one('xpr_solution_builder.solution')
 
-    may_convert = fields.Boolean('May Convert', compute=_may_convert)
+
+class Lead(models.Model, LeadMixin):
+    _inherit = "crm.lead"
+
+
+class LeadMakeSale(models.Model, LeadMixin):
+    _inherit = "crm.make.sale"
+
+    @api.model
+    def _selectCategory(self):
+        """
+        This function gets default value for category field.
+        @param self: The object pointer
+        @return: default value of category field.
+        """
+
+        context = self.env.context
+
+        if context is None:
+            context = {}
+
+        lead_obj = self.env['crm.lead']
+        active_id = context.get('active_id')
+
+        if not active_id:
+            return None
+
+        lead = lead_obj.browse(active_id)
+        return lead.category if lead else None
+
+    @api.model
+    def _selectSolution(self):
+        """
+        This function gets default value for solution field.
+        @param self: The object pointer
+        @return: default value of solution field.
+        """
+
+        context = self.env.context
+
+        if context is None:
+            context = {}
+
+        lead_obj = self.env['crm.lead']
+        active_id = context.get('active_id')
+
+        if not active_id:
+            return None
+
+        lead = lead_obj.browse(active_id)
+        return lead.solution if lead else None
+
+    _defaults = {
+        'category': _selectCategory,
+        'solution': _selectSolution,
+    }
