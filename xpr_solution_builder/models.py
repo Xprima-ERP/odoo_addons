@@ -10,30 +10,6 @@ class Solution(models.Model):
 
     _name = 'xpr_solution_builder.solution'
 
-    name = fields.Char(required=True)
-    description = fields.Char(required=True)
-    list_price = fields.Float(string='Solution Price', digits=(6, 2))
-
-    products = fields.Many2many(
-        'product.product',
-        'xpr_solution_builder_solution_mandatory_product_rel',
-        string='Mandatory Products')
-
-    products_extra = fields.One2many(
-        'xpr_solution_builder.solution.line',
-        'solution',
-        string='Mandatory Product Count')
-
-    options = fields.Many2many(
-        'product.product',
-        'xpr_solution_builder_solution_optional_product_rel',
-        string='Optional Products')
-
-    options_extra = fields.One2many(
-        'xpr_solution_builder.solution.option',
-        'solution',
-        string='Optional Product configuration')
-
     @api.onchange('products')
     def _update_product_extras(self):
         """
@@ -104,6 +80,56 @@ class Solution(models.Model):
 
             # Assign new recordset
             solution.options_extra = extras
+
+    @api.depends('products', 'options')
+    def _get_categories(self):
+        for solution in self:
+            solution.category = None
+            for product in solution.products:
+                # Get first category in products.
+                # Should not have more than one anyways.
+                cat = product.categ_term
+                if cat:
+                    solution.category = cat
+                    break
+
+            if not solution.category:
+                # If nothing found in products, try options
+                for product in solution.options:
+                    cat = product.categ_term
+                    if cat:
+                        solution.category = cat
+                        break
+
+    name = fields.Char(required=True)
+    description = fields.Char(required=True)
+    list_price = fields.Float(string='Solution Price', digits=(6, 2))
+
+    products = fields.Many2many(
+        'product.product',
+        'xpr_solution_builder_solution_mandatory_product_rel',
+        string='Mandatory Products')
+
+    products_extra = fields.One2many(
+        'xpr_solution_builder.solution.line',
+        'solution',
+        string='Mandatory Product Count')
+
+    options = fields.Many2many(
+        'product.product',
+        'xpr_solution_builder_solution_optional_product_rel',
+        string='Optional Products')
+
+    options_extra = fields.One2many(
+        'xpr_solution_builder.solution.option',
+        'solution',
+        string='Optional Product configuration')
+
+    category = fields.Many2one(
+        'product.category',
+        string='Category',
+        compute=_get_categories,
+        store=True)
 
 
 class SolutionProductLine(models.Model):
@@ -230,6 +256,16 @@ class SalesOrder(models.Model):
             self.order_line,
             key=lambda line: (
                 sections.index(line.solution_part), line.sequence, line.name))
+
+    @api.model
+    def create(self, vals):
+        if 'solution' not in vals and 'solution' in self.env.context:
+            # Read solution from context.
+            # Happens when opportunity is converted.
+
+            vals['solution'] = self.env.context['solution']
+
+        return super(SalesOrder, self).create(vals)
 
     solution = fields.Many2one(
         'xpr_solution_builder.solution', string='Solution', required=True)

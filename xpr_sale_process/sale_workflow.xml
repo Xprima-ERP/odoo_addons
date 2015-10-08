@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
-       	<data>
+    <data noupdate="1">
 		<!--sale.wkf_sale related-->
 
 		<!--
@@ -40,7 +40,9 @@
         <delete id="sale.act_invoice_except" model="workflow.activity" />
         <delete id="sale.act_invoice_end" model="workflow.activity" />
         <delete id="sale.act_invoice_cancel" model="workflow.activity" />
-          
+    
+    </data>
+    <data>     
 
         <!-- Custom activities -->
 		<record model="workflow.activity" id="act_check_product_availability">

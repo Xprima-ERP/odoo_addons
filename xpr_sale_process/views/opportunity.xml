@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="lead_form">
+
+            <field name="name">lead_form</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_form_view_oppor"/>
+            <field name="arch" type="xml">
+
+                <field name="name" position="replace">
+                  <field name="name" invisible="1" />
+                </field>
+
+                <xpath expr="//label[@for='name']" position="replace">
+                    <field name="category"/>
+                    <field name="solution"/>
+                </xpath> 
+
+                <field name="probability" readonly="1"/>
+                <field name="partner_id" position="attributes">
+                    <attribute name="domain">[('is_company','=','True')]</attribute>
+                    <attribute name="required">True</attribute>
+                </field>
+
+                <field name="user_id" position="attributes">
+                    <attribute name="domain">[('section_id','!=','False')]</attribute>
+                </field>
+
+                 <field name="partner_id" position="after">
+                    <field name="city" readonly="1"/>
+                </field>
+
+                <field name="priority" position="replace">
+                    <field name="contact_name"/>
+                </field>
+
+                <field name="categ_ids" position="replace" />
+
+                <xpath expr="//page[@string='Lead']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath> 
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="make_sale_form">
+
+            <field name="name">make_sale_form</field>
+            <field name="model">crm.make.sale</field>
+            <field name="inherit_id" ref="sale_crm.view_crm_make_sale"/>
+            <field name="arch" type="xml">
+
+                <field name="partner_id" position="after">
+                    <field name="category"/>
+                    <field name="solution" required="1"/>
+                </field>
+
+                <xpath expr="//button[@name='makeOrder']" position="attributes">
+                    <attribute name="context">{'solution': solution}</attribute>
+                </xpath> 
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="lead_tree">
+
+            <field name="name">lead_tree</field>
+            <field name="model">crm.lead</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="crm.crm_case_tree_view_oppor"/>
+            <field name="arch" type="xml">
+
+                <field name="country_id" position="replace" />
+            </field>
+        </record>
+
+    </data>
+
+</openerp>
