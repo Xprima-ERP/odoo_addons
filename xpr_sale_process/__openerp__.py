@@ -14,6 +14,7 @@ Setup:
 - Config sets Sales Order id format (C prefix). Sales orders are contracts.
 - Quotes can be created directly in views only if user is a manager
 - Advertising and All Discounts Sales groups
+- Opportunities are solution driven and introduce the notion of funnel score
     """,
 
     'author': "Xprima",
