@@ -31,7 +31,7 @@ This module:
     # /addons/base/module/module_data.xml
     # for the full list
     'category': 'Sales',
-    'version': '0.2.1',
+    'version': '0.3',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'sale', 'xpr_product'],
