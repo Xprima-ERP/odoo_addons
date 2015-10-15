@@ -19,7 +19,8 @@
     </record>
     <menuitem id="dealer_menu" name="Dealers"
                   parent="base.menu_sales"
-                  action="dealer_action"/>
+                  action="dealer_action"
+                  sequence="1"/>
 
 </data>
 <data>
