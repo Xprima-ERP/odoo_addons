@@ -38,6 +38,7 @@ Setup:
 
     # always loaded
     'data': [
+        'security/ir.model.access.csv',
         'sale_workflow.xml',
         'res_groups.xml',
         'crm.case.stage.csv',

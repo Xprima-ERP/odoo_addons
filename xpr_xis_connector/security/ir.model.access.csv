@@ -1,4 +1,6 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+dealer_region,region,model_xpr_xis_connector_dealer_region,base.group_user,1,0,0,0
+dealer_certification,certification,model_xpr_xis_connector_dealer_certification,base.group_user,1,0,0,0
 
 
 
