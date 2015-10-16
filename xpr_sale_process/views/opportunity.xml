@@ -13,8 +13,10 @@
                 </field>
 
                 <xpath expr="//label[@for='name']" position="replace">
-                    <field name="category"/>
-                    <field name="solution"/>
+                    <group>
+                        <field name="category"/>
+                        <field name="solution"/>
+                    </group>
                 </xpath> 
 
                 <field name="probability" readonly="1"/>
