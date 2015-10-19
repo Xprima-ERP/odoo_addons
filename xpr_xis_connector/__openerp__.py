@@ -63,6 +63,7 @@ Contributors
         'python': [],
     },
     'data': [
+        'security/ir.model.access.csv',
         #'res.groups.csv',
         #'views/product.xml',
         'views/res_user.xml',
