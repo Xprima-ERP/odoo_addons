@@ -69,6 +69,10 @@ class Dealer(models.Model):
         ondelete='cascade'
     )
 
+    def onchange_state(self, *args, **kwargs):
+        # TODO: Check if we need to call super class.
+        pass
+
     corpname = fields.Char("Legal Name", size=128)
 
     quoteflag = fields.Boolean("Send Quotes")
