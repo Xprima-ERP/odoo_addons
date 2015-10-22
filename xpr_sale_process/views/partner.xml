@@ -1,0 +1,39 @@
+<openerp>
+
+	<data>	
+
+        <record id="sale.menu_partner_form" model="ir.ui.menu">
+            <field name="name">Customers</field>
+            <field name="groups_id" eval="[(3, ref('base.group_sale_salesman')),(3, ref('base.group_sale_manager'))]"/>
+        </record>
+
+        <record id="action_companies" model="ir.actions.act_window">
+            <field name="name">Companies</field>
+            <field name="domain">[('is_company','=',True)]</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+		<menuitem action="action_companies"
+            id="menu_companies"
+            parent="base.menu_sales"
+            sequence="1"
+            groups="base.group_sale_salesman,base.group_sale_manager"/>
+			
+		
+        <record id="action_contacts" model="ir.actions.act_window">
+            <field name="name">Contacts</field>
+            <field name="domain">[('is_company','=',False)]</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem
+            action="action_contacts"
+            id="menu_contacts"
+            parent="base.menu_sales"
+            sequence="1"
+            groups="base.group_sale_salesman,base.group_sale_manager"/>
+            
+	</data>
+</openerp>

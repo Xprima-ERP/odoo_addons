@@ -45,6 +45,7 @@ Setup:
         'views/sale_order_view.xml',
         'views/product_category_view.xml',
         'views/opportunity.xml',
+        'views/partner.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

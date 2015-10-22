@@ -66,8 +66,13 @@ class Dealer(models.Model):
         'res.partner',
         string="Related partner",
         required=True,
-        ondelete='cascade'
+        ondelete='cascade',
+        domain=[('is_company', '=', True)]
     )
+
+    def onchange_state(self, *args, **kwargs):
+        # TODO: Check if we need to call super class.
+        pass
 
     corpname = fields.Char("Legal Name", size=128)
 
