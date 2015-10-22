@@ -66,7 +66,8 @@ class Dealer(models.Model):
         'res.partner',
         string="Related partner",
         required=True,
-        ondelete='cascade'
+        ondelete='cascade',
+        domain=[('is_company', '=', True)]
     )
 
     def onchange_state(self, *args, **kwargs):
