@@ -14,8 +14,8 @@
 
                 <xpath expr="//label[@for='name']" position="replace">
                     <group>
-                        <field name="category"/>
-                        <field name="solution"/>
+                        <field name="category" required="1"/>
+                        <field name="solution" required="1"/>
                     </group>
                 </xpath> 
 
