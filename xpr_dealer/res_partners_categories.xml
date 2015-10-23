@@ -10,7 +10,10 @@
     </record>
     <menuitem id="dealer_category_menu" name="Dealer Categories"
                   parent="base.menu_sales"
-                  action="dealer_category_action"/>
+                  action="dealer_category_action"
+                  groups="base.group_sale_manager"/>
+
+
 
     <record model="ir.actions.act_window" id="dealer_action">
         <field name="name">Dealers</field>
@@ -20,7 +23,8 @@
     <menuitem id="dealer_menu" name="Dealers"
                   parent="base.menu_sales"
                   action="dealer_action"
-                  sequence="1"/>
+                  sequence="1"
+                  groups="base.group_sale_manager"/>
 
 </data>
 <data>
