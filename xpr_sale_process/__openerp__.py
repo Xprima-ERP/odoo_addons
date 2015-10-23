@@ -46,6 +46,7 @@ Setup:
         'views/product_category_view.xml',
         'views/opportunity.xml',
         'views/partner.xml',
+        'views/message.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
