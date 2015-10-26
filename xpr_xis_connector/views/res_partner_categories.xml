@@ -48,11 +48,13 @@
 
     <menuitem id="dealer_region_menu" name="Regions"
                   parent="base.menu_sales"
-                  action="region_action"/>
+                  action="region_action"
+                  groups="base.group_sale_manager"/>
 
     <menuitem id="dealer_certification_menu" name="Certifications"
                   parent="base.menu_sales"
-                  action="certification_action"/>
+                  action="certification_action"
+                  groups="base.group_sale_manager"/>
 
     
 
