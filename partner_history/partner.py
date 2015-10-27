@@ -29,14 +29,14 @@ class mail_message(models.Model):
     _inherit = 'mail.message'
 
     def compute_partner(
-        self, cr, uid,
+        self,
         active_model='res.partner', model='mail.message', res_id=1,
-        context=None
     ):
         """
         Finds all 'active_model' references in 'model/res_id' instance
         """
 
+        context = self.env.context
         if context is None:
             context = {}
 
@@ -44,26 +44,28 @@ class mail_message(models.Model):
 
         # Check references directly in message table (many2one and one2one).
 
-        current_obj = self.pool.get(model)
+        current_obj = self.env[model]
+        cr = self.env.cr
+
         cr.execute((
             "SELECT name FROM ir_model_fields WHERE relation='{active_model}' "
             "and model = '{model}' and ttype not in ('many2many', 'one2many');"
         ).format(active_model=active_model, model=model))
 
+        current_data = current_obj.browse([res_id])[0]
+
         for name in cr.fetchall():
             name = str(name[0])
-            current_data = current_obj.read(
-                cr, uid, res_id, [name], context=context)
 
-            var = current_data.get(name)
+            var = current_data[name]
 
             if var:
-                target_ids.add(var[0])
+                target_ids.add(var[0].id)
 
         # Check references in 'active_model' m2m relation
         # tables pointing to model/res_id
 
-        current_obj = self.pool.get(active_model)
+        current_obj = self.env[active_model]
 
         cr.execute((
             "select name from ir_model_fields where relation='{model}' "
@@ -135,6 +137,8 @@ class mail_message(models.Model):
             record_data = self.env[message.model].browse(message.res_id)
             if message.model in ['crm.meeting', 'crm.lead']:
                 message.body_txt = record_data.description
+            elif message.model in ['calendar.attendee']:
+                message.body_txt = record_data.display_name
             else:
                 message.body_txt = record_data.name
 
@@ -153,18 +157,18 @@ class mail_message(models.Model):
 
     _order = 'date desc'
 
-    def create(self, cr, uid, vals, context=None):
+    @api.model
+    def create(self, vals):
         if not vals.get('partner_ids'):
             target_ids = []
             if vals.get('res_id') and vals.get('model'):
                 target_ids = self.compute_partner(
-                    cr, uid,
                     active_model='res.partner',
-                    model=vals.get('model'), res_id=vals.get('res_id'),
-                    context=context)
+                    model=vals.get('model'), res_id=vals.get('res_id'),)
 
             vals.update({'partner_ids': [(6, 0, target_ids)], })
-        return super(mail_message, self).create(cr, uid, vals, context=context)
+
+        return super(mail_message, self).create(vals)
 
 
 class res_partner(models.Model):
