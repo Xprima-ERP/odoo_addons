@@ -153,9 +153,9 @@ class SaleOrder(models.Model):
 <p>Vous avez &agrave; approuver le devis <b>{0}</b> pour disponibilite.</p>
         """.format(self.name)
 
-        self.env['mail.message'].create({
+        self.env['mail.message'].with_context({'default_status' : 'outgoing'}).sudo().create({
             'type': 'notification',
-            #'author_id':
+            'author_id': self.env.uid,
             'partner_ids': [(4, uid) for uid in destination_ids],
             'record_name': self.name,
             'model': 'sale.order',
@@ -179,9 +179,9 @@ class SaleOrder(models.Model):
         body = """<p>Vous avez &agrave; approuver le devis <b>{0}</b>.</p>
         """.format(self.name)
 
-        self.env['mail.message'].create({
+        self.env['mail.message'].with_context({'default_status' : 'outgoing'}).sudo().create({
             'type': 'notification',
-            #'author_id':
+            'author_id': self.env.uid,
             'partner_ids': [(4, hr_owner.id)],
             'record_name': self.name,
             'model': 'sale.order',

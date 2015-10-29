@@ -25,7 +25,7 @@ Setup:
     # module/module_data.xml
     # for the full list
     'category': 'Sales',
-    'version': '0.2',
+    'version': '0.3',
 
     # any module necessary for this one to work correctly
     'depends': [
@@ -47,6 +47,7 @@ Setup:
         'views/opportunity.xml',
         'views/partner.xml',
         'views/message.xml',
+        'opportunity_reminder.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

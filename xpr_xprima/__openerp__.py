@@ -71,7 +71,6 @@ because of wizard.
         'config.xml',
         'companies.xml',
         'load_french.xml',
-        'security/ir.model.access.csv',
     ],
     'demo': [],
     'installable': True,
