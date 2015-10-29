@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>
+		<record model="email.template" id="opportunity_reminder_mail">
+			<field name="name">Opportunity - Next action reminder</field>
+			<field name="model_id" ref="crm.model_crm_lead" />
+			<field name="auto_delete">True</field>
+			<field name="email_from">no_reply@xprima.com</field>
+			<field name="email_to">${(object.user_id != False and object.user_id.email)|safe}</field>
+			<field name="subject">Reminder on Lead: ${object.id} from ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+			<field name="body_html"><![CDATA[<p>This opportunity requires your attention today:</p><ul><li>Name: ${object.name}</li><li>ID: ${object.id}</li><li>Action: ${object.title_action}</li></ul>
+			]]></field>
+		</record>
+
+		<record model="ir.actions.server" id="opportunity_reminder_action">
+			<field name="name">Send Mail</field>
+			<field name="state">email</field>
+			<field name="type">ir.actions.server</field>
+			<field name="help">Sends opportunity action mail reminder</field>
+			<field name="model_id" ref="crm.model_crm_lead" />
+			<field name="use_create">new</field>
+			<field name="template_id" ref="opportunity_reminder_mail" />
+			<field name="sequence">0</field>
+			<field name="crud_model_id" ref="crm.model_crm_lead" />
+			<field name="wkf_model_id" ref="crm.model_crm_lead" />
+			<field name="use_relational_model">base</field>
+			<field name="use_write">current</field>
+		</record>
+
+		<record model="base.action.rule" id="opportunity_reminder_rule">
+			<field name="name">Remind Opportunity Next Action</field>
+			<field name="model">crm.lead</field>
+			<field name="model_id" ref="crm.model_crm_lead" />
+			<field name="sequence">0</field>
+			<field name="trg_date_range_type">day</field>
+			<field name="trg_date_id" ref="crm.field_crm_lead_date_action" />
+			<field name="server_action_ids" eval="[(4, ref('opportunity_reminder_action'))]"/>
+			<field name="kind">on_time</field>
+		</record>
+
+	</data>
+</openerp>
+
