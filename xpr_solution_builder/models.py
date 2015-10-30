@@ -265,7 +265,13 @@ class SalesOrder(models.Model):
 
             vals['solution'] = self.env.context['solution']
 
-        return super(SalesOrder, self).create(vals)
+        order = super(SalesOrder, self).create(vals)
+
+        if 'solution' in vals and 'order_line' not in vals:
+            # Happens when opportunity is converted.
+            self._apply_solution(order)
+
+        return order
 
     solution = fields.Many2one(
         'xpr_solution_builder.solution', string='Solution', required=True)
@@ -290,6 +296,7 @@ class SalesOrder(models.Model):
     def _apply_solution(self, order):
         """
             Builds sales order using solution as template.
+            This can be called either during create or from wizard
         """
 
         quantities = dict([
@@ -298,7 +305,7 @@ class SalesOrder(models.Model):
 
         # Override order lines
 
-        order.order_line = self.env['sale.order.line']
+        new_lines = self.env['sale.order.line']
 
         delta_price = order.solution.list_price
         sequence = 0
@@ -309,9 +316,9 @@ class SalesOrder(models.Model):
             qty = quantities.get(product.id, 1.0)
             delta_price -= product.lst_price * qty
 
-            order.order_line += order.order_line.new(dict(
-                order_id=order.id,
-                product_id=product.id,
+            new_lines += new_lines.new(dict(
+                order_id=order,
+                product_id=product,
                 name=product.description_sale or ' ',
                 product_uom_qty=qty,
                 price_unit=product.lst_price,
@@ -326,8 +333,8 @@ class SalesOrder(models.Model):
             unit = self.env.ref('product.product_uom_categ_unit')
 
             sequence += 10
-            order.order_line += order.order_line.new(dict(
-                order_id=order.id,
+            new_lines += new_lines.new(dict(
+                order_id=order,
                 name="Solution integration",
                 price_unit=delta_price,
                 solution_part=3,
@@ -345,9 +352,9 @@ class SalesOrder(models.Model):
             sequence += 10
             qty = quantities.get(product.id, 1.0)
 
-            order.order_line += order.order_line.new(dict(
-                order_id=order.id,
-                product_id=product.id,
+            new_lines += new_lines.new(dict(
+                order_id=order,
+                product_id=product,
                 name=product.description_sale or ' ',
                 product_uom_qty=qty,
                 price_unit=product.lst_price,
@@ -356,6 +363,8 @@ class SalesOrder(models.Model):
                 sequence=sequence,
                 state=order.state,
             ))
+
+        order.order_line = new_lines
 
     def _apply_solution_discount(self, order):
 
