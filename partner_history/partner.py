@@ -168,7 +168,7 @@ class mail_message(models.Model):
 
             vals.update({'partner_ids': [(6, 0, target_ids)], })
 
-        return super(mail_message, self).create(vals)
+        return super(mail_message, self.with_context({'default_status' : 'outgoing'})).create(vals)
 
 
 class res_partner(models.Model):
