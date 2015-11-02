@@ -147,7 +147,7 @@ class SaleOrder(models.Model):
                 continue
 
             destination_ids |= set([
-                u.id for u in category.approval_group.users])
+                u.partner_id.id for u in category.approval_group.users if u.partner_id])
 
         body = """
 <p>Vous avez &agrave; approuver le devis <b>{0}</b> pour disponibilite.</p>
@@ -155,8 +155,8 @@ class SaleOrder(models.Model):
 
         self.env['mail.message'].with_context({'default_status' : 'outgoing'}).sudo().create({
             'type': 'notification',
-            'author_id': self.env.uid,
-            'partner_ids': [(4, uid) for uid in destination_ids],
+            'author_id': self.env.user.partner_id.id,
+            'partner_ids': [(4, pid) for pid in destination_ids],
             'record_name': self.name,
             'model': 'sale.order',
             'subject': 'Devis &agrave; approuver: {0}'.format(self.name),
@@ -165,7 +165,6 @@ class SaleOrder(models.Model):
             #'subtype_id':
         })
 
-    # api.one
     def notify_manager_approval(self):
         self.write({'state': 'need_manager_approval'})
 
@@ -174,15 +173,16 @@ class SaleOrder(models.Model):
         args = [("user_id", "=", self.user_id.id)]
         hr_owner = self.env["hr.employee"].search(args)
 
-        #hr_owner.parent_id != hr_approver:
+        if not hr_owner:
+            return
 
         body = """<p>Vous avez &agrave; approuver le devis <b>{0}</b>.</p>
         """.format(self.name)
 
         self.env['mail.message'].with_context({'default_status' : 'outgoing'}).sudo().create({
             'type': 'notification',
-            'author_id': self.env.uid,
-            'partner_ids': [(4, hr_owner.id)],
+            'author_id': self.env.user.partner_id.id,
+            'partner_ids': [(4, hr_owner.user_id.partner_id.id)],
             'record_name': self.name,
             'model': 'sale.order',
             'subject': 'Devis &agrave; approuver: {0}'.format(self.name),
