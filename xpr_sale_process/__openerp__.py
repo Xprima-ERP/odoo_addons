@@ -47,6 +47,7 @@ Setup:
         'views/opportunity.xml',
         'views/partner.xml',
         'views/message.xml',
+        'views/warehouse.xml',
         'opportunity_reminder.xml',
     ],
     # only loaded in demonstration mode
