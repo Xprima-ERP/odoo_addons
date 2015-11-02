@@ -318,7 +318,7 @@ class SalesOrder(models.Model):
                 solution_part=1,
                 product_uom=product.uom_id,
                 sequence=sequence,
-                state=order.state,
+                #state=order.state,
             ))
 
         if sequence:
@@ -334,7 +334,7 @@ class SalesOrder(models.Model):
                 product_uom_qty=1,
                 product_uom=unit.id,
                 sequence=sequence,
-                state=order.state,
+                #state=order.state,
             ))
 
         for product in [
@@ -354,7 +354,7 @@ class SalesOrder(models.Model):
                 solution_part=2,
                 product_uom=product.uom_id,
                 sequence=sequence,
-                state=order.state,
+                #state=order.state,
             ))
 
     def _apply_solution_discount(self, order):
