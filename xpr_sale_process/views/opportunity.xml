@@ -64,6 +64,9 @@
                     <field name="solution" required="1"/>
                 </field>
 
+                 <field name="close" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </field>
                 <xpath expr="//button[@name='makeOrder']" position="attributes">
                     <attribute name="context">{'solution': solution}</attribute>
                 </xpath> 

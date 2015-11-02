@@ -290,4 +290,5 @@ class LeadMakeSale(models.Model, LeadMixin):
     _defaults = {
         'category': _selectCategory,
         'solution': _selectSolution,
+        'close': True,
     }
