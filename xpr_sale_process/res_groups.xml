@@ -21,6 +21,12 @@
 			<field name="category_id" ref="base.module_category_sales_management"/>
 		</record>
 
+		<record model="res.groups" id="rep_ui">
+			<field name="name">Use Rep UI</field>
+			<field name="comment">This group changes the UI. For reps only.</field>
+			<field name="category_id" ref="base.module_category_sales_management"/>
+		</record>
+
 	</data>
 </openerp>
 
