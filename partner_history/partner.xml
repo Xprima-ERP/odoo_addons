@@ -10,7 +10,7 @@
                 <notebook position="inside">
                     <page string="Flat History">
                         <div class="oe_chatter">
-                            <field name="history_ids">
+                            <field name="history_ids" readonly="1">
                                 <tree>
                                     <field name="date"/>
                                     <field name="author_id"/>
