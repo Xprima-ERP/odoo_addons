@@ -22,10 +22,10 @@ Install notes:
 
     3) Uninstall purchase
 
-    4) Refresh browser (F5)
     5) Upgrade 'sale'. This puts back some stuff removed by purchase.
-    6) Uninstall stock_account only. Removing 'stock' is not safe.
-    7) Install this module   
+    6) Uninstall stock. Ignore error.
+    7) Upgrade product.
+    8) Install this module   
 """,
 
     'category': 'Misc',

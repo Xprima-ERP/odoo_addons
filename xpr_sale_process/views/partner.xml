@@ -124,24 +124,6 @@
             </field>
         </record>
 
-        <record id="rep_partner_stock" model="ir.ui.view" >
-            <field name="name">evolio.partner.stock.form</field>
-            <field name="model">res.partner</field>
-           <field name="groups_id" eval="[(6, 0, [ref('rep_ui')])]" />
-            <field name="inherit_id" ref="stock.view_partner_property_form"/>
-            <field name="arch" type="xml">
-
-                <field name="property_stock_customer" position="attributes">
-                <attribute name="invisible">1</attribute>
-                </field>
-
-                <field name="property_stock_supplier" position="attributes">
-                <attribute name="invisible">1</attribute>
-                </field>
-
-            </field>
-        </record>
-
         <record id="rep_partner_terms_and_conditions" model="ir.ui.view" >
             <field name="name">evolio.partner.terms_and_conditions.form</field>
             <field name="model">res.partner</field>

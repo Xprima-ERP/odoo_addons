@@ -84,17 +84,22 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_tree_view"/>
         <field name="arch" type="xml">
-         <!--  
-          <field name="uom_id" position="replace" />
-         <field name="qty_available" position="replace" />
-          -->
-
+     
           <field name="type" position="replace" />
+
+          <field name="name" position="before">
+            <field name="default_code" />
+          </field>
 
           <field name="categ_id" position="replace">
             <field name="categ_id" invisible="1" />
             <field name="categ_term" />
+            <field name="price" />
+            <field name="product_variant_count" />
+            <field name="description_sale" />
           </field>
+
+          <field name="state" invisible="1" />
 
         </field>
     </record>
@@ -105,16 +110,21 @@
         <field name="arch" type="xml">
 
 
-          <field name="attribute_value_ids" position="replace" />
+          <field name="attribute_value_ids"  />
           <field name="uom_id" position="replace" />
           <field name="ean13" position="replace" />
-          <!-- <field name="qty_available" position="replace" /> -->
 
+          <field name="name" position="after">
+            <field name="categ_term" />
+          </field>
+
+         
         </field>
     </record>
 
     <record id="product.product_template_action" model="ir.actions.act_window">
       <field name="view_mode">tree,form,kanban</field>
+      <field name="view_id" ref="product.product_template_tree_view" />
     </record>
 
     <!--  <record id="product_quick_edit_tree_view" model="ir.ui.view">
