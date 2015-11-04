@@ -15,6 +15,18 @@
 			<field name="category_id" ref="base.module_category_sales_management"/>
 		</record>
 
+		<record model="res.groups" id="warehouse">
+			<field name="name">Warehouse</field>
+			<field name="comment">This group is meant to hide warehouse support. Keep it empty.</field>
+			<field name="category_id" ref="base.module_category_sales_management"/>
+		</record>
+
+		<record model="res.groups" id="rep_ui">
+			<field name="name">Use Rep UI</field>
+			<field name="comment">This group changes the UI. For reps only.</field>
+			<field name="category_id" ref="base.module_category_sales_management"/>
+		</record>
+
 	</data>
 </openerp>
 

@@ -10,10 +10,8 @@
                         <field name="approval_group"/>
                  </group>
 				 </xpath>
-				 <xpath expr="//group[@name='parent']/group[@name='account_property']" position="replace" />
-                 <xpath expr="//group[@name='parent']/group[@name='account_stock_property']" position="replace" />
-                 <xpath expr="//group[@name='parent']/group[@string='Logistics']" position="replace" />
-                 
+			
+                
 
 			</field>
 		</record>
