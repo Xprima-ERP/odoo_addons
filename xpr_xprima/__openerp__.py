@@ -13,8 +13,19 @@ Including its own custom modules:
 - Workflow
 - Solution Builder
 
-Note: Install the Sales and Management (sales) module manually first
-because of wizard.
+Install notes:
+    1) Install the Sales and Management (sales) module manually first because of wizard.
+    2) In Configuration/Sales:
+        a) Remove pricelists (Quotations and Sales Orders / Customer Features)
+        b) Add Mulitple Sales Teams (Sales Teams / Manage Sales Teams)
+        c) Be sure Delivery orders is unchecked (Quotations and Sales Orders / Warehouse Features)
+
+    3) Uninstall purchase
+
+    5) Upgrade 'sale'. This puts back some stuff removed by purchase.
+    6) Uninstall stock. Ignore error.
+    7) Upgrade product.
+    8) Install this module   
 """,
 
     'category': 'Misc',
@@ -36,29 +47,24 @@ because of wizard.
         'xpr_report',
         'xpr_dealer',
         'xpr_xis_connector',
-        #'xpr_dealer_group', # Merged into xpr_dealer
-        #'xpr_dropdowns_values', # Merged into xpr_dealer
-
-        #'xpr_product_variant_filters',  # Deprecated
+       
         #'xpr_csi_program', # Later
 
         # From 7.0 version
 
+        # 'xpr_dealer_group', # Merged into xpr_dealer
+        # 'xpr_dropdowns_values', # Merged into xpr_dealer
+        # 'xpr_product_variant_filters',  # Deprecated
         # 'project', # Abandoned, was for helpdesk.
         # 'xpr_hd_ticket', # Helpdesk abandoned bridge.
-
-        # 'purchase', # Not useful. Drop it.
-
+        # 'sale_package_configurator', # Replaced by xpr_solution_builder
         # 'product_custom_attributes', # Replaced by xpr_solution_builder
-        # 'web_adblock',
-        # 'mass_editing',
+        #' xprima_sale_order', # Merged into xpr_solution_builder
         # 'audittrail', # auditlog seems to suffice.
 
-        #'xprima_sale_order',
-
-        #'sale_package_configurator', # Replaced by xpr_solution_builder
+        # 'web_adblock',
+        # 'mass_editing',
         #'so_second_level_approval_and_discount',
-
         # 'csv_noupdate',
         # 'no_customer_auto_follow',
         # 'xpr_seo',

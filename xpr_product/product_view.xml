@@ -7,19 +7,10 @@
       <field name="inherit_id" ref="product.product_template_only_form_view"/>
       <field name="arch" type="xml">
 
-        <field name="type" position="replace">
-          <!-- Don't need type. We do need category.-->
+         <field name="type" position="replace">
           <field name="type" invisible="1" />
           <field name="categ_term"/>
         </field>
-
-        <field name="purchase_ok" position="replace">
-          <field name="purchase_ok" invisible="1" />
-        </field>
-
-        <label for="purchase_ok" position="replace">
-          <label for="purchase_ok" invisible="1" />
-        </label>
 
         <field name="sale_ok" position="replace">
           <field name="sale_ok" invisible="1" />
@@ -29,16 +20,22 @@
           <label for="sale_ok" invisible="1" />
         </label>
 
-      	<xpath expr="//div[@name='options']/div" position="after">
+       	<xpath expr="//div[@name='options']/div" position="after">
 	    	<div>
               	<field name="one_time_payment"/>
               	<label for="one_time_payment"/>
             </div>
         </xpath>
 
-
-        <page string="Procurements" position="replace"/>
-        <page string="Inventory" position="replace"/>
+        <page string="Procurements" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page>
+        <page string="Inventory" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page> 
+        <page string="Accounting" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page>
 
       </field>
     </record>
@@ -54,13 +51,6 @@
           <field name="categ_id"/>
         </field>
 
-        <field name="purchase_ok" position="replace">
-          <field name="purchase_ok" invisible="1" />
-        </field>
-
-        <label for="purchase_ok" position="replace">
-          <label for="purchase_ok" invisible="1" />
-        </label>
 
         <field name="sale_ok" position="replace">
           <field name="sale_ok" invisible="1" />
@@ -77,8 +67,15 @@
             </div>
         </xpath>
 
-        <page string="Procurements" position="replace"/>
-        <page string="Inventory" position="replace"/>
+        <page string="Procurements" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page>
+        <page string="Inventory" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page> 
+        <page string="Accounting" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page>
 
       </field>
     </record>
@@ -87,16 +84,22 @@
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_tree_view"/>
         <field name="arch" type="xml">
-         <!--  
-          <field name="uom_id" position="replace" />
-         <field name="qty_available" position="replace" />
-          <field name="virtual_available" position="replace"/> -->
-
+     
           <field name="type" position="replace" />
 
-          <field name="categ_id" position="replace">
-            <field name="categ_term" />
+          <field name="name" position="before">
+            <field name="default_code" />
           </field>
+
+          <field name="categ_id" position="replace">
+            <field name="categ_id" invisible="1" />
+            <field name="categ_term" />
+            <field name="price" />
+            <field name="product_variant_count" />
+            <field name="description_sale" />
+          </field>
+
+          <field name="state" invisible="1" />
 
         </field>
     </record>
@@ -107,16 +110,24 @@
         <field name="arch" type="xml">
 
 
-          <field name="attribute_value_ids" position="replace" />
+          <field name="attribute_value_ids"  />
           <field name="uom_id" position="replace" />
           <field name="ean13" position="replace" />
-          <!-- <field name="qty_available" position="replace" /> 
-          <field name="virtual_available" position="replace"/>-->
 
+          <field name="name" position="after">
+            <field name="categ_term" />
+          </field>
+
+         
         </field>
     </record>
 
-     <record id="product_quick_edit_tree_view" model="ir.ui.view">
+    <record id="product.product_template_action" model="ir.actions.act_window">
+      <field name="view_mode">tree,form,kanban</field>
+      <field name="view_id" ref="product.product_template_tree_view" />
+    </record>
+
+    <!--  <record id="product_quick_edit_tree_view" model="ir.ui.view">
         <field name="model">product.template</field>
         <field name="arch" type="xml">
             <tree editable="bottom">
@@ -137,6 +148,6 @@
             
         </record>
         <menuitem name="Products Category Edit" parent="base.menu_product" id="menu_quick_edit" action="quick_edit_template" />
-
+ -->
   </data>
 </openerp>

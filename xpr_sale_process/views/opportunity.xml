@@ -49,6 +49,10 @@
                     <attribute name="invisible">1</attribute>
                 </xpath> 
 
+                <xpath expr="//button[@name='case_escalate']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                    <attribute name="attrs"></attribute>
+                </xpath> 
             </field>
         </record>
 
@@ -59,10 +63,14 @@
             <field name="inherit_id" ref="sale_crm.view_crm_make_sale"/>
             <field name="arch" type="xml">
 
-                <field name="partner_id" position="after">
-                    <field name="category"/>
-                    <field name="solution" required="1"/>
-                </field>
+                <xpath expr="//group" position="replace">
+                    <group>
+                        <field name="partner_id" required="1"/>
+                        <field name="category" required="1"/>
+                        <field name="solution" required="1"/>
+                         <field name="close" invisible="1" />
+                    </group>
+                </xpath>
 
                 <xpath expr="//button[@name='makeOrder']" position="attributes">
                     <attribute name="context">{'solution': solution}</attribute>
