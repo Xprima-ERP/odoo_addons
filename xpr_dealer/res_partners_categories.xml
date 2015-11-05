@@ -24,7 +24,7 @@
                   parent="base.menu_sales"
                   action="dealer_action"
                   sequence="1"
-                  groups="base.group_sale_manager"/>
+                  groups="base.group_sale_salesman"/>
 
 </data>
 <data>

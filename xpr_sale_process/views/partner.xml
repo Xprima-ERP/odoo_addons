@@ -36,7 +36,7 @@
             id="menu_companies"
             parent="base.menu_sales"
             sequence="1"
-            groups="base.group_sale_salesman,base.group_sale_manager"/>
+            groups="base.group_sale_manager"/>
 			
 		
         <record id="action_contacts" model="ir.actions.act_window">
