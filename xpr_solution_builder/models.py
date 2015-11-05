@@ -329,7 +329,7 @@ class SalesOrder(models.Model):
             ))
 
         if sequence:
-            # Add solution integration line of there are mandatory lines.
+            # Add solution integration line if there are mandatory lines.
             unit = self.env.ref('product.product_uom_categ_unit')
 
             sequence += 10
@@ -345,10 +345,9 @@ class SalesOrder(models.Model):
             ))
 
         for product in [
-            item.product for item in self.solution.options_extra
+            item.product for item in order.solution.options_extra
             if item.selected_default
         ]:
-
             sequence += 10
             qty = quantities.get(product.id, 1.0)
 
