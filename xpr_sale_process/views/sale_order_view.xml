@@ -32,6 +32,10 @@
                  <xpath expr="//tree" position="attributes">
                     <attribute name="create">false</attribute>
                 </xpath>
+
+                <field name="amount_total" position="replace">
+                    <field name="amount_untaxed"/>
+                </field>
             </field>
         </record>
 
@@ -43,6 +47,10 @@
                  <xpath expr="//tree" position="attributes">
                     <attribute name="create">false</attribute>
                 </xpath>
+
+                <field name="amount_total" position="replace">
+                    <field name="amount_untaxed"/>
+                </field>
             </field>
         </record>
 
