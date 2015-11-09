@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+<data>
+ <!-- Legacy order -->  
+ <record id="openerp_solution" model="xpr_solution_builder.solution">
+      <field name="name">Legacy OpenERP</field>
+      <field name="description">This solution is to adapt legacy orders without solution</field>
+</record>
+</data>
+</openerp>

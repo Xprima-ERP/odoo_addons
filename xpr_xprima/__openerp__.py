@@ -77,6 +77,7 @@ Install notes:
         'config.xml',
         'companies.xml',
         'load_french.xml',
+        'solution_legacy.xml',
     ],
     'demo': [],
     'installable': True,
