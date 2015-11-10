@@ -27,6 +27,12 @@
 			<field name="category_id" ref="base.module_category_sales_management"/>
 		</record>
 
+		<record model="res.groups" id="create_company">
+			<field name="name">Company Creation</field>
+			<field name="comment">This group Permits a user to create a company.</field>
+			<field name="implied_ids/id" eval="[(4, ref('base.group_partner_manager'))]" />
+		</record>
+
 	</data>
 </openerp>
 

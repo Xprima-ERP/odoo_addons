@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+<data>
+ <!-- Legacy order -->  
+ <record id="openerp_solution" model="xpr_solution_builder.solution">
+      <field name="name">Legacy OpenERP</field>
+      <field name="description">This solution is to adapt legacy orders without solution</field>
+</record>
+
+<!-- For export and import needs -->
+<record id="action_sale_lines" model="ir.actions.act_window">
+	<field name="name">Order Lines</field>
+	<field name="type">ir.actions.act_window</field>
+	<field name="res_model">sale.order.line</field>
+</record>
+
+<menuitem action="action_sale_lines" id="menu_sales_lines" parent="base.menu_sales" groups="base.group_system"/>
+
+<record id="rep_sales_line tree" model="ir.ui.view" >
+            <field name="name">import.sale.order_line_tree</field>
+            <field name="model">sale.order.line</field>
+            <field name="type">tree</field>
+
+              <field name="arch" type="xml">
+
+               <tree string="Sales Order Lines" create="true">
+                    <field name="product_id"/>
+                    <field name="order_id"/>
+                    <field name="order_partner_id"/>
+                    <field name="name"/>
+                    <field name="salesman_id"/>
+                    <field name="price_subtotal" sum="Total"/>
+                    <field name="state"/>
+                </tree>
+
+            </field>
+
+           
+        </record>
+</data>
+</openerp>
