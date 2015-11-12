@@ -649,3 +649,59 @@ class SolutionConfigurator(models.TransientModel):
         self.dummy = not self.dummy
 
         return {'domain': {'products': [('id', 'in', domain_ids)]}}
+
+
+class SolutionCombiner(models.TransientModel):
+
+    """
+    Solution Combiner wizard.
+
+    Loaded to build new solutions based on the combination of existing ones.
+    """
+
+    _name = 'xpr_solution_builder.solution_combiner'
+
+    def _init_solution(self):
+
+        context = self.env.context
+
+        active_id = context.get('solution', context.get('active_id'))
+
+        if not active_id:
+            return None
+
+        return self.env['xpr_solution_builder.solution'].browse(active_id)
+
+    solution = fields.Many2one(
+        'xpr_solution_builder.solution',
+        string='Solution',
+        required=True,
+        default=_init_solution)
+
+    combined_category = fields.Many2one(
+        'product.category',
+        string='Combined with Category',
+        required=True)
+
+    @api.one
+    def combine_category(self):
+
+        solutions = self.env['xpr_solution_builder.solution'].search([
+            ('category', '=', self.combined_category.id),
+            ('id', '!=', self.solution.id)
+        ])
+
+        for right_solution in solutions:
+            combined = self.env['xpr_solution_builder.solution'].create({
+                "name": "{0}-{1}".format(
+                    self.solution.name, right_solution.name),
+                "description": "{0} {1}".format(
+                    self.solution.description, right_solution.description),
+                "list_price": self.solution.list_price + right_solution.list_price,
+            })
+
+            combined.products = self.solution.products | right_solution.products
+            combined.products_extra = self.solution.products_extra | right_solution.products_extra
+            combined.options = self.solution.options | right_solution.options
+            combined.options_extra = self.solution.options_extra | right_solution.options_extra
+            combined.category = self.solution.category
