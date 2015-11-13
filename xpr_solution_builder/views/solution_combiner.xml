@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	<record id="view_solution_builder_wizard" model="ir.ui.view">
+	    <field name="name">xpr_solution_builder.combine_solution_form</field>
+	    <field name="model">xpr_solution_builder.solution_combiner</field>
+	   
+	    <field name="arch" type="xml">
+            <form string="Add Optional Products">
+                <group>
+                    <field name="solution" readonly="1" />
+                    <field name="combined_category" />
+                </group>
+              
+                <footer>
+               
+                <button 
+                    string="Combine"
+                    type="object"
+                    name="combine_category"
+                    class="oe_highlight"
+                />
+                <button
+                    string="Cancel"
+                    class="oe_link"
+                    special="cancel" />
+                </footer>
+            </form>
+    </field>
+	</record>
+
+    <record id="action_solution_combiner" model="ir.actions.act_window">
+        <field name="name">Combine</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">xpr_solution_builder.solution_combiner</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_solution_builder_wizard" />
+        <field name="target">new</field>
+        <field name="context">{'solution': active_id }</field> 
+    </record>
+
+     </data>
+</openerp>

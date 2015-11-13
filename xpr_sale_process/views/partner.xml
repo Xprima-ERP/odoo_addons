@@ -32,12 +32,12 @@
             <field name="view_mode">tree,form</field>
         </record>
 
-		<menuitem action="action_companies"
-            id="menu_companies"
-            parent="base.menu_sales"
-            sequence="1"
-            groups="create_company"/>
-			
+         <record id="menu_companies" model="ir.ui.menu">
+            <field name="name">Companies</field>
+            <field name="groups_id" eval="[(6,0,[ref('create_company')])]"/>
+            <field name="parent" ref="base.menu_sales"/>
+            <field name="view_mode">tree,form</field>
+        </record>
 		
         <record id="action_contacts" model="ir.actions.act_window">
             <field name="name">Contacts</field>

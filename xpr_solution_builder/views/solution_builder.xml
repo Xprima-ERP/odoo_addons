@@ -1,28 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <openerp>
-	<data>
-	<!-- window action -->
-		<record model="ir.actions.act_window" id="action_list_solutions">
-			<field name="name">solutions</field>
-    		<field name="res_model">xpr_solution_builder.solution</field>
-    	</record>
+    <data>
+    <!-- window action -->
+        <record model="ir.actions.act_window" id="action_list_solutions">
+            <field name="name">solutions</field>
+            <field name="res_model">xpr_solution_builder.solution</field>
+        </record>
 
-    	<menuitem id="menu_solutions" parent="base.menu_sales" name="Solutions"
-			action="action_list_solutions"/>
+        <menuitem id="menu_solutions" parent="base.menu_sales" name="Solutions"
+            action="action_list_solutions"/>
 
-		<record model="ir.ui.view" id="solution_form_view">
+        <record model="ir.ui.view" id="solution_form_view">
 
-			<field name="name">solution</field>
-			<field name="model">xpr_solution_builder.solution</field>
-			<field name="arch" type="xml">
-				<form string="Definition">
-					<sheet>
-						<group>
-					
-							<field name="name"/>
-							<field name="description"/>
-							<field name="list_price" />
-							<field name="products">
+            <field name="name">solution</field>
+            <field name="model">xpr_solution_builder.solution</field>
+            <field name="arch" type="xml">
+                <form string="Definition">
+                    <header>
+                        <button name="%(action_solution_combiner)d" string="Combine" type="action"/>
+                    </header>
+                    <sheet>
+                        <group>
+                    
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="list_price" />
+
+                            <field name="products">
                                 <tree string="Mandatory Products">
                                     <field name="name" />
                                     <field name="code" />
@@ -44,7 +48,7 @@
                                 </tree>
                             </field>
 
-							<field name="options">
+                            <field name="options">
                                 <tree string="Optional Products">
                                     <field name="name" />
                                     <field name="code" />
@@ -66,24 +70,37 @@
                                 </tree>
                             </field>
 
-						</group>
-					</sheet>
-				</form>
+                        </group>
+                    </sheet>
+                </form>
 
-			</field>
-		</record>
 
-		<record model="ir.ui.view" id="product_template_only_form_view">
+            </field>
+        </record>
 
-				<field name="name">product.product.tree</field>
-				<field name="model">product.template</field>
-				<field name="inherit_id" ref="product.product_template_only_form_view"/>
-				<field name="arch" type="xml">
-					<field name="ean13" position="replace">
-						<field name="ean13" invisible="1"/>
-					</field>
-				</field>
-		</record>
+        <record model="ir.ui.view" id="solution_tree_view">
+            <field name="name">solution</field>
+            <field name="model">xpr_solution_builder.solution</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Solutions">
+                    <field name="name" />
+                    <field name="category" />
+                </tree>
+            </field>
+        </record>
 
-	</data>
+        <record model="ir.ui.view" id="product_template_only_form_view">
+
+                <field name="name">product.product.tree</field>
+                <field name="model">product.template</field>
+                <field name="inherit_id" ref="product.product_template_only_form_view"/>
+                <field name="arch" type="xml">
+                    <field name="ean13" position="replace">
+                        <field name="ean13" invisible="1"/>
+                    </field>
+                </field>
+        </record>
+
+    </data>
 </openerp>

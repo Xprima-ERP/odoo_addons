@@ -21,6 +21,7 @@ This module:
 - Indicate number of items for mandatory products
 - Permits 'sticky' and 'selected by default' optional products
 - Provides starting date for web sites and advertising
+- Permits to combine solutions together by category
     """,
 
     'author': "Xprima Corp",
@@ -31,7 +32,7 @@ This module:
     # /addons/base/module/module_data.xml
     # for the full list
     'category': 'Sales',
-    'version': '0.3',
+    'version': '0.4',
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'sale', 'xpr_product'],
@@ -42,6 +43,7 @@ This module:
         'templates.xml',
         'views/solution_builder.xml',
         'views/solution_configurator.xml',
+        'views/solution_combiner.xml',
         'views/sale_order.xml',
     ],
     # only loaded in demonstration mode
