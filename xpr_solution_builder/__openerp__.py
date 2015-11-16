@@ -41,9 +41,9 @@ This module:
     'data': [
         'security/ir.model.access.csv',
         'templates.xml',
+        'views/solution_combiner.xml',
         'views/solution_builder.xml',
         'views/solution_configurator.xml',
-        'views/solution_combiner.xml',
         'views/sale_order.xml',
     ],
     # only loaded in demonstration mode
