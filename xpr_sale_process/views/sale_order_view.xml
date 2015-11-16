@@ -135,7 +135,8 @@
 				</xpath>
 
 				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="attributes">
-					<attribute name="states">contract_not_presented,contract_approved</attribute>
+					<!-- <attribute name="states">contract_not_presented,contract_approved</attribute> -->
+                    <attribute name="invisible">1</attribute>
 				</xpath>
 			</field>
 		</record>
