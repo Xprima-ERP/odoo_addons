@@ -7,7 +7,7 @@
             <field name="res_model">xpr_solution_builder.solution</field>
         </record>
 
-        <menuitem id="menu_solutions" parent="base.menu_sales" name="Solutions"
+        <menuitem id="menu_solutions" parent="base.menu_product" name="Solutions"
             action="action_list_solutions"/>
 
         <record model="ir.ui.view" id="solution_form_view">
