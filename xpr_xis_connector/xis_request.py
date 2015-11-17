@@ -91,7 +91,7 @@ class XisRequest():
                         self.transfort_utf8_to_ascii_dict(item_value)
 
                     encode = urllib.urlencode(item_value)
-                    encode = encode.replace("=", "%3D").replace("&", "%2C")
+                    encode = encode.replace("=", "%3D").replace("&", "%2C").replace("?", "%3F")
                     data += key + "=%5B%7B" + encode + "%7D%5D&"
                 if not value:
                     data += key + "=%5B%5D&"
