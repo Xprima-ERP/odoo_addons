@@ -22,6 +22,7 @@ import urllib
 import urllib2
 import logging
 import time
+import json
 
 _logger = logging.getLogger(__name__)
 
@@ -41,7 +42,7 @@ class XisRequest():
         is_enable = False
 
         lst_param = self.param_pool.search([
-            ('key', '=', 'xis.enable.connector')])
+            ('key', '=', 'xis.enable')])
 
         if lst_param:
             param = lst_param[0].value
@@ -49,23 +50,20 @@ class XisRequest():
             is_enable = param and (param == "1" or param.lower() == "true")
 
         if not is_enable:
-            _logger.debug("xis.domain.connector is not set.")
+            _logger.debug("xis.enable is not set.")
             return None
 
         domain = None
 
         lst_param = self.param_pool.search(
-            [('key', '=', 'xis.domain.connector')])
+            [('key', '=', 'xis.connector.domain')])
 
         if lst_param:
             domain = lst_param[0].value
 
         if not domain:
-            _logger.debug("xis.domain.connector is not set.")
+            _logger.debug("xis.connector.domain is not set.")
             return None
-
-        # Live: xis.xprima.com
-        # Dev: xis-lb
 
         return "https://{0}/ws/erp/{1}".format(domain, page_name)
 
@@ -75,6 +73,7 @@ class XisRequest():
         Send an email if request contain error.
         Return (status, output)
         """
+
         status = False
         result = None
         response = None
@@ -144,6 +143,7 @@ class XisRequest():
                 msg = 'The server couldn\'t fulfill the request. ' \
                       'Error code: %s' % code
                 _logger.error(msg)
+            raise
         finally:
             if not result:
                 contains_error = True
@@ -168,13 +168,13 @@ class XisRequest():
     def send_email(self, model, data, body, code, error=None,
                    internal_error=False):
         lst_email = []
-        mail_pool = self.parent.pool.get('mail.mail')
+        env = self.parent.env
 
-        lst_param = self.param_pool.search(self.cr, self.uid,
-                                           [('key', '=', 'xis.emails')])
+        mail_pool = env['mail.mail']
+        lst_param = self.param_pool.search([('key', '=', 'xis.emails')])
+
         if lst_param:
-            emails = self.param_pool.browse(self.cr, self.uid,
-                                            lst_param[0]).value
+            emails = self.param_pool.browse(lst_param[0]).value
             lst_email = emails.split(";")
             if lst_email:
                 f_email = ','.join(lst_email)
@@ -194,12 +194,13 @@ class XisRequest():
             txt_body = '\t' + "\n\t".join(body.split("\n"))
             email_msg += '\nreturn:\n' + txt_body
 
-        m_id = mail_pool.create(self.cr, self.uid, {
+        m_id = mail_pool.create({
             'email_to': f_email,
             'subject': email_subject,
             'body_html': email_msg,
             'type': 'email'
-        }, context=None)
+        })
+
         mail_pool.send(self.cr, self.uid, [m_id], context=None)
 
 
@@ -228,6 +229,7 @@ class XISRequestWrapper(object):
     def execute(self):
 
         data = self.get_xis_data()
+
         if not data:
             return False
 
@@ -293,7 +295,7 @@ class SaleOrderRequest(XISRequestWrapper):
 
         return super(SaleOrderRequest, self).process_response(dct_response)
 
-    def get_xis_field(self):
+    def get_xis_data(self):
         ext_id = self.get_partner_ext_id()
         # cannot do a transaction without ext id
         # if not ext_id or not self.get_dealer_code():
@@ -463,17 +465,30 @@ class DealerRequest(XISRequestWrapper):
         # Set the language to english so we dont get the translated terms for
         # the partner business types.
 
-        return ';'.join([
-            b.name for b in self.dealer.with_context(lang='en_US').business
-        ]) or 'null'
+        dealer_en = self.dealer.with_context(lang='en_US')
+
+        businesses = [
+            b.name for b in dealer_en.business
+        ]
+
+        industries = set(m.parent_id.name for m in dealer_en.makes)
+
+        return ";".join([
+            "{0} {1}".format(b, i) for b in businesses for i in industries
+        ])
 
     def get_site_type(self):
 
         # Build site type since it's translated and xis only accepts english.
 
-        site = self.dealer.with_context(lang='en_US').site_type
+        return {
+            "has_website_with_us": "Has Website With Us",
 
-        return site or 'null'
+            "has_a_link_or_portals_to_their_site":
+            "Has a link or portals to their site",
+
+            "does_not_have_a_website": "Does not have a website",
+        }.get(self.dealer.site_type)
 
     def get_salesrep_ext_id(self):
         # Get current user XIS id
@@ -492,15 +507,14 @@ class DealerRequest(XISRequestWrapper):
         return state
 
     def get_customermasks(self):
-        return ';'.join(cm.name for cm in self.dealer.customer) or 'null'
+        return ';'.join(cm.name for cm in self.dealer.customer)
 
     def get_portalmask(self):
-        return ';'.join(mask.name for mask in self.dealer.portalmask) or 'null'
+        return ';'.join(mask.name for mask in self.dealer.portalmask)
 
     def get_xis_makes(self):
 
         makes = set(m.name for m in self.dealer.makes)
-        # TODO: Check if order is important
         return ','.join(makes) or 'null'
 
     def get_area_code(self):
@@ -520,11 +534,10 @@ class DealerRequest(XISRequestWrapper):
 
     def get_xis_data(self):
 
-        # Validate data. Must be a dealer and user must have an external id.
+        # Validate data. Must be a dealer.
         p = self.partner
-        xid = self.get_salesrep_ext_id()
 
-        if not p.code or not xid or not p.is_company or not self.dealer:
+        if not p.code or not p.is_company or not self.dealer:
             return None
 
         market = self.dealer.market and self.dealer.market.name.lower()
@@ -537,7 +550,7 @@ class DealerRequest(XISRequestWrapper):
             'corpcontracts': 'null',  # p.pin
             'corpname': p.name or 'null',
             'country': p.country_id and p.country_id.name or 'null',
-            'customermask': self.get_customermasks(),
+            'customermask': self.get_customermasks() or 'null',
             'dayspastdue': 'null',  # p.dayspastdue
             'dealerarea': self.get_dealerarea(),
             'dealercode': p.code.strip() or 'null',
@@ -557,20 +570,20 @@ class DealerRequest(XISRequestWrapper):
             'lastmoddate': self.get_last_modif_date(),
             'makes': self.get_xis_makes(),
             'market': market or 'null',
-            'membertype': self.get_member_type(),
+            'membertype': self.get_member_type() or 'null',
             'newemail': 'null',  # This field must go from xis to OE.
             'owner': self.dealer.owner or 'null',
             'owneremail': self.dealer.owneremail or 'null',
 
             'phone': p.phone or 'null',
             'phone2': p.mobile or 'null',
-            'portalmask': self.get_portalmask(),
+            'portalmask': self.get_portalmask() or 'null',
             'postalcode': self.partner.zip or 'null',
             'province': self.get_state(),
             'quoteflag': self.dealer.quoteflag and 'true' or 'false',
             'responsible': self.dealer.responsible or 'null',
-            'salesguy': xid or 'null',
-            'sitetype': self.get_site_type(),
+            'salesguy': self.get_salesrep_ext_id() or 'null',
+            'sitetype': self.get_site_type() or 'null',
             'tollfree': self.dealer.tollfree or 'null',
             'ttr': 'false',  # p.ttr_access and 'true' or 'false'
 
@@ -592,7 +605,7 @@ class DealerRequest(XISRequestWrapper):
 
     def process_response(self, dct_response):
         """
-        If call is sucessful, updates categories if they have changed
+        If call is successful, updates categories if they have changed
         """
 
         xis_status = super(DealerRequest, self).process_response(

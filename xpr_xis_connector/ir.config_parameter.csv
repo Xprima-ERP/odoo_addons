@@ -1,3 +1,3 @@
 "id","key","value"
-"config_param_enable","xis.enable.connector","False"
-"config_param_domain","xis.domain.connector","xis-lb"
+"config_param_enable","xis.enable","False"
+"config_param_domain","xis.connector.domain","xis.xprima.com"
