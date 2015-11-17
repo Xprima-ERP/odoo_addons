@@ -42,7 +42,7 @@ class XisRequest():
         is_enable = False
 
         lst_param = self.param_pool.search([
-            ('key', '=', 'xis.enable')])
+            ('key', '=', 'xis.connector.enable')])
 
         if lst_param:
             param = lst_param[0].value
@@ -50,7 +50,7 @@ class XisRequest():
             is_enable = param and (param == "1" or param.lower() == "true")
 
         if not is_enable:
-            _logger.debug("xis.enable is not set.")
+            _logger.debug("xis.connector.enable is not set.")
             return None
 
         domain = None
