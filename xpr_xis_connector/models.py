@@ -18,9 +18,6 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-
-import time
-import json
 import xis_request
 from openerp import models, fields, api
 from openerp.tools.translate import _
@@ -136,31 +133,30 @@ class SaleOrder(models.Model):
     @api.multi
     def write(self, vals):
         """
-        If order ref is not initialized yet, get one from XIS and repair it.
+        Syncs with XIS when contract is approved
         """
 
         status = super(SaleOrder, self).write(vals)
 
+        # Client_order_ref is an output variable from XIS. No need to feedback.
+        if 'client_order_ref' in vals:
+            vals.pop('client_order_ref')
+
+        if not vals:
+            return status
+
         for order in self:
 
-            if order.client_order_ref:
+            if order.state != 'contract_approved':
+                # No need to synch before approval.
                 continue
 
+            is_update = order.client_order_ref and True or False
+
             xis_request.SaleOrderRequest(
-                order, is_update=True).execute()
+                order, is_update=is_update).execute()
 
         return status
-
-    @api.model
-    def create(self, vals):
-        """
-        Upon creation, get reference from XIS
-        """
-        order = super(SaleOrder, self).create(vals)
-
-        xis_request.SaleOrderRequest(order).execute()
-
-        return order
 
 
 class Partner(models.Model):

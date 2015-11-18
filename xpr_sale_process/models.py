@@ -11,14 +11,11 @@ class SaleOrder(models.Model):
     state = fields.Selection(
         [
             ('draft', 'Draft Quotation'),
-            ('sent', 'Quotation Sent'),
-            ('cancel', 'Cancelled'),
             ('waiting_date', 'Waiting Schedule'),
             ('progress', 'Sales Order'),
             ('manual', 'Sale to Invoice'),
             ('shipping_except', 'Shipping Exception'),
             ('invoice_except', 'Invoice Exception'),
-            ('done', 'Done'),
             ('need_manager_approval', 'Need Manager Approval'),
             ('manager_approved', 'Manager Approved'),
             ('manager_not_approved', 'Manager Declined'),
@@ -26,16 +23,15 @@ class SaleOrder(models.Model):
             ('contract_approved', 'Approved by Customer'),
             ('contract_not_approved', 'Not Approved by Customer'),
             ('need_availability_check', 'Need Availability Check'),
+            ('sent', 'Quotation Sent'),
+            ('cancel', 'Cancelled'),
+            ('done', 'Done'),
         ],
         'Status',
         readonly=True,
         copy=False,
         help="Gives the status of the quotation or sales order.\
-        \nThe exception status is automatically set when a \
-        cancel operation occurs in the invoice validation (Invoice Exception) \
-        or in the picking list process (Shipping Exception).\nThe \
-        'Waiting Schedule' status is set when the invoice is confirmed\
-        but waiting for the scheduler to run on the order date.",
+        Quotations require approval from management and customer to be contracts.",
         select=True
     )
 

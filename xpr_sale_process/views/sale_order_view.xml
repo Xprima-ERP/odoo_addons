@@ -135,8 +135,16 @@
 				</xpath>
 
 				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="attributes">
-					<attribute name="states">contract_not_presented,contract_approved</attribute>
+                    <attribute name="invisible">1</attribute>
 				</xpath>
+
+                <xpath expr="/form/header/button[@name='print_quotation' and @states='sent,progress,manual']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+                <field name="state" widget="statusbar" position="attributes">
+                    <attribute name="statusbar_visible">draft,sent,cancel</attribute>
+                </field>
 			</field>
 		</record>
 

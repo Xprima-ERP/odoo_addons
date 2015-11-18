@@ -36,6 +36,7 @@
                 <group>
                   <field name="partner"/>
                   <field name="code" readonly="1"/>
+                  <field name="category_id" placeholder="Tags..." widget="many2many_tags" domain="['|', '|', '|', '|',('parent_id','child_of', %(category_dealer_group)d ), ('id','child_of', %(category_dealer_certification_automatic)d ), ('id','child_of', %(category_dealer_certification_manual)d ), ('id','child_of', %(category_dealer_marketing_association)d ), ('id','child_of', %(category_dealer_association)d )]"/>
                   <field name="corpname"/>
                   <field name="responsible"/>
                   <field name="quoteflag"/>
