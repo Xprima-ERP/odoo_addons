@@ -42,16 +42,16 @@ class SaleOrder(models.Model):
         readonly=True,
         states={
             'draft': [('readonly', False)],
-            'manager_not_approved': [('readonly', False)],
-            'contract_not_approved': [('readonly', False)],
-            'need_availability_check': [('readonly', False)],
-            'need_manager_approval': [('readonly', False)],
+            #'manager_not_approved': [('readonly', False)],
+            #'contract_not_approved': [('readonly', False)],
+            #'need_availability_check': [('readonly', False)],
+            #'need_manager_approval': [('readonly', False)],
 
             #'sent': [('readonly', False)],
             #'invoice_except': [('readonly', False)],
             #'done': [('readonly', False)],
-            'manager_approved,': [('readonly', False)],
-            'contract_not_presented,': [('readonly', False)],
+            #'manager_approved,': [('readonly', False)],
+            #'contract_not_presented,': [('readonly', False)],
             #'contract_approved': [('readonly', False)],
         },
         copy=True

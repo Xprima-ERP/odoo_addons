@@ -260,6 +260,15 @@ class SalesOrder(models.Model):
                 for line in order.order_line if line.solution_part == 2
             ])
 
+    @api.depends('order_line')
+    def _get_amount_all_untaxed(self):
+
+        for order in self:
+            order.amount_all_untaxed = sum([
+                self._get_line_amount(line)
+                for line in order.order_line
+            ])
+
     @api.depends('solution')
     def _get_category(self):
         for order in self:
@@ -312,15 +321,29 @@ class SalesOrder(models.Model):
         inverse=_set_line_editable)
 
     amount_products_untaxed = fields.Float(
-        string='Solution', digits=(6, 2), compute=_get_amount_products)
+        string='Solution',
+        digits_compute=dp.get_precision('Account'),
+        compute=_get_amount_products)
 
     amount_options_untaxed = fields.Float(
-        string='Options', digits=(6, 2), compute=_get_amount_options)
+        string='Options',
+        digits_compute=dp.get_precision('Account'),
+        compute=_get_amount_options)
 
     category = fields.Many2one(
         'product.category',
         string='Category',
         compute=_get_category)
+
+    # 'Overwrite' of parent field: amount_untaxed
+    # Had to rename fiel to by pass parent functionality
+    amount_all_untaxed = fields.Float(
+        string='Untaxed Amount2',
+        digits_compute=dp.get_precision('Account'),
+        compute=_get_amount_all_untaxed,
+        #multi='sums',
+        #track_visibility='always',
+        help="The amount without tax.")
 
     def _apply_solution(self, order):
         """
@@ -418,7 +441,7 @@ class SalesOrder(models.Model):
                 name="Solution discount",
                 price_unit=solution_discount,
                 solution_part=4,
-                state=order.state,
+                state='draft',
                 product_uom_qty=1,
                 product_uom=unit.id,
                 sequence=sequence + 10
@@ -482,10 +505,10 @@ class SalesOrderLine(models.Model):
                         line.discount_money,
                         line.product_uom_qty * line.price_unit))
 
-                line.discount = (
-                    100.0 * line.discount_money
-                    / line.product_uom_qty / line.price_unit
-                )
+                # line.discount = (
+                #     100.0 * line.discount_money
+                #     / line.product_uom_qty / line.price_unit
+                # )
             else:
                 line.discount_money = 0
 
