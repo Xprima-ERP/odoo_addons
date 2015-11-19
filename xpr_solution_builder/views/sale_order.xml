@@ -16,22 +16,23 @@
                 </field>
 
                 <field name="order_line" position="replace">
-                    <field name="order_line_editable" class="oe_edit_only" >
+
+                    <field name="order_line" class="oe_edit_only" >
                         <tree string="Sales Order Lines" create="false" delete="false" editable="bottom">
                             <field name="sequence" widget="handle"/>
                             <field name="state" invisible="1" />
                             <field name="th_weight" invisible="1" />
                             <field name="solution_part" invisible="1" />
                             <field name="product_id"  groups="base.group_user" readonly="1" />
-                            <field name="name" readonly="True" />
-                            <field name="product_uom_qty" />
+                            <field name="name" readonly="1" />
+                            <field name="product_uom_qty" attrs="{'readonly': [('solution_part','!=', 2)]}"/>
                             <field name="product_uom" groups="product.group_uom" readonly="1" />
                             <field name="product_uos_qty" groups="product.group_uos" invisible="1" />
                             <field name="product_uos" string="UoS" groups="product.group_uos" invisible="1" />
                             <field name="price_unit" readonly="1" />
                             <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible="1" />
                             <field name="discount" invisible="1" />
-                            <field name="discount_money" groups="sale.group_discount_per_so_line" />
+                            <field name="discount_money" groups="sale.group_discount_per_so_line" attrs="{'readonly': [('solution_part','!=', 2)]}"/>
                             <field name="price_subtotal" />
                         </tree>
                     </field>

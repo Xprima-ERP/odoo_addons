@@ -224,20 +224,6 @@ class SalesOrder(models.Model):
                 if line.solution_part == 2:
                     record.order_line_options += line
 
-    @api.depends('order_line')
-    def _get_line_editable(self):
-
-        for record in self:
-            record.order_line_options = self.env['sale.order.line']
-            for line in record.order_line:
-                if line.solution_part == 2:
-                    record.order_line_editable += line
-
-    def _set_line_editable(self):
-        # Lines are edited  inline.
-        # There are no insertions nor deletions.
-        pass
-
     def _get_line_amount(self, line):
         line_base = line.price_unit * line.product_uom_qty
         return line_base - line.discount_money
@@ -314,11 +300,6 @@ class SalesOrder(models.Model):
 
     order_line_options = fields.One2many(
         'sale.order.line', compute=_get_line_options)
-
-    order_line_editable = fields.One2many(
-        'sale.order.line',
-        compute=_get_line_editable,
-        inverse=_set_line_editable)
 
     amount_products_untaxed = fields.Float(
         string='Solution',
