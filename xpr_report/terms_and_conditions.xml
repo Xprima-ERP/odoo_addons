@@ -33,14 +33,14 @@
             <field name="pdf"> </field>
          </record>
 
-          <record id="term_seo_fr" model="term.term">
-            <field name="name">SEO_fr</field>
+          <record id="term_visibility_fr" model="term.term">
+            <field name="name">Visibility_fr</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
          </record>
 
-         <record id="term_seo_en" model="term.term" >
-            <field name="name">SEO_en</field>
+         <record id="term_visibility_en" model="term.term" >
+            <field name="name">Visibility_en</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
          </record>
@@ -67,28 +67,28 @@
         <record id="term_rule_advertising_en" model="term.rule" >
             <field name="term_id" ref="term_advertising_en" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
-            <field name="condition">(set([object.env.ref("xpr_product.advertising").id, object.env.ref("xpr_product.adwords").id, object.env.ref("xpr_product.visibility").id]) &amp; set([line.product_id.categ_term.id for order in object for line in order.order_line if line.product_id and line.product_id.categ_term])) and object.partner_id.lang=="en_US"
+            <field name="condition">(set([object.env.ref("xpr_product.advertising").id, object.env.ref("xpr_product.adwords").id, object.env.ref("xpr_product.seo").id]) &amp; set([line.product_id.categ_term.id for order in object for line in order.order_line if line.product_id and line.product_id.categ_term])) and object.partner_id.lang=="en_US"
             </field>
          </record>
 
         <record id="term_rule_advertising_fr" model="term.rule" >
             <field name="term_id" ref="term_advertising_fr" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
-            <field name="condition">(set([object.env.ref("xpr_product.advertising").id, object.env.ref("xpr_product.adwords").id, object.env.ref("xpr_product.visibility").id]) &amp; set([line.product_id.categ_term.id for order in object for line in order.order_line if line.product_id and line.product_id.categ_term])) and object.partner_id.lang=="fr_FR"
+            <field name="condition">(set([object.env.ref("xpr_product.advertising").id, object.env.ref("xpr_product.adwords").id, object.env.ref("xpr_product.seo").id]) &amp; set([line.product_id.categ_term.id for order in object for line in order.order_line if line.product_id and line.product_id.categ_term])) and object.partner_id.lang=="fr_FR"
             </field>
         </record>
 
-          <record id="term_rule_seo_en" model="term.rule" >
-            <field name="term_id" ref="term_seo_en" />
+          <record id="term_rule_visibility_en" model="term.rule" >
+            <field name="term_id" ref="term_visibility_en" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
-            <field name="condition">object.env.ref("xpr_product.seo").id in set([line.product_id.categ_term.id for order in object for line in order.order_line if line.product_id and line.product_id.categ_term]) and object.partner_id.lang == "en_US"
+            <field name="condition">object.env.ref("xpr_product.visibility").id in set([line.product_id.categ_term.id for order in object for line in order.order_line if line.product_id and line.product_id.categ_term]) and object.partner_id.lang == "en_US"
             </field>
          </record>
 
-         <record id="term_rule_seo_fr" model="term.rule" >
-            <field name="term_id" ref="term_seo_fr" />
+         <record id="term_rule_visibility_fr" model="term.rule" >
+            <field name="term_id" ref="term_visibility_fr" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
-            <field name="condition">object.env.ref("xpr_product.seo").id in set([line.product_id.categ_term.id for order in object for line in order.order_line if line.product_id and line.product_id.categ_term]) and object.partner_id.lang == "fr_FR"
+            <field name="condition">object.env.ref("xpr_product.visibility").id in set([line.product_id.categ_term.id for order in object for line in order.order_line if line.product_id and line.product_id.categ_term]) and object.partner_id.lang == "fr_FR"
             </field>
          </record>
 
