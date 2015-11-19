@@ -221,8 +221,8 @@ class LeadMixin(object):
     solution = fields.Many2one('xpr_solution_builder.solution')
 
 
-# class Lead(models.Model, LeadMixin):
-#     _inherit = "crm.lead"
+class Lead(models.Model, LeadMixin):
+    _inherit = "crm.lead"
 
 #     @api.depends('probability', 'planned_revenue')
 #     def _get_funnel_score(self):
