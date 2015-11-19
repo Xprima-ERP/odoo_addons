@@ -338,7 +338,7 @@ class SalesOrder(models.Model):
     # 'Overwrite' of parent field: amount_untaxed
     # Had to rename fiel to by pass parent functionality
     amount_all_untaxed = fields.Float(
-        string='Untaxed Amount2',
+        string='Untaxed Amount',
         digits_compute=dp.get_precision('Account'),
         compute=_get_amount_all_untaxed,
         #multi='sums',
