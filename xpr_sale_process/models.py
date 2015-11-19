@@ -221,19 +221,19 @@ class LeadMixin(object):
     solution = fields.Many2one('xpr_solution_builder.solution')
 
 
-class Lead(models.Model, LeadMixin):
-    _inherit = "crm.lead"
+# class Lead(models.Model, LeadMixin):
+#     _inherit = "crm.lead"
 
-    @api.depends('probability', 'planned_revenue')
-    def _get_funnel_score(self):
-        # Calculates revenue esperance (not estimation)
-        for lead in self:
-            lead.funnel_score = lead.probability * lead.planned_revenue / 100
+#     @api.depends('probability', 'planned_revenue')
+#     def _get_funnel_score(self):
+#         # Calculates revenue esperance (not estimation)
+#         for lead in self:
+#             lead.funnel_score = lead.probability * lead.planned_revenue / 100
 
-    funnel_score = fields.Float(
-        'Funnel Score',
-        compute=_get_funnel_score,
-        store=True)
+#     funnel_score = fields.Float(
+#         'Funnel Score',
+#         compute=_get_funnel_score,
+#         store=True)
 
 
 class LeadMakeSale(models.Model, LeadMixin):
