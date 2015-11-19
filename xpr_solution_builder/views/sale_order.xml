@@ -15,7 +15,7 @@
                 </field>
 
                 <field name="order_line" position="replace">
-                    <field name="order_line" class="oe_edit_only" >
+                    <field name="order_line_editable" class="oe_edit_only" >
                         <tree string="Sales Order Lines" create="false" delete="false" editable="bottom">
                             <field name="sequence" widget="handle"/>
                             <field name="state" invisible="1" />

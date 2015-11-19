@@ -224,6 +224,20 @@ class SalesOrder(models.Model):
                 if line.solution_part == 2:
                     record.order_line_options += line
 
+    @api.depends('order_line')
+    def _get_line_editable(self):
+
+        for record in self:
+            record.order_line_options = self.env['sale.order.line']
+            for line in record.order_line:
+                if line.solution_part == 2:
+                    record.order_line_editable += line
+
+    def _set_line_editable(self):
+        # Lines are edited  inline.
+        # There are no insertions nor deletions.
+        pass
+
     def _get_line_amount(self, line):
         line_base = line.price_unit * line.product_uom_qty
         return line_base - line.discount_money
@@ -286,6 +300,11 @@ class SalesOrder(models.Model):
 
     order_line_options = fields.One2many(
         'sale.order.line', compute=_get_line_options)
+
+    order_line_editable = fields.One2many(
+        'sale.order.line',
+        compute=_get_line_editable,
+        inverse=_set_line_editable)
 
     amount_products_untaxed = fields.Float(
         string='Solution', digits=(6, 2), compute=_get_amount_products)
@@ -697,11 +716,25 @@ class SolutionCombiner(models.TransientModel):
                     self.solution.name, right_solution.name),
                 "description": "{0} {1}".format(
                     self.solution.description, right_solution.description),
-                "list_price": self.solution.list_price + right_solution.list_price,
+                "list_price": (
+                    self.solution.list_price +
+                    right_solution.list_price),
             })
 
-            combined.products = self.solution.products | right_solution.products
-            combined.products_extra = self.solution.products_extra | right_solution.products_extra
+            combined.products = (
+                self.solution.products |
+                right_solution.products
+            )
+
+            combined.products_extra = (
+                self.solution.products_extra |
+                right_solution.products_extra
+            )
+
             combined.options = self.solution.options | right_solution.options
-            combined.options_extra = self.solution.options_extra | right_solution.options_extra
+            combined.options_extra = (
+                self.solution.options_extra |
+                right_solution.options_extra
+            )
+
             combined.category = self.solution.category
