@@ -8,8 +8,9 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <field name="client_order_ref" position="after">
-                    <field name="starting_date" required="1" />
+                    <field name="starting_date" attrs="{'required': [('category','=', %(xpr_product.advertising)d)]}" />
                     <field name="solution" />
+                    <field name="category" invisible="1" />
                     <field name="solution_discount" />
                     <button name="sale_solution_option_action" type="object" string="Add Options"/>
                 </field>
@@ -23,7 +24,7 @@
                             <field name="solution_part" invisible="1" />
                             <field name="product_id"  groups="base.group_user" readonly="1" />
                             <field name="name" readonly="True" />
-                            <field name="product_uom_qty" readonly="1" />
+                            <field name="product_uom_qty" />
                             <field name="product_uom" groups="product.group_uom" readonly="1" />
                             <field name="product_uos_qty" groups="product.group_uos" invisible="1" />
                             <field name="product_uos" string="UoS" groups="product.group_uos" invisible="1" />

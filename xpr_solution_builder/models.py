@@ -260,6 +260,11 @@ class SalesOrder(models.Model):
                 for line in order.order_line if line.solution_part == 2
             ])
 
+    @api.depends('solution')
+    def _get_category(self):
+        for order in self:
+            order.category = order.solution.category
+
     def order_line_report(self):
         """
         Line ordering for reports.
@@ -311,6 +316,11 @@ class SalesOrder(models.Model):
 
     amount_options_untaxed = fields.Float(
         string='Options', digits=(6, 2), compute=_get_amount_options)
+
+    category = fields.Many2one(
+        'product.category',
+        string='Category',
+        compute=_get_category)
 
     def _apply_solution(self, order):
         """
