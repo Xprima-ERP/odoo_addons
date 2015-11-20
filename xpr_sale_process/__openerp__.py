@@ -39,6 +39,7 @@ Setup:
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'ir.ui.menu.csv',
         'sale_workflow.xml',
         'res_groups.xml',
         'crm.case.stage.csv',
