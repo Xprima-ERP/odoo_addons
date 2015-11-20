@@ -606,7 +606,7 @@ class SolutionConfigurator(models.TransientModel):
 
         selected_products = set([
             product.id for product in self.products
-        ]) - set([
+        ]) | set([
             item.product.id for item in self.solution.options_extra
             if item.sticky
         ])
