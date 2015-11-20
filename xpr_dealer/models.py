@@ -49,6 +49,12 @@ class Partner(models.Model):
         ),
     ]
 
+    _defaults = {
+        # No emails to customers by default
+        'opt_out': True,
+        'notify_email': 'none'
+    }
+
 
 class Dealer(models.Model):
     """
