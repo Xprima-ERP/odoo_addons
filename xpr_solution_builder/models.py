@@ -246,6 +246,20 @@ class SalesOrder(models.Model):
                 for line in order.order_line if line.solution_part == 2
             ])
 
+    @api.depends('order_line')
+    def _get_amount_all_untaxed(self):
+
+        for order in self:
+            order.amount_all_untaxed = sum([
+                self._get_line_amount(line)
+                for line in order.order_line
+            ])
+
+    @api.depends('solution')
+    def _get_category(self):
+        for order in self:
+            order.category = order.solution.category
+
     def order_line_report(self):
         """
         Line ordering for reports.
@@ -288,10 +302,29 @@ class SalesOrder(models.Model):
         'sale.order.line', compute=_get_line_options)
 
     amount_products_untaxed = fields.Float(
-        string='Solution', digits=(6, 2), compute=_get_amount_products)
+        string='Solution',
+        digits_compute=dp.get_precision('Account'),
+        compute=_get_amount_products)
 
     amount_options_untaxed = fields.Float(
-        string='Options', digits=(6, 2), compute=_get_amount_options)
+        string='Options',
+        digits_compute=dp.get_precision('Account'),
+        compute=_get_amount_options)
+
+    category = fields.Many2one(
+        'product.category',
+        string='Category',
+        compute=_get_category)
+
+    # 'Overwrite' of parent field: amount_untaxed
+    # Had to rename fiel to by pass parent functionality
+    amount_all_untaxed = fields.Float(
+        string='Untaxed Amount',
+        digits_compute=dp.get_precision('Account'),
+        compute=_get_amount_all_untaxed,
+        #multi='sums',
+        #track_visibility='always',
+        help="The amount without tax.")
 
     def _apply_solution(self, order):
         """
@@ -389,7 +422,7 @@ class SalesOrder(models.Model):
                 name="Solution discount",
                 price_unit=solution_discount,
                 solution_part=4,
-                state=order.state,
+                state='draft',
                 product_uom_qty=1,
                 product_uom=unit.id,
                 sequence=sequence + 10
@@ -453,10 +486,10 @@ class SalesOrderLine(models.Model):
                         line.discount_money,
                         line.product_uom_qty * line.price_unit))
 
-                line.discount = (
-                    100.0 * line.discount_money
-                    / line.product_uom_qty / line.price_unit
-                )
+                # line.discount = (
+                #     100.0 * line.discount_money
+                #     / line.product_uom_qty / line.price_unit
+                # )
             else:
                 line.discount_money = 0
 
@@ -573,7 +606,7 @@ class SolutionConfigurator(models.TransientModel):
 
         selected_products = set([
             product.id for product in self.products
-        ]) - set([
+        ]) | set([
             item.product.id for item in self.solution.options_extra
             if item.sticky
         ])
@@ -697,11 +730,25 @@ class SolutionCombiner(models.TransientModel):
                     self.solution.name, right_solution.name),
                 "description": "{0} {1}".format(
                     self.solution.description, right_solution.description),
-                "list_price": self.solution.list_price + right_solution.list_price,
+                "list_price": (
+                    self.solution.list_price +
+                    right_solution.list_price),
             })
 
-            combined.products = self.solution.products | right_solution.products
-            combined.products_extra = self.solution.products_extra | right_solution.products_extra
+            combined.products = (
+                self.solution.products |
+                right_solution.products
+            )
+
+            combined.products_extra = (
+                self.solution.products_extra |
+                right_solution.products_extra
+            )
+
             combined.options = self.solution.options | right_solution.options
-            combined.options_extra = self.solution.options_extra | right_solution.options_extra
+            combined.options_extra = (
+                self.solution.options_extra |
+                right_solution.options_extra
+            )
+
             combined.category = self.solution.category

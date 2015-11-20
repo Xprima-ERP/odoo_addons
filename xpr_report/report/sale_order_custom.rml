@@ -275,7 +275,7 @@
           <para style="terp_default_9">Net Total :</para>
         </td>
         <td>
-          <para style="terp_default_Right_9">[[ formatLang(o.amount_untaxed, dp='Account', currency_obj=o.pricelist_id.currency_id) ]]</para>
+          <para style="terp_default_Right_9">[[ formatLang(o.amount_all_untaxed, dp='Account', currency_obj=o.pricelist_id.currency_id) ]]</para>
         </td>
       </tr>
       <tr>

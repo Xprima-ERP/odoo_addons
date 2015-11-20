@@ -254,8 +254,9 @@ class XISRequestWrapper(object):
 class SaleOrderRequest(XISRequestWrapper):
 
     """
-    This private class merge model and vals and give method to request info.
+    This private class merges model and vals and give method to request info.
     """
+
     dct_stage_asso = {
         "draft": "Introduction",
         "discounted": "Qualification",
@@ -269,16 +270,24 @@ class SaleOrderRequest(XISRequestWrapper):
         "shipping_except": "Delivered",
         "invoice_except": "Presentation",
         "done": "Signed",
+
+        "need_manager_approval": "Presentation",
+        "manager_approved": "Presentation",
+        "manager_not_approved": "Presentation",
+        "contract_not_presented": "Presentation",
+        "contract_not_approved": "Presentation",
+        "need_availability_check": "Presentation",
+        "contract_approved": "Signed",
     }
 
     model_xis = "XisDealerGroupDescUpdater"
     page_name = "proposal_sf.spy"
 
-    def __init__(self, parent, is_update=False):
+    def __init__(self, parent, is_status_update=False):
 
         super(SaleOrderRequest, self).__init__(parent)
 
-        self.is_update = is_update
+        self.is_status_update = is_status_update
 
         # create pool
         self.config = parent.env['ir.config_parameter']
@@ -370,10 +379,10 @@ class SaleOrderRequest(XISRequestWrapper):
         return self.order.partner_id and self.order.partner_id.code or ''
 
     def get_state(self):
-        if self.is_update:
-            return "NoChange"
-        else:
-            return self.dct_stage_asso.get(self.order.state)
+        # if self.is_status_update:
+        #     return "NoChange"
+
+        return self.dct_stage_asso.get(self.order.state)
 
     @staticmethod
     def get_last_modif_date():

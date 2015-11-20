@@ -34,7 +34,7 @@
                 </xpath>
 
                 <field name="amount_total" position="replace">
-                    <field name="amount_untaxed"/>
+                    <field name="amount_all_untaxed"/>
                 </field>
             </field>
         </record>
@@ -49,7 +49,7 @@
                 </xpath>
 
                 <field name="amount_total" position="replace">
-                    <field name="amount_untaxed"/>
+                    <field name="amount_all_untaxed"/>
                 </field>
             </field>
         </record>
@@ -143,7 +143,7 @@
                 </xpath>
 
                 <field name="state" widget="statusbar" position="attributes">
-                    <attribute name="statusbar_visible">draft,sent,cancel</attribute>
+                    <attribute name="statusbar_visible">draft,contract_approved</attribute>
                 </field>
 			</field>
 		</record>

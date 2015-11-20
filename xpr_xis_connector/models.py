@@ -151,10 +151,13 @@ class SaleOrder(models.Model):
                 # No need to synch before approval.
                 continue
 
-            is_update = order.client_order_ref and True or False
+            is_update = False
+
+            if order.client_order_ref or vals.get('state'):
+                is_update = True
 
             xis_request.SaleOrderRequest(
-                order, is_update=is_update).execute()
+                order, is_status_update=is_update).execute()
 
         return status
 
