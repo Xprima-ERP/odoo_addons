@@ -15,63 +15,63 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "Starting Date"
 msgstr "Date de départ"
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "Phone:"
 msgstr "Téléphone:"
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "Mail:"
 msgstr "Courriel:"
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "Phone: 1 866 370-1411 | Fax: 450 681-1203 | Email: support@evolio.ca | Website: http://www.evolio.ca/"
 msgstr "Tél: 1 866 370-1411 | Fax: 450 681-1203 | Courriel: support@evolio.ca | Site web: http://www.evolio.ca/"
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "Account consultant initials _____ Client initials _____"
 msgstr "Initiales du représentant _____ Initiales du client _____"
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "30 days"
 msgstr "30 jours"
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "Product"
 msgstr "Produit"
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "Disc.($)"
 msgstr "Rabais($)"
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "Sales taxes applicable in the dealership’s province will be included in invoicing."
 msgstr "Les taxes de ventes applicables à la province concernés seront inclus à la facturation."
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "Monthly Total :"
 msgstr "Total mensuel :"
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "One Time Total :"
 msgstr "Total frais initiaux :"
 
-#. module: xprima_report
+#. module: xpr_report
 #: report:sale.order:0
 msgid "Quotation (for approval) N°"
-msgstr "Devis (pour approbation) N°"
+msgstr "N° Devis (pour approbation)"
 

@@ -34,6 +34,6 @@ class order(report_sxw.rml_parse):
 report_sxw.report_sxw(
     'report.sale.order',
     'sale.order',
-    'addons/xprima_report/report/sale_order_xprima.rml',
+    'addons/xpr_report/report/sale_order_xprima.rml',
     parser=order,
     header='external')
