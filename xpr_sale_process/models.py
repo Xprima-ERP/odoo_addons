@@ -146,16 +146,16 @@ class SaleOrder(models.Model):
                 u.partner_id.id for u in category.approval_group.users if u.partner_id])
 
         body = """
-<p>Vous avez &agrave; approuver le devis <b>{0}</b> pour disponibilite.</p>
+<p>Vous avez a approuver le devis <b>{0}</b> pour disponibilite.</p>
         """.format(self.name)
 
-        self.env['mail.message'].with_context({'default_status' : 'outgoing'}).sudo().create({
+        self.env['mail.message'].with_context({'default_status': 'outgoing'}).sudo().create({
             'type': 'notification',
             'author_id': self.env.user.partner_id.id,
             'partner_ids': [(4, pid) for pid in destination_ids],
             'record_name': self.name,
             'model': 'sale.order',
-            'subject': 'Devis &agrave; approuver: {0}'.format(self.name),
+            'subject': 'Devis a approuver: {0}'.format(self.name),
             'body': body,
             #'template':
             #'subtype_id':
@@ -172,16 +172,16 @@ class SaleOrder(models.Model):
         if not hr_owner:
             return
 
-        body = """<p>Vous avez &agrave; approuver le devis <b>{0}</b>.</p>
+        body = """<p>Vous avez a approuver le devis <b>{0}</b>.</p>
         """.format(self.name)
 
-        self.env['mail.message'].with_context({'default_status' : 'outgoing'}).sudo().create({
+        self.env['mail.message'].with_context({'default_status': 'outgoing'}).sudo().create({
             'type': 'notification',
             'author_id': self.env.user.partner_id.id,
             'partner_ids': [(4, hr_owner.user_id.partner_id.id)],
             'record_name': self.name,
             'model': 'sale.order',
-            'subject': 'Devis &agrave; approuver: {0}'.format(self.name),
+            'subject': 'Devis a approuver: {0}'.format(self.name),
             'body': body,
             #'template':
             #'subtype_id':
