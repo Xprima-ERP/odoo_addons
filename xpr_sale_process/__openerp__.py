@@ -33,6 +33,7 @@ Setup:
         'sale',
         'hr',
         'email_template',
+        'agaplan_terms_and_conditions',
         'xpr_solution_builder',
     ],
 
@@ -49,6 +50,7 @@ Setup:
         'views/partner.xml',
         'views/message.xml',
         'views/warehouse.xml',
+        'views/terms.xml',
         'opportunity_reminder.xml',
     ],
     # only loaded in demonstration mode
