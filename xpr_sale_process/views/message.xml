@@ -1,6 +1,6 @@
 <openerp>
 
-	<data>	
+    <data>
 
         <!-- Actions adapted from 'Archive' -->
 
@@ -66,5 +66,5 @@
             parent="mail.mail_feeds"
             groups="base.group_sale_manager"/>
             
-	</data>
+    </data>
 </openerp>

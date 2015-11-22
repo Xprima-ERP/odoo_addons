@@ -1,32 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-		<record model="res.groups" id="advertising">
-			<field name="name">Advertising</field>
-			<field name="comment">The user is responsible of approving quotes with advertising products</field>
-			<field name="users" eval="[(4, ref('base.user_root'))]" />
-			<field name="category_id" ref="base.module_category_sales_management"/>
-		</record>
+        <record model="res.groups" id="advertising">
+            <field name="name">Advertising</field>
+            <field name="comment">The user is responsible of approving quotes with advertising products</field>
+            <field name="users" eval="[(4, ref('base.user_root'))]" />
+            <field name="category_id" ref="base.module_category_sales_management"/>
+        </record>
 
-		<record model="res.groups" id="discount_all">
-			<field name="name">All Discounts</field>
-			<field name="comment">The user has rights to approve all orders with discounts. Use Manager group to approve orders from own team</field>
-			<field name="users" eval="[(4, ref('base.user_root'))]" />
-			<field name="category_id" ref="base.module_category_sales_management"/>
-		</record>
+        <record model="res.groups" id="discount_all">
+            <field name="name">All Discounts</field>
+            <field name="comment">The user has rights to approve all orders with discounts. Use Manager group to approve orders from own team</field>
+            <field name="users" eval="[(4, ref('base.user_root'))]" />
+            <field name="category_id" ref="base.module_category_sales_management"/>
+        </record>
 
-		<record model="res.groups" id="rep_ui">
-			<field name="name">Use Rep UI</field>
-			<field name="comment">This group changes the UI. For reps only.</field>
-			<field name="category_id" ref="base.module_category_sales_management"/>
-		</record>
+        <record model="res.groups" id="rep_ui">
+            <field name="name">Use Rep UI</field>
+            <field name="comment">This group changes the UI. For reps only.</field>
+            <field name="category_id" ref="base.module_category_sales_management"/>
+        </record>
 
-		<record model="res.groups" id="create_company">
-			<field name="name">Company Creation</field>
-			<field name="comment">This group Permits a user to create a company.</field>
-			<field name="implied_ids/id" eval="[(4, ref('base.group_partner_manager'))]" />
-		</record>
+        <record model="res.groups" id="create_company">
+            <field name="name">Company Creation</field>
+            <field name="comment">This group Permits a user to create a company.</field>
+            <field name="implied_ids/id" eval="[(4, ref('base.group_partner_manager'))]" />
+        </record>
 
-	</data>
+    </data>
 </openerp>
 
