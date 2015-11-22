@@ -116,6 +116,27 @@
             <field name="action">write({'state':'draft'})</field>
         </record>
 
+        <record model="workflow.activity" id="act_contract_reopened">
+            <field name="name">Reopened for edit</field>
+            <field name="wkf_id" ref="sale.wkf_sale"/>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'draft'})</field>
+        </record>
+
+        <record model="workflow.activity" id="act_approval_interrupted">
+            <field name="name">Approval Interrupted</field>
+            <field name="wkf_id" ref="sale.wkf_sale"/>
+            <field name="kind">function</field>
+            <field name="action"></field>
+        </record>
+
+        <record model="workflow.activity" id="act_availability_interrupted">
+            <field name="name">Availability Check Interrupted</field>
+            <field name="wkf_id" ref="sale.wkf_sale"/>
+            <field name="kind">function</field>
+            <field name="action"></field>
+        </record>
+
         <!-- Custom transitions -->
         <record id="trans_draft_act_check_product_availability" model="workflow.transition">
             <field name="act_from" ref="sale.act_draft"/>
@@ -180,6 +201,37 @@
             <field name="act_to" ref="act_contract_reopened"/>
             <field name="signal">sig_contract_reopened</field>
         </record>
+
+        <record id="trans_act_manager_approval_needed_act_contract_reopened" model="workflow.transition">
+            <field name="act_from" ref="act_manager_approval_needed"/>
+            <field name="act_to" ref="act_contract_reopened"/>
+            <field name="signal">sig_contract_reopened</field>
+        </record>
+
+        <record id="trans_act_manager_approval_needed_act__interrupted" model="workflow.transition">
+            <field name="act_from" ref="act_manager_approval_needed"/>
+            <field name="act_to" ref="act_approval_interrupted"/>
+            <field name="signal">sig_contract_reopened</field>
+        </record>
+
+        <record id="trans_act_approval_interrupted_act_contract_reopened" model="workflow.transition">
+            <field name="act_from" ref="act_approval_interrupted"/>
+            <field name="act_to" ref="act_contract_reopened"/>
+            <field name="signal">True</field>
+        </record>
+
+        <record id="trans_act_check_product_availability_act__interrupted" model="workflow.transition">
+            <field name="act_from" ref="act_check_product_availability"/>
+            <field name="act_to" ref="act_availability_interrupted"/>
+            <field name="signal">sig_contract_reopened</field>
+        </record>
+
+        <record id="trans_act_availability_interrupted_act_contract_reopened" model="workflow.transition">
+            <field name="act_from" ref="act_availability_interrupted"/>
+            <field name="act_to" ref="act_contract_reopened"/>
+            <field name="signal">True</field>
+        </record>
+
 
         <record id="trans_act_contract_reopened_draft" model="workflow.transition">
             <field name="act_from" ref="act_contract_reopened"/>
