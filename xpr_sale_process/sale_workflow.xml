@@ -41,8 +41,8 @@
             <field name="name">Contract in availability check reopened</field>
             <field name="model_id" ref="portal_sale.model_sale_order" />
             <field name="auto_delete">True</field>
-            <field name="email_from">no_reply@xprima.com</field>
-            <field name="email_to">adteam@auto123.com</field>
+            <field name="email_from">${(object.user_id.email or '')|safe}</field>
+            <!-- <field name="partner_to">${[user.partner_id.id for user in object.category.approval_group.users if user.partner_id][0]}</field> -->
             <field name="subject">Reopened contract in availability check: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
             <field name="body_html"><![CDATA[<p>This contract in availability check has been reopened:${object.name}</p>
             ]]></field>
@@ -156,7 +156,8 @@
         <record model="workflow.activity" id="act_availability_interrupted">
             <field name="name">Availability Check Interrupted</field>
             <field name="wkf_id" ref="sale.wkf_sale"/>
-            <field name="kind">dummy</field>
+            <field name="kind">function</field>
+            <field name="action">notify_manager_approval_interrupt()</field>
            <!--  <field name="action_id" ref="contract_availability_reopen_action" /> -->
         </record>
 
