@@ -123,6 +123,8 @@
 
                     <button type="workflow" name="sig_contract_reopened" string="Reopen" states="contract_not_presented" />
 
+                    <button type="workflow" name="sig_contract_reopened" string="Reopen" states="need_availability_check,need_manager_approval" groups="base.group_sale_salesman"/>
+
                 </xpath>
 
                 <xpath expr="/form/header/button[@name='action_button_confirm' and @states='draft']" position="attributes">
