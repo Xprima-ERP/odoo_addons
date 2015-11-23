@@ -1,19 +1,16 @@
 <openerp>
-	<data>
-		<record id="product_category_view_form" model="ir.ui.view">
-			<field name="name">xpr_sale_process.product.category.form</field>
-			<field name="model">product.category</field>
-			<field name="inherit_id" ref="product.product_category_form_view"/>
-			<field name="arch" type="xml">
-				 <xpath expr="//group[@name='parent']" position="inside">
-				 	<group name="approval_group" colspan="2">
+    <data>
+        <record id="product_category_view_form" model="ir.ui.view">
+            <field name="name">xpr_sale_process.product.category.form</field>
+            <field name="model">product.category</field>
+            <field name="inherit_id" ref="product.product_category_form_view"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//group[@name='parent']" position="inside">
+                    <group name="approval_group" colspan="2">
                         <field name="approval_group"/>
-                 </group>
-				 </xpath>
-			
-                
-
-			</field>
-		</record>
-	</data>
+                 	</group>
+                 </xpath>
+            </field>
+        </record>
+    </data>
 </openerp>

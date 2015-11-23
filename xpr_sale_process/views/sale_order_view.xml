@@ -123,6 +123,8 @@
 
                     <button type="workflow" name="sig_contract_reopened" string="Reopen" states="contract_not_presented" />
 
+                    <button type="workflow" name="sig_contract_reopened" string="Reopen" states="need_availability_check,need_manager_approval" groups="base.group_sale_salesman"/>
+
                 </xpath>
 
                 <xpath expr="/form/header/button[@name='action_button_confirm' and @states='draft']" position="attributes">
@@ -178,14 +180,9 @@
 
         <menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman,base.group_sale_manager"/>
 
-        <!-- TODO: Replace menuitem with following record -->
-
-        <menuitem action="sale.action_orders" id="sale.menu_sale_order" parent="base.menu_sales" sequence="6" groups="base.group_no_one"/>
-
-        <!--
-            <record id="sale.menu_sale_order" model="ir.ui.menu">
+        <record id="sale.menu_sale_order" model="ir.ui.menu">
             <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
-        </record>  -->
+        </record>
 
         <record id="sale.action_quotations" model="ir.actions.act_window">
             <field name="domain">[('state','in',('draft','sent','cancel','need_manager_approval', 'manager_approved', 'manager_not_approved', 'need_availability_check'))]</field>

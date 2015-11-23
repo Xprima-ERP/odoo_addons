@@ -91,18 +91,9 @@ class SaleOrder(models.Model):
         """
         Return True if product availability check is required and False if not.
         """
-        for line in self.order_line:
 
-            if not line.product_id:
-                continue
-
-            category = line.product_id.categ_term
-
-            if not category:
-                continue
-
-            if category.approval_group:
-                return True
+        if self.category.approval_group:
+            return True
 
         return False
 
@@ -146,23 +137,8 @@ class SaleOrder(models.Model):
     def notify_availability_check(self):
         self.write({'state': 'need_availability_check'})
 
-        destination_ids = set()
-
-        for line in self.order_line:
-
-            if not line.product_id:
-                continue
-
-            category = line.product_id.categ_term
-
-            if not category:
-                continue
-
-            if not category.approval_group:
-                continue
-
-            destination_ids |= set([
-                u.partner_id.id for u in category.approval_group.users if u.partner_id])
+        destination_ids = set([
+            u.partner_id.id for u in self.category.approval_group.users if u.partner_id])
 
         body = """
 <p>Vous avez a approuver le devis <b>{0}</b> pour disponibilite.</p>

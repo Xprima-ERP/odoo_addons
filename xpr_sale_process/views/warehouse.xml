@@ -1,6 +1,6 @@
 <openerp>
 
-	<data>	
+  <data>
 
     <!-- Removing supplier and warehouse menus -->
       <record id="base.menu_procurement_management_supplier_name" model="ir.ui.menu">
