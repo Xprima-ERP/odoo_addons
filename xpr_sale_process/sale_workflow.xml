@@ -3,19 +3,10 @@
     <data noupdate="1">
         <!--sale.wkf_sale related-->
 
-        <!--
-       
-        <record id="act_sent" model="workflow.activity">
-            <field name="wkf_id" ref="wkf_sale"/>
-            <field name="name">sent</field>
-            <field name="kind">function</field>
-            <field name="action">write({'state':'sent'})</field>
-        </record>
-         -->
-
         <!-- Delete standard unused transitions -->
+        <!-- TODO: Hide the records instead by using base.group.no_one -->
 
-         <delete id="sale.trans_draft_sent" model="workflow.transition" />
+<!--         <delete id="sale.trans_draft_sent" model="workflow.transition" />
         <delete id="sale.trans_draft_router" model="workflow.transition" />
         <delete id="sale.trans_sent_router" model="workflow.transition" />
         <delete id="sale.trans_sent_cancel" model="workflow.transition" />
@@ -28,10 +19,11 @@
         <delete id="sale.trans_invoice_except_invoice" model="workflow.transition" />
         <delete id="sale.trans_invoice_except_invoice_end" model="workflow.transition" />
         <delete id="sale.trans_invoice_except_invoice_cancel" model="workflow.transition" />
-        <delete id="sale.trans_invoice_end_done" model="workflow.transition" />
+        <delete id="sale.trans_invoice_end_done" model="workflow.transition" /> -->
 
          <!-- Delete standard unused activities -->
 
+     <!--     <delete id="sale.act_sent" model="workflow.activity" />
         <delete id="sale.act_router" model="workflow.activity" />
         <delete id="sale.act_wait_invoice" model="workflow.activity" />
         <delete id="sale.act_done" model="workflow.activity" />
@@ -39,7 +31,7 @@
         <delete id="sale.act_invoice" model="workflow.activity" />
         <delete id="sale.act_invoice_except" model="workflow.activity" />
         <delete id="sale.act_invoice_end" model="workflow.activity" />
-        <delete id="sale.act_invoice_cancel" model="workflow.activity" />
+        <delete id="sale.act_invoice_cancel" model="workflow.activity" /> -->
     
     </data>
 
@@ -164,7 +156,7 @@
         <record model="workflow.activity" id="act_availability_interrupted">
             <field name="name">Availability Check Interrupted</field>
             <field name="wkf_id" ref="sale.wkf_sale"/>
-            <field name="kind">function</field>
+            <field name="kind">dummy</field>
             <field name="action_id" ref="contract_availability_reopen_action" />
         </record>
 
@@ -224,7 +216,6 @@
         <record id="trans_act_manager_not_approved_draft" model="workflow.transition">
             <field name="act_from" ref="act_manager_not_approved"/>
             <field name="act_to" ref="sale.act_draft"/>
-            <field name="condition">True</field>
         </record>
 
         <record id="trans_act_contract_not_presented_act_contract_reopened" model="workflow.transition">
@@ -239,7 +230,7 @@
             <field name="signal">sig_contract_reopened</field>
         </record>
 
-        <record id="trans_act_manager_approval_needed_act__interrupted" model="workflow.transition">
+        <record id="trans_act_manager_approval_needed_act_interrupted" model="workflow.transition">
             <field name="act_from" ref="act_manager_approval_needed"/>
             <field name="act_to" ref="act_approval_interrupted"/>
             <field name="signal">sig_contract_reopened</field>
@@ -248,47 +239,29 @@
         <record id="trans_act_approval_interrupted_act_contract_reopened" model="workflow.transition">
             <field name="act_from" ref="act_approval_interrupted"/>
             <field name="act_to" ref="act_contract_reopened"/>
-            <field name="signal">True</field>
         </record>
 
-        <record id="trans_act_check_product_availability_act__interrupted" model="workflow.transition">
+        <record id="trans_act_check_product_availability_act_interrupted" model="workflow.transition">
             <field name="act_from" ref="act_check_product_availability"/>
             <field name="act_to" ref="act_availability_interrupted"/>
+            <field name="groups_id" eval="[(6,0,[ref('base.group_sale_salesman')])]"/>
             <field name="signal">sig_contract_reopened</field>
         </record>
 
         <record id="trans_act_availability_interrupted_act_contract_reopened" model="workflow.transition">
             <field name="act_from" ref="act_availability_interrupted"/>
             <field name="act_to" ref="act_contract_reopened"/>
-            <field name="signal">True</field>
         </record>
-
 
         <record id="trans_act_contract_reopened_draft" model="workflow.transition">
             <field name="act_from" ref="act_contract_reopened"/>
             <field name="act_to" ref="sale.act_draft"/>
-            <field name="condition">True</field>
         </record>
 
         <record id="trans_act_manager_approved_act_contract_not_presented" model="workflow.transition">
             <field name="act_from" ref="act_manager_approved"/>
             <field name="act_to" ref="act_contract_not_presented"/>
-            <field name="condition">True</field>
         </record>
-
-        <!--
-        <record id="trans_act_manager_approved_act_post_quote_creation_actions" model="workflow.transition">
-            <field name="act_from" ref="act_manager_approved"/>
-            <field name="act_to" ref="act_post_quote_creation_actions"/>
-            <field name="condition">True</field>
-        </record>
-
-        <record id="trans_act_post_quote_creation_actions_act_contract_not_presented" model="workflow.transition">
-            <field name="act_from" ref="act_post_quote_creation_actions"/>
-            <field name="act_to" ref="act_contract_not_presented"/>
-            <field name="condition">True</field>
-        </record>
-        -->
 
         <record id="trans_act_contract_not_presented_act_contract_approved" model="workflow.transition">
             <field name="act_from" ref="act_contract_not_presented"/>
@@ -302,43 +275,16 @@
             <field name="signal">sig_customer_not_approved</field>
         </record>
 
-        <!--
-        <record id="trans_act_contract_not_approved_act_manager_approval_needed" model="workflow.transition">
-            <field name="act_from" ref="act_contract_not_approved"/>
-            <field name="act_to" ref="act_manager_approval_needed"/>
-            <field name="signal">sig_check_approval_needed</field>
-            <field name="condition">check_manager_approval_needed()</field>
-        </record>
-        -->
-
         <record id="trans_act_contract_not_approved_act_draft" model="workflow.transition">
             <field name="act_from" ref="act_contract_not_approved"/>
             <field name="act_to" ref="sale.act_draft"/>
-            <field name="condition">True</field>
         </record>
-
-        <!--
-        <record id="trans_act_contract_not_approved_act_manager_approved" model="workflow.transition">
-            <field name="act_from" ref="act_contract_not_approved"/>
-            <field name="act_to" ref="act_manager_approved"/>
-            <field name="signal">sig_check_approval_needed</field>
-            <field name="condition">not check_manager_approval_needed()</field>
-        </record>
-
-
-        <record id="trans_act_contract_not_presented_sale_act_cancel" model="workflow.transition">
-            <field name="act_from" ref="act_contract_not_presented"/>
-            <field name="act_to" ref="sale.act_cancel"/>
-            <field name="signal">sig_cancel</field>
-        </record>
-        -->
 
         <record id="trans_act_draft_sale_act_cancel" model="workflow.transition">
             <field name="act_from" ref="sale.act_draft"/>
             <field name="act_to" ref="sale.act_cancel"/>
             <field name="signal">sig_cancel</field>
         </record>
-
 
     </data>
 </openerp>
