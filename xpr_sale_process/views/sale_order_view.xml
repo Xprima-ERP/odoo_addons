@@ -1,6 +1,6 @@
 <openerp>
 
-	<data>
+    <data>
         <!-- Xprima prefix for sale orders -->
         <record id="sale.seq_sale_order" model="ir.sequence">
             <field name="name">Contract</field>
@@ -35,6 +35,7 @@
 
                 <field name="amount_total" position="replace">
                     <field name="amount_all_untaxed"/>
+                    <field name="renew_date" />
                 </field>
             </field>
         </record>
@@ -93,50 +94,55 @@
 
     </data>
 
-	<data>
+    <data>
 
-		<!--TODO add new sale.order states to default list view-->
+        <!--TODO add new sale.order states to default list view-->
 
-		<record id="sale_order_xprima_sale_process_view" model="ir.ui.view">
-			<field name="name">sale.order.form.xprima_sale_process</field>
-			<field name="model">sale.order</field>
-			<field name="inherit_id" ref="sale.view_order_form"/>
-			<field name="arch" type="xml">
-				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
-					<button type="workflow" name="sig_check_approval_needed" string="Send for Approval" states="draft,manager_not_approved,contract_not_approved" />
+        <record id="sale_order_xprima_sale_process_view" model="ir.ui.view">
+            <field name="name">sale.order.form.xprima_sale_process</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="xpr_solution_builder.sale_order_form"/>
+            <field name="arch" type="xml">
 
-					<button type="workflow" name="sig_availability_checked" string="Availability Checked" states="need_availability_check" groups="xpr_sale_process.advertising" />
+                <field name="starting_date" position="after">
+                    <field name="renew_date" />
+                </field>
 
-					<button type="workflow" name="sig_availability_not_checked" string="Not Available" states="need_availability_check" groups="xpr_sale_process.advertising" />
+                <xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
+                    <button type="workflow" name="sig_check_approval_needed" string="Send for Approval" states="draft,manager_not_approved,contract_not_approved" />
 
-					<button type="workflow" name="sig_cancel" string="Lost" states="contract_not_approved" groups="base.group_sale_manager"/>
+                    <button type="workflow" name="sig_availability_checked" string="Availability Checked" states="need_availability_check" groups="xpr_sale_process.advertising" />
 
-					<button type="workflow" name="sig_manager_approved" string="Approve" states="need_manager_approval" groups="base.group_sale_manager" />
+                    <button type="workflow" name="sig_availability_not_checked" string="Not Available" states="need_availability_check" groups="xpr_sale_process.advertising" />
 
-					<button type="workflow" name="sig_manager_not_approved" string="Not Approved" states="need_manager_approval"  groups="base.group_sale_manager"/>
+                    <button type="workflow" name="sig_cancel" string="Lost" states="contract_not_approved" groups="base.group_sale_manager"/>
 
-					<button type="workflow" name="sig_contract_reopened" string="Reopen" states="contract_not_presented" />
+                    <button type="workflow" name="sig_manager_approved" string="Approve" states="need_manager_approval" groups="base.group_sale_manager" />
 
-				</xpath>
+                    <button type="workflow" name="sig_manager_not_approved" string="Not Approved" states="need_manager_approval"  groups="base.group_sale_manager"/>
 
-				<xpath expr="/form/header/button[@name='action_button_confirm' and @states='draft']" position="attributes">
-					<attribute name="states"></attribute>
-					<attribute name="attrs">{"invisible": True}</attribute>
-				</xpath>
-				<xpath expr="/form/header/button[@name='action_quotation_send' and @states='draft']" position="attributes">
-					<attribute name="states"></attribute>
-					<attribute name="attrs">{"invisible": True}</attribute>
-				</xpath>
-				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
-					<button type="workflow" name="sig_customer_approved" string="Customer Approved" states="contract_not_presented" />
+                    <button type="workflow" name="sig_contract_reopened" string="Reopen" states="contract_not_presented" />
 
-					<button type="workflow" name="sig_customer_not_approved" string="Customer not Approved" states="contract_not_presented" />
+                </xpath>
 
-				</xpath>
+                <xpath expr="/form/header/button[@name='action_button_confirm' and @states='draft']" position="attributes">
+                    <attribute name="states"></attribute>
+                    <attribute name="attrs">{"invisible": True}</attribute>
+                </xpath>
+                <xpath expr="/form/header/button[@name='action_quotation_send' and @states='draft']" position="attributes">
+                    <attribute name="states"></attribute>
+                    <attribute name="attrs">{"invisible": True}</attribute>
+                </xpath>
+                <xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
+                    <button type="workflow" name="sig_customer_approved" string="Customer Approved" states="contract_not_presented" />
 
-				<xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="attributes">
+                    <button type="workflow" name="sig_customer_not_approved" string="Customer not Approved" states="contract_not_presented" />
+
+                </xpath>
+
+                <xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="attributes">
                     <attribute name="invisible">1</attribute>
-				</xpath>
+                </xpath>
 
                 <xpath expr="/form/header/button[@name='print_quotation' and @states='sent,progress,manual']" position="attributes">
                     <attribute name="invisible">1</attribute>
@@ -145,48 +151,48 @@
                 <field name="state" widget="statusbar" position="attributes">
                     <attribute name="statusbar_visible">draft,contract_approved</attribute>
                 </field>
-			</field>
-		</record>
+            </field>
+        </record>
 
-		<record id="action_contracts" model="ir.actions.act_window">
-			<field name="name">Contracts</field>
-			<field name="type">ir.actions.act_window</field>
-			<field name="res_model">sale.order</field>
-			<field name="view_type">form</field>
-			<field name="view_mode">tree,form,calendar,graph</field>
-			<field name="search_view_id" ref="sale.view_sales_order_filter"/>
-			<field name="context">{
-				'search_default_my_sale_orders_filter': 0
-				}
-			</field>
-			<field name="domain">[('state', 'in', ('contract_not_presented', 'contract_not_approved', 'contract_approved'))]</field>
-			<field name="help" type="html">
-				<p class="oe_view_nocontent_create">
-					Click to create a quotation that can be converted into a sales order.
-				</p>
-				<p>
-					Odoo will help you efficiently handle the complete sales flow: quotation, sales order, delivery, invoicing and payment.
-				</p>
-			</field>
-		</record>
+        <record id="action_contracts" model="ir.actions.act_window">
+            <field name="name">Contracts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="search_view_id" ref="sale.view_sales_order_filter"/>
+            <field name="context">{
+                'search_default_my_sale_orders_filter': 0
+                }
+            </field>
+            <field name="domain">[('state', 'in', ('contract_not_presented', 'contract_not_approved', 'contract_approved'))]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a quotation that can be converted into a sales order.
+                </p>
+                <p>
+                    Odoo will help you efficiently handle the complete sales flow: quotation, sales order, delivery, invoicing and payment.
+                </p>
+            </field>
+        </record>
 
-		<menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman,base.group_sale_manager"/>
-	
-		<!--
-			Now hidden
+        <menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman,base.group_sale_manager"/>
 
-			<record id="sale.menu_sale_order" model="ir.ui.menu">
-			<field name="groups_id" eval="[(6, 0, [ref('base.group_system')])]"/>
-		</record> -->
-		
-		<delete id="sale.menu_sale_order" model="ir.ui.menu" />
+        <!-- TODO: Replace menuitem with following record -->
 
-		<record id="sale.action_quotations" model="ir.actions.act_window">
-			<field name="domain">[('state','in',('draft','sent','cancel','need_manager_approval', 'manager_approved', 'manager_not_approved', 'need_availability_check'))]</field>
-			<field name="context">{
-				'search_default_my_sale_orders_filter': 0
-				}
-			</field>
-		</record>
-	</data>
+        <menuitem action="sale.action_orders" id="sale.menu_sale_order" parent="base.menu_sales" sequence="6" groups="base.group_no_one"/>
+
+        <!--
+            <record id="sale.menu_sale_order" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+        </record>  -->
+
+        <record id="sale.action_quotations" model="ir.actions.act_window">
+            <field name="domain">[('state','in',('draft','sent','cancel','need_manager_approval', 'manager_approved', 'manager_not_approved', 'need_availability_check'))]</field>
+            <field name="context">{
+                'search_default_my_sale_orders_filter': 0
+                }
+            </field>
+        </record>
+    </data>
 </openerp>
