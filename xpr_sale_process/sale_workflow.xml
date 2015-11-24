@@ -37,31 +37,36 @@
 
     <data>
         <!-- Workflow triggered messages -->
+
+        <record model="email.template" id="contract_availability_notify_mail">
+            <field name="name">Advertisment contract approval request</field>
+            <field name="model_id" ref="portal_sale.model_sale_order" />
+            <field name="auto_delete">True</field>
+            <field name="email_from">${(object.user_id.email or '')|safe}</field>
+            <field name="subject">Advertisment contract to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[<p>You must check the advertisment availability for contract ${object.name}.
+            ]]></field>
+        </record>
+
+        <record model="email.template" id="contract_manager_approval_mail">
+            <field name="name">Contract discount approval request</field>
+            <field name="model_id" ref="portal_sale.model_sale_order" />
+            <field name="auto_delete">True</field>
+            <field name="email_from">${(object.user_id.email or '')|safe}</field>
+            <field name="subject">Contract discount to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[<p>This contract has to be approved for discounts ${object.name}.
+            ]]></field>
+        </record>
+
+
         <record model="email.template" id="contract_availability_reopen_mail">
             <field name="name">Contract in availability check reopened</field>
             <field name="model_id" ref="portal_sale.model_sale_order" />
             <field name="auto_delete">True</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
-            <field name="email_to">adteam@auto123.com</field>
-            <field name="partner_to"></field>
             <field name="subject">Reopened contract in availability check: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
             <field name="body_html"><![CDATA[<p>This contract in availability check has been reopened:${object.name}</p>
             ]]></field>
-        </record>
-
-        <record model="ir.actions.server" id="contract_availability_reopen_action">
-            <field name="name">Send Mail</field>
-            <field name="state">email</field>
-            <field name="type">ir.actions.server</field>
-            <field name="help">Notifies availibility group about reopened contract</field>
-            <field name="model_id" ref="portal_sale.model_sale_order" />
-            <field name="use_create">new</field>
-            <field name="template_id" ref="contract_availability_reopen_mail" />
-            <field name="sequence">0</field>
-            <field name="crud_model_id" ref="portal_sale.model_sale_order" />
-            <field name="wkf_model_id" ref="portal_sale.model_sale_order" />
-            <field name="use_relational_model">base</field>
-            <field name="use_write">current</field>
         </record>
     </data>
 
@@ -157,7 +162,6 @@
             <field name="wkf_id" ref="sale.wkf_sale"/>
             <field name="kind">function</field>
             <field name="action">notify_manager_approval_interrupt()</field>
-           <!--  <field name="action_id" ref="contract_availability_reopen_action" /> -->
         </record>
 
         <!-- Custom transitions -->

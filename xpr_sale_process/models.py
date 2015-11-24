@@ -4,6 +4,7 @@ import datetime
 from openerp.exceptions import AccessError
 from openerp import models, fields, api
 
+
 class SaleOrder(models.Model):
     _name = 'sale.order'
     _inherit = "sale.order"
@@ -135,58 +136,53 @@ class SaleOrder(models.Model):
             % hr_owner.user_id.name)
 
     def notify_availability_check(self):
+
         self.write({'state': 'need_availability_check'})
+
+        template = self.env.ref('xpr_sale_process.contract_availability_notify_mail')
+
+        values = self.env['email.template'].generate_email(
+            template.id, self.id)
 
         destination_ids = set([
             u.partner_id.id for u in self.category.approval_group.users if u.partner_id])
 
-        body = """
-<p>Vous avez a approuver le devis <b>{0}</b> pour disponibilite.</p>
-        """.format(self.name)
+        values['recipient_ids'] = [(4, pid) for pid in destination_ids]
 
-        self.env['mail.message'].with_context({'default_status': 'outgoing'}).sudo().create({
-            'type': 'notification',
-            'author_id': self.env.user.partner_id.id,
-            'partner_ids': [(4, pid) for pid in destination_ids],
-            'record_name': self.name,
-            'model': 'sale.order',
-            'subject': 'Devis a approuver: {0}'.format(self.name),
-            'body': body,
-            #'template':
-            #'subtype_id':
-        })
+        self.env['mail.mail'].create(values)
 
     def notify_manager_approval(self):
         self.write({'state': 'need_manager_approval'})
 
-        #args = [("user_id", "=", self.env.user.id)]
-        #hr_approver = self.env["hr.employee"].search(args)
         args = [("user_id", "=", self.user_id.id)]
         hr_owner = self.env["hr.employee"].search(args)
 
         if not hr_owner:
             return
 
-        body = """<p>Vous avez a approuver le devis <b>{0}</b>.</p>
-        """.format(self.name)
+        template = self.env.ref('xpr_sale_process.contract_manager_approval_mail')
 
-        self.env['mail.message'].with_context({'default_status': 'outgoing'}).sudo().create({
-            'type': 'notification',
-            'author_id': self.env.user.partner_id.id,
-            'partner_ids': [(4, hr_owner.user_id.partner_id.id)],
-            'record_name': self.name,
-            'model': 'sale.order',
-            'subject': 'Devis a approuver: {0}'.format(self.name),
-            'body': body,
-            #'template':
-            #'subtype_id':
-        })
+        values = self.env['email.template'].generate_email(
+            template.id, self.id)
+
+        values['recipient_ids'] = [(4, hr_owner.user_id.partner_id.id)]
+
+        self.env['mail.mail'].create(values)
 
     def notify_manager_approval_interrupt(self):
 
         template = self.env.ref('xpr_sale_process.contract_availability_reopen_mail')
 
-        self.env['email.template'].send_mail(self.env.cr, self.env.uid, template.id, self.id)
+        values = self.env['email.template'].generate_email(
+            template.id, self.id)
+
+        destination_ids = set([
+            u.partner_id.id for u in self.category.approval_group.users if u.partner_id])
+
+        values['recipient_ids'] = [(4, pid) for pid in destination_ids]
+
+        self.env['mail.mail'].create(values)
+
 
 class ProductCategory(models.Model):
     _inherit = "product.category"
