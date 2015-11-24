@@ -185,17 +185,8 @@ class SaleOrder(models.Model):
     def notify_manager_approval_interrupt(self):
 
         template = self.env.ref('xpr_sale_process.contract_availability_reopen_mail')
-        self.env['mail.message'].with_context({'default_status': 'outgoing'}).sudo().create({
-            'type': 'notification',
-            'author_id': self.env.user.partner_id.id,
-            'partner_ids': [(4, user.partner_id.id) for user in self.category.approval_group.users if user.partner_id],
-            'record_name': self.name,
-            'model': 'sale.order',
-            'subject': template.subject,
-            'body_html': template.body_html,
-            #'template': self.env.ref('xpr_sale_process.contract_availability_reopen_mail').id
-            #'subtype_id':
-        })
+
+        self.env['email.template'].send_mail(self.env.cr, self.env.uid, template.id, self.id)
 
 class ProductCategory(models.Model):
     _inherit = "product.category"

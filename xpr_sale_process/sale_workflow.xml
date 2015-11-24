@@ -42,12 +42,11 @@
             <field name="model_id" ref="portal_sale.model_sale_order" />
             <field name="auto_delete">True</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
-            <!-- <field name="partner_to">${[user.partner_id.id for user in object.category.approval_group.users if user.partner_id][0]}</field> -->
+            <field name="email_to">adteam@auto123.com</field>
+            <field name="partner_to"></field>
             <field name="subject">Reopened contract in availability check: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
             <field name="body_html"><![CDATA[<p>This contract in availability check has been reopened:${object.name}</p>
             ]]></field>
-            <!-- ${[user.partner_id.email for user in object.category.approval_group.users if user.partner_id and user.partner_id.email][0]}
-             -->
         </record>
 
         <record model="ir.actions.server" id="contract_availability_reopen_action">
