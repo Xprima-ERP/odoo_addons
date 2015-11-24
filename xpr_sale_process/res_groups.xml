@@ -27,6 +27,11 @@
             <field name="implied_ids/id" eval="[(4, ref('base.group_partner_manager'))]" />
         </record>
 
+        <record model="res.groups" id="group_hidden">
+            <field name="name">Hidden</field>
+            <field name="comment">This group permits hiding stuff. Keep it empty.</field>
+        </record>
+
     </data>
 </openerp>
 

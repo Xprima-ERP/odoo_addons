@@ -19,6 +19,7 @@
                     type="object"
                     name="combine_category"
                     class="oe_highlight"
+                    groups="base.group_no_one"
                 />
                 <button
                     string="Cancel"
