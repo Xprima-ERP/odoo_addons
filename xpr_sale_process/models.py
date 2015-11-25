@@ -9,7 +9,7 @@ class SaleOrder(models.Model):
     _name = 'sale.order'
     _inherit = "sale.order"
 
-    @api.depends('starting_date')
+    @api.depends('starting_date', 'date_order')
     def _get_renew_date(self):
         for order in self:
 
@@ -75,7 +75,7 @@ class SaleOrder(models.Model):
         copy=True
     )
 
-    renew_date = fields.Date(string="Renew Date", compute=_get_renew_date)
+    renew_date = fields.Date(string="Renew Date", compute=_get_renew_date, store=True)
 
     def check_manager_approval_needed(self):
 

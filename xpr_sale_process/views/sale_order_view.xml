@@ -1,6 +1,19 @@
 <openerp>
 
     <data>
+
+        <record model="ir.ui.view" id="sale_order_search">
+            <field name="name">order.search</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <filter string="Order Month" position="after">
+                    <filter string="Renewal Month" domain="[]" context="{'group_by':'renew_date'}"/>
+                </filter>
+            </field>
+        </record>
+
+
         <!-- Xprima prefix for sale orders -->
         <record id="sale.seq_sale_order" model="ir.sequence">
             <field name="name">Contract</field>
