@@ -42,6 +42,7 @@
             <field name="name">Advertisment contract approval request</field>
             <field name="model_id" ref="portal_sale.model_sale_order" />
             <field name="auto_delete">True</field>
+            <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
             <field name="subject">Advertisment contract to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
             <field name="body_html"><![CDATA[<p>You must check the advertisment availability for contract ${object.name}.
@@ -52,6 +53,7 @@
             <field name="name">Contract discount approval request</field>
             <field name="model_id" ref="portal_sale.model_sale_order" />
             <field name="auto_delete">True</field>
+            <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
             <field name="subject">Contract discount to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
             <field name="body_html"><![CDATA[<p>This contract has to be approved for discounts ${object.name}.
@@ -63,6 +65,7 @@
             <field name="name">Contract in availability check reopened</field>
             <field name="model_id" ref="portal_sale.model_sale_order" />
             <field name="auto_delete">True</field>
+            <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
             <field name="subject">Reopened contract in availability check: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
             <field name="body_html"><![CDATA[<p>This contract in availability check has been reopened:${object.name}</p>
