@@ -38,37 +38,36 @@
     <data>
         <!-- Workflow triggered messages -->
 
-        <record model="email.template" id="contract_availability_notify_mail">
-            <field name="name">Advertisment contract approval request</field>
+        <record model="email.template" id="quotation_availability_notify_mail">
+            <field name="name">Advertisment quotation approval request</field>
             <field name="model_id" ref="portal_sale.model_sale_order" />
             <field name="auto_delete">True</field>
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
-            <field name="subject">Advertisment contract to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
-            <field name="body_html"><![CDATA[<p>You must check the advertisment availability for contract ${object.name}.
+            <field name="subject">Advertisment quotation to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[You must check the advertisment availability for quotation <a href="${object.form_url|safe}">${object.name}</a>.
             ]]></field>
         </record>
 
-        <record model="email.template" id="contract_manager_approval_mail">
-            <field name="name">Contract discount approval request</field>
+        <record model="email.template" id="quotation_manager_approval_mail">
+            <field name="name">Quotation discount approval request</field>
             <field name="model_id" ref="portal_sale.model_sale_order" />
             <field name="auto_delete">True</field>
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
-            <field name="subject">Contract discount to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
-            <field name="body_html"><![CDATA[<p>This contract has to be approved for discounts ${object.name}.
+            <field name="subject">Quotation discount to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[This quotation has to be approved for discounts <a href="${object.form_url|safe}">${object.name}</a>.
             ]]></field>
         </record>
 
-
-        <record model="email.template" id="contract_availability_reopen_mail">
-            <field name="name">Contract in availability check reopened</field>
+        <record model="email.template" id="quotation_availability_reopen_mail">
+            <field name="name">Quotation in availability check reopened</field>
             <field name="model_id" ref="portal_sale.model_sale_order" />
             <field name="auto_delete">True</field>
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
-            <field name="subject">Reopened contract in availability check: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
-            <field name="body_html"><![CDATA[<p>This contract in availability check has been reopened:${object.name}</p>
+            <field name="subject">Reopened quotation in availability check: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[This quotation in availability check has been reopened <a href="${object.form_url|safe}">${object.name}</a>
             ]]></field>
         </record>
     </data>
