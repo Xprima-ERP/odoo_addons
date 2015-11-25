@@ -4,15 +4,15 @@
 
     <!-- Removing supplier and warehouse menus -->
       <record id="base.menu_procurement_management_supplier_name" model="ir.ui.menu">
-          <field name="groups_id" eval="[(6,0, [ref('base.group_no_one')])]"/>
+          <field name="groups_id" eval="[(6,0, [ref('group_hidden')])]"/>
       </record>
 
       <record id="account.menu_finance_payables" model="ir.ui.menu">
-          <field name="groups_id" eval="[(6,0, [ref('base.group_no_one')])]"/>
+          <field name="groups_id" eval="[(6,0, [ref('group_hidden')])]"/>
       </record>
 
       <record id="account.menu_account_supplier" model="ir.ui.menu">
-          <field name="groups_id" eval="[(6,0, [ref('base.group_no_one')])]"/>
+          <field name="groups_id" eval="[(6,0, [ref('group_hidden')])]"/>
       </record>
 
   </data>

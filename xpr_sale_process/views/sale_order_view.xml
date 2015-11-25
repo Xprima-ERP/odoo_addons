@@ -1,6 +1,19 @@
 <openerp>
 
     <data>
+
+        <record model="ir.ui.view" id="sale_order_search">
+            <field name="name">order.search</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+            <field name="arch" type="xml">
+                <filter string="Order Month" position="after">
+                    <filter string="Renewal Month" domain="[]" context="{'group_by':'renew_date'}"/>
+                </filter>
+            </field>
+        </record>
+
+
         <!-- Xprima prefix for sale orders -->
         <record id="sale.seq_sale_order" model="ir.sequence">
             <field name="name">Contract</field>
@@ -181,7 +194,7 @@
         <menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman,base.group_sale_manager"/>
 
         <record id="sale.menu_sale_order" model="ir.ui.menu">
-            <field name="groups_id" eval="[(6, 0, [ref('base.group_no_one')])]"/>
+            <field name="groups_id" eval="[(6, 0, [ref('group_hidden')])]"/>
         </record>
 
         <record id="sale.action_quotations" model="ir.actions.act_window">

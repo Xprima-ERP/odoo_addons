@@ -10,6 +10,23 @@
         <menuitem id="menu_solutions" parent="base.menu_product" name="Solutions"
             action="action_list_solutions"/>
 
+        <record id="solution_builder_search_view" model="ir.ui.view">
+            <field name="name">solution_builder.search</field>
+            <field name="model">xpr_solution_builder.solution</field>
+            <field name="arch" type="xml">
+                <search string="Solution">
+                    <field name="name" string="Solution" filter_domain="[('name','ilike',self)]"/>
+                   
+                    <field name="category" filter_domain="[('category', 'child_of', self)]"/>
+
+                    <group  expand='0' string='Group by...'>
+                       <filter string='Category' domain="[]" context="{'group_by' : 'category'}"/>
+                      
+                    </group>
+                </search>
+            </field>
+        </record>
+
         <record model="ir.ui.view" id="solution_form_view">
 
             <field name="name">solution</field>

@@ -6,7 +6,7 @@
         name="Terms" parent="base.menu_product"
         sequence="20"
         action="agaplan_terms_and_conditions.action_term"
-        groups="base.group_system"/>
+        groups="group_hidden"/>
 
     </data>
 </openerp>
