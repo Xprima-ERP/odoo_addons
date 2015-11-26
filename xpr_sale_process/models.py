@@ -139,7 +139,7 @@ class SaleOrder(models.Model):
 
         self.write({'state': 'need_availability_check'})
 
-        template = self.env.ref('xpr_sale_process.contract_availability_notify_mail')
+        template = self.env.ref('xpr_sale_process.quotation_availability_notify_mail')
 
         values = self.env['email.template'].generate_email(
             template.id, self.id)
@@ -160,7 +160,7 @@ class SaleOrder(models.Model):
         if not hr_owner:
             return
 
-        template = self.env.ref('xpr_sale_process.contract_manager_approval_mail')
+        template = self.env.ref('xpr_sale_process.quotation_manager_approval_mail')
 
         values = self.env['email.template'].generate_email(
             template.id, self.id)
@@ -171,7 +171,7 @@ class SaleOrder(models.Model):
 
     def notify_manager_approval_interrupt(self):
 
-        template = self.env.ref('xpr_sale_process.contract_availability_reopen_mail')
+        template = self.env.ref('xpr_sale_process.quotation_availability_reopen_mail')
 
         values = self.env['email.template'].generate_email(
             template.id, self.id)
@@ -182,6 +182,16 @@ class SaleOrder(models.Model):
         values['recipient_ids'] = [(4, pid) for pid in destination_ids]
 
         self.env['mail.mail'].create(values)
+
+    # Template helper
+    @property
+    def form_url(self):
+
+        base_url = self.env['ir.config_parameter'].get_param('web.base.url')
+
+        return "/web#id={1}&view_type=form&model=sale.order".format(
+            base_url,
+            self.id)
 
 
 class ProductCategory(models.Model):
