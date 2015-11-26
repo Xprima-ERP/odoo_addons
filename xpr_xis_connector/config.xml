@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+    <record model="ir.config_parameter" id="config_param_enable">
+        <field name="key">xis.connector.enable</field>
+        <field name="value">False</field>
+    </record>
+
+    <record model="ir.config_parameter" id="config_param_domain">
+        <field name="key">xis.connector.domain</field>
+        <field name="value">xis.xprima.com</field>
+    </record>
+  </data>
+</openerp>

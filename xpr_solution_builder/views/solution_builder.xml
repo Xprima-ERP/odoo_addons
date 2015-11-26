@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+    <!-- window action -->
+        <record model="ir.actions.act_window" id="action_list_solutions">
+            <field name="name">solutions</field>
+            <field name="res_model">xpr_solution_builder.solution</field>
+        </record>
+
+        <menuitem id="menu_solutions" parent="base.menu_product" name="Solutions"
+            action="action_list_solutions"/>
+
+        <record id="solution_builder_search_view" model="ir.ui.view">
+            <field name="name">solution_builder.search</field>
+            <field name="model">xpr_solution_builder.solution</field>
+            <field name="arch" type="xml">
+                <search string="Solution">
+                    <field name="name" string="Solution" filter_domain="[('name','ilike',self)]"/>
+                   
+                    <field name="category" filter_domain="[('category', 'child_of', self)]"/>
+
+                    <group  expand='0' string='Group by...'>
+                       <filter string='Category' domain="[]" context="{'group_by' : 'category'}"/>
+                      
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="solution_form_view">
+
+            <field name="name">solution</field>
+            <field name="model">xpr_solution_builder.solution</field>
+            <field name="arch" type="xml">
+                <form string="Definition">
+                    <header>
+                        <button name="%(action_solution_combiner)d" string="Combine" type="action"/>
+                    </header>
+                    <sheet>
+                        <group>
+                    
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="list_price" />
+
+                            <field name="products">
+                                <tree string="Mandatory Products">
+                                    <field name="name" />
+                                    <field name="code" />
+                                    
+                                    <field name="attribute_line_ids" widget="one2many_list" context="{'show_attribute': False}">
+                                        <tree string="Variants" readonly="True">
+                                            <field name="attribute_id"/>
+                                            <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True}" domain="[('attribute_id', '=', attribute_id)]" context="{'default_attribute_id': attribute_id}"/>
+                                        </tree>
+                                    </field>
+                                    <field name="lst_price" />
+                                </tree>
+                            </field>
+
+                            <field name="products_extra">
+                                <tree string="Products Extra" create="false" delete="false" editable="bottom">
+                                    <field name="product" />
+                                    <field name="times" />
+                                </tree>
+                            </field>
+
+                            <field name="options">
+                                <tree string="Optional Products">
+                                    <field name="name" />
+                                    <field name="code" />
+                                    <field name="attribute_line_ids" widget="one2many_list" context="{'show_attribute': False}">
+                                        <tree string="Variants" editable="bottom">
+                                            <field name="attribute_id"/>
+                                            <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True}" domain="[('attribute_id', '=', attribute_id)]" context="{'default_attribute_id': attribute_id}"/>
+                                        </tree>
+                                    </field>
+                                    <field name="lst_price" />
+                                </tree>
+                            </field>
+
+                            <field name="options_extra">
+                                <tree string="Option Extras" create="false" delete="false" editable="bottom">
+                                    <field name="product" />
+                                    <field name="selected_default" />
+                                    <field name="sticky" />
+                                </tree>
+                            </field>
+
+                        </group>
+                    </sheet>
+                </form>
+
+
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="solution_tree_view">
+            <field name="name">solution</field>
+            <field name="model">xpr_solution_builder.solution</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Solutions">
+                    <field name="name" />
+                    <field name="category" />
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="product_template_only_form_view">
+
+                <field name="name">product.product.tree</field>
+                <field name="model">product.template</field>
+                <field name="inherit_id" ref="product.product_template_only_form_view"/>
+                <field name="arch" type="xml">
+                    <field name="ean13" position="replace">
+                        <field name="ean13" invisible="1"/>
+                    </field>
+                </field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,11 @@
+This connector synchronise partner and sales order to XIS.
+
+To active it, add this key in parameter:
+- xis.enable.connector = True
+
+To receive email when bug occur, add this key in parameter:
+- xis.emails = email1;email2
+
+To active debug.
+- xis.debug.sale = True
+This debug force to use xis_id = "48305"

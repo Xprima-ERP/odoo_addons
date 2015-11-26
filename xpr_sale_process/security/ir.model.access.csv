@@ -1,0 +1,7 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_xpr_dealer_create,access_xpr_dealer_create,xpr_dealer.model_xpr_dealer_dealer,create_company,1,1,1,0
+make_sale,make_sale_trans,model_crm_make_sale,base.group_user,1,1,1,1
+
+access_term_term_manager,"Term management",agaplan_terms_and_conditions.model_term_term,base.group_system,1,1,1,1
+
+

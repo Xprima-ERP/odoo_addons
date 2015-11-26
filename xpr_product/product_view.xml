@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE openerp SYSTEM "openerp.dtd">
+<openerp>
+  <data>
+    <record id="product_template_only_form_view" model="ir.ui.view">
+      <field name="model">product.template</field>
+      <field name="inherit_id" ref="product.product_template_only_form_view"/>
+      <field name="arch" type="xml">
+
+         <field name="type" position="replace">
+          <field name="type" invisible="1" />
+          <field name="categ_term"/>
+        </field>
+
+        <field name="sale_ok" position="replace">
+          <field name="sale_ok" invisible="1" />
+        </field>
+
+        <label for="sale_ok" position="replace">
+          <label for="sale_ok" invisible="1" />
+        </label>
+
+       	<xpath expr="//div[@name='options']/div" position="after">
+	    	<div>
+              	<field name="one_time_payment"/>
+              	<label for="one_time_payment"/>
+            </div>
+        </xpath>
+
+        <page string="Procurements" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page>
+        <page string="Inventory" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page> 
+        <page string="Accounting" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page>
+
+      </field>
+    </record>
+
+    <record id="product_normal_form_view" model="ir.ui.view">
+      <field name="model">product.product</field>
+      <field name="inherit_id" ref="product.product_normal_form_view"/>
+      <field name="arch" type="xml">
+
+        <field name="type" position="replace">
+          <!-- Don't need type. We do need category.-->
+          <field name="type" invisible="1" />
+          <field name="categ_id"/>
+        </field>
+
+
+        <field name="sale_ok" position="replace">
+          <field name="sale_ok" invisible="1" />
+        </field>
+
+        <label for="sale_ok" position="replace">
+          <label for="sale_ok" invisible="1" />
+        </label>
+
+        <xpath expr="//div[@name='options']/div" position="after">
+        <div>
+                <field name="one_time_payment"/>
+                <label for="one_time_payment"/>
+            </div>
+        </xpath>
+
+        <page string="Procurements" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page>
+        <page string="Inventory" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page> 
+        <page string="Accounting" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </page>
+
+      </field>
+    </record>
+
+    <record id="product_template_normal_tree_view" model="ir.ui.view">
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_tree_view"/>
+        <field name="arch" type="xml">
+     
+          <field name="type" position="replace" />
+
+          <field name="name" position="before">
+            <field name="default_code" />
+          </field>
+
+          <field name="categ_id" position="replace">
+            <field name="categ_id" invisible="1" />
+            <field name="categ_term" />
+            <field name="price" />
+            <field name="product_variant_count" />
+            <field name="description_sale" />
+          </field>
+
+          <field name="state" invisible="1" />
+
+        </field>
+    </record>
+
+    <record id="product_product_normal_tree_view" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view"/>
+        <field name="arch" type="xml">
+
+
+          <field name="attribute_value_ids"  />
+          <field name="uom_id" position="replace" />
+          <field name="ean13" position="replace" />
+
+          <field name="name" position="after">
+            <field name="categ_term" />
+          </field>
+
+         
+        </field>
+    </record>
+
+    <record id="product.product_template_action" model="ir.actions.act_window">
+      <field name="view_mode">tree,form,kanban</field>
+      <field name="view_id" ref="product.product_template_tree_view" />
+    </record>
+
+    <!--  <record id="product_quick_edit_tree_view" model="ir.ui.view">
+        <field name="model">product.template</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+              <field name="default_code" readonly="1"/>
+              <field name="name" readonly="1" />
+              <field name="categ_term" />
+              <field name="product_variant_count" />
+              <field name="description_sale" readonly="1" />
+          </tree>
+        </field>
+    </record>
+
+     <record model="ir.actions.act_window" id="quick_edit_template">
+            <field name="name">Products</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="product_quick_edit_tree_view" />
+            
+        </record>
+        <menuitem name="Products Category Edit" parent="base.menu_product" id="menu_quick_edit" action="quick_edit_template" />
+ -->
+  </data>
+</openerp>

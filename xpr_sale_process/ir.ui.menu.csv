@@ -1,0 +1,5 @@
+"id","name","groups_id/id"
+"mail.mail_inboxfeeds","Inbox","base.group_erp_manager"
+"mail.mail_tomefeeds","To: me","base.group_erp_manager"
+"mail.mail_starfeeds","To-do","base.group_erp_manager"
+"mail.mail_archivesfeeds","Archives","base.group_erp_manager"

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+<!-- Vanilla setup
+
+    <report
+        id="sale.report_sale_order"
+        auto="True"
+        model="sale.order"
+        string="Quotation / Order"
+        header="True"
+        file="sale.report_saleorder"
+        rml="sale.report_saleorder"
+        name="sale.report_saleorder"
+        usage=""
+        report_type="qweb-pdf"
+    />
+-->
+
+    <!-- OpenERP old setup
+
+    id="sale.report_sale_order"
+    auto="False" 
+    model="sale.order"
+    string="Quotation / Order"
+    header="True"
+    rml="xpr_report/report/sale_order_xprima.rml"
+    usage="default"
+    name="sale.order"
+-->
+
+    <report
+        id="report_sale_order"
+        auto="True"
+        model="sale.order"
+        name="xpr_report.report_saleorder"
+        string="Quotation / Order"
+        rml="xpr_report/report/sale_order_xprima.rml"
+        header="True"
+    />
+  </data>
+</openerp>

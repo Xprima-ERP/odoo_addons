@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_medicine_hat">
+        <field name="category" ref="xpr_dealer.category_dealer_region_medicine_hat" />
+        <field name="region_code">MH</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_lethbridge">
+        <field name="category" ref="xpr_dealer.category_dealer_region_lethbridge" />
+        <field name="region_code">LB</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_fort_macleod">
+        <field name="category" ref="xpr_dealer.category_dealer_region_fort_macleod" />
+        <field name="region_code">FM</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_hanna">
+        <field name="category" ref="xpr_dealer.category_dealer_region_hanna" />
+        <field name="region_code">HA</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_drumheller">
+        <field name="category" ref="xpr_dealer.category_dealer_region_drumheller" />
+        <field name="region_code">DH</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_calgary">
+        <field name="category" ref="xpr_dealer.category_dealer_region_calgary" />
+        <field name="region_code">CA</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_stettler">
+        <field name="category" ref="xpr_dealer.category_dealer_region_stettler" />
+        <field name="region_code">ST</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_red_deer">
+        <field name="category" ref="xpr_dealer.category_dealer_region_red_deer" />
+        <field name="region_code">RD</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_rocky_mountain_house">
+        <field name="category" ref="xpr_dealer.category_dealer_region_rocky_mountain_house" />
+        <field name="region_code">RM</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_camrose_lloydminster">
+        <field name="category" ref="xpr_dealer.category_dealer_region_camrose_lloydminster" />
+        <field name="region_code">CL</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_edmonton">
+        <field name="category" ref="xpr_dealer.category_dealer_region_edmonton" />
+        <field name="region_code">ED</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_st_paul">
+        <field name="category" ref="xpr_dealer.category_dealer_region_st_paul" />
+        <field name="region_code">SP</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_athabasca">
+        <field name="category" ref="xpr_dealer.category_dealer_region_athabasca" />
+        <field name="region_code">AT</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_edson">
+        <field name="category" ref="xpr_dealer.category_dealer_region_edson" />
+        <field name="region_code">EN</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_banff">
+        <field name="category" ref="xpr_dealer.category_dealer_region_banff" />
+        <field name="region_code">BA</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_fort_mcmurray">
+        <field name="category" ref="xpr_dealer.category_dealer_region_fort_mcmurray" />
+        <field name="region_code">FO</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_slave_lake">
+        <field name="category" ref="xpr_dealer.category_dealer_region_slave_lake" />
+        <field name="region_code">SL</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_grande_cache">
+        <field name="category" ref="xpr_dealer.category_dealer_region_grande_cache" />
+        <field name="region_code">GC</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_grande_prairie">
+        <field name="category" ref="xpr_dealer.category_dealer_region_grande_prairie" />
+        <field name="region_code">GP</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_barrie">
+        <field name="category" ref="xpr_dealer.category_dealer_region_barrie" />
+        <field name="region_code">BR</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_hamilton">
+        <field name="category" ref="xpr_dealer.category_dealer_region_hamilton" />
+        <field name="region_code">HM</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_kenora">
+        <field name="category" ref="xpr_dealer.category_dealer_region_kenora" />
+        <field name="region_code">KN</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_kingston">
+        <field name="category" ref="xpr_dealer.category_dealer_region_kingston" />
+        <field name="region_code">KT</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_kitchener_waterloo">
+        <field name="category" ref="xpr_dealer.category_dealer_region_kitchener_waterloo" />
+        <field name="region_code">KW</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_london">
+        <field name="category" ref="xpr_dealer.category_dealer_region_london" />
+        <field name="region_code">LD</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_manitoulin_island">
+        <field name="category" ref="xpr_dealer.category_dealer_region_manitoulin_island" />
+        <field name="region_code">MI</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_moose_factory">
+        <field name="category" ref="xpr_dealer.category_dealer_region_moose_factory" />
+        <field name="region_code">MF</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_niagara_falls">
+        <field name="category" ref="xpr_dealer.category_dealer_region_niagara_falls" />
+        <field name="region_code">NF</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_north_bay">
+        <field name="category" ref="xpr_dealer.category_dealer_region_north_bay" />
+        <field name="region_code">NB</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_ottawa">
+        <field name="category" ref="xpr_dealer.category_dealer_region_ottawa" />
+        <field name="region_code">OT</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_owen_sound">
+        <field name="category" ref="xpr_dealer.category_dealer_region_owen_sound" />
+        <field name="region_code">OS</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_sudbury">
+        <field name="category" ref="xpr_dealer.category_dealer_region_sudbury" />
+        <field name="region_code">SB</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_sarnia">
+        <field name="category" ref="xpr_dealer.category_dealer_region_sarnia" />
+        <field name="region_code">SN</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_sault_ste_marie">
+        <field name="category" ref="xpr_dealer.category_dealer_region_sault_ste_marie" />
+        <field name="region_code">SS</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_thunder_bay">
+        <field name="category" ref="xpr_dealer.category_dealer_region_thunder_bay" />
+        <field name="region_code">TB</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_timmins">
+        <field name="category" ref="xpr_dealer.category_dealer_region_timmins" />
+        <field name="region_code">TM</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_toronto">
+        <field name="category" ref="xpr_dealer.category_dealer_region_toronto" />
+        <field name="region_code">TO</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_windsor">
+        <field name="category" ref="xpr_dealer.category_dealer_region_windsor" />
+        <field name="region_code">WS</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_abitibi_temiscamingue">
+        <field name="category" ref="xpr_dealer.category_dealer_region_abitibi_temiscamingue" />
+        <field name="region_code">AB</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_bois_francs">
+        <field name="category" ref="xpr_dealer.category_dealer_region_bois_francs" />
+        <field name="region_code">BO</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_bas_saint_laurent">
+        <field name="category" ref="xpr_dealer.category_dealer_region_bas_saint_laurent" />
+        <field name="region_code">BS</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_chaudiere_appalaches">
+        <field name="category" ref="xpr_dealer.category_dealer_region_chaudiere_appalaches" />
+        <field name="region_code">CH</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_cote_nord">
+        <field name="category" ref="xpr_dealer.category_dealer_region_cote_nord" />
+        <field name="region_code">CO</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_estrie">
+        <field name="category" ref="xpr_dealer.category_dealer_region_estrie" />
+        <field name="region_code">ES</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_gaspesie_iles_de_la_madeleine">
+        <field name="category" ref="xpr_dealer.category_dealer_region_gaspesie_iles_de_la_madeleine" />
+        <field name="region_code">GA</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_laurentides">
+        <field name="category" ref="xpr_dealer.category_dealer_region_laurentides" />
+        <field name="region_code">LR</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_lanaudiere">
+        <field name="category" ref="xpr_dealer.category_dealer_region_lanaudiere" />
+        <field name="region_code">LA</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_laval">
+        <field name="category" ref="xpr_dealer.category_dealer_region_laval" />
+        <field name="region_code">LV</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_mauricie">
+        <field name="category" ref="xpr_dealer.category_dealer_region_mauricie" />
+        <field name="region_code">MA</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_monteregie">
+        <field name="category" ref="xpr_dealer.category_dealer_region_monteregie" />
+        <field name="region_code">MO</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_montreal">
+        <field name="category" ref="xpr_dealer.category_dealer_region_montreal" />
+        <field name="region_code">MT</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_nord_du_quebec">
+        <field name="category" ref="xpr_dealer.category_dealer_region_nord_du_quebec" />
+        <field name="region_code">NO</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_outaouais">
+        <field name="category" ref="xpr_dealer.category_dealer_region_outaouais" />
+        <field name="region_code">OU</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_quebec">
+        <field name="category" ref="xpr_dealer.category_dealer_region_quebec" />
+        <field name="region_code">QC</field>
+    </record>
+    <record model="xpr_xis_connector.dealer.region" id="category_dealer_region_saguenay_lac_st_jean">
+        <field name="category" ref="xpr_dealer.category_dealer_region_saguenay_lac_st_jean" />
+        <field name="region_code">SA</field>
+    </record>
+  </data>
+</openerp>

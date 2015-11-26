@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+	<record id="view_solution_configurator_wizard" model="ir.ui.view">
+	    <field name="name">xpr_solution_builder.pick_product_form</field>
+	    <field name="model">xpr_solution_builder.solution_configurator</field>
+	   
+	    <field name="arch" type="xml">
+            <form string="Add Optional Products">
+                <group>
+
+                <field name="order" invisible="1" />
+                <field name="solution" invisible="1" />
+                <field name="dummy" invisible="1" />
+                <field name="products" widget="many2many_checkboxes" />
+
+                </group>
+              
+                <footer>
+               
+                <button 
+                    string="Done"
+                    type="object"
+                    name="set_products"
+                    class="oe_highlight"
+                />
+                <button
+                    string="Cancel"
+                    class="oe_link"
+                    special="cancel" />
+                </footer>
+            </form>
+    </field>
+	</record>
+
+
+<!--     <record id="action_solution_configurator" model="ir.actions.act_window">
+        <field name="name">Add Options</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">xpr_solution_builder.solution_configurator</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="view_id" ref="view_solution_configurator_wizard" />
+        <field name="target">new</field>
+        <field name="context">{'order_id': id }</field> 
+    </record> -->
+
+
+     </data>
+</openerp>

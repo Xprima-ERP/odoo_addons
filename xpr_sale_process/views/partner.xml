@@ -1,0 +1,192 @@
+<openerp>
+
+	<data>	
+
+        <!-- Replaces base.view_partner_tree for Customers -->
+        <record id="rep_partner tree" model="ir.ui.view" >
+            <field name="name">evolio.partner.base_tree</field>
+            <field name="model">res.partner</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Customers">
+
+                    <field name="name" />
+                    <field name="parent_name"/>
+                    <field name="phone" />
+                    <field name="email" />
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="base.menu_partner_form" model="ir.ui.menu">
+            <field name="name">Customers</field>
+            <field name="groups_id" eval="[(6,0,[ref('base.group_erp_manager')])]"/>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_companies" model="ir.actions.act_window">
+            <field name="name">Companies</field>
+            <field name="domain">[('is_company','=',True)]</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+         <record id="menu_companies" model="ir.ui.menu">
+            <field name="name">Companies</field>
+            <field name="groups_id" eval="[(6,0,[ref('create_company')])]"/>
+            <field name="parent" ref="base.menu_sales"/>
+            <field name="view_mode">tree,form</field>
+        </record>
+		
+        <record id="action_contacts" model="ir.actions.act_window">
+            <field name="name">Contacts</field>
+            <field name="domain">[('is_company','=',False), ('customer','=',True)]</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="rep_partner tree" />
+        </record>
+
+        <menuitem
+            action="action_contacts"
+            id="menu_contacts"
+            parent="base.menu_sales"
+            sequence="1"
+            groups="base.group_sale_salesman,base.group_partner_manager"/>
+
+        <!-- By default, users are not allowed to set compay flag in partner-->
+        <record id="rep_partner_no_company" model="ir.ui.view" >
+            <field name="name">evolio.partner.base_form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+               <field name="is_company" position="attributes">
+                <attribute name="invisible">1</attribute>
+                </field>
+
+            </field>
+        </record>
+
+        <record id="rep_partner_company" model="ir.ui.view" >
+            <field name="name">evolio.partner.base_form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="rep_partner_no_company"/>
+            <field name="groups_id" eval="[(6, 0, [ref('xpr_sale_process.create_company')])]" />
+            <field name="arch" type="xml">
+
+               <field name="is_company" position="attributes">
+                <attribute name="invisible">0</attribute>
+                </field>
+
+            </field>
+        </record>
+
+        </data>
+        <data>
+        <!-- Change partner field presentation for reps -->
+
+        <record id="rep_partner_base" model="ir.ui.view" >
+            <field name="name">evolio.partner.base_form</field>
+            <field name="model">res.partner</field>
+            <field name="groups_id" eval="[(6, 0, [ref('rep_ui')])]" />
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+              <!--   <field name="comment" position="attributes">
+                <attribute name="readonly">1</attribute>
+                </field> -->
+
+                <xpath expr="//page[@name='sales_purchases']/group/group/field[@name='customer']" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </xpath>
+
+                <xpath expr="//page[@name='sales_purchases']/group/group/field[@name='supplier']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+
+               <field name="user_id" position="attributes">
+                <attribute name="readonly">1</attribute>
+                </field>
+
+                 <field name="ref" position="attributes">
+                <attribute name="readonly">1</attribute>
+                </field>
+
+                 <field name="lang" position="attributes">
+                <attribute name="readonly">1</attribute>
+                </field>
+
+                 <field name="date" position="attributes">
+                <attribute name="readonly">1</attribute>
+                </field>
+
+                <field name="active" position="attributes">
+                <attribute name="readonly">1</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="rep_partner_email_template" model="ir.ui.view" >
+            <field name="name">evolio.partner.email_template.form</field>
+            <field name="model">res.partner</field>
+           <field name="groups_id" eval="[(6, 0, [ref('rep_ui')])]" />
+            <field name="inherit_id" ref="email_template.res_partner_opt_out_form"/>
+            <field name="arch" type="xml">
+
+                <field name="opt_out" position="attributes">
+                <attribute name="readonly">1</attribute>
+                </field>
+
+            </field>
+        </record>
+
+
+         <record id="rep_partner_crm" model="ir.ui.view" >
+            <field name="name">evolio.partner.crm.form</field>
+            <field name="model">res.partner</field>
+           <field name="groups_id" eval="[(6, 0, [ref('rep_ui')])]" />
+            <field name="inherit_id" ref="crm.view_partners_form_crm1"/>
+            <field name="arch" type="xml">
+
+                <field name="section_id" position="attributes">
+                <attribute name="readonly">1</attribute>
+                </field>
+
+            </field>
+        </record>
+
+        <record id="rep_partner_mail" model="ir.ui.view" >
+            <field name="name">evolio.partner.mail.form</field>
+            <field name="model">res.partner</field>
+           <field name="groups_id" eval="[(6, 0, [ref('rep_ui')])]" />
+            <field name="inherit_id" ref="mail.view_emails_partner_info_form"/>
+            <field name="arch" type="xml">
+
+                <field name="notify_email" position="attributes">
+                <attribute name="readonly">1</attribute>
+                </field>
+
+            </field>
+        </record>
+
+        <record id="rep_partner_terms_and_conditions" model="ir.ui.view" >
+            <field name="name">evolio.partner.terms_and_conditions.form</field>
+            <field name="model">res.partner</field>
+           <field name="groups_id" eval="[(6, 0, [ref('rep_ui')])]" />
+            <field name="inherit_id" ref="agaplan_terms_and_conditions.view_partner_term_form"/>
+            <field name="arch" type="xml">
+
+                <field name="date_terms_signed" position="attributes">
+                <attribute name="readonly">1</attribute>
+                </field>
+
+                <field name="print_terms" position="attributes">
+                <attribute name="readonly">1</attribute>
+                </field>
+
+            </field>
+        </record>
+
+	</data>
+</openerp>

@@ -1,0 +1,12 @@
+<openerp>
+
+    <data>
+    <!-- Add access to terms for managers -->
+    <menuitem id="menu_terms_menuitem"
+        name="Terms" parent="base.menu_product"
+        sequence="20"
+        action="agaplan_terms_and_conditions.action_term"
+        groups="group_hidden"/>
+
+    </data>
+</openerp>
