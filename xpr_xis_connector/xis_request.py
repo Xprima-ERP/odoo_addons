@@ -127,21 +127,22 @@ class XisRequest():
             return True, None
 
         # send request
-        req = urllib2.Request(url, data)
+        req = urllib2.Request(url, data, 5)
         error = None
+        code = ''
         try:
             response = urllib2.urlopen(req)
             code = response.getcode()
             result = response.read()
         except urllib2.URLError as e:
             error = e
-            code = e.code
             if hasattr(e, 'reason'):
                 _logger.error(
                     'We failed to reach a server. Reason: %s' % e.reason)
             elif hasattr(e, 'code'):
                 msg = 'The server couldn\'t fulfill the request. ' \
                       'Error code: %s' % code
+                code = e.code
                 _logger.error(msg)
             raise
         finally:
