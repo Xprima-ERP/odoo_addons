@@ -528,6 +528,10 @@ class DealerRequest(XISRequestWrapper):
 
     def get_area_code(self):
 
+        if not self.partner.phone:
+            # Robustness in case of None
+            return ''
+
         code = self.partner.phone.replace('(', '').replace(')', '')
         code = code.replace('-', '').strip()
 
