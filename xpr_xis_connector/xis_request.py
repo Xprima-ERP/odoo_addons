@@ -693,10 +693,76 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         # model
         self.partner = parent
 
+    def get_groups(self, group_ids):
+        pcp = self.partner_cat_pool
+
+        def is_group_root(tag):
+            # Determines if tag is group parent.
+            if tag.name == 'Group' and tag.parent_id.name == 'Dealer':
+                return True
+
+            return False
+
+        for rec in pcp.browse(self.add_id):
+
+            if (
+                rec.parent_id.name in ['Automatic', 'Manual'] and
+                rec.parent_id.parent_id.name == 'Certification'
+            ):
+                # Certification
+
+                yield {
+                    'name': rec.name,
+                    'grouptype': "{certification} {certification_root}".format(
+                        certification=rec.parent_id.name,
+                        certification_root=rec.parent_id.parent_id.name),
+                }
+
+                continue
+
+            if (
+                rec.parent_id.name == 'Association'
+                and rec.parent_id.parent_id.name == 'Dealer'
+            ):
+                yield {
+                    'name': rec.name,
+                    'grouptype': "Dealer Association"
+                }
+
+                continue
+
+            if is_group_root(rec.parent_id):
+                yield {
+                    'name': rec.name,
+                    'grouptype': "Primary Group"
+                }
+
+                continue
+
+            if is_group_root(rec.parent_id.parent_id):
+                # Sub group. In XIS, this corresponds to two groups.
+
+                yield {
+                    'name': rec.parent_id.name,
+                    'grouptype': "Primary Group"
+                }
+
+                yield {
+                    'name': rec.name,
+                    'grouptype': "Dealer Sub-Group"
+                }
+
+                continue
+
+            # Default. Marketing Association.
+
+            yield {
+                'name': rec.name,
+                'grouptype': rec.parent_id.name
+            }
+
     def get_xis_data(self):
         # validate data
-
-        pcp = self.partner_cat_pool
 
         if not self.partner.is_company or not self.partner.code:
             return None
@@ -704,17 +770,17 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         lst_group_add = [
             {
                 'dealercode': self.partner.code,
-                'name': rec.name,
-                'grouptype': rec.parent_id.name,
-            } for rec in pcp.browse(self.add_id)
+                'name': rec['name'],
+                'grouptype': rec['grouptype'],
+            } for rec in self.get_groups(self.add_id)
         ]
 
         lst_group_rem = [
             {
                 'dealercode': self.partner.code,
-                'name': rec.name,
-                'grouptype': rec.parent_id.name,
-            } for rec in pcp.browse(self.rem_id)
+                'name': rec['name'],
+                'grouptype': rec['grouptype'],
+            } for rec in self.get_groups(self.rem_id)
         ]
 
         data = {
