@@ -35,7 +35,7 @@
     
     </data>
 
-    <data>
+    <data noupdate="1">
         <!-- Workflow triggered messages -->
 
         <record model="email.template" id="quotation_availability_notify_mail">
