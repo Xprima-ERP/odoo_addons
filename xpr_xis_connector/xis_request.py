@@ -96,15 +96,14 @@ class XisRequest():
         # send request
 
         data = "&".join([
-                "{0}={1}".format(
-                    key,
-                    urllib.quote_plus(json.dumps(value)))
-                for key, value in values.items()
-            ])
+            "{0}={1}".format(
+                key,
+                urllib.quote_plus(json.dumps(value)))
+            for key, value in values.items()
+        ])
 
         req = urllib2.Request(url, data)
 
-        print '---------------', url, values
         error = None
         code = ''
         try:
@@ -287,7 +286,7 @@ class SaleOrderRequest(XISRequestWrapper):
             "qt_dc": self.get_dealer_code().strip(),
 
             # example of opportunity
-            "qt_Opportunityid": 'null',
+            "qt_Opportunityid": '',
             "qt_CreatedDate": self.get_last_modif_date(),
             "qt_Comments": self.order.note,
             "qt_IComments": self.order.note,
@@ -390,8 +389,6 @@ class DealerRequest(XISRequestWrapper):
 
         # Build dealerarea (province_code + area_code [+region_code])
 
-        dealerarea = 'null'
-
         # The dealerarea for '905CADA','AUTO123MERC','CCAMA','PERSONALLA',
         # 'PERSONALMA','PERSONALNWT','PERSONALSA','PERSONALYU','514AVANTIPLUS'
         # don't follow the rule, and have to be hardcoded so as not to break
@@ -421,7 +418,7 @@ class DealerRequest(XISRequestWrapper):
         dealerarea_area_code = self.get_area_code()
 
         if not _state or not dealerarea_area_code:
-            return dealerarea
+            return ''
 
         dealerarea_state_code = _state.code
 
@@ -477,7 +474,7 @@ class DealerRequest(XISRequestWrapper):
     def get_state(self):
         p = self.partner
 
-        state = p.state_id and p.state_id.name or None
+        state = p.state_id and p.state_id.name or ''
 
         if not state or state == "Quebec":
             state = "Québec"
@@ -495,7 +492,7 @@ class DealerRequest(XISRequestWrapper):
     def get_xis_makes(self):
 
         makes = set(m.name for m in self.dealer.makes)
-        return ','.join(makes) or 'null'
+        return ','.join(makes)
 
     def get_area_code(self):
 
@@ -522,62 +519,62 @@ class DealerRequest(XISRequestWrapper):
         p = self.partner
 
         if not p.code or not p.is_company or not self.dealer:
-            return None
+            return ''
 
         market = self.dealer.market and self.dealer.market.name.lower()
 
         dealers = {
-            'address': p.street or 'null',
+            'address': p.street or '',
             'buyit': 'false',
-            'callsource_tollfree': self.dealer.callsource_tollfree or 'null',
-            'city': p.city or 'null',
-            'corpcontracts': 'null',  # p.pin
-            'corpname': p.name or 'null',
-            'country': p.country_id and p.country_id.name or 'null',
-            'customermask': self.get_customermasks() or 'null',
-            'dayspastdue': 'null',  # p.dayspastdue
+            'callsource_tollfree': self.dealer.callsource_tollfree or '',
+            'city': p.city or '',
+            'corpcontracts': '',  # p.pin
+            'corpname': p.name or '',
+            'country': p.country_id and p.country_id.name or '',
+            'customermask': self.get_customermasks() or '',
+            'dayspastdue': '',  # p.dayspastdue
             'dealerarea': self.get_dealerarea(),
-            'dealercode': p.code.strip() or 'null',
-            'dealeremail': 'null',  # must go from xis to OE.
-            'dealername': p.name.strip() or 'null',
-            'dealerurle': p.website or 'null',
-            'dealerurlf': self.dealer.website_french or 'null',
-            'dpd_override': 'null',  # '%s 00:00:00' % (p.dpd_override,)
-            'fax': p.fax or 'null',
-            'geolat': self.dealer.geolat or 'null',
-            'geolon': self.dealer.geolon or 'null',
+            'dealercode': p.code.strip() or '',
+            'dealeremail': '',  # must go from xis to OE.
+            'dealername': p.name.strip() or '',
+            'dealerurle': p.website or '',
+            'dealerurlf': self.dealer.website_french or '',
+            'dpd_override': '',  # '%s 00:00:00' % (p.dpd_override,)
+            'fax': p.fax or '',
+            'geolat': self.dealer.geolat,
+            'geolon': self.dealer.geolon,
             #'isdealer': isdealer, # Deprecated
             #'ismember': ismember, # Deprecated
 
             # force to take 'en' of 'en_US'
-            'language': p.lang and p.lang[:2] or 'null',
+            'language': p.lang and p.lang[:2] or '',
             'lastmoddate': self.get_last_modif_date(),
             'makes': self.get_xis_makes(),
-            'market': market or 'null',
-            'membertype': self.get_member_type() or 'null',
-            'newemail': 'null',  # This field must go from xis to OE.
-            'owner': self.dealer.owner or 'null',
-            'owneremail': self.dealer.owneremail or 'null',
+            'market': market or '',
+            'membertype': self.get_member_type() or '',
+            'newemail': '',  # This field must go from xis to OE.
+            'owner': self.dealer.owner or '',
+            'owneremail': self.dealer.owneremail or '',
 
-            'phone': p.phone or 'null',
-            'phone2': p.mobile or 'null',
-            'portalmask': self.get_portalmask() or 'null',
-            'postalcode': self.partner.zip or 'null',
+            'phone': p.phone or '',
+            'phone2': p.mobile or '',
+            'portalmask': self.get_portalmask() or '',
+            'postalcode': self.partner.zip or '',
             'province': self.get_state(),
             'quoteflag': self.dealer.quoteflag and 'true' or 'false',
-            'responsible': self.dealer.responsible or 'null',
-            'salesguy': self.get_salesrep_ext_id() or 'null',
-            'sitetype': self.get_site_type() or 'null',
-            'tollfree': self.dealer.tollfree or 'null',
+            'responsible': self.dealer.responsible or '',
+            'salesguy': self.get_salesrep_ext_id() or '',
+            'sitetype': self.get_site_type() or '',
+            'tollfree': self.dealer.tollfree or '',
             'ttr': 'false',  # p.ttr_access and 'true' or 'false'
 
-            'usedemail': 'null',
-            'user10': self.dealer.user10 or 'null',
-            'user12': self.dealer.user12 or 'null',
-            'user12e': self.dealer.user12e or 'null',
-            'user40': self.dealer.user40 or 'null',
-            'user40e': self.dealer.user40e or 'null',
-            'user80': self.dealer.user80 or 'null',
+            'usedemail': '',
+            'user10': self.dealer.user10 or '',
+            'user12': self.dealer.user12 or '',
+            'user12e': self.dealer.user12e or '',
+            'user40': self.dealer.user40 or '',
+            'user40e': self.dealer.user40e or '',
+            'user80': self.dealer.user80 or '',
         }
 
         data = {
