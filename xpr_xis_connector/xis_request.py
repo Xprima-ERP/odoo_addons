@@ -50,7 +50,7 @@ class XisRequest():
             is_enable = param and (param == "1" or param.lower() == "true")
 
         if not is_enable:
-            _logger.debug("xis.connector.enable is not set.")
+            _logger.info("xis.connector.enable is not set.")
             return None
 
         domain = None
@@ -62,10 +62,18 @@ class XisRequest():
             domain = lst_param[0].value
 
         if not domain:
-            _logger.debug("xis.connector.domain is not set.")
+            _logger.info("xis.connector.domain is not set.")
             return None
 
-        return "https://{0}/ws/erp/{1}".format(domain, page_name)
+        lst_param = self.param_pool.search(
+            [('key', '=', 'xis.connector.protocol')])
+
+        if lst_param:
+            protocol = lst_param[0].value
+        else:
+            protocol = "http"
+
+        return "{0}://{1}/ws/erp/{2}".format(protocol, domain, page_name)
 
     def send_request(self, model, page_name, values):
         """
@@ -77,48 +85,7 @@ class XisRequest():
         status = False
         result = None
         response = None
-        _logger.debug(values)
         code = 0
-        data = ""
-
-        for key, value in values.items():
-            if type(value) is dict:
-                self.transfort_utf8_to_ascii_dict(value)
-
-            if type(value) is list or type(value) is tuple:
-                for item_value in value:
-                    if type(item_value) is dict:
-                        self.transfort_utf8_to_ascii_dict(item_value)
-
-                    encode = urllib.urlencode(item_value)
-                    encode = encode.replace("=", "%3D").replace("&", "%2C").replace("?", "%3F")
-                    data += key + "=%5B%7B" + encode + "%7D%5D&"
-                if not value:
-                    data += key + "=%5B%5D&"
-            else:
-                non_encoded_keys = [
-                    'qli_Description',
-                    'qli_Name',
-                    'qt_Comments',
-                    'qt_IComments'
-                ]
-                re_encode = False
-                for non_encoded_key in non_encoded_keys:
-                    if non_encoded_key in key:
-                        re_encode = True
-                if re_encode and value:
-                    try:
-                        value.decode('utf-8')
-                    except UnicodeEncodeError:
-                        value = value.encode('utf-8')
-                try:
-                    data += urllib.urlencode(((key, value),)) + "&"
-                except UnicodeEncodeError:
-                    raise
-        if data and data[-1:] == "&":
-            # remove last '&'
-            data = data[:-1]
-        _logger.debug(data)
 
         url = self._get_url(page_name)
 
@@ -127,11 +94,21 @@ class XisRequest():
             return True, None
 
         # send request
-        req = urllib2.Request(url, data, 5)
+
+        data = "&".join([
+                "{0}={1}".format(
+                    key,
+                    urllib.quote_plus(json.dumps(value)))
+                for key, value in values.items()
+            ])
+
+        req = urllib2.Request(url, data)
+
+        print '---------------', url, values
         error = None
         code = ''
         try:
-            response = urllib2.urlopen(req)
+            response = urllib2.urlopen(req, timeout=10)
             code = response.getcode()
             result = response.read()
         except urllib2.URLError as e:
@@ -158,13 +135,6 @@ class XisRequest():
                                 internal_error=contains_error)
         _logger.debug(result)
         return status, result
-
-    @staticmethod
-    def transfort_utf8_to_ascii_dict(dct):
-        # remove utf8
-        for key, item in dct.items():
-            if type(item) is unicode:
-                dct[key] = item.encode('utf8')
 
     def send_email(self, model, data, body, code, error=None,
                    internal_error=False):
