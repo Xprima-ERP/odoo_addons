@@ -301,8 +301,10 @@ class SaleOrderRequest(XISRequestWrapper):
 
             if line.product_id:
                 name = line.product_id.display_name
+                description = line.product_id.description_sale or ''
             else:
                 name = ''
+                description = line.name or ''
 
             data.update({
                 "qli_ProductCode_%s" % i:
@@ -315,7 +317,7 @@ class SaleOrderRequest(XISRequestWrapper):
                 "qli_UnitPrice_%s" % i: line.price_unit,
                 "qli_Name_%s" % i: name,
                 "qli_Family_%s" % i: 'null',
-                "qli_Description_%s" % i: line.name,
+                "qli_Description_%s" % i: description.strip(),
             })
 
             i += 1
