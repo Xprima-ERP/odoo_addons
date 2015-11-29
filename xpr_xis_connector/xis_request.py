@@ -94,7 +94,7 @@ class XisRequest():
             return True, None
 
         # send request
-
+        print '----------------', values
         data = "&".join([
             "{0}={1}".format(
                 key,
@@ -253,14 +253,9 @@ class SaleOrderRequest(XISRequestWrapper):
     model_xis = "XisDealerGroupDescUpdater"
     page_name = "proposal_sf.spy"
 
-    def __init__(self, parent, is_status_update=False):
+    def __init__(self, parent):
 
         super(SaleOrderRequest, self).__init__(parent)
-
-        self.is_status_update = is_status_update
-
-        # create pool
-        self.config = parent.env['ir.config_parameter']
         self.order = parent
 
     def process_response(self, dct_response):
@@ -322,16 +317,6 @@ class SaleOrderRequest(XISRequestWrapper):
             i += 1
 
         xis_id = self.get_xis_id()
-        # check for debug xis_id
-
-        # lst_param = self.config.search([
-        #     ('key', '=', 'xis.debug.sale')])
-
-        # if lst_param:
-        #     param = lst_param[0]
-
-        #     if param and (param == "1" or param.lower() == "true"):
-        #         xis_id = "48305"
 
         if xis_id:
             data["qt_xisid"] = xis_id
@@ -349,9 +334,6 @@ class SaleOrderRequest(XISRequestWrapper):
         return self.order.partner_id and self.order.partner_id.code or ''
 
     def get_state(self):
-        # if self.is_status_update:
-        #     return "NoChange"
-
         return self.dct_stage_asso.get(self.order.state)
 
     @staticmethod

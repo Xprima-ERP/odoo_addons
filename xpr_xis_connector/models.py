@@ -151,13 +151,7 @@ class SaleOrder(models.Model):
                 # No need to synch before approval.
                 continue
 
-            is_update = False
-
-            if order.client_order_ref or vals.get('state'):
-                is_update = True
-
-            xis_request.SaleOrderRequest(
-                order, is_status_update=is_update).execute()
+            xis_request.SaleOrderRequest(order).execute()
 
         return status
 
@@ -275,8 +269,6 @@ class Dealer(models.Model):
 
         return dealer
 
-    # No need
-    # def write(self, vals):
 
 class User(models.Model):
     _inherit = "res.users"
