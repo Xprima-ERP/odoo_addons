@@ -680,12 +680,12 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
     page_name = "dealer_groups_sf.spy"
 
     def __init__(
-        self, parent, add_id=set(), rem_id=set()
+        self, parent, add_id=None, rem_id=None
     ):
         super(PartnerCategoryRelRequest, self).__init__(parent)
 
-        self.add_id = add_id
-        self.rem_id = rem_id
+        self.add_id = add_id or set()
+        self.rem_id = rem_id or set()
 
         # pool
         self.partner_cat_pool = parent.env["res.partner.category"]
@@ -703,7 +703,7 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
 
             return False
 
-        for rec in pcp.browse(self.add_id):
+        for rec in pcp.browse(group_ids):
 
             if (
                 rec.parent_id.name in ['Automatic', 'Manual'] and

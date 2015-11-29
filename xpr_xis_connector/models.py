@@ -197,7 +197,7 @@ class Partner(models.Model):
         status = super(Partner, self).write(vals)
 
         # Update XIS with new fields and categories
-        # Done for dealers only.
+        # For dealers only.
         for partner in self:
             if not partner.customer or not partner.dealer:
                 continue
@@ -275,20 +275,8 @@ class Dealer(models.Model):
 
         return dealer
 
-    @api.multi
-    def write(self, vals):
-        """
-        Upon update, updates XIS with new fields and groups
-        """
-
-        # Make the standard call
-        status = super(Dealer, self).write(vals)
-
-        for dealer in self:
-            xis_request.DealerRequest(dealer).execute()
-
-        return status
-
+    # No need
+    # def write(self, vals):
 
 class User(models.Model):
     _inherit = "res.users"
