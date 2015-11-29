@@ -94,7 +94,6 @@ class XisRequest():
             return True, None
 
         # send request
-        print '----------------', values
         data = "&".join([
             "{0}={1}".format(
                 key,
@@ -181,7 +180,6 @@ class XISRequestWrapper(object):
     def __init__(self, parent):
         self.xis_request = XisRequest(parent)
         self.order = parent
-        self.parent = parent
 
     def get_xis_data(self):
         """
@@ -256,7 +254,7 @@ class SaleOrderRequest(XISRequestWrapper):
     def __init__(self, parent):
 
         super(SaleOrderRequest, self).__init__(parent)
-        self.order = parent
+        self.order = parent.with_context(lang=parent.partner_id.lang)
 
     def process_response(self, dct_response):
         """
@@ -300,6 +298,12 @@ class SaleOrderRequest(XISRequestWrapper):
 
         i = 0
         for line in self.order.order_line:
+
+            if line.product_id:
+                name = line.product_id.display_name
+            else:
+                name = ''
+
             data.update({
                 "qli_ProductCode_%s" % i:
                 line.product_id.default_code or "",
@@ -309,7 +313,7 @@ class SaleOrderRequest(XISRequestWrapper):
 
                 "qli_Quantity_%s" % i: line.product_uom_qty,
                 "qli_UnitPrice_%s" % i: line.price_unit,
-                "qli_Name_%s" % i: line.name,
+                "qli_Name_%s" % i: name,
                 "qli_Family_%s" % i: 'null',
                 "qli_Description_%s" % i: line.name,
             })
