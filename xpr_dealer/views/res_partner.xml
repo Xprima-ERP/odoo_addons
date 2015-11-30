@@ -31,7 +31,7 @@
     <field name="arch" type="xml">
       <search string="Search Dealer">
          <field name="name" filter_domain="['|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self)]"/>
-         <filter help="My Dealers" icon="terp-personal+" domain="[('user_id','=',uid)]"/>
+         <filter help="My Dealers" name="my_dealers" icon="terp-personal+" domain="[('user_id','=',uid)]"/>
          <separator/>
          <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]"/>
          <field name="user_id"/>
