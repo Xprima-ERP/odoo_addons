@@ -216,6 +216,10 @@ class XISRequestWrapper(object):
         if type(dct_response) is not dict:
             return False
 
+        if dct_response.get('status', 'error').lower() != 'ok':
+            _logger.error("XIS Webservice failure: {0}".format(dct_response))
+            return False
+
         return self.process_response(dct_response)
 
 
@@ -281,8 +285,8 @@ class SaleOrderRequest(XISRequestWrapper):
             # example of opportunity
             "qt_Opportunityid": '',
             "qt_CreatedDate": self.get_last_modif_date(),
-            "qt_Comments": self.order.note,
-            "qt_IComments": self.order.note,
+            "qt_Comments": self.order.note or '',
+            "qt_IComments": self.order.note or '',
 
             # Marc Cassuto  Sales Rep 736
             "qt_user_external_id__c": ext_id,
