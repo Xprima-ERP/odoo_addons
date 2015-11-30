@@ -50,7 +50,7 @@ class XisRequest():
             is_enable = param and (param == "1" or param.lower() == "true")
 
         if not is_enable:
-            _logger.debug("xis.connector.enable is not set.")
+            _logger.info("xis.connector.enable is not set.")
             return None
 
         domain = None
@@ -62,10 +62,18 @@ class XisRequest():
             domain = lst_param[0].value
 
         if not domain:
-            _logger.debug("xis.connector.domain is not set.")
+            _logger.info("xis.connector.domain is not set.")
             return None
 
-        return "https://{0}/ws/erp/{1}".format(domain, page_name)
+        lst_param = self.param_pool.search(
+            [('key', '=', 'xis.connector.protocol')])
+
+        if lst_param:
+            protocol = lst_param[0].value
+        else:
+            protocol = "http"
+
+        return "{0}://{1}/ws/erp/{2}".format(protocol, domain, page_name)
 
     def send_request(self, model, page_name, values):
         """
@@ -77,48 +85,7 @@ class XisRequest():
         status = False
         result = None
         response = None
-        _logger.debug(values)
         code = 0
-        data = ""
-
-        for key, value in values.items():
-            if type(value) is dict:
-                self.transfort_utf8_to_ascii_dict(value)
-
-            if type(value) is list or type(value) is tuple:
-                for item_value in value:
-                    if type(item_value) is dict:
-                        self.transfort_utf8_to_ascii_dict(item_value)
-
-                    encode = urllib.urlencode(item_value)
-                    encode = encode.replace("=", "%3D").replace("&", "%2C").replace("?", "%3F")
-                    data += key + "=%5B%7B" + encode + "%7D%5D&"
-                if not value:
-                    data += key + "=%5B%5D&"
-            else:
-                non_encoded_keys = [
-                    'qli_Description',
-                    'qli_Name',
-                    'qt_Comments',
-                    'qt_IComments'
-                ]
-                re_encode = False
-                for non_encoded_key in non_encoded_keys:
-                    if non_encoded_key in key:
-                        re_encode = True
-                if re_encode and value:
-                    try:
-                        value.decode('utf-8')
-                    except UnicodeEncodeError:
-                        value = value.encode('utf-8')
-                try:
-                    data += urllib.urlencode(((key, value),)) + "&"
-                except UnicodeEncodeError:
-                    raise
-        if data and data[-1:] == "&":
-            # remove last '&'
-            data = data[:-1]
-        _logger.debug(data)
 
         url = self._get_url(page_name)
 
@@ -127,21 +94,30 @@ class XisRequest():
             return True, None
 
         # send request
+        data = "&".join([
+            "{0}={1}".format(
+                key,
+                urllib.quote_plus(json.dumps(value)))
+            for key, value in values.items()
+        ])
+
         req = urllib2.Request(url, data)
+
         error = None
+        code = ''
         try:
-            response = urllib2.urlopen(req)
+            response = urllib2.urlopen(req, timeout=10)
             code = response.getcode()
             result = response.read()
         except urllib2.URLError as e:
             error = e
-            code = e.code
             if hasattr(e, 'reason'):
                 _logger.error(
                     'We failed to reach a server. Reason: %s' % e.reason)
             elif hasattr(e, 'code'):
                 msg = 'The server couldn\'t fulfill the request. ' \
                       'Error code: %s' % code
+                code = e.code
                 _logger.error(msg)
             raise
         finally:
@@ -157,13 +133,6 @@ class XisRequest():
                                 internal_error=contains_error)
         _logger.debug(result)
         return status, result
-
-    @staticmethod
-    def transfort_utf8_to_ascii_dict(dct):
-        # remove utf8
-        for key, item in dct.items():
-            if type(item) is unicode:
-                dct[key] = item.encode('utf8')
 
     def send_email(self, model, data, body, code, error=None,
                    internal_error=False):
@@ -211,7 +180,6 @@ class XISRequestWrapper(object):
     def __init__(self, parent):
         self.xis_request = XisRequest(parent)
         self.order = parent
-        self.parent = parent
 
     def get_xis_data(self):
         """
@@ -283,15 +251,10 @@ class SaleOrderRequest(XISRequestWrapper):
     model_xis = "XisDealerGroupDescUpdater"
     page_name = "proposal_sf.spy"
 
-    def __init__(self, parent, is_status_update=False):
+    def __init__(self, parent):
 
         super(SaleOrderRequest, self).__init__(parent)
-
-        self.is_status_update = is_status_update
-
-        # create pool
-        self.config = parent.env['ir.config_parameter']
-        self.order = parent
+        self.order = parent.with_context(lang=parent.partner_id.lang)
 
     def process_response(self, dct_response):
         """
@@ -316,7 +279,7 @@ class SaleOrderRequest(XISRequestWrapper):
             "qt_dc": self.get_dealer_code().strip(),
 
             # example of opportunity
-            "qt_Opportunityid": 'null',
+            "qt_Opportunityid": '',
             "qt_CreatedDate": self.get_last_modif_date(),
             "qt_Comments": self.order.note,
             "qt_IComments": self.order.note,
@@ -335,6 +298,14 @@ class SaleOrderRequest(XISRequestWrapper):
 
         i = 0
         for line in self.order.order_line:
+
+            if line.product_id:
+                name = line.product_id.display_name
+                description = line.product_id.description_sale or ''
+            else:
+                name = ''
+                description = line.name or ''
+
             data.update({
                 "qli_ProductCode_%s" % i:
                 line.product_id.default_code or "",
@@ -344,24 +315,14 @@ class SaleOrderRequest(XISRequestWrapper):
 
                 "qli_Quantity_%s" % i: line.product_uom_qty,
                 "qli_UnitPrice_%s" % i: line.price_unit,
-                "qli_Name_%s" % i: line.name,
+                "qli_Name_%s" % i: name,
                 "qli_Family_%s" % i: 'null',
-                "qli_Description_%s" % i: line.name,
+                "qli_Description_%s" % i: description.strip(),
             })
 
             i += 1
 
         xis_id = self.get_xis_id()
-        # check for debug xis_id
-
-        # lst_param = self.config.search([
-        #     ('key', '=', 'xis.debug.sale')])
-
-        # if lst_param:
-        #     param = lst_param[0]
-
-        #     if param and (param == "1" or param.lower() == "true"):
-        #         xis_id = "48305"
 
         if xis_id:
             data["qt_xisid"] = xis_id
@@ -379,9 +340,6 @@ class SaleOrderRequest(XISRequestWrapper):
         return self.order.partner_id and self.order.partner_id.code or ''
 
     def get_state(self):
-        # if self.is_status_update:
-        #     return "NoChange"
-
         return self.dct_stage_asso.get(self.order.state)
 
     @staticmethod
@@ -419,8 +377,6 @@ class DealerRequest(XISRequestWrapper):
 
         # Build dealerarea (province_code + area_code [+region_code])
 
-        dealerarea = 'null'
-
         # The dealerarea for '905CADA','AUTO123MERC','CCAMA','PERSONALLA',
         # 'PERSONALMA','PERSONALNWT','PERSONALSA','PERSONALYU','514AVANTIPLUS'
         # don't follow the rule, and have to be hardcoded so as not to break
@@ -450,7 +406,7 @@ class DealerRequest(XISRequestWrapper):
         dealerarea_area_code = self.get_area_code()
 
         if not _state or not dealerarea_area_code:
-            return dealerarea
+            return ''
 
         dealerarea_state_code = _state.code
 
@@ -506,7 +462,7 @@ class DealerRequest(XISRequestWrapper):
     def get_state(self):
         p = self.partner
 
-        state = p.state_id and p.state_id.name or None
+        state = p.state_id and p.state_id.name or ''
 
         if not state or state == "Quebec":
             state = "Québec"
@@ -524,9 +480,13 @@ class DealerRequest(XISRequestWrapper):
     def get_xis_makes(self):
 
         makes = set(m.name for m in self.dealer.makes)
-        return ','.join(makes) or 'null'
+        return ','.join(makes)
 
     def get_area_code(self):
+
+        if not self.partner.phone:
+            # Robustness in case of None
+            return ''
 
         code = self.partner.phone.replace('(', '').replace(')', '')
         code = code.replace('-', '').strip()
@@ -547,62 +507,62 @@ class DealerRequest(XISRequestWrapper):
         p = self.partner
 
         if not p.code or not p.is_company or not self.dealer:
-            return None
+            return ''
 
         market = self.dealer.market and self.dealer.market.name.lower()
 
         dealers = {
-            'address': p.street or 'null',
+            'address': p.street or '',
             'buyit': 'false',
-            'callsource_tollfree': self.dealer.callsource_tollfree or 'null',
-            'city': p.city or 'null',
-            'corpcontracts': 'null',  # p.pin
-            'corpname': p.name or 'null',
-            'country': p.country_id and p.country_id.name or 'null',
-            'customermask': self.get_customermasks() or 'null',
-            'dayspastdue': 'null',  # p.dayspastdue
+            'callsource_tollfree': self.dealer.callsource_tollfree or '',
+            'city': p.city or '',
+            'corpcontracts': '',  # p.pin
+            'corpname': p.name or '',
+            'country': p.country_id and p.country_id.name or '',
+            'customermask': self.get_customermasks() or '',
+            'dayspastdue': '',  # p.dayspastdue
             'dealerarea': self.get_dealerarea(),
-            'dealercode': p.code.strip() or 'null',
-            'dealeremail': 'null',  # must go from xis to OE.
-            'dealername': p.name.strip() or 'null',
-            'dealerurle': p.website or 'null',
-            'dealerurlf': self.dealer.website_french or 'null',
-            'dpd_override': 'null',  # '%s 00:00:00' % (p.dpd_override,)
-            'fax': p.fax or 'null',
-            'geolat': self.dealer.geolat or 'null',
-            'geolon': self.dealer.geolon or 'null',
+            'dealercode': p.code.strip() or '',
+            'dealeremail': '',  # must go from xis to OE.
+            'dealername': p.name.strip() or '',
+            'dealerurle': p.website or '',
+            'dealerurlf': self.dealer.website_french or '',
+            'dpd_override': '',  # '%s 00:00:00' % (p.dpd_override,)
+            'fax': p.fax or '',
+            'geolat': self.dealer.geolat,
+            'geolon': self.dealer.geolon,
             #'isdealer': isdealer, # Deprecated
             #'ismember': ismember, # Deprecated
 
             # force to take 'en' of 'en_US'
-            'language': p.lang and p.lang[:2] or 'null',
+            'language': p.lang and p.lang[:2] or '',
             'lastmoddate': self.get_last_modif_date(),
             'makes': self.get_xis_makes(),
-            'market': market or 'null',
-            'membertype': self.get_member_type() or 'null',
-            'newemail': 'null',  # This field must go from xis to OE.
-            'owner': self.dealer.owner or 'null',
-            'owneremail': self.dealer.owneremail or 'null',
+            'market': market or '',
+            'membertype': self.get_member_type() or '',
+            'newemail': '',  # This field must go from xis to OE.
+            'owner': self.dealer.owner or '',
+            'owneremail': self.dealer.owneremail or '',
 
-            'phone': p.phone or 'null',
-            'phone2': p.mobile or 'null',
-            'portalmask': self.get_portalmask() or 'null',
-            'postalcode': self.partner.zip or 'null',
+            'phone': p.phone or '',
+            'phone2': p.mobile or '',
+            'portalmask': self.get_portalmask() or '',
+            'postalcode': self.partner.zip or '',
             'province': self.get_state(),
             'quoteflag': self.dealer.quoteflag and 'true' or 'false',
-            'responsible': self.dealer.responsible or 'null',
-            'salesguy': self.get_salesrep_ext_id() or 'null',
-            'sitetype': self.get_site_type() or 'null',
-            'tollfree': self.dealer.tollfree or 'null',
+            'responsible': self.dealer.responsible or '',
+            'salesguy': self.get_salesrep_ext_id() or '',
+            'sitetype': self.get_site_type() or '',
+            'tollfree': self.dealer.tollfree or '',
             'ttr': 'false',  # p.ttr_access and 'true' or 'false'
 
-            'usedemail': 'null',
-            'user10': self.dealer.user10 or 'null',
-            'user12': self.dealer.user12 or 'null',
-            'user12e': self.dealer.user12e or 'null',
-            'user40': self.dealer.user40 or 'null',
-            'user40e': self.dealer.user40e or 'null',
-            'user80': self.dealer.user80 or 'null',
+            'usedemail': '',
+            'user10': self.dealer.user10 or '',
+            'user12': self.dealer.user12 or '',
+            'user12e': self.dealer.user12e or '',
+            'user40': self.dealer.user40 or '',
+            'user40e': self.dealer.user40e or '',
+            'user80': self.dealer.user80 or '',
         }
 
         data = {
@@ -708,12 +668,12 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
     page_name = "dealer_groups_sf.spy"
 
     def __init__(
-        self, parent, add_id=set(), rem_id=set()
+        self, parent, add_id=None, rem_id=None
     ):
         super(PartnerCategoryRelRequest, self).__init__(parent)
 
-        self.add_id = add_id
-        self.rem_id = rem_id
+        self.add_id = add_id or set()
+        self.rem_id = rem_id or set()
 
         # pool
         self.partner_cat_pool = parent.env["res.partner.category"]
@@ -721,10 +681,76 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         # model
         self.partner = parent
 
+    def get_groups(self, group_ids):
+        pcp = self.partner_cat_pool
+
+        def is_group_root(tag):
+            # Determines if tag is group parent.
+            if tag.name == 'Group' and tag.parent_id.name == 'Dealer':
+                return True
+
+            return False
+
+        for rec in pcp.browse(group_ids):
+
+            if (
+                rec.parent_id.name in ['Automatic', 'Manual'] and
+                rec.parent_id.parent_id.name == 'Certification'
+            ):
+                # Certification
+
+                yield {
+                    'name': rec.name,
+                    'grouptype': "{certification} {certification_root}".format(
+                        certification=rec.parent_id.name,
+                        certification_root=rec.parent_id.parent_id.name),
+                }
+
+                continue
+
+            if (
+                rec.parent_id.name == 'Association'
+                and rec.parent_id.parent_id.name == 'Dealer'
+            ):
+                yield {
+                    'name': rec.name,
+                    'grouptype': "Dealer Association"
+                }
+
+                continue
+
+            if is_group_root(rec.parent_id):
+                yield {
+                    'name': rec.name,
+                    'grouptype': "Primary Group"
+                }
+
+                continue
+
+            if is_group_root(rec.parent_id.parent_id):
+                # Sub group. In XIS, this corresponds to two groups.
+
+                yield {
+                    'name': rec.parent_id.name,
+                    'grouptype': "Primary Group"
+                }
+
+                yield {
+                    'name': rec.name,
+                    'grouptype': "Dealer Sub-Group"
+                }
+
+                continue
+
+            # Default. Marketing Association.
+
+            yield {
+                'name': rec.name,
+                'grouptype': rec.parent_id.name
+            }
+
     def get_xis_data(self):
         # validate data
-
-        pcp = self.partner_cat_pool
 
         if not self.partner.is_company or not self.partner.code:
             return None
@@ -732,17 +758,17 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
         lst_group_add = [
             {
                 'dealercode': self.partner.code,
-                'name': rec.name,
-                'grouptype': rec.parent_id.name,
-            } for rec in pcp.browse(self.add_id)
+                'name': rec['name'],
+                'grouptype': rec['grouptype'],
+            } for rec in self.get_groups(self.add_id)
         ]
 
         lst_group_rem = [
             {
                 'dealercode': self.partner.code,
-                'name': rec.name,
-                'grouptype': rec.parent_id.name,
-            } for rec in pcp.browse(self.rem_id)
+                'name': rec['name'],
+                'grouptype': rec['grouptype'],
+            } for rec in self.get_groups(self.rem_id)
         ]
 
         data = {
