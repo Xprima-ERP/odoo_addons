@@ -152,7 +152,7 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_lem
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_lada,Lada,Lada
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_lamborghini,Lamborghini,Lamborghini
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_lanaudiere,Lanaudière,Lanaudière
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_landrover,Land Roversa,Land Rover
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_landrover,Land Rover,Land Rover
 xpr_dealer,field,"xpr_dealer.dealer,write_uid",0,Last Updated by,Last Updated by
 xpr_dealer,field,"xpr_dealer.dealer,write_date",0,Last Updated on,Last Updated on
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_laurentides,Laurentides,Laurentides
