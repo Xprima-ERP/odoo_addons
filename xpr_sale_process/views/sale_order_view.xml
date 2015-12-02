@@ -176,9 +176,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,calendar,graph</field>
             <field name="search_view_id" ref="sale.view_sales_order_filter"/>
-            <field name="context">{
-                'search_default_my_sale_orders_filter': 0
-                }
+            <field name="context">{'search_default_my_sale_orders_filter': 1}
             </field>
             <field name="domain">[('state', 'in', ('contract_not_presented', 'contract_not_approved', 'contract_approved'))]</field>
             <field name="help" type="html">
@@ -200,8 +198,7 @@
         <record id="sale.action_quotations" model="ir.actions.act_window">
             <field name="domain">[('state','in',('draft','sent','cancel','need_manager_approval', 'manager_approved', 'manager_not_approved', 'need_availability_check'))]</field>
             <field name="context">{
-                'search_default_my_sale_orders_filter': 0
-                }
+                'search_default_my_sale_orders_filter': 1}
             </field>
         </record>
     </data>
