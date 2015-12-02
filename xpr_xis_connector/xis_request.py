@@ -93,6 +93,8 @@ class XisRequest():
             # Not configured
             return True, None
 
+        _logger.info("XIS request {0} {1}".format(url, values))
+
         # send request
         data = "&".join([
             "{0}={1}".format(
@@ -112,13 +114,13 @@ class XisRequest():
         except urllib2.URLError as e:
             error = e
             if hasattr(e, 'reason'):
-                _logger.error(
+                _logger.info(
                     'We failed to reach a server. Reason: %s' % e.reason)
             elif hasattr(e, 'code'):
                 msg = 'The server couldn\'t fulfill the request. ' \
                       'Error code: %s' % code
                 code = e.code
-                _logger.error(msg)
+                _logger.info(msg)
             raise
         finally:
             if not result:
@@ -131,7 +133,7 @@ class XisRequest():
             if not status:
                 self.send_email(model, data, result, code, error=error,
                                 internal_error=contains_error)
-        _logger.debug(result)
+        _logger.info(result)
         return status, result
 
     def send_email(self, model, data, body, code, error=None,
@@ -218,6 +220,7 @@ class XISRequestWrapper(object):
 
         if dct_response.get('status', 'error').lower() != 'ok':
             _logger.error("XIS Webservice failure: {0}".format(dct_response))
+            raise Exception("XIS Failure {0}".format(dct_response))
             return False
 
         return self.process_response(dct_response)
@@ -746,12 +749,15 @@ class PartnerCategoryRelRequest(XISRequestWrapper):
 
                 continue
 
-            # Default. Marketing Association.
+            if rec.parent_id.name == 'Marketing Association':
+                yield {
+                    'name': rec.name,
+                    'grouptype': rec.parent_id.name
+                }
 
-            yield {
-                'name': rec.name,
-                'grouptype': rec.parent_id.name
-            }
+                continue
+
+            # Other groups are ignored
 
     def get_xis_data(self):
         # validate data
