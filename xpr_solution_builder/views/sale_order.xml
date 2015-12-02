@@ -29,7 +29,8 @@
                             <field name="product_uom" groups="product.group_uom" readonly="1" />
                             <field name="product_uos_qty" groups="product.group_uos" invisible="1" />
                             <field name="product_uos" string="UoS" groups="product.group_uos" invisible="1" />
-                            <field name="price_unit" readonly="1" />
+                            <field name="is_ad_line" invisible="1" />
+                            <field name="price_unit" attrs="{'readonly': [('is_ad_line','==', False)]}" />
                             <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible="1" />
                             <field name="discount" invisible="1" />
                             <field name="discount_money" groups="sale.group_discount_per_so_line" attrs="{'readonly': [('solution_part','!=', 2)]}"/>

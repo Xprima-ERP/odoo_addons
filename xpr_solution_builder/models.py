@@ -514,6 +514,21 @@ class SalesOrderLine(models.Model):
             # Subtotal may already be negative (with discount == 0)
             line.price_subtotal = amount
 
+    @api.onchange('product_id')
+    def _is_ad_line(self):
+        for line in self:
+
+            if not line.product_id or line.solution_part != 2:
+                line.is_ad_line = False
+                continue
+
+            cat = line.product_id.categ_term
+
+            line.is_ad_line = cat.id in [
+                self.env.ref('xpr_product.advertising').id,
+                self.env.ref('xpr_product.adwords').id
+            ]
+
     # 0 Don't care (not solution)
     # 1 mandatory line
     # 2 optional line
@@ -531,6 +546,8 @@ class SalesOrderLine(models.Model):
         string='Subtotal',
         digits_compute=dp.get_precision('Account'),
         compute=_amount_line)
+
+    is_ad_line = fields.Boolean(string="Is Ad", readonly=True, compute=_is_ad_line)
 
 
 class SolutionConfigurator(models.TransientModel):
