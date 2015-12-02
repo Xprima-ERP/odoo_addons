@@ -34,6 +34,9 @@
          <filter help="My Dealers" name="my_dealers" icon="terp-personal+" domain="[('user_id','=',uid)]"/>
          <separator/>
          <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]"/>
+         <field name="makes" string="Vehicle" filter_domain="[('makes.parent_id','ilike', self)]"/>
+         <field name="makes" string="Makes" filter_domain="[('makes','ilike', self)]"/>
+         <field name="business" string="Business" filter_domain="[('business','ilike', self)]"/>
          <field name="user_id"/>
          <group expand="0" string="Group By">
              <filter string="Salesperson" icon="terp-personal" domain="[]" context="{'group_by' : 'user_id'}"/>
