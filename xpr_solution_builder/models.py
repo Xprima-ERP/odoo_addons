@@ -101,8 +101,8 @@ class Solution(models.Model):
                         solution.category = cat
                         break
 
-    name = fields.Char(required=True)
-    description = fields.Char(required=True)
+    name = fields.Char(required=True, translate=True)
+    description = fields.Char(required=True, translate=True)
     list_price = fields.Float(string='Solution Price', digits=(6, 2))
 
     products = fields.Many2many(

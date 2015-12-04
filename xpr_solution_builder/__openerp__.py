@@ -18,7 +18,7 @@ This module:
 - Adds rebate applied on the mandatory items
 - Replaces discounts in percentage with discounts in currency
 - Splits mandatory and optional products in two groups in the sales order form
-- Indicate number of items for mandatory products
+- Indicates number of items for mandatory products
 - Permits 'sticky' and 'selected by default' optional products
 - Provides starting date for web sites and advertising
 - Permits to combine solutions together by category
