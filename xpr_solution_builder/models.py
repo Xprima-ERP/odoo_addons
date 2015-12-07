@@ -314,7 +314,8 @@ class SalesOrder(models.Model):
     category = fields.Many2one(
         'product.category',
         string='Category',
-        compute=_get_category)
+        compute=_get_category,
+        store=True)
 
     # 'Overwrite' of parent field: amount_untaxed
     # Had to rename fiel to by pass parent functionality

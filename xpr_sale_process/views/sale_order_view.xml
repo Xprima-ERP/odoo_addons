@@ -9,6 +9,7 @@
             <field name="arch" type="xml">
                 <filter string="Order Month" position="after">
                     <filter string="Renewal Month" domain="[]" context="{'group_by':'renew_date'}"/>
+                    <filter string="Category" domain="[]" context="{'group_by':'category'}"/>
                 </filter>
             </field>
         </record>
