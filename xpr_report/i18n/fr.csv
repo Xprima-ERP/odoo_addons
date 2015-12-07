@@ -1,0 +1,28 @@
+module,type,name,res_id,src,value
+xpr_report,report,xpr_report.report_saleorder,0,30 days,30 jours
+xpr_report,report,xpr_report.report_saleorder,0,Date Ordered,Date de commande
+xpr_report,report,xpr_report.report_saleorder,0,Dealercode:,Dealercode:
+xpr_report,report,xpr_report.report_saleorder,0,Description,Description
+xpr_report,report,xpr_report.report_saleorder,0,Disc.($),Rabais($)
+xpr_report,report,xpr_report.report_saleorder,0,Discount($),Rabais($)
+xpr_report,report,xpr_report.report_saleorder,0,Fax :,Fax :
+xpr_report,report,xpr_report.report_saleorder,0,Invoice address :,Addresse de facturation :
+xpr_report,report,xpr_report.report_saleorder,0,Monthly Total :,Total Mensuel:
+xpr_report,report,xpr_report.report_saleorder,0,One Time Total :,Total frais initiaux:
+xpr_report,report,xpr_report.report_saleorder,0,Payment Term,Condition de règlement
+xpr_report,report,xpr_report.report_saleorder,0,Price,Prix
+xpr_report,report,xpr_report.report_saleorder,0,Product,Produit
+xpr_report,report,xpr_report.report_saleorder,0,Quantity,Quantité
+xpr_report,report,xpr_report.report_saleorder,0,Quotation (for approval) N°,N° Devis (pour approbation)
+xpr_report,model,"ir.actions.report.xml,name",xpr_report.report_sale_order,Quotation / Order,Devis / Commande
+xpr_report,report,xpr_report.report_saleorder,0,Quotation Date,Date de devis
+xpr_report,report,xpr_report.report_saleorder,0,Sales taxes applicable in the dealership’s province will be included in invoicing.,Les taxes de ventes applicables à la province concernés seront inclus à la facturation.
+xpr_report,report,xpr_report.report_saleorder,0,Salesperson,Vendeur
+xpr_report,report,xpr_report.report_saleorder,0,Shipping address :,Addresse de livraison :
+xpr_report,report,xpr_report.report_saleorder,0,Solution :,Solution :
+xpr_report,report,xpr_report.report_saleorder,0,Starting Date,Date de Départ
+xpr_report,report,xpr_report.report_saleorder,0,Tel. :,Tél. :
+xpr_report,report,xpr_report.report_saleorder,0,Total :,Total :
+xpr_report,report,xpr_report.report_saleorder,0,Unit Price,Prix unitaire
+xpr_report,report,xpr_report.report_saleorder,0,VAT :,TVA :
+xpr_report,report,xpr_report.report_saleorder,0,Your Reference,Votre Référence

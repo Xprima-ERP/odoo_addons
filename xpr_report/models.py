@@ -21,19 +21,19 @@
 ##############################################################################
 
 
-class order(report_sxw.rml_parse):
-    def __init__(self, cr, uid, name, context=None):
-        # Enriches report render context
-        super(order, self).__init__(cr, uid, name, context=context)
-        self.localcontext.update({
-            'time': time,
-            #'show_discount': self._show_discount,
-        })
+# class order(report_sxw.rml_parse):
+#     def __init__(self, cr, uid, name, context=None):
+#         # Enriches report render context
+#         super(order, self).__init__(cr, uid, name, context=context)
+#         self.localcontext.update({
+#             'time': time,
+#             #'show_discount': self._show_discount,
+#         })
 
 
-report_sxw.report_sxw(
-    'report.sale.order',
-    'sale.order',
-    'addons/xpr_report/report/sale_order_xprima.rml',
-    parser=order,
-    header='external')
+# report_sxw.report_sxw(
+#     'report.sale.order',
+#     'sale.order',
+#     'addons/xpr_report/report/sale_order_xprima.rml',
+#     parser=order,
+#     header='external')

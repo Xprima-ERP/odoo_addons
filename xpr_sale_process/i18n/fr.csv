@@ -1,0 +1,125 @@
+module,type,name,res_id,src,value
+xpr_sale_process,model,"ir.actions.act_window,help",xpr_sale_process.action_contracts,"<p class=""oe_view_nocontent_create"">
+                    Click to create a quotation that can be converted into a sales order.
+                </p>
+                <p>
+                    Odoo will help you efficiently handle the complete sales flow: quotation, sales order, delivery, invoicing and payment.
+                </p>
+            ","<p class=""oe_view_nocontent_create"">
+                    Click to create a quotation that can be converted into a sales order.
+                </p>
+                <p>
+                    Odoo will help you efficiently handle the complete sales flow: quotation, sales order, delivery, invoicing and payment.
+                </p>
+            "
+xpr_sale_process,model,"ir.actions.client,help",xpr_sale_process.action_my_opportunity,"<p>
+                    No opportunity activity found.
+                </p>
+            ","<p>
+                    No opportunity activity found.
+                </p>
+            "
+xpr_sale_process,model,"ir.actions.client,help",xpr_sale_process.action_team_opportunity,"<p>
+                    No opportunity activity found.
+                </p>
+            ","<p>
+                    No opportunity activity found.
+                </p>
+            "
+xpr_sale_process,model,"email.template,body_html",xpr_sale_process.opportunity_reminder_mail,"<p>This opportunity requires your attention today:</p><ul><li>Name: ${object.name}</li><li>ID: ${object.id}</li><li>Action: ${object.title_action}</li></ul>
+            ","<p>This opportunity requires your attention today:</p><ul><li>Name: ${object.name}</li><li>ID: ${object.id}</li><li>Action: ${object.title_action}</li></ul>
+            "
+xpr_sale_process,model,"res.groups,name",xpr_sale_process.advertising,Advertising,Advertising
+xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_notify_mail,Advertising Availability Request: ${object.partner_id != False and object.partner_id.name or object.contact_name},Approbation de disponibilité de publicité : ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_refused,Advertising Not available: ${object.partner_id != False and object.partner_id.name or object.contact_name},Publicité non disponible: ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_sale_process,model,"res.groups,name",xpr_sale_process.discount_all,All Discounts,All Discounts
+xpr_sale_process,field,"product.category,approval_group",0,Approval Group,Approval Group
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Approve,Approve
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Availability Checked,Availability Checked
+xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,Back to Rep,Back to Rep
+xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,Cancel,Cancel
+xpr_sale_process,field,"crm.lead,category",0,Category,Category
+xpr_sale_process,field,"crm.make.sale,category",0,Category,Category
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Category,Category
+xpr_sale_process,field,"sale.order,category",0,Category,Category
+xpr_sale_process,model,"ir.actions.act_window,name",xpr_sale_process.action_companies,Companies,Sociétés
+xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_companies,Companies,Sociétés
+xpr_sale_process,model,"res.groups,name",xpr_sale_process.create_company,Company Creation,Company Creation
+xpr_sale_process,model,"ir.actions.act_window,name",xpr_sale_process.action_contacts,Contacts,Contacts
+xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_contacts,Contacts,Contacts
+xpr_sale_process,model,"ir.actions.act_window,name",xpr_sale_process.action_contracts,Contracts,Contracts
+xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_contracts,Contracts,Contrats
+xpr_sale_process,field,"xpr_sale_process.availability_message,create_uid",0,Created by,Created by
+xpr_sale_process,field,"xpr_sale_process.availability_message,create_date",0,Created on,Created on
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Customer Approved,Customer Approved
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Customer not Approved,Customer not Approved
+xpr_sale_process,view,res.partner,xpr_sale_process.rep_partner tree,Customers,Clients
+xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_manager_approval_mail,Discount Approval Request: ${object.partner_id != False and object.partner_id.name or object.contact_name},Approbation de rabais : ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_sale_process,field,"xpr_sale_process.availability_message,for_approval",0,For approval,For approval
+xpr_sale_process,help,"product.category,approval_group",0,Group of users that must approve products of this category,Group of users that must approve products of this category
+xpr_sale_process,model,"res.groups,name",xpr_sale_process.group_hidden,Hidden,Hidden
+xpr_sale_process,field,"xpr_sale_process.availability_message,id",0,ID,ID
+xpr_sale_process,field,"xpr_sale_process.availability_message,write_uid",0,Last Updated by,Last Updated by
+xpr_sale_process,field,"xpr_sale_process.availability_message,write_date",0,Last Updated on,Last Updated on
+xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_crm_lead,Lead/Opportunity,Piste/opportunité
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Lost,Lost
+xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_crm_make_sale,Make sales,Conclure les ventes
+xpr_sale_process,field,"xpr_sale_process.availability_message,message",0,Message,Message
+xpr_sale_process,model,"ir.actions.client,name",xpr_sale_process.action_my_opportunity,My Opportunity Notes,My Opportunity Notes
+xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_opportunities,My Opportunity Notes,Mes notes
+xpr_sale_process,view,res.partner,xpr_sale_process.partner_search,My Partners,Mes partenaires
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Not Approved,Not Approved
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Not Available,Not Available
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Order Month,Mois de commande
+xpr_sale_process,field,"xpr_sale_process.availability_message,order_id",0,Order id,Order id
+xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_availability_notify_mail,"Please validate the advertising availability for this quotation: <a href=""${object.form_url|safe}"">${object.name}</a><br/>Salesperson notes:<br/>${ctx.get('message','')}","Please validate the advertising availability for this quotation: <a href=""${object.form_url|safe}"">${object.name}</a><br/>Salesperson notes:<br/>${ctx.get('message','')}"
+xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_manager_approval_mail,"Please validate the discount(s) for this quotation: <a href=""${object.form_url|safe}"">${object.name}</a>
+            ","Please validate the discount(s) for this quotation: <a href=""${object.form_url|safe}"">${object.name}</a>
+            "
+xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_product_category,Product Category,Catégorie d'articles
+xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_product_template,Product Template,Modèle d'article
+xpr_sale_process,model,"email.template,subject",xpr_sale_process.opportunity_reminder_mail,Reminder on Lead: ${object.id} from ${object.partner_id != False and object.partner_id.name or object.contact_name},Rappel : ${object.id} from ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Renewal Month,Renewal Month
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Reopen,Reopen
+xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_reopen_mail,Reopened: Quotation in Availability Check for ${object.partner_id != False and object.partner_id.name or object.contact_name},Réouverture : Soumission en attente d'approbation de disponibilité pour ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_sale_order,Sales Order,Bon de commande
+xpr_sale_process,model,"ir.actions.server,name",xpr_sale_process.opportunity_reminder_action,Send Mail,Send Mail
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Send for Approval,Send for Approval
+xpr_sale_process,model,"ir.actions.server,help",xpr_sale_process.opportunity_reminder_action,Sends opportunity action mail reminder,Sends opportunity action mail reminder
+xpr_sale_process,field,"crm.lead,solution",0,Solution,Solution
+xpr_sale_process,field,"crm.make.sale,solution",0,Solution,Solution
+xpr_sale_process,model,"ir.actions.client,name",xpr_sale_process.action_team_opportunity,Team Opportunity Notes,Team Opportunity Notes
+xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_team_opportunities,Team Opportunity Notes,Notes de l'équipe
+xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_terms_menuitem,Terms,Terms
+xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_availability_refused,"The advertising quotation was declined: <a href=""${object.form_url|safe}"">${object.name}</a><br/>Advertising team notes:<br/>${ctx.get('message','')}","The advertising quotation was declined: <a href=""${object.form_url|safe}"">${object.name}</a><br/>Advertising team notes:<br/>${ctx.get('message','')}"
+xpr_sale_process,model,"res.groups,comment",xpr_sale_process.discount_all,The user has rights to approve all orders with discounts. Use Manager group to approve orders from own team,The user has rights to approve all orders with discounts. Use Manager group to approve orders from own team
+xpr_sale_process,model,"res.groups,comment",xpr_sale_process.advertising,The user is responsible of approving quotes with advertising products,The user is responsible of approving quotes with advertising products
+xpr_sale_process,model,"res.groups,comment",xpr_sale_process.create_company,This group Permits a user to create a company.,This group Permits a user to create a company.
+xpr_sale_process,model,"res.groups,comment",xpr_sale_process.rep_ui,This group changes the UI. For reps only.,This group changes the UI. For reps only.
+xpr_sale_process,model,"res.groups,comment",xpr_sale_process.group_hidden,This group permits hiding stuff. Keep it empty.,This group permits hiding stuff. Keep it empty.
+xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_availability_reopen_mail,"This quotation in Availability Check is reopened:&nbsp;<a href=""${object.form_url|safe}"">${object.name}</a>
+            "",""This quotation in Availability Check is reopened: <a href=""${object.form_url|safe}"">${object.name}</a>
+            ","This quotation in Availability Check is reopened:&nbsp;<a href=""${object.form_url|safe}"">${object.name}</a>
+            "",""This quotation in Availability Check is reopened: <a href=""${object.form_url|safe}"">${object.name}</a>
+            "
+xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,To Approval,To Approval
+xpr_sale_process,view,crm.lead,xpr_sale_process.lead_form,True,True
+xpr_sale_process,view,crm.lead,xpr_sale_process.opportunity_form,True,True
+xpr_sale_process,model,"res.groups,name",xpr_sale_process.rep_ui,Use Rep UI,Use Rep UI
+xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,Write Approval message,Write Approval message
+xpr_sale_process,view,crm.lead,xpr_sale_process.lead_form,"[('is_company','=','True')]","[('is_company','=','True')]"
+xpr_sale_process,view,crm.lead,xpr_sale_process.opportunity_form,"[('is_company','=','True')]","[('is_company','=','True')]"
+xpr_sale_process,view,crm.lead,xpr_sale_process.lead_form,"[('section_id','!=','False')]","[('section_id','!=','False')]"
+xpr_sale_process,view,crm.lead,xpr_sale_process.opportunity_form,"[('section_id','!=','False')]","[('section_id','!=','False')]"
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,"draft,contract_approved","draft,contract_approved"
+xpr_sale_process,view,sale.order,xpr_sale_process.quotation_remove_create_tree,false,false
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_remove_create_form,false,false
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_remove_create_tree,false,false
+xpr_sale_process,view,res.partner,xpr_sale_process.partner_search,my_partners,my_partners
+xpr_sale_process,view,sale.order,xpr_sale_process.quotation_keep_create_tree,true,true
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_keep_create_form,true,true
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_keep_create_tree,true,true
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,"{""invisible"": True}","{""invisible"": True}"
+xpr_sale_process,view,crm.lead,xpr_sale_process.lead_form,{'invisible' : 1},{'invisible' : 1}
+xpr_sale_process,view,crm.lead,xpr_sale_process.opportunity_form,{'invisible' : 1},{'invisible' : 1}
+xpr_sale_process,view,crm.make.sale,xpr_sale_process.make_sale_form,{'solution': solution},{'solution': solution}
