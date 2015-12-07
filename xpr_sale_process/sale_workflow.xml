@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data noupdate="1">
-        <!--sale.wkf_sale related-->
-
+        <!-- sale.wkf_sale related-->
+        <!-- TODO: Create new workflow and hide sale.wkf_sale -->
         <!-- Delete standard unused transitions -->
-        <!-- TODO: Hide the records instead by using base.group.no_one -->
+        <!-- TODO: Hide the records instead by using 'group_hidden' group -->
 
-<!--         <delete id="sale.trans_draft_sent" model="workflow.transition" />
+        <!--
+        <delete id="sale.trans_draft_sent" model="workflow.transition" />
         <delete id="sale.trans_draft_router" model="workflow.transition" />
         <delete id="sale.trans_sent_router" model="workflow.transition" />
         <delete id="sale.trans_sent_cancel" model="workflow.transition" />
@@ -19,11 +20,13 @@
         <delete id="sale.trans_invoice_except_invoice" model="workflow.transition" />
         <delete id="sale.trans_invoice_except_invoice_end" model="workflow.transition" />
         <delete id="sale.trans_invoice_except_invoice_cancel" model="workflow.transition" />
-        <delete id="sale.trans_invoice_end_done" model="workflow.transition" /> -->
+        <delete id="sale.trans_invoice_end_done" model="workflow.transition" />
+        -->
 
-         <!-- Delete standard unused activities -->
+         <!-- TODO: Hide the records instead by using 'group_hidden' group -->
 
-     <!--     <delete id="sale.act_sent" model="workflow.activity" />
+        <!--
+        <delete id="sale.act_sent" model="workflow.activity" />
         <delete id="sale.act_router" model="workflow.activity" />
         <delete id="sale.act_wait_invoice" model="workflow.activity" />
         <delete id="sale.act_done" model="workflow.activity" />
@@ -31,11 +34,13 @@
         <delete id="sale.act_invoice" model="workflow.activity" />
         <delete id="sale.act_invoice_except" model="workflow.activity" />
         <delete id="sale.act_invoice_end" model="workflow.activity" />
-        <delete id="sale.act_invoice_cancel" model="workflow.activity" /> -->
+        <delete id="sale.act_invoice_cancel" model="workflow.activity" />
+        -->
     
+
     </data>
 
-    <data noupdate="1">
+    <data>
         <!-- Workflow triggered messages -->
 
         <record model="email.template" id="quotation_availability_notify_mail">
@@ -44,9 +49,18 @@
             <field name="auto_delete">True</field>
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
-            <field name="subject">Advertisment quotation to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
-            <field name="body_html"><![CDATA[You must check the advertisment availability for quotation <a href="${object.form_url|safe}">${object.name}</a>.
-            ]]></field>
+            <field name="subject">Advertising Availability Request: ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[Please validate the advertising availability for this quotation: <a href="${object.form_url|safe}">${object.name}</a><br/>Salesperson notes:<br/>${ctx.get('message','')}]]></field>
+        </record>
+
+        <record model="email.template" id="quotation_availability_refused">
+            <field name="name">Advertisment quotation approval refused</field>
+            <field name="model_id" ref="portal_sale.model_sale_order" />
+            <field name="auto_delete">True</field>
+            <field name="lang">${object.partner_id.lang}</field>
+            <field name="email_to">${(object.user_id.email or '')|safe}</field>
+            <field name="subject">Advertising Not available: ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[The advertising quotation was declined: <a href="${object.form_url|safe}">${object.name}</a><br/>Advertising team notes:<br/>${ctx.get('message','')}]]></field>
         </record>
 
         <record model="email.template" id="quotation_manager_approval_mail">
@@ -55,8 +69,8 @@
             <field name="auto_delete">True</field>
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
-            <field name="subject">Quotation discount to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
-            <field name="body_html"><![CDATA[This quotation has to be approved for discounts <a href="${object.form_url|safe}">${object.name}</a>.
+            <field name="subject">Discount Approval Request: ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[Please validate the discount(s) for this quotation: <a href="${object.form_url|safe}">${object.name}</a>
             ]]></field>
         </record>
 
@@ -66,9 +80,47 @@
             <field name="auto_delete">True</field>
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
-            <field name="subject">Reopened quotation in availability check: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
-            <field name="body_html"><![CDATA[This quotation in availability check has been reopened <a href="${object.form_url|safe}">${object.name}</a>
+            <field name="subject">Reopened: Quotation in Availability Check for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[This quotation in Availability Check is reopened:&nbsp;<a href="${object.form_url|safe}">${object.name}</a>
+            ","This quotation in Availability Check is reopened: <a href="${object.form_url|safe}">${object.name}</a>
             ]]></field>
+        </record>
+
+        <record id="view_availability_check_message" model="ir.ui.view">
+            <field name="name">availability message capture</field>
+            <field name="model">xpr_sale_process.availability_message</field>
+            <field name="arch" type="xml">
+                <form string="Write Approval message">
+                    <group>
+                        <field name="order_id" invisible="1" />
+                        <field name="message" widget="textbox" />
+                        <field name="for_approval" invisible="1" />
+                    </group>
+
+                    <footer>
+                        <button
+                            string="To Approval"
+                            type="object"
+                            name="notify_availability_check"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('for_approval','==', False)]}"
+                        />
+
+                        <button
+                            string="Back to Rep"
+                            type="object"
+                            name="notify_availability_refused"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('for_approval','==', True)]}"
+                        />
+
+                        <button
+                            string="Cancel"
+                            class="oe_link"
+                            special="cancel" />
+                    </footer>
+                </form>
+            </field>
         </record>
     </data>
 
@@ -79,7 +131,7 @@
             <field name="name">Availability Check</field>
             <field name="wkf_id" ref="sale.wkf_sale"/>
             <field name="kind">function</field>
-            <field name="action">notify_availability_check()</field>
+            <field name="action">action_require_availability_check()</field>
         </record>
 
         <record model="workflow.activity" id="act_check_manager_approval_needed">
@@ -181,13 +233,25 @@
             <field name="condition">check_product_availability_needed()</field>
         </record>
 
+        <record id="trans_act_check_product_availability_self" model="workflow.transition">
+            <field name="act_from" ref="act_check_product_availability"/>
+            <field name="act_to" ref="act_check_product_availability"/>
+            <field name="signal">sig_check_approval_needed</field>
+        </record>
+
         <record id="trans_act_check_p_a_act_check_m_a_needed" model="workflow.transition">
             <field name="act_from" ref="act_check_product_availability"/>
             <field name="act_to" ref="act_check_manager_approval_needed"/>
             <field name="signal">sig_availability_checked</field>
         </record>
 
-        <record id="trans_act_check_p_a_act_draft" model="workflow.transition">
+        <record id="trans_act_check_p_self" model="workflow.transition">
+            <field name="act_from" ref="act_check_product_availability"/>
+            <field name="act_to" ref="act_check_product_availability"/>
+            <field name="signal">sig_availability_not_checked_notify</field>
+        </record>
+
+        <record id="trans_act_check_p_act_draft" model="workflow.transition">
             <field name="act_from" ref="act_check_product_availability"/>
             <field name="act_to" ref="act_manager_not_approved"/>
             <field name="signal">sig_availability_not_checked</field>
