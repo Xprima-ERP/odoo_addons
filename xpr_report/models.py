@@ -21,6 +21,21 @@
 ##############################################################################
 
 
+from openerp import models, fields, api
+from openerp.tools.translate import _
+
+
+class Company(models.Model):
+    _inherit = "res.company"
+
+    # Overwriting parent fields to make them translatable
+    rml_header = fields.Text(string="RML Header", required=True, translate=True)
+    rml_footer = fields.Text(
+        string="Report Footer",
+        help="Footer text displayed at the bottom of all reports.",
+        required=True,
+        translate=True)
+
 # class order(report_sxw.rml_parse):
 #     def __init__(self, cr, uid, name, context=None):
 #         # Enriches report render context
