@@ -1,12 +1,12 @@
 module,type,name,res_id,src,value
-xpr_dealer,sql_constraint,res.partner,0,A code already exists with this name. Code must be unique.,A code already exists with this name. Code must be unique.
+xpr_dealer,sql_constraint,res.partner,0,A code already exists with this name. Code must be unique.,Un code existe déjà avec ce nom. Le code doit être unique.
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_amgeneral,AMGeneral,AMGeneral
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_ammq_aqvl,AMMQ / AQVL,AMMQ / AQVL
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv,ATV,ATV
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_abitibi_temiscamingue,Abitibi/Témiscamingue,Abitibi/Témiscamingue
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_acura,Acura,Acura
-xpr_dealer,field,"xpr_dealer.dealer,additional_website",0,Additional Website,Additional Website
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,Address,Address
+xpr_dealer,field,"xpr_dealer.dealer,additional_website",0,Additional Website,Site web additionnel
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,Address,Adresse
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_alfaromeo,Alfa Romeo,Alfa Romeo
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_american_hotrod,American Hotrod,American Hotrod
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_aprilia,Aprilia,Aprilia
@@ -17,8 +17,8 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_asto
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_athabasca,Athabasca (div#13),Athabasca (div#13)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_audi,Audi,Audi
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_customer_auto123,Auto123,Auto123
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_auto123_network,Auto123 Network,Auto123 Network
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_certification_automatic,Automatic,Automatic
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_auto123_network,Auto123 Network,Réseau Auto123
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_certification_automatic,Automatic,Automatique
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_bmw,BMW,BMW
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_bmw,BMW,BMW
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_banff,Banff (div#15),Banff (div#15)
@@ -26,19 +26,19 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_b
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_bas_saint_laurent,Bas-Saint-Laurent,Bas-Saint-Laurent
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_benelli,Benelli,Benelli
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_bentley,Bentley,Bentley
-xpr_dealer,field,"xpr_dealer.dealer,billing_city",0,Billing City,Billing City
-xpr_dealer,field,"xpr_dealer.dealer,billing_country_id",0,Billing Country,Billing Country
-xpr_dealer,field,"xpr_dealer.dealer,billing_state_id",0,Billing State,Billing State
-xpr_dealer,field,"xpr_dealer.dealer,billing_street",0,Billing Street,Billing Street
-xpr_dealer,field,"xpr_dealer.dealer,billing_street2",0,Billing Street2,Billing Street2
+xpr_dealer,field,"xpr_dealer.dealer,billing_city",0,Billing City,Ville de facturation
+xpr_dealer,field,"xpr_dealer.dealer,billing_country_id",0,Billing Country,Pays de facturation
+xpr_dealer,field,"xpr_dealer.dealer,billing_state_id",0,Billing State,État de facturation
+xpr_dealer,field,"xpr_dealer.dealer,billing_street",0,Billing Street,Rue de facturation
+xpr_dealer,field,"xpr_dealer.dealer,billing_street2",0,Billing Street2,Rue2 de facturation
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_bois_francs,Bois-Francs,Bois-Francs
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv_bombardier,Bombardier,Bombardier
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv_bombardier_brp,Bombardier (BRP),Bombardier (BRP)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_buell,Buell,Buell
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_bugatti,Bugatti,Bugatti
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_buick,Buick,Buick
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_business,Business,Business
-xpr_dealer,field,"xpr_dealer.dealer,business",0,Business,Business
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_business,Business,Entreprise
+xpr_dealer,field,"xpr_dealer.dealer,business",0,Business,Entreprise
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_customer_ccaq,CCAQ,CCAQ
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_cmi_motor,CMI-Motor,CMI-Motor
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_cpi,CPI,CPI
@@ -50,20 +50,20 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_cam
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_camrose_lloydminster,Camrose-Lloydminster (div#10),Camrose-Lloydminster (div#10)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv_can_am,Can-Am,Can-Am
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_can_am,Can-Am,Can-Am
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car,Car,Car
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car,Car,Auto
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_cars_and_jobs,Cars and Jobs,Cars and Jobs
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_certification,Certification,Certification
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_chaudiere_appalaches,Chaudière-Appalaches,Chaudière-Appalaches
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_chevrolet,Chevrolet,Chevrolet
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_chironex,Chironex,Chironex
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_chrysler,Chrysler,Chrysler
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,City,City
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,City,Ville
 xpr_dealer,view,res.partner,xpr_dealer.view_partner_form,Code,Code
 xpr_dealer,field,"res.partner,code",0,Code,Code
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,Country,Country
-xpr_dealer,field,"xpr_dealer.dealer,create_uid",0,Created by,Created by
-xpr_dealer,field,"xpr_dealer.dealer,create_date",0,Created on,Created on
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_customer,Customer,Customer
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,Country,Pays
+xpr_dealer,field,"xpr_dealer.dealer,create_uid",0,Created by,Créé par
+xpr_dealer,field,"xpr_dealer.dealer,create_date",0,Created on,Créé le
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_customer,Customer,Client
 xpr_dealer,field,"xpr_dealer.dealer,customer",0,Customer Of,Customer Of
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_cote_nord,Côte-Nord,Côte-Nord
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_daewoo,Daewoo,Daewoo
@@ -71,14 +71,14 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer,Dealer,C
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,Dealer,Concessionnaire
 xpr_dealer,model,"ir.actions.act_window,name",xpr_dealer.dealer_category_action,Dealer Categories,Catégorie de Concessionnaire
 xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.dealer_category_menu,Dealer Categories,Catégorie de Concessionnaire
-xpr_dealer,field,"res.partner,dealer",0,Dealer Info,Info Concessionnaire
+xpr_dealer,field,"res.partner,dealer",0,Dealer Info,Info du concessionnaire
 xpr_dealer,model,"ir.actions.act_window,name",xpr_dealer.dealer_action,Dealers,Concessionnaires
 xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.dealer_menu,Dealers,Concessionnaires
-xpr_dealer,field,"xpr_dealer.dealer,owner",0,Dealership Owner,Dealership Owner
-xpr_dealer,field,"xpr_dealer.dealer,owneremail",0,Dealership Owner Email,Dealership Owner Email
+xpr_dealer,field,"xpr_dealer.dealer,owner",0,Dealership Owner,Propriétaire du concessionnaire
+xpr_dealer,field,"xpr_dealer.dealer,owneremail",0,Dealership Owner Email,Courriel du propriétaire du concessionnaire
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_derbi,Derbi,Derbi
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_dodge,Dodge,Dodge
-xpr_dealer,selection,"xpr_dealer.dealer,site_type",0,Does not have a website,Does not have a website
+xpr_dealer,selection,"xpr_dealer.dealer,site_type",0,Does not have a website,N'a pas de site web
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_drumheller,Drumheller (div#5),Drumheller (div#5)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_ducati,Ducati,Ducati
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv_e_ton,E-Ton,E-Ton
@@ -87,8 +87,8 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_e
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_edson,Edson (div#14),Edson (div#14)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_estrie,Estrie,Estrie
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_eton,Eton,Eton
-xpr_dealer,selection,"xpr_dealer.dealer,telephone_choice",0,Evolio Call,Evolio Call
-xpr_dealer,field,"xpr_dealer.dealer,callsource_tollfree",0,Evolio Call Tracking,Evolio Call Tracking
+xpr_dealer,selection,"xpr_dealer.dealer,telephone_choice",0,Evolio Call,Appel EVOLIO
+xpr_dealer,field,"xpr_dealer.dealer,callsource_tollfree",0,Evolio Call Tracking,Suivi d'appel EVOLIO
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_ferrari,Ferrari,Ferrari
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_fiat,Fiat,Fiat
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_ford,Ford,Ford
@@ -96,23 +96,23 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_ford
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_fort_macleod,Fort Macleod (div#3),Fort Macleod (div#3)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_fort_mcmurray,Fort McMurray (div#16),Fort McMurray (div#16)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_freightliner,Freightliner,Freightliner
-xpr_dealer,view,res.partner,xpr_dealer.view_partner_form,Full History,Full History
+xpr_dealer,view,res.partner,xpr_dealer.view_partner_form,Full History,Historique
 xpr_dealer,field,"xpr_dealer.dealer,geolat",0,GEO Latitude,GEO Latitude
 xpr_dealer,field,"xpr_dealer.dealer,geolon",0,GEO Longitude,GEO Longitude
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_gm_optimum,GM Optimum - Enabled Sites,GM Optimum - Enabled Sites
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_gm_optimum,GM Optimum - Enabled Sites,GM Optimum - Sites activés
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_gmc,GMC,GMC
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv_gas_gas,Gas Gas,Gas Gas
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_gas_gas,Gas Gas,Gas Gas
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_gaspesie_iles_de_la_madeleine,Gaspésie/Iles de la Madeleine,Gaspésie/Iles de la Madeleine
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_gaspesie_iles_de_la_madeleine,Gaspésie/Iles de la Madeleine,Gaspésie/Îles-de-la-Madeleine
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_grande_cache,Grande Cache (div#18),Grande Cache (div#18)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_grande_prairie,Grande Prairie (div#19),Grande Prairie (div#19)
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_group,Group,Group
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Group By,Regrouper par
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_group,Group,Groupe
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Group By,Grouper par
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_hamilton,Hamilton,Hamilton
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_hanna,Hanna (div#4),Hanna (div#4)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_harley_davidson,Harley-Davidson,Harley-Davidson
-xpr_dealer,selection,"xpr_dealer.dealer,site_type",0,Has Website With Us,Has Website With Us
-xpr_dealer,selection,"xpr_dealer.dealer,site_type",0,Has a link or portals to their site,Has a link or portals to their site
+xpr_dealer,selection,"xpr_dealer.dealer,site_type",0,Has Website With Us,A un site web avec nous
+xpr_dealer,selection,"xpr_dealer.dealer,site_type",0,Has a link or portals to their site,A un lien ou portails à leur site
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_hellbound_steel,Hellbound Steel,Hellbound Steel
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_hino,Hino,Hino
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_holiday,Holiday,Holiday
@@ -125,11 +125,11 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_hus
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_husqvarna,Husqvarna,Husqvarna
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_hyosung,Hyosung,Hyosung
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_hyundai,Hyundai,Hyundai
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_hyundai_cpo,Hyundai CPO,Hyundai CPO
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_hyundai_cpo,Hyundai CPO,Hyundai VOC
 xpr_dealer,field,"xpr_dealer.dealer,id",0,ID,ID
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_it_support,IT Support,IT Support
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_it_support,IT Support,Support informatique
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_indian,Indian,Indian
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_industry,Industry,Industry
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_industry,Industry,Industrie
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_infiniti,Infiniti,Infiniti
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_international,International,International
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_isuzu,Isuzu,Isuzu
@@ -153,25 +153,25 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_lada
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_lamborghini,Lamborghini,Lamborghini
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_lanaudiere,Lanaudière,Lanaudière
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_landrover,Land Rover,Land Rover
-xpr_dealer,field,"xpr_dealer.dealer,write_uid",0,Last Updated by,Last Updated by
-xpr_dealer,field,"xpr_dealer.dealer,write_date",0,Last Updated on,Last Updated on
+xpr_dealer,field,"xpr_dealer.dealer,write_uid",0,Last Updated by,Dernière mise à jour par
+xpr_dealer,field,"xpr_dealer.dealer,write_date",0,Last Updated on,Dernière mise à jour
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_laurentides,Laurentides,Laurentides
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_laval,Laval,Laval
-xpr_dealer,field,"xpr_dealer.dealer,corpname",0,Legal Name,Legal Name
+xpr_dealer,field,"xpr_dealer.dealer,corpname",0,Legal Name,Nom légal
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_lethbridge,Lethbridge (div#2),Lethbridge (div#2)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_lexus,Lexus,Lexus
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_lincoln,Lincoln,Lincoln
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_london,London,London
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_lotus,Lotus,Lotus
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_mini,MINI,MINI
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_mucda_portal,MUCDA Portal,MUCDA Portal
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_mucda_portal,MUCDA Portal,Portail MUCDA
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_mack,Mack,Mack
-xpr_dealer,field,"xpr_dealer.dealer,makes",0,Makes,Makes
+xpr_dealer,field,"xpr_dealer.dealer,makes",0,Makes,Marques
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_manitoulin_island,Manitoulin Island,Manitoulin Island
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_certification_manual,Manual,Manual
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market,Market,Market
-xpr_dealer,field,"xpr_dealer.dealer,market",0,Market,Market
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_marketing_association,Marketing Association,Marketing Association
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_certification_manual,Manual,Manuel
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market,Market,Marché
+xpr_dealer,field,"xpr_dealer.dealer,market",0,Market,Marché
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_marketing_association,Marketing Association,Association marketing
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_maserati,Maserati,Maserati
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_mauricie,Mauricie,Mauricie
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_maybach,Maybach,Maybach
@@ -181,16 +181,16 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_merc
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_mercedes_amg,Mercedes-AMG,Mercedes-AMG
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_mercedes_maybach,Mercedes-Maybach,Mercedes-Maybach
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_mitsubishi,Mitsubishi,Mitsubishi
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_montreal,Montreal,Montreal
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_montreal,Montreal,Montréal
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_montreal,Montréal,Montréal
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_monteregie,Montérégie,Montérégie
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_moose_factory,Moose Factory,Moose Factory
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto,Moto,Moto
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_moto_guzzi,Moto Guzzi,Moto Guzzi
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,My Dealers,Mes Concessionnaires
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,My Dealers,Mes concessionnaires
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_nanaimo,Nanaimo,Nanaimo
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_navistar,Navistar,Navistar
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_new,New,New
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_new,New,Neuf
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_niagara_falls,Niagara Falls,Niagara Falls
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_nissan,Nissan,Nissan
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_nord_du_quebec,Nord-du-Québec,Nord-du-Québec
@@ -209,25 +209,25 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_pag
 xpr_dealer,model,"ir.model,name",xpr_dealer.model_res_partner,Partner,Partenaire
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_peterbilt,Peterbilt,Peterbilt
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_peugeot,Peugeot,Peugeot
-xpr_dealer,selection,"xpr_dealer.dealer,telephone_choice",0,Phone,Phone
-xpr_dealer,field,"xpr_dealer.dealer,telephone_choice",0,Phone Choice,Phone Choice
+xpr_dealer,selection,"xpr_dealer.dealer,telephone_choice",0,Phone,Tél.
+xpr_dealer,field,"xpr_dealer.dealer,telephone_choice",0,Phone Choice,Choix de tél.
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_piaggio,Piaggio,Piaggio
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_pitster_pro,Pitster Pro,Pitster Pro
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv_polaris,Polaris,Polaris
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_snowmobile_polaris,Polaris,Polaris
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_pontiac,Pontiac,Pontiac
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_porsche,Porsche,Porsche
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portal,Portal,Portal
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portal,Portal,Portail
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_precision_cycle_works,Precision Cycle Works,Precision Cycle Works
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_pro_one,Pro-One,Pro-One
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_quebec,Québec,Québec
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_ram,Ram,Ram
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_red_deer,Red Deer (div#8),Red Deer (div#8)
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_regina,Regina,Regina
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region,Region,Region
-xpr_dealer,field,"xpr_dealer.dealer,region",0,Region,Region
-xpr_dealer,field,"xpr_dealer.dealer,partner",0,Related partner,Related partner
-xpr_dealer,field,"xpr_dealer.dealer,responsible",0,Responsible,Responsible
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_regina,Regina,Régina
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region,Region,Région
+xpr_dealer,field,"xpr_dealer.dealer,region",0,Region,Région
+xpr_dealer,field,"xpr_dealer.dealer,partner",0,Related partner,Partenaire connexe
+xpr_dealer,field,"xpr_dealer.dealer,responsible",0,Responsible,Responsable
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_ridley,Ridley,Ridley
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_rocky_mountain_house,Rocky Mountain House (div#9),Rocky Mountain House (div#9)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_rolls_royce,Rolls-Royce,Rolls-Royce
@@ -235,28 +235,28 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_s_s_
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_srt,SRT,SRT
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_saab,Saab,Saab
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_saguenay_lac_st_jean,Saguenay/Lac-St-Jean,Saguenay/Lac-St-Jean
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Salesperson,Vendeur
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Salesperson,Vendeurs
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_sarnia,Sarnia,Sarnia
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_saskatoon,Saskatoon,Saskatoon
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_saturn,Saturn,Saturn
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_sault_ste_marie,Sault Ste. Marie,Sault Ste. Marie
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_sault_ste_marie,Sault Ste. Marie,Sault-Ste-Marie
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_saxon,Saxon,Saxon
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_scion,Scion,Scion
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_watercraft_sea_doo,Sea-Doo,Sea-Doo
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Search Dealer,Recherche Concessionnaire
-xpr_dealer,field,"xpr_dealer.dealer,quoteflag",0,Send Quotes,Send Quotes
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Search Dealer,Rechercher des concessionnaires
+xpr_dealer,field,"xpr_dealer.dealer,quoteflag",0,Send Quotes,Envoyer des soumissions
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_sherco,Sherco,Sherco
-xpr_dealer,field,"xpr_dealer.dealer,site_type",0,Site Type,Site Type
+xpr_dealer,field,"xpr_dealer.dealer,site_type",0,Site Type,Type de site
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_snowmobile_ski_doo,Ski-Doo,Ski-Doo
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_slave_lake,Slave Lake (div #17),Slave Lake (div #17)
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_smart,Smart,Smart
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_snowmobile_snow_hawk,Snow-Hawk,Snow-Hawk
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_snowmobile,Snowmobile,Snowmobile
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_spyker,Spyker,Spyker
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_st_paul,St. Paul (div#12),St. Paul (div#12)
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,State,State
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_st_paul,St. Paul (div#12),St-Paul (div#12)
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,State,État
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_stettler,Stettler (div#7),Stettler (div#7)
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,Street...,Street...
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,Street...,Rue...
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_subaru,Subaru,Subaru
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_sudbury,Sudbury,Sudbury
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv_suzuki,Suzuki,Suzuki
@@ -266,22 +266,22 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_sym
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_customer_tada,TADA,TADA
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_tgb,TGB,TGB
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_tm,TM,TM
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Tag,Étiquettes
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Tag,Étiquette
 xpr_dealer,view,res.partner,xpr_dealer.view_partner_form,Tags...,Étiquettes...
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,Tags...,Étiquettes...
 xpr_dealer,help,"xpr_dealer.dealer,owner",0,This field is there for the synchronization to XIS,This field is there for the synchronization to XIS
 xpr_dealer,help,"xpr_dealer.dealer,owneremail",0,This field is there for the synchronization to XIS,This field is there for the synchronization to XIS
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_thunder_bay,Thunder Bay,Thunder Bay
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_timmins,Timmins,Timmins
-xpr_dealer,selection,"xpr_dealer.dealer,telephone_choice",0,Toll Free,Toll Free
-xpr_dealer,field,"xpr_dealer.dealer,tollfree",0,Toll Free Number,Toll Free Number
+xpr_dealer,selection,"xpr_dealer.dealer,telephone_choice",0,Toll Free,Sans frais
+xpr_dealer,field,"xpr_dealer.dealer,tollfree",0,Toll Free Number,Numéro sans frais
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_toronto,Toronto,Toronto
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_toyota,Toyota,Toyota
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_travertson,Travertson,Travertson
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_triumph,Triumph,Triumph
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_ural,Ural,Ural
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_used,Used,Used
-xpr_dealer,field,"xpr_dealer.dealer,portalmask",0,Used Cars On,Used Cars On
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_used,Used,Usagé
+xpr_dealer,field,"xpr_dealer.dealer,portalmask",0,Used Cars On,Véhicules d'occasion actif
 xpr_dealer,field,"xpr_dealer.dealer,user10",0,User10,User10
 xpr_dealer,field,"xpr_dealer.dealer,user12",0,User12,User12
 xpr_dealer,field,"xpr_dealer.dealer,user12e",0,User12e,User12e
@@ -296,8 +296,8 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_vic
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_volkswagen,Volkswagen,Volkswagen
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_volvo,Volvo,Volvo
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_watercraft,Watercraft,Watercraft
-xpr_dealer,field,"xpr_dealer.dealer,website_french",0,Website French,Website French
-xpr_dealer,help,"xpr_dealer.dealer,website_french",0,Website of Partner or Company,Website of Partner or Company
+xpr_dealer,field,"xpr_dealer.dealer,website_french",0,Website French,URL du site web (FR)
+xpr_dealer,help,"xpr_dealer.dealer,website_french",0,Website of Partner or Company,Site web du partenaire ou de l'entreprise
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_westernstar,Western Star,Western Star
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_windsor,Windsor,Windsor
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_windsor,Windsor,Windsor
@@ -305,8 +305,8 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_w
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv_yamaha,Yamaha,Yamaha
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_yamaha,Yamaha,Yamaha
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_watercraft_yamaha,Yamaha,Yamaha
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,ZIP,ZIP
-xpr_dealer,field,"xpr_dealer.dealer,billing_zip",0,ZIP Billing,ZIP Billing
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,e.g. +32.81.81.37.00,e.g. +32.81.81.37.00
-xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,e.g. www.odoo.com,e.g. www.odoo.com
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,ZIP,Code postal
+xpr_dealer,field,"xpr_dealer.dealer,billing_zip",0,ZIP Billing,Code postal de facturation
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,e.g. +32.81.81.37.00,Ex. +32.81.81.37.00
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,e.g. www.odoo.com,Ex. www.odoo.com
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_gta,gta,gta
