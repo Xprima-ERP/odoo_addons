@@ -153,13 +153,13 @@
     <blockTable colWidths="265.0,51.0,225.0" style="Table1">
       <tr>
         <td>
-          <para style="terp_default_Bold_9"><b>Shipping address :</b></para>
+          <para style="terp_default_Bold_9"><b>Shipping address</b></para>
           <para style="terp_default_9">[[ (o.partner_shipping_id and o.partner_id.title and o.partner_shipping_id.title.name) or '' ]] [[ (o.partner_shipping_id and o.partner_shipping_id.name) or '' ]]</para>
           <para style="terp_default_9">[[ o.partner_shipping_id and display_address(o.partner_shipping_id) ]]</para>
           <para style="terp_default_9">
             <font color="white"> </font>
           </para>
-          <para style="terp_default_Bold_9"><b>Invoice address :</b></para>
+          <para style="terp_default_Bold_9"><b>Invoice address</b></para>
           <para style="terp_default_9">[[ (o.partner_invoice_id and o.partner_invoice_id.title and o.partner_invoice_id.title.name) or '' ]] [[ (o.partner_invoice_id and o.partner_invoice_id.name) or '' ]]</para>
           <para style="terp_default_9">[[ o.partner_invoice_id and display_address(o.partner_invoice_id) ]] </para>
         </td>

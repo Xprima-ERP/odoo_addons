@@ -18,7 +18,7 @@ xpr_report,model,"ir.actions.report.xml,name",xpr_report.report_sale_order,Quota
 xpr_report,report,xpr_report.report_saleorder,0,Quotation Date,Date de la soumission
 xpr_report,report,xpr_report.report_saleorder,0,Sales taxes applicable in the dealership's province will be included in the invoice.,Les taxes de ventes applicables à la province du concessionnaire seront incluses à la facturation.
 xpr_report,report,xpr_report.report_saleorder,0,Salesperson,Vendeur
-xpr_report,report,xpr_report.report_saleorder,0,Shipping address,Addresse de livraison
+xpr_report,report,xpr_report.report_saleorder,0,Shipping address,Adresse de livraison
 xpr_report,report,xpr_report.report_saleorder,0,Solution,Solution
 xpr_report,report,xpr_report.report_saleorder,0,Starting Date,Date de début
 xpr_report,report,xpr_report.report_saleorder,0,Tel.,Tél.
