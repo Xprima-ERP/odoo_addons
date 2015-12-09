@@ -11,7 +11,7 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_alfa
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_american_hotrod,American Hotrod,American Hotrod
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_aprilia,Aprilia,Aprilia
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv_arctic_cat,Arctic Cat,Arctic Cat
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_snowmobile_artic_cat,Artic Cat,Artic Cat
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_snowmobile_artic_cat,Arctic Cat,Arctic Cat
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_association,Association,Association
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_astonmartin,Aston Martin,Aston Martin
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_athabasca,Athabasca (div#13),Athabasca (div#13)
@@ -69,8 +69,8 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_c
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_daewoo,Daewoo,Daewoo
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer,Dealer,Concessionnaire
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,Dealer,Concessionnaire
-xpr_dealer,model,"ir.actions.act_window,name",xpr_dealer.dealer_category_action,Dealer Categories,Catégorie de Concessionnaire
-xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.dealer_category_menu,Dealer Categories,Catégorie de Concessionnaire
+xpr_dealer,model,"ir.actions.act_window,name",xpr_dealer.dealer_category_action,Dealer Tags,Étiquettes de concessionnaires
+xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.dealer_category_menu,Dealer Tags,Étiquettes de concessionnaires
 xpr_dealer,field,"res.partner,dealer",0,Dealer Info,Info du concessionnaire
 xpr_dealer,model,"ir.actions.act_window,name",xpr_dealer.dealer_action,Dealers,Concessionnaires
 xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.dealer_menu,Dealers,Concessionnaires
