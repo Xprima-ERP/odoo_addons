@@ -7,19 +7,19 @@ xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_d
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_bois_francs_res_partner_category,Bois-Francs,Bois-Francs
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_calgary_res_partner_category,Calgary (div#6),Calgary (div#6)
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_camrose_lloydminster_res_partner_category,Camrose-Lloydminster (div#10),Camrose-Lloydminster (div#10)
-xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,category",0,Category,Category
-xpr_xis_connector,field,"xpr_xis_connector.dealer.region,category",0,Category,Category
-xpr_xis_connector,field,"res.partner.category,certification",0,Certification Info,Certification Info
+xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,category",0,Category,Catégorie
+xpr_xis_connector,field,"xpr_xis_connector.dealer.region,category",0,Category,Catégorie
+xpr_xis_connector,field,"res.partner.category,certification",0,Certification Info,Info sur la certification
 xpr_xis_connector,model,"ir.actions.act_window,name",xpr_xis_connector.certification_action,Certifications,Certifications
 xpr_xis_connector,model,"ir.ui.menu,name",xpr_xis_connector.dealer_certification_menu,Certifications,Certifications
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_chaudiere_appalaches_res_partner_category,Chaudière-Appalaches,Chaudière-Appalaches
-xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,create_uid",0,Created by,Created by
-xpr_xis_connector,field,"xpr_xis_connector.dealer.region,create_uid",0,Created by,Created by
-xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,create_date",0,Created on,Created on
-xpr_xis_connector,field,"xpr_xis_connector.dealer.region,create_date",0,Created on,Created on
+xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,create_uid",0,Created by,Créé par
+xpr_xis_connector,field,"xpr_xis_connector.dealer.region,create_uid",0,Created by,Créé par
+xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,create_date",0,Created on,Créé le
+xpr_xis_connector,field,"xpr_xis_connector.dealer.region,create_date",0,Created on,Créé le
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_cote_nord_res_partner_category,Côte-Nord,Côte-Nord
-xpr_xis_connector,view,xpr_xis_connector.dealer.certification,xpr_xis_connector.view_dealer_certification_form,Definition,Definition
-xpr_xis_connector,view,xpr_xis_connector.dealer.region,xpr_xis_connector.view_dealer_region_form,Definition,Definition
+xpr_xis_connector,view,xpr_xis_connector.dealer.certification,xpr_xis_connector.view_dealer_certification_form,Definition,Définition
+xpr_xis_connector,view,xpr_xis_connector.dealer.region,xpr_xis_connector.view_dealer_region_form,Definition,Définition
 xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,description",0,Description,Description
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_drumheller_res_partner_category,Drumheller (div#5),Drumheller (div#5)
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_edmonton_res_partner_category,Edmonton (div#11),Edmonton (div#11)
@@ -27,7 +27,7 @@ xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_d
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_estrie_res_partner_category,Estrie,Estrie
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_fort_macleod_res_partner_category,Fort Macleod (div#3),Fort Macleod (div#3)
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_fort_mcmurray_res_partner_category,Fort McMurray (div#16),Fort McMurray (div#16)
-xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_gaspesie_iles_de_la_madeleine_res_partner_category,Gaspésie/Iles de la Madeleine,Gaspésie/Iles de la Madeleine
+xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_gaspesie_iles_de_la_madeleine_res_partner_category,Gaspésie/Iles de la Madeleine,Gaspésie/ìles-de-la-Madeleine
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_grande_cache_res_partner_category,Grande Cache (div#18),Grande Cache (div#18)
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_grande_prairie_res_partner_category,Grande Prairie (div#19),Grande Prairie (div#19)
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_hamilton_res_partner_category,Hamilton,Hamilton
@@ -38,10 +38,10 @@ xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_d
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_kingston_res_partner_category,Kingston,Kingston
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_kitchener_waterloo_res_partner_category,Kitchener/Waterloo,Kitchener/Waterloo
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_lanaudiere_res_partner_category,Lanaudière,Lanaudière
-xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,write_uid",0,Last Updated by,Last Updated by
-xpr_xis_connector,field,"xpr_xis_connector.dealer.region,write_uid",0,Last Updated by,Last Updated by
-xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,write_date",0,Last Updated on,Last Updated on
-xpr_xis_connector,field,"xpr_xis_connector.dealer.region,write_date",0,Last Updated on,Last Updated on
+xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,write_uid",0,Last Updated by,Dernière mise à jour par
+xpr_xis_connector,field,"xpr_xis_connector.dealer.region,write_uid",0,Last Updated by,Dernière mise à jour par
+xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,write_date",0,Last Updated on,Dernière mise à jour
+xpr_xis_connector,field,"xpr_xis_connector.dealer.region,write_date",0,Last Updated on,Dernière mise à jour
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_laurentides_res_partner_category,Laurentides,Laurentides
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_laval_res_partner_category,Laval,Laval
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_lethbridge_res_partner_category,Lethbridge (div#2),Lethbridge (div#2)
@@ -62,18 +62,18 @@ xpr_xis_connector,model,"ir.model,name",xpr_xis_connector.model_res_partner,Part
 xpr_xis_connector,model,"ir.model,name",xpr_xis_connector.model_res_partner_category,Partner Tags,Étiquettes du partenaire
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_quebec_res_partner_category,Québec,Québec
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_red_deer_res_partner_category,Red Deer (div#8),Red Deer (div#8)
-xpr_xis_connector,field,"xpr_xis_connector.dealer.region,region_code",0,Region Code,Region Code
-xpr_xis_connector,field,"res.partner.category,region",0,Region Info,Region Info
-xpr_xis_connector,model,"ir.actions.act_window,name",xpr_xis_connector.region_action,Regions,Regions
+xpr_xis_connector,field,"xpr_xis_connector.dealer.region,region_code",0,Region Code,Code de la région
+xpr_xis_connector,field,"res.partner.category,region",0,Region Info,Info sur la région
+xpr_xis_connector,model,"ir.actions.act_window,name",xpr_xis_connector.region_action,Regions,Régions
 xpr_xis_connector,model,"ir.ui.menu,name",xpr_xis_connector.dealer_region_menu,Regions,Régions
-xpr_xis_connector,field,"sale.order,renew_date",0,Renew Date,Renew Date
+xpr_xis_connector,field,"sale.order,renew_date",0,Renew Date,Date de renouvellement
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_rocky_mountain_house_res_partner_category,Rocky Mountain House (div#9),Rocky Mountain House (div#9)
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_saguenay_lac_st_jean_res_partner_category,Saguenay/Lac-St-Jean,Saguenay/Lac-St-Jean
-xpr_xis_connector,model,"ir.model,name",xpr_xis_connector.model_sale_order,Sales Order,Bon de commande
+xpr_xis_connector,model,"ir.model,name",xpr_xis_connector.model_sale_order,Sales Order,Contrats
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_sarnia_res_partner_category,Sarnia,Sarnia
-xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_sault_ste_marie_res_partner_category,Sault Ste. Marie,Sault Ste. Marie
+xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_sault_ste_marie_res_partner_category,Sault Ste. Marie,Sault Ste-Marie
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_slave_lake_res_partner_category,Slave Lake (div #17),Slave Lake (div #17)
-xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_st_paul_res_partner_category,St. Paul (div#12),St. Paul (div#12)
+xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_st_paul_res_partner_category,St. Paul (div#12),St-Paul (div#12)
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_stettler_res_partner_category,Stettler (div#7),Stettler (div#7)
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_sudbury_res_partner_category,Sudbury,Sudbury
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_thunder_bay_res_partner_category,Thunder Bay,Thunder Bay
@@ -82,4 +82,4 @@ xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_d
 xpr_xis_connector,model,"ir.model,name",xpr_xis_connector.model_res_users,Users,Utilisateurs
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_windsor_res_partner_category,Windsor,Windsor
 xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,xis_certification_id",0,XIS Certification ID,XIS Certification ID
-xpr_xis_connector,field,"res.users,xis_user_external_id",0,XIS external user,XIS external user
+xpr_xis_connector,field,"res.users,xis_user_external_id",0,XIS external user,Utilisateur externe XIS
