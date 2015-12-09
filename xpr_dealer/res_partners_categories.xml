@@ -1051,7 +1051,7 @@
         <field name="parent_id" ref="category_dealer_portal" />
     </record>
     <record model="res.partner.category" id="category_dealer_portalmask_ammq_aqvl">
-        <field name="name">AMMQ / AQVL</field>
+        <field name="name">QMDA / ACVLQ</field>
         <field name="parent_id" ref="category_dealer_portal" />
     </record>
     <record model="res.partner.category" id="category_dealer_portalmask_gm_optimum">

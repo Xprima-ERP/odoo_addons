@@ -1,7 +1,7 @@
 module,type,name,res_id,src,value
 xpr_dealer,sql_constraint,res.partner,0,A code already exists with this name. Code must be unique.,Un code existe déjà avec ce nom. Le code doit être unique.
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_amgeneral,AMGeneral,AMGeneral
-xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_ammq_aqvl,AMMQ / AQVL,AMMQ / AQVL
+xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalmask_ammq_aqvl,QMDA / ACVLQ,AMMQ / ACVLQ
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv,ATV,ATV
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_abitibi_temiscamingue,Abitibi/Témiscamingue,Abitibi/Témiscamingue
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_acura,Acura,Acura
@@ -64,7 +64,7 @@ xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,Country,Pays
 xpr_dealer,field,"xpr_dealer.dealer,create_uid",0,Created by,Créé par
 xpr_dealer,field,"xpr_dealer.dealer,create_date",0,Created on,Créé le
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_customer,Customer,Client
-xpr_dealer,field,"xpr_dealer.dealer,customer",0,Customer Of,Customer Of
+xpr_dealer,field,"xpr_dealer.dealer,customer",0,Customer of,Client de
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_cote_nord,Côte-Nord,Côte-Nord
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_daewoo,Daewoo,Daewoo
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer,Dealer,Concessionnaire
