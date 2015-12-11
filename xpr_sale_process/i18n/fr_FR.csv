@@ -37,7 +37,7 @@ xpr_sale_process,field,"product.category,approval_group",0,Approval Group,Groupe
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Approve,Approuver
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Availability Checked,Disponibilité vérifiée
 xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,Back to Rep,Retourner au vendeur
-xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,Cancel,Canceler
+xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,Cancel,Annuler
 xpr_sale_process,field,"crm.lead,category",0,Category,Catégorie
 xpr_sale_process,field,"crm.make.sale,category",0,Category,Catégorie
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Category,Catégorie
