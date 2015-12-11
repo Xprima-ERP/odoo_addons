@@ -306,25 +306,18 @@ class SaleOrderRequest(XISRequestWrapper):
         i = 0
         for line in self.order.order_line:
 
-            if line.product_id:
-                name = line.product_id.display_name
-                description = line.product_id.description_sale or ''
-            else:
-                name = ''
-                description = line.name or ''
-
             data.update({
                 "qli_ProductCode_%s" % i:
                 line.product_id.default_code or "",
 
                 "qli_ListPrice_%s" % i:
-                int(line.product_uom_qty) * line.price_unit,
+                    int(line.product_uom_qty) * line.price_unit,
 
                 "qli_Quantity_%s" % i: line.product_uom_qty,
                 "qli_UnitPrice_%s" % i: line.price_unit,
-                "qli_Name_%s" % i: name,
+                "qli_Name_%s" % i: line.display_name,
                 "qli_Family_%s" % i: 'null',
-                "qli_Description_%s" % i: description.strip(),
+                "qli_Description_%s" % i: line.display_description,
             })
 
             i += 1

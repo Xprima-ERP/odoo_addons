@@ -19,7 +19,7 @@
     </record>
 
     <record id="adwords" model="product.category">
-       <field name="name">Adwords</field>
+       <field name="name">AdWords</field>
        <field name="parent_id" ref="product.product_category_all"/>
     </record>
 

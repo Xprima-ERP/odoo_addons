@@ -52,7 +52,6 @@ Contributors
         'sale_order_custom_report.xml',
         'terms_and_conditions.xml',
         'companies.xml',
-        'report/ir.translation.csv' # Until we can fix the po file properly
     ],
     'installable': True,
 }

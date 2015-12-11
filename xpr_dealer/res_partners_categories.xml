@@ -4,16 +4,14 @@
 <data>
 
     <record model="ir.actions.act_window" id="dealer_category_action">
-        <field name="name">Dealer Categories</field>
+        <field name="name">Dealer Tags</field>
         <field name="res_model">res.partner.category</field>
         <field name="view_mode">tree,form</field>
     </record>
-    <menuitem id="dealer_category_menu" name="Dealer Categories"
+    <menuitem id="dealer_category_menu" name="Dealer Tags"
                   parent="base.menu_sales"
                   action="dealer_category_action"
                   groups="base.group_sale_manager"/>
-
-
 
     <record model="ir.actions.act_window" id="dealer_action">
         <field name="name">Dealers</field>
@@ -689,7 +687,7 @@
     </record>    
 
     <record model="res.partner.category" id="category_dealer_snowmobile_artic_cat">
-        <field name="name">Artic Cat</field>
+        <field name="name">Arctic Cat</field>
         <field name="parent_id" ref="category_dealer_snowmobile" />
     </record>
     <record model="res.partner.category" id="category_dealer_snowmobile_polaris">
@@ -1051,7 +1049,7 @@
         <field name="parent_id" ref="category_dealer_portal" />
     </record>
     <record model="res.partner.category" id="category_dealer_portalmask_ammq_aqvl">
-        <field name="name">AMMQ / AQVL</field>
+        <field name="name">QMDA / ACVLQ</field>
         <field name="parent_id" ref="category_dealer_portal" />
     </record>
     <record model="res.partner.category" id="category_dealer_portalmask_gm_optimum">
