@@ -46,7 +46,7 @@ xpr_solution_builder,field,"xpr_solution_builder.solution.line,write_date",0,Las
 xpr_solution_builder,field,"xpr_solution_builder.solution.option,write_date",0,Last Updated on,Dernière mise à jour
 xpr_solution_builder,field,"xpr_solution_builder.solution_combiner,write_date",0,Last Updated on,Dernière mise à jour
 xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,write_date",0,Last Updated on,Dernière mise à jour
-xpr_solution_builder,field,"xpr_solution_builder.solution,products_extra",0,Mandatory Product Count,Mandatory Product Count
+xpr_solution_builder,field,"xpr_solution_builder.solution,products_extra",0,Mandatory Product Quantity,Quantité de produit obligatoire
 xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_form_view,Mandatory Products,Produits obligatoires
 xpr_solution_builder,field,"xpr_solution_builder.solution,products",0,Mandatory Products,Produits obligatoires
 xpr_solution_builder,field,"xpr_solution_builder.solution,name",0,Name,Nom

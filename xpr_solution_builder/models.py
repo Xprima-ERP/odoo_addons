@@ -113,7 +113,7 @@ class Solution(models.Model):
     products_extra = fields.One2many(
         'xpr_solution_builder.solution.line',
         'solution',
-        string='Mandatory Product Count')
+        string='Mandatory Product Quantity')
 
     options = fields.Many2many(
         'product.product',
