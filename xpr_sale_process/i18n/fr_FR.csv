@@ -58,7 +58,6 @@ xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_manag
 xpr_sale_process,field,"xpr_sale_process.availability_message,for_approval",0,For approval,For approval
 xpr_sale_process,help,"product.category,approval_group",0,Group of users that must approve products of this category,Groupe d'utilisateurs qui doit approuver les produits de cette catégorie
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.group_hidden,Hidden,Caché
-xpr_sale_process,field,"xpr_sale_process.availability_message,id",0,ID,ID
 xpr_sale_process,field,"xpr_sale_process.availability_message,write_uid",0,Last Updated by,Last Updated by
 xpr_sale_process,field,"xpr_sale_process.availability_message,write_date",0,Last Updated on,Last Updated on
 xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_crm_lead,Lead/Opportunity,Piste/Opportunité
@@ -103,23 +102,5 @@ xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_ava
             "",""This quotation in Availability Check is reopened: <a href=""${object.form_url|safe}"">${object.name}</a>
             "
 xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,To Approval,To Approval
-xpr_sale_process,view,crm.lead,xpr_sale_process.lead_form,True,True
-xpr_sale_process,view,crm.lead,xpr_sale_process.opportunity_form,True,True
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.rep_ui,Use Rep UI,Utiliser l'interface usager Rep
 xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,Write Approval message,Write Approval message
-xpr_sale_process,view,crm.lead,xpr_sale_process.lead_form,"[('is_company','=','True')]","[('is_company','=','True')]"
-xpr_sale_process,view,crm.lead,xpr_sale_process.opportunity_form,"[('is_company','=','True')]","[('is_company','=','True')]"
-xpr_sale_process,view,crm.lead,xpr_sale_process.lead_form,"[('section_id','!=','False')]","[('section_id','!=','False')]"
-xpr_sale_process,view,crm.lead,xpr_sale_process.opportunity_form,"[('section_id','!=','False')]","[('section_id','!=','False')]"
-xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,"draft,contract_approved","draft,contract_approved"
-xpr_sale_process,view,sale.order,xpr_sale_process.quotation_remove_create_tree,false,false
-xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_remove_create_form,false,false
-xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_remove_create_tree,false,false
-xpr_sale_process,view,res.partner,xpr_sale_process.partner_search,my_partners,my_partners
-xpr_sale_process,view,sale.order,xpr_sale_process.quotation_keep_create_tree,true,true
-xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_keep_create_form,true,true
-xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_keep_create_tree,true,true
-xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,"{""invisible"": True}","{""invisible"": True}"
-xpr_sale_process,view,crm.lead,xpr_sale_process.lead_form,{'invisible' : 1},{'invisible' : 1}
-xpr_sale_process,view,crm.lead,xpr_sale_process.opportunity_form,{'invisible' : 1},{'invisible' : 1}
-xpr_sale_process,view,crm.make.sale,xpr_sale_process.make_sale_form,{'solution': solution},{'solution': solution}
