@@ -13,24 +13,24 @@ xpr_sale_process,model,"ir.actions.act_window,help",xpr_sale_process.action_cont
                 </p>
             "
 xpr_sale_process,model,"ir.actions.client,help",xpr_sale_process.action_my_opportunity,"<p>
-                    No opportunity activity found.
+                    No activity found.
                 </p>
             ","<p>
-                    No opportunity activity found.
+                    Aucune activité trouvée.
                 </p>
             "
 xpr_sale_process,model,"ir.actions.client,help",xpr_sale_process.action_team_opportunity,"<p>
-                    No opportunity activity found.
+                    No activity found.
                 </p>
             ","<p>
-                    No opportunity activity found.
+                  Aucune activité trouvée.
                 </p>
             "
 xpr_sale_process,model,"email.template,body_html",xpr_sale_process.opportunity_reminder_mail,"<p>This opportunity requires your attention today:</p><ul><li>Name: ${object.name}</li><li>ID: ${object.id}</li><li>Action: ${object.title_action}</li></ul>
             ","<p>Cette opportunité nécessite votre attention aujourd'hui :</p><ul><li>Name: ${object.name}</li><li>ID: ${object.id}</li><li>Action: ${object.title_action}</li></ul>
             "
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.advertising,Advertising,Publicité
-xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_notify_mail,Advertising Availability Request: ${object.partner_id != False and object.partner_id.name or object.contact_name},Approbation de disponibilité de publicité : ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_notify_mail,Advertisment quotation to approve: ${object.name} for ${object.partner_id! = False and object.partner_id.name or object.contact_name},Soumission de publicité à approuver : ${object.name} for ${object.partner_id! = False and object.partner_id.name or object.contact_name}
 xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_refused,Advertising Not available: ${object.partner_id != False and object.partner_id.name or object.contact_name},Publicité non disponible: ${object.partner_id != False and object.partner_id.name or object.contact_name}
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.discount_all,All Discounts,Tous les rabais
 xpr_sale_process,field,"product.category,approval_group",0,Approval Group,Groupe d'approbation
@@ -54,7 +54,7 @@ xpr_sale_process,field,"xpr_sale_process.availability_message,create_date",0,Cre
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Customer Approved,Approuvé par le client
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Declined by Customer,Refusé par le client
 xpr_sale_process,view,res.partner,xpr_sale_process.rep_partner tree,Customers,Clients
-xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_manager_approval_mail,Discount Approval Request: ${object.partner_id != False and object.partner_id.name or object.contact_name},Approbation de rabais : ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_manager_approval_mail,Quotation discount to approve: ${object.name} for ${object.partner_id! = False and object.partner_id.name or object.contact_name},Rabais de soumission à approuver : ${object.name} for ${object.partner_id! = False and object.partner_id.name or object.contact_name}
 xpr_sale_process,field,"xpr_sale_process.availability_message,for_approval",0,For approval,For approval
 xpr_sale_process,help,"product.category,approval_group",0,Group of users that must approve products of this category,Groupe d'utilisateurs qui doit approuver les produits de cette catégorie
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.group_hidden,Hidden,Caché
@@ -62,7 +62,6 @@ xpr_sale_process,field,"xpr_sale_process.availability_message,write_uid",0,Last 
 xpr_sale_process,field,"xpr_sale_process.availability_message,write_date",0,Last Updated on,Last Updated on
 xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_crm_lead,Lead/Opportunity,Piste/Opportunité
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Lost,Perdu
-xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_crm_make_sale,Make sales,Conclure les ventes
 xpr_sale_process,field,"xpr_sale_process.availability_message,message",0,Message,Message
 xpr_sale_process,model,"ir.actions.client,name",xpr_sale_process.action_my_opportunity,My Opportunity Notes,Mes notes
 xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_opportunities,My Opportunity Notes,Mes notes
@@ -71,16 +70,14 @@ xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Not Available,Pas disponible
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Order Month,Mois de commande
 xpr_sale_process,field,"xpr_sale_process.availability_message,order_id",0,Order id,Order id
-xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_availability_notify_mail,"Please validate the advertising availability for this quotation: <a href=""${object.form_url|safe}"">${object.name}</a><br/>Salesperson notes:<br/>${ctx.get('message','')}","Please validate the advertising availability for this quotation: <a href=""${object.form_url|safe}"">${object.name}</a><br/>Salesperson notes:<br/>${ctx.get('message','')}"
-xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_manager_approval_mail,"Please validate the discount(s) for this quotation: <a href=""${object.form_url|safe}"">${object.name}</a>
-            ","Please validate the discount(s) for this quotation: <a href=""${object.form_url|safe}"">${object.name}</a>
-            "
+xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_availability_notify_mail,"You must check the advertisment availability for quotation <a href=""${object.form_url|safe}"">${object.name}</a>.<br/>Salesperson notes:<br/>${ctx.get('message','')}","Validez la disponibilité de publicité de cette soumission : <a href=""${object.form_url|safe}"">${object.name}</a>.<br/>Notes du vendeur:<br/>${ctx.get('message','')}"
+xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_manager_approval_mail,"This quotation has to be approved for discounts <a href=""${object.form_url|safe}"">${object.name}</a>.","Validez les rabais de cette soumission  : <a href=""${object.form_url|safe}"">${object.name}</a>."
 xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_product_category,Product Category,Catégorie d'article
 xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_product_template,Product Template,Modèle d'article
 xpr_sale_process,model,"email.template,subject",xpr_sale_process.opportunity_reminder_mail,Reminder on Lead: ${object.id} from ${object.partner_id != False and object.partner_id.name or object.contact_name},Rappel : ${object.id} from ${object.partner_id != False and object.partner_id.name or object.contact_name}
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Renewal Month,Mois de renouvelllement
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Reopen,Rouvrir
-xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_reopen_mail,Reopened: Quotation in Availability Check for ${object.partner_id != False and object.partner_id.name or object.contact_name},Réouverture : Soumission en attente d'approbation de disponibilité pour ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_reopen_mail,Reopened quotation in availability check: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name},Soumission en attente de validation de disponibilité rouverte : ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}
 xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_sale_order,Sales Order,Contrats
 xpr_sale_process,model,"ir.actions.server,name",xpr_sale_process.opportunity_reminder_action,Send Mail,Envoyer un courriel
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Ask Approval,Demander l'approbation
@@ -96,11 +93,7 @@ xpr_sale_process,model,"res.groups,comment",xpr_sale_process.advertising,The use
 xpr_sale_process,model,"res.groups,comment",xpr_sale_process.create_company,This group Permits a user to create a company.,Ce groupe permet à un utilisateur de créer une compagnie.
 xpr_sale_process,model,"res.groups,comment",xpr_sale_process.rep_ui,This group changes the UI. For reps only.,Ce groupe change l'interface utilisateur des représentants seulement.
 xpr_sale_process,model,"res.groups,comment",xpr_sale_process.group_hidden,This group permits hiding stuff. Keep it empty.,Ce groupe permet de cacher des éléments. Gardez-le vide.
-xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_availability_reopen_mail,"This quotation in Availability Check is reopened:&nbsp;<a href=""${object.form_url|safe}"">${object.name}</a>
-            "",""This quotation in Availability Check is reopened: <a href=""${object.form_url|safe}"">${object.name}</a>
-            ","This quotation in Availability Check is reopened:&nbsp;<a href=""${object.form_url|safe}"">${object.name}</a>
-            "",""This quotation in Availability Check is reopened: <a href=""${object.form_url|safe}"">${object.name}</a>
-            "
+xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_availability_reopen_mail,"This quotation in availability check has been reopened <a href=""${object.form_url|safe}"">${object.name}</a>","Cette soumission en attente de validation de disponibilité a été rouverte : <a href=""${object.form_url|safe}"">${object.name}</a>"
 xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,To Approval,To Approval
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.rep_ui,Use Rep UI,Utiliser l'interface usager Rep
 xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,Write Approval message,Write Approval message

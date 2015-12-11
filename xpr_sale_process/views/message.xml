@@ -24,7 +24,7 @@
             }&quot;"/>
             <field name="help" type="html">
                 <p>
-                    No opportunity activity found.
+                    No activity found.
                 </p>
             </field>
         </record>
@@ -55,7 +55,7 @@
             }&quot;"/>
             <field name="help" type="html">
                 <p>
-                    No opportunity activity found.
+                    No activity found.
                 </p>
             </field>
         </record>
