@@ -52,7 +52,7 @@ xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_contracts,Contrac
 xpr_sale_process,field,"xpr_sale_process.availability_message,create_uid",0,Created by,Created by
 xpr_sale_process,field,"xpr_sale_process.availability_message,create_date",0,Created on,Created on
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Customer Approved,Approuvé par le client
-xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Customer not Approved,Customer not Approved
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Declined by Customer,Refusé par le client
 xpr_sale_process,view,res.partner,xpr_sale_process.rep_partner tree,Customers,Clients
 xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_manager_approval_mail,Discount Approval Request: ${object.partner_id != False and object.partner_id.name or object.contact_name},Approbation de rabais : ${object.partner_id != False and object.partner_id.name or object.contact_name}
 xpr_sale_process,field,"xpr_sale_process.availability_message,for_approval",0,For approval,For approval
@@ -67,7 +67,7 @@ xpr_sale_process,field,"xpr_sale_process.availability_message,message",0,Message
 xpr_sale_process,model,"ir.actions.client,name",xpr_sale_process.action_my_opportunity,My Opportunity Notes,Mes notes
 xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_opportunities,My Opportunity Notes,Mes notes
 xpr_sale_process,view,res.partner,xpr_sale_process.partner_search,My Partners,Mes partenaires
-xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Not Approved,Not Approved
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Declined,Refusé
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Not Available,Pas disponible
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Order Month,Mois de commande
 xpr_sale_process,field,"xpr_sale_process.availability_message,order_id",0,Order id,Order id
@@ -83,7 +83,7 @@ xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process
 xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_reopen_mail,Reopened: Quotation in Availability Check for ${object.partner_id != False and object.partner_id.name or object.contact_name},Réouverture : Soumission en attente d'approbation de disponibilité pour ${object.partner_id != False and object.partner_id.name or object.contact_name}
 xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_sale_order,Sales Order,Contrats
 xpr_sale_process,model,"ir.actions.server,name",xpr_sale_process.opportunity_reminder_action,Send Mail,Envoyer un courriel
-xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Send for Approval,Send for Approval
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Ask Approval,Demander l'approbation
 xpr_sale_process,model,"ir.actions.server,help",xpr_sale_process.opportunity_reminder_action,Sends opportunity action mail reminder,Envoie un rappel d'action par courriel.
 xpr_sale_process,field,"crm.lead,solution",0,Solution,Solution
 xpr_sale_process,field,"crm.make.sale,solution",0,Solution,Solution

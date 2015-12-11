@@ -123,7 +123,7 @@
                 </field>
 
                 <xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
-                    <button type="workflow" name="sig_check_approval_needed" string="Send for Approval" states="draft,manager_not_approved,contract_not_approved" />
+                    <button type="workflow" name="sig_check_approval_needed" string="Ask Approval" states="draft,manager_not_approved,contract_not_approved" />
 
                     <button type="workflow" name="sig_availability_checked" string="Availability Checked" states="need_availability_check" groups="xpr_sale_process.advertising" />
 
@@ -133,7 +133,7 @@
 
                     <button type="workflow" name="sig_manager_approved" string="Approve" states="need_manager_approval" groups="base.group_sale_manager" />
 
-                    <button type="workflow" name="sig_manager_not_approved" string="Not Approved" states="need_manager_approval"  groups="base.group_sale_manager"/>
+                    <button type="workflow" name="sig_manager_not_approved" string="Declined" states="need_manager_approval"  groups="base.group_sale_manager"/>
 
                     <button type="workflow" name="sig_contract_reopened" string="Reopen" states="contract_not_presented" />
 
@@ -152,7 +152,7 @@
                 <xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
                     <button type="workflow" name="sig_customer_approved" string="Customer Approved" states="contract_not_presented" />
 
-                    <button type="workflow" name="sig_customer_not_approved" string="Customer not Approved" states="contract_not_presented" />
+                    <button type="workflow" name="sig_customer_not_approved" string="Declined by Customer" states="contract_not_presented" />
 
                 </xpath>
 
