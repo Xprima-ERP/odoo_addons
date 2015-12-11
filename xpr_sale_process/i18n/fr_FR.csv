@@ -41,7 +41,10 @@ xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.vie
 xpr_sale_process,field,"crm.lead,category",0,Category,Catégorie
 xpr_sale_process,field,"crm.make.sale,category",0,Category,Catégorie
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Category,Catégorie
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Renewal Month,Mois de renouvellement
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Mine,Miens
 xpr_sale_process,field,"sale.order,category",0,Category,Catégorie
+xpr_sale_process,field,"sale.order,renew_date",0,Renew Date,Date de renouvellement
 xpr_sale_process,model,"ir.actions.act_window,name",xpr_sale_process.action_companies,Companies,Compagnies
 xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_companies,Companies,Compagnies
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.create_company,Company Creation,Création de compagnies
