@@ -1,0 +1,80 @@
+module,type,name,res_id,src,value
+xpr_solution_builder,view,sale.order,xpr_solution_builder.sale_order_form,(update),(mise à jour)
+xpr_solution_builder,view,xpr_solution_builder.solution_combiner,xpr_solution_builder.view_solution_builder_wizard,Add Optional Products,Add Optional Products
+xpr_solution_builder,view,xpr_solution_builder.solution_configurator,xpr_solution_builder.view_solution_configurator_wizard,Add Optional Products,Add Optional Products
+xpr_solution_builder,view,sale.order,xpr_solution_builder.sale_order_form,Add Options,Add Options
+xpr_solution_builder,field,"xpr_solution_builder.solution.option,selected_default",0,Auto Select,Auto Select
+xpr_solution_builder,view,xpr_solution_builder.solution_combiner,xpr_solution_builder.view_solution_builder_wizard,Cancel,Cancel
+xpr_solution_builder,view,xpr_solution_builder.solution_configurator,xpr_solution_builder.view_solution_configurator_wizard,Cancel,Cancel
+xpr_solution_builder,field,"xpr_solution_builder.solution.option,sticky",0,Cannot be removed,Cannot be removed
+xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_builder_search_view,Category,Category
+xpr_solution_builder,field,"xpr_solution_builder.solution,category",0,Category,Category
+xpr_solution_builder,model,"ir.actions.act_window,name",xpr_solution_builder.action_solution_combiner,Combine,Combine
+xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_form_view,Combine,Combine
+xpr_solution_builder,view,xpr_solution_builder.solution_combiner,xpr_solution_builder.view_solution_builder_wizard,Combine,Combine
+xpr_solution_builder,field,"xpr_solution_builder.solution_combiner,combined_category",0,Combined with Category,Combined with Category
+xpr_solution_builder,view,sale.order,xpr_solution_builder.sale_order_form,Comments,Comments
+xpr_solution_builder,field,"xpr_solution_builder.solution,create_uid",0,Created by,Created by
+xpr_solution_builder,field,"xpr_solution_builder.solution.line,create_uid",0,Created by,Created by
+xpr_solution_builder,field,"xpr_solution_builder.solution.option,create_uid",0,Created by,Created by
+xpr_solution_builder,field,"xpr_solution_builder.solution_combiner,create_uid",0,Created by,Created by
+xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,create_uid",0,Created by,Created by
+xpr_solution_builder,field,"xpr_solution_builder.solution,create_date",0,Created on,Created on
+xpr_solution_builder,field,"xpr_solution_builder.solution.line,create_date",0,Created on,Created on
+xpr_solution_builder,field,"xpr_solution_builder.solution.option,create_date",0,Created on,Created on
+xpr_solution_builder,field,"xpr_solution_builder.solution_combiner,create_date",0,Created on,Created on
+xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,create_date",0,Created on,Created on
+xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_form_view,Definition,Definition
+xpr_solution_builder,field,"xpr_solution_builder.solution,description",0,Description,Description
+xpr_solution_builder,field,"sale.order.line,discount_money",0,Discount ($),Discount ($)
+xpr_solution_builder,view,xpr_solution_builder.solution_configurator,xpr_solution_builder.view_solution_configurator_wizard,Done,Done
+xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,dummy",0,Dummy,Dummy
+xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_builder_search_view,Group by...,Group by...
+xpr_solution_builder,field,"xpr_solution_builder.solution,id",0,ID,ID
+xpr_solution_builder,field,"xpr_solution_builder.solution.line,id",0,ID,ID
+xpr_solution_builder,field,"xpr_solution_builder.solution.option,id",0,ID,ID
+xpr_solution_builder,field,"xpr_solution_builder.solution_combiner,id",0,ID,ID
+xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,id",0,ID,ID
+xpr_solution_builder,view,sale.order,xpr_solution_builder.sale_order_form,Invoice,Facture
+xpr_solution_builder,field,"xpr_solution_builder.solution,write_uid",0,Last Updated by,Last Updated by
+xpr_solution_builder,field,"xpr_solution_builder.solution.line,write_uid",0,Last Updated by,Last Updated by
+xpr_solution_builder,field,"xpr_solution_builder.solution.option,write_uid",0,Last Updated by,Last Updated by
+xpr_solution_builder,field,"xpr_solution_builder.solution_combiner,write_uid",0,Last Updated by,Last Updated by
+xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,write_uid",0,Last Updated by,Last Updated by
+xpr_solution_builder,field,"xpr_solution_builder.solution,write_date",0,Last Updated on,Last Updated on
+xpr_solution_builder,field,"xpr_solution_builder.solution.line,write_date",0,Last Updated on,Last Updated on
+xpr_solution_builder,field,"xpr_solution_builder.solution.option,write_date",0,Last Updated on,Last Updated on
+xpr_solution_builder,field,"xpr_solution_builder.solution_combiner,write_date",0,Last Updated on,Last Updated on
+xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,write_date",0,Last Updated on,Last Updated on
+xpr_solution_builder,field,"xpr_solution_builder.solution,products_extra",0,Mandatory Product Count,Mandatory Product Count
+xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_form_view,Mandatory Products,Mandatory Products
+xpr_solution_builder,field,"xpr_solution_builder.solution,products",0,Mandatory Products,Mandatory Products
+xpr_solution_builder,field,"xpr_solution_builder.solution,name",0,Name,Name
+xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_form_view,Option Extras,Option Extras
+xpr_solution_builder,field,"xpr_solution_builder.solution,options_extra",0,Optional Product configuration,Optional Product configuration
+xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_form_view,Optional Products,Optional Products
+xpr_solution_builder,field,"xpr_solution_builder.solution,options",0,Optional Products,Optional Products
+xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,order",0,Order,Order
+xpr_solution_builder,field,"xpr_solution_builder.solution.line,product",0,Product,Product
+xpr_solution_builder,field,"xpr_solution_builder.solution.option,product",0,Product,Product
+xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,products",0,Product,Product
+xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_form_view,Products Extra,Products Extra
+xpr_solution_builder,field,"xpr_solution_builder.solution.line,times",0,Quantity,Quantity
+xpr_solution_builder,model,"ir.model,name",xpr_solution_builder.model_sale_order,Sales Order,Bon de commande
+xpr_solution_builder,model,"ir.model,name",xpr_solution_builder.model_sale_order_line,Sales Order Line,Ligne de commandes de vente
+xpr_solution_builder,view,sale.order,xpr_solution_builder.sale_order_form,Sales Order Lines,Lignes de ventes
+xpr_solution_builder,field,"sale.order,solution",0,Solution,Solution
+xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_builder_search_view,Solution,Solution
+xpr_solution_builder,field,"xpr_solution_builder.solution.line,solution",0,Solution,Solution
+xpr_solution_builder,field,"xpr_solution_builder.solution.option,solution",0,Solution,Solution
+xpr_solution_builder,field,"xpr_solution_builder.solution_combiner,solution",0,Solution,Solution
+xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,solution",0,Solution,Solution
+xpr_solution_builder,field,"sale.order,solution_discount",0,Solution Discount ($),Solution Discount ($)
+xpr_solution_builder,field,"xpr_solution_builder.solution,list_price",0,Solution Price,Solution Price
+xpr_solution_builder,field,"sale.order.line,solution_part",0,Solution part,Solution part
+xpr_solution_builder,model,"ir.ui.menu,name",xpr_solution_builder.menu_solutions,Solutions,Solutions
+xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_tree_view,Solutions,Solutions
+xpr_solution_builder,field,"sale.order,starting_date",0,Starting Date,Starting Date
+xpr_solution_builder,view,sale.order,xpr_solution_builder.sale_order_form,UoS,UdV
+xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_form_view,Variants,Variants
+xpr_solution_builder,model,"ir.actions.act_window,name",xpr_solution_builder.action_list_solutions,solutions,solutions
