@@ -3,8 +3,7 @@
 <openerp>
   <data>
    
-
-    <!-- partners -->
+  <!-- partners -->
   <record id="view_partner_form" model="ir.ui.view">
       <field name="model">res.partner</field>
       <field name="inherit_id" ref="partner_history.view_partner_form_history"/>
@@ -36,6 +35,7 @@
          <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]"/>
          <field name="makes" string="Vehicle" filter_domain="[('makes.parent_id','ilike', self)]"/>
          <field name="makes" string="Makes" filter_domain="[('makes','ilike', self)]"/>
+         <field name="code"/>
          <field name="business" string="Business" filter_domain="[('business','ilike', self)]"/>
          <field name="user_id"/>
          <group expand="0" string="Group By">
@@ -154,6 +154,20 @@
           <field name="code" />
           <field name="city" />
           <field name="state_id" />
+        </tree>
+      </field>
+  </record>
+
+  <record id="view_unassigned_dealer" model="ir.ui.view">
+      <field name="model">xpr_dealer.dealer</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree editable="form" > <!--  -->
+          <field name="name" readonly="1" />
+          <field name="code" readonly="1" />
+          <field name="city" readonly="1" />
+          <field name="state_id" readonly="1" />
+          <field name="user_id" />
         </tree>
       </field>
   </record>

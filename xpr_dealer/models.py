@@ -56,6 +56,17 @@ class Partner(models.Model):
     }
 
 
+class Users(models.Model):
+    _inherit = "res.users"
+
+    # Updates related dealers when active flag is updated
+    @api.depends('active')
+    def _mark_dealers(self):
+        for user in self:
+            for dealer in self.env['xpr_dealer.dealer'].search([('partner.user_id.id', '=', user.id)]):
+                dealer.assigned_user = user.active
+
+
 class Dealer(models.Model):
     """
     Additional Parnter data.
@@ -79,6 +90,17 @@ class Dealer(models.Model):
     def onchange_state(self, *args, **kwargs):
         # TODO: Check if we need to call super class.
         pass
+
+    @api.depends('user_id')
+    def _assigned_user(self):
+        for dealer in self:
+            dealer.assigned_user = dealer.user_id and dealer.user_id.active
+
+    assigned_user = fields.Boolean(
+        string="Assigned Salesperson",
+        readonly=True,
+        compute=_assigned_user,
+        store=True)
 
     corpname = fields.Char("Legal Name", size=128)
 
