@@ -147,7 +147,13 @@ class SaleOrder(models.Model):
 
         for order in self:
 
-            if order.state != 'contract_approved':
+            if order.state not in [
+                'manager_approved',
+                'contract_approved',
+                'cancel',
+                'sent',
+                'done',
+            ]:
                 # No need to synch before approval.
                 continue
 
