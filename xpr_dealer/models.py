@@ -160,7 +160,7 @@ class Dealer(models.Model):
     customer = fields.Many2many(
         'res.partner.category',
         'dealer_partner_category_customer_rel',
-        string="Customer Of",
+        string="Customer of",
     )
 
     # TODO: Make this field computable

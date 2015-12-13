@@ -232,26 +232,28 @@ class SaleOrderRequest(XISRequestWrapper):
     This private class merges model and vals and give method to request info.
     """
 
+    # Only maps to "Closed Lost" and "Signed" are wanted here.
+    # All other values are equivalent to 'Presentation'
     dct_stage_asso = {
-        "draft": "Introduction",
-        "discounted": "Qualification",
-        "2nd_approval": "Qualification",
-        "validated": "Presentation",
-        "sent": "Presentation",
+        #"draft": "Introduction",
+        #"discounted": "Qualification",
+        #"2nd_approval": "Qualification",
+        #"validated": "Presentation",
+        #"sent": "Presentation",
         "cancel": "Closed Lost",
-        "waiting_date": "Presentation",
-        "progress": "Closing",
-        "manual": "Closing",
-        "shipping_except": "Delivered",
-        "invoice_except": "Presentation",
+        #"waiting_date": "Presentation",
+        #"progress": "Closing",
+        #"manual": "Closing",
+        #"shipping_except": "Delivered",
+        #"invoice_except": "Presentation",
         "done": "Signed",
 
-        "need_manager_approval": "Presentation",
-        "manager_approved": "Presentation",
-        "manager_not_approved": "Presentation",
-        "contract_not_presented": "Presentation",
-        "contract_not_approved": "Presentation",
-        "need_availability_check": "Presentation",
+        # "need_manager_approval": "Presentation",
+        # "manager_approved": "Presentation",
+        # "manager_not_approved": "Presentation",
+        # "contract_not_presented": "Presentation",
+        # "contract_not_approved": "Presentation",
+        # "need_availability_check": "Presentation",
         "contract_approved": "Signed",
     }
 
@@ -306,25 +308,18 @@ class SaleOrderRequest(XISRequestWrapper):
         i = 0
         for line in self.order.order_line:
 
-            if line.product_id:
-                name = line.product_id.display_name
-                description = line.product_id.description_sale or ''
-            else:
-                name = ''
-                description = line.name or ''
-
             data.update({
                 "qli_ProductCode_%s" % i:
                 line.product_id.default_code or "",
 
                 "qli_ListPrice_%s" % i:
-                int(line.product_uom_qty) * line.price_unit,
+                    int(line.product_uom_qty) * line.price_unit,
 
                 "qli_Quantity_%s" % i: line.product_uom_qty,
                 "qli_UnitPrice_%s" % i: line.price_unit,
-                "qli_Name_%s" % i: name,
+                "qli_Name_%s" % i: line.display_name,
                 "qli_Family_%s" % i: 'null',
-                "qli_Description_%s" % i: description.strip(),
+                "qli_Description_%s" % i: line.display_description,
             })
 
             i += 1
@@ -347,7 +342,7 @@ class SaleOrderRequest(XISRequestWrapper):
         return self.order.partner_id and self.order.partner_id.code or ''
 
     def get_state(self):
-        return self.dct_stage_asso.get(self.order.state)
+        return self.dct_stage_asso.get(self.order.state, 'Presentation')
 
     @staticmethod
     def get_last_modif_date():

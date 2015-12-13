@@ -113,7 +113,7 @@ class Solution(models.Model):
     products_extra = fields.One2many(
         'xpr_solution_builder.solution.line',
         'solution',
-        string='Mandatory Product Count')
+        string='Mandatory Product Quantity')
 
     options = fields.Many2many(
         'product.product',
@@ -314,7 +314,8 @@ class SalesOrder(models.Model):
     category = fields.Many2one(
         'product.category',
         string='Category',
-        compute=_get_category)
+        compute=_get_category,
+        store=True)
 
     # 'Overwrite' of parent field: amount_untaxed
     # Had to rename fiel to by pass parent functionality
@@ -529,6 +530,24 @@ class SalesOrderLine(models.Model):
                 self.env.ref('xpr_product.adwords').id
             ]
 
+    @api.onchange('product_id')
+    def _display_name(self):
+        for line in self:
+
+            if line.product_id:
+                line.display_name = line.product_id.display_name
+            else:
+                line.display_name = ''
+
+    @api.onchange('product_id')
+    def _display_description(self):
+        for line in self:
+
+            if line.product_id:
+                line.display_description = (line.product_id.description_sale or '').strip()
+            else:
+                line.display_description = (line.name or '').strip()
+
     # 0 Don't care (not solution)
     # 1 mandatory line
     # 2 optional line
@@ -536,6 +555,10 @@ class SalesOrderLine(models.Model):
     # 4 solution discount
 
     solution_part = fields.Integer(default=0)
+
+    display_name = fields.Char(string="Name", compute=_display_name)
+    display_description = fields.Text(string="Description", compute=_display_description)
+
     discount_money = fields.Float(
         string='Discount ($)', digits=(6, 2), default=0)
 

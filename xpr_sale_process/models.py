@@ -88,6 +88,25 @@ class SaleOrder(models.Model):
 
         return False
 
+    @api.multi
+    def action_require_availability_check(self):
+        """
+        Starts Wizard to get rep or adteam notes
+        """
+        for order in self:
+            return {
+                'name': (
+                    order.state != "need_availability_check" and 'Availability approval request' or
+                    'Availability quotation refused'
+                ),
+                'type': 'ir.actions.act_window',
+                'res_model': 'xpr_sale_process.availability_message',
+                'views': [[False, "form"]],
+                'target': 'new',
+                'view_id': self.env.ref('xpr_sale_process.view_availability_check_message').id,
+                'context': {'order_id': self.id}
+            }
+
     def check_product_availability_needed(self):
         """
         Return True if product availability check is required and False if not.
@@ -135,22 +154,6 @@ class SaleOrder(models.Model):
             " set as %s's manager in the system"
             % hr_owner.user_id.name)
 
-    def notify_availability_check(self):
-
-        self.write({'state': 'need_availability_check'})
-
-        template = self.env.ref('xpr_sale_process.quotation_availability_notify_mail')
-
-        values = self.env['email.template'].generate_email(
-            template.id, self.id)
-
-        destination_ids = set([
-            u.partner_id.id for u in self.category.approval_group.users if u.partner_id])
-
-        values['recipient_ids'] = [(4, pid) for pid in destination_ids]
-
-        self.env['mail.mail'].create(values)
-
     def notify_manager_approval(self):
         self.write({'state': 'need_manager_approval'})
 
@@ -186,11 +189,7 @@ class SaleOrder(models.Model):
     # Template helper
     @property
     def form_url(self):
-
-        base_url = self.env['ir.config_parameter'].get_param('web.base.url')
-
-        return "/web#id={1}&view_type=form&model=sale.order".format(
-            base_url,
+        return "/web#id={0}&view_type=form&model=sale.order".format(
             self.id)
 
 
@@ -242,7 +241,7 @@ class Lead(models.Model, LeadMixin):
 #         store=True)
 
 
-class LeadMakeSale(models.Model, LeadMixin):
+class LeadMakeSale(models.TransientModel, LeadMixin):
     _inherit = "crm.make.sale"
 
     @api.model
@@ -294,3 +293,63 @@ class LeadMakeSale(models.Model, LeadMixin):
         'solution': _selectSolution,
         'close': True,
     }
+
+
+class AvailabilityMessage(models.TransientModel):
+
+    _name = 'xpr_sale_process.availability_message'
+
+    def _default_order(self):
+        return self.env['sale.order'].browse(self._context.get('order_id'))
+
+    def _for_approval(self):
+        return self.env['sale.order'].browse(
+            self._context.get('order_id')).state != "need_availability_check"
+
+    @api.one
+    def notify_availability_check(self):
+
+        order = self.order_id
+
+        order.write({'state': 'need_availability_check'})
+
+        template = self.env.ref('xpr_sale_process.quotation_availability_notify_mail')
+
+        values = self.env['email.template'].with_context(message=self.message).generate_email(
+            template.id, order.id)
+
+        destination_ids = set([
+            u.partner_id.id
+            for u in order.category.approval_group.users
+            if u.partner_id
+        ])
+
+        values['recipient_ids'] = [(4, pid) for pid in destination_ids]
+
+        self.env['mail.mail'].create(values)
+
+    @api.one
+    def notify_availability_refused(self):
+
+        from openerp import workflow
+
+        order = self.order_id
+
+        template = self.env.ref('xpr_sale_process.quotation_availability_refused')
+
+        values = self.env['email.template'].with_context(message=self.message).generate_email(
+            template.id, order.id)
+
+        values['email_from'] = self.env.user.email
+
+        self.env['mail.mail'].create(values)
+
+        workflow.trg_validate(
+            self.env.uid,
+            'sale.order', order.id,
+            'sig_availability_not_checked',
+            self.env.cr)
+
+    order_id = fields.Many2one('sale.order', default=_default_order)
+    for_approval = fields.Boolean(default=_for_approval)
+    message = fields.Text("Message")

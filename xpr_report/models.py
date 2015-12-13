@@ -21,19 +21,34 @@
 ##############################################################################
 
 
-class order(report_sxw.rml_parse):
-    def __init__(self, cr, uid, name, context=None):
-        # Enriches report render context
-        super(order, self).__init__(cr, uid, name, context=context)
-        self.localcontext.update({
-            'time': time,
-            #'show_discount': self._show_discount,
-        })
+from openerp import models, fields, api
+from openerp.tools.translate import _
 
 
-report_sxw.report_sxw(
-    'report.sale.order',
-    'sale.order',
-    'addons/xpr_report/report/sale_order_xprima.rml',
-    parser=order,
-    header='external')
+class Company(models.Model):
+    _inherit = "res.company"
+
+    # Overwriting parent fields to make them translatable
+    rml_header = fields.Text(string="RML Header", required=True, translate=True)
+    rml_footer = fields.Text(
+        string="Report Footer",
+        help="Footer text displayed at the bottom of all reports.",
+        required=True,
+        translate=True)
+
+# class order(report_sxw.rml_parse):
+#     def __init__(self, cr, uid, name, context=None):
+#         # Enriches report render context
+#         super(order, self).__init__(cr, uid, name, context=context)
+#         self.localcontext.update({
+#             'time': time,
+#             #'show_discount': self._show_discount,
+#         })
+
+
+# report_sxw.report_sxw(
+#     'report.sale.order',
+#     'sale.order',
+#     'addons/xpr_report/report/sale_order_xprima.rml',
+#     parser=order,
+#     header='external')
