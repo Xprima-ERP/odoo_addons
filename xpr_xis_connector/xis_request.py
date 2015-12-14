@@ -232,26 +232,28 @@ class SaleOrderRequest(XISRequestWrapper):
     This private class merges model and vals and give method to request info.
     """
 
+    # Only maps to "Closed Lost" and "Signed" are wanted here.
+    # All other values are equivalent to 'Presentation'
     dct_stage_asso = {
-        "draft": "Introduction",
-        "discounted": "Qualification",
-        "2nd_approval": "Qualification",
-        "validated": "Presentation",
-        "sent": "Presentation",
+        #"draft": "Introduction",
+        #"discounted": "Qualification",
+        #"2nd_approval": "Qualification",
+        #"validated": "Presentation",
+        #"sent": "Presentation",
         "cancel": "Closed Lost",
-        "waiting_date": "Presentation",
-        "progress": "Closing",
-        "manual": "Closing",
-        "shipping_except": "Delivered",
-        "invoice_except": "Presentation",
+        #"waiting_date": "Presentation",
+        #"progress": "Closing",
+        #"manual": "Closing",
+        #"shipping_except": "Delivered",
+        #"invoice_except": "Presentation",
         "done": "Signed",
 
-        "need_manager_approval": "Presentation",
-        "manager_approved": "Presentation",
-        "manager_not_approved": "Presentation",
-        "contract_not_presented": "Presentation",
-        "contract_not_approved": "Presentation",
-        "need_availability_check": "Presentation",
+        # "need_manager_approval": "Presentation",
+        # "manager_approved": "Presentation",
+        # "manager_not_approved": "Presentation",
+        # "contract_not_presented": "Presentation",
+        # "contract_not_approved": "Presentation",
+        # "need_availability_check": "Presentation",
         "contract_approved": "Signed",
     }
 
@@ -340,7 +342,7 @@ class SaleOrderRequest(XISRequestWrapper):
         return self.order.partner_id and self.order.partner_id.code or ''
 
     def get_state(self):
-        return self.dct_stage_asso.get(self.order.state)
+        return self.dct_stage_asso.get(self.order.state, 'Presentation')
 
     @staticmethod
     def get_last_modif_date():
@@ -465,7 +467,7 @@ class DealerRequest(XISRequestWrapper):
         state = p.state_id and p.state_id.name or ''
 
         if not state or state == "Quebec":
-            state = "Qu\u00e9bec"
+            state = u"Québec"
         if state == "Newfoundland and Labrador":
             state = "Newfoundland"
 
