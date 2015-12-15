@@ -467,7 +467,7 @@ class DealerRequest(XISRequestWrapper):
         state = p.state_id and p.state_id.name or ''
 
         if not state or state == "Quebec":
-            state = "Qu\u00e9bec"
+            state = u"Québec"
         if state == "Newfoundland and Labrador":
             state = "Newfoundland"
 
