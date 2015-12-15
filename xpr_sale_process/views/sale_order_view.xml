@@ -39,6 +39,11 @@
                 <xpath expr="//form" position="attributes">
                     <attribute name="create">false</attribute>
                 </xpath>
+
+                <field name="client_order_ref" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+
             </field>
         </record>
 
@@ -70,6 +75,7 @@
                 <field name="amount_total" position="replace">
                     <field name="amount_all_untaxed"/>
                 </field>
+
             </field>
         </record>
 
@@ -83,6 +89,10 @@
                 <xpath expr="//form" position="attributes">
                     <attribute name="create">true</attribute>
                 </xpath>
+
+                <field name="client_order_ref" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </field>
             </field>
         </record>
 
