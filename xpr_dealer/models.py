@@ -60,11 +60,11 @@ class Users(models.Model):
     _inherit = "res.users"
 
     # Updates related dealers when active flag is updated
-    @api.depends('active')
+    # Called by automated action
+    @api.one
     def _mark_dealers(self):
-        for user in self:
-            for dealer in self.env['xpr_dealer.dealer'].search([('partner.user_id.id', '=', user.id)]):
-                dealer.assigned_user = user.active
+        for dealer in self.env['xpr_dealer.dealer'].search([('partner.user_id', '=', self.id)]):
+            dealer.assigned_user = self.active
 
 
 class Dealer(models.Model):

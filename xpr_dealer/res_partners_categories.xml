@@ -29,7 +29,7 @@
         <field name="name">Unassigned Dealers</field>
         <field name="res_model">xpr_dealer.dealer</field>
         <field name="view_mode">tree</field>
-        <field name="domain">[('assigned_user', '=', True)]</field>
+        <field name="domain">[('assigned_user', '=', False)]</field>
         <field name="view_id" ref="view_unassigned_dealer" />
     </record>
 

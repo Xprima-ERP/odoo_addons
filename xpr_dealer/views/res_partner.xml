@@ -162,7 +162,7 @@
       <field name="model">xpr_dealer.dealer</field>
       <field name="type">tree</field>
       <field name="arch" type="xml">
-        <tree editable="form" > <!--  -->
+        <tree editable="bottom" >
           <field name="name" readonly="1" />
           <field name="code" readonly="1" />
           <field name="city" readonly="1" />
