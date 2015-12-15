@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+<data>
+
+    <record model="ir.actions.server" id="mark_dealer">
+        <field name="name">Mark dealers</field>
+        <field name="state">code</field>
+        <field name="type">ir.actions.server</field>
+        <field name="help">Updates dealer assigned_user when a user active flag is updated</field>
+        <field name="model_id" ref="auth_crypt.model_res_users" />
+        <field name="use_create">new</field>
+        <field name="sequence">0</field>
+        <field name="code">object._mark_dealers()</field>
+        <field name="use_relational_model">base</field>
+        <field name="use_write">current</field>
+    </record>
+
+    <record model="base.action.rule" id="opportunity_reminder_rule">
+        <field name="name">Updated User</field>
+        <field name="model">res.users</field>
+        <field name="model_id" ref="auth_crypt.model_res_users" />
+        <field name="sequence">0</field>
+        <field name="server_action_ids" eval="[(4, ref('mark_dealer'))]"/>
+        <field name="kind">on_write</field>
+    </record>
+</data>
+
+</openerp>
