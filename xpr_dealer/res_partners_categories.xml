@@ -13,43 +13,6 @@
                   action="dealer_category_action"
                   groups="base.group_sale_manager"/>
 
-    <record model="ir.actions.act_window" id="dealer_action">
-        <field name="name">Dealers</field>
-        <field name="res_model">xpr_dealer.dealer</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_my_dealers': 1}</field>
-    </record>
-    <menuitem id="dealer_menu" name="Dealers"
-      parent="base.menu_sales"
-      action="dealer_action"
-      sequence="1"
-      groups="base.group_sale_salesman"/>
-
-    <record model="ir.actions.act_window" id="unassigned_dealer_action">
-        <field name="name">Unassigned Dealers</field>
-        <field name="res_model">xpr_dealer.dealer</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('assigned_user', '=', False)]</field>
-        <field name="views">[('view_unassigned_dealer', 'tree'),('view_unassigned_dealer_form', 'form')]</field>
-    </record>
-
-    <act_window name="Assign Dealers"
-                res_model="xpr_dealer.dealer_assign"
-                src_model="xpr_dealer.dealer"
-                view_mode="form"
-                multi="True"
-                target="new"
-                key2="client_action_multi"
-                id="assign_dealer_action"
-                groups="base.group_sale_manager"
-                />
-
-    <menuitem id="unassigned_dealer_menu" name="Unassigned Dealers"
-      parent="base.menu_sales"
-      action="unassigned_dealer_action"
-      sequence="2"
-      groups="base.group_sale_manager"/>
-
 </data>
 <data>
     <!-- Not a dealer category. TODO: move in a different module -->
