@@ -181,7 +181,6 @@
       <field name="type">form</field>
       <field name="arch" type="xml">
         <form>
-          <header><button name="%(assign_dealer_action)d" string="Assign" type="action" /></header>
           <sheet>
             <group>
             <field name="name" readonly="1"/>
@@ -195,8 +194,7 @@
     </field>
   </record>
 
-
-    <record id="dealer_assign_wizard" model="ir.ui.view">
+  <record id="dealer_assign_wizard" model="ir.ui.view">
       <field name="name">xpr_dealer.dealer_assign_form</field>
       <field name="model">xpr_dealer.dealer_assign</field>
       <field name="arch" type="xml">
