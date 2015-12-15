@@ -46,8 +46,8 @@ Contributors
     ],
     'data': [
         'security/ir.model.access.csv',
-        'views/res_partner.xml',
         'res_partners_categories.xml',
+        'views/res_partner.xml',
         'res_user_mark_dealer.xml',
     ],
     'installable': True,

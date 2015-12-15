@@ -239,3 +239,43 @@ class Dealer(models.Model):
     user40 = fields.Char("User40", size=40)
     user40e = fields.Char("User40e", size=40)
     user80 = fields.Char("User80", size=80)
+
+
+class DealerAssign(models.TransientModel):
+
+    """
+    Dealer Assign wizard.
+
+    Loaded to assign a sales person to multiple dealers
+    """
+
+    _name = 'xpr_dealer.dealer_assign'
+
+    def _init_dealers(self):
+
+        context = self.env.context
+
+        active_ids = context.get('active_ids')
+
+        if not active_ids:
+            return []
+
+        return self.env['xpr_dealer.dealer'].browse(active_ids)
+
+    dealers = fields.Many2many(
+        'xpr_dealer.dealer',
+        'dealer_assign_dealers_rel',
+        string='Dealers',
+        required=True,
+        default=_init_dealers)
+
+    salesperson = fields.Many2one(
+        'res.users',
+        string='Salesperson',
+        required=True)
+
+    @api.multi
+    def assign(self):
+
+        for dealer in self.dealers:
+            dealer.user_id = self.salesperson
