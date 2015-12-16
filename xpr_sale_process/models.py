@@ -83,7 +83,7 @@ class SaleOrder(models.Model):
             return True
 
         for line in self.order_line:
-            if line.discount:
+            if line.discount_money:
                 return True
 
         return False
