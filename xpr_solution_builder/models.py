@@ -294,7 +294,7 @@ class SalesOrder(models.Model):
         return order
 
     solution = fields.Many2one(
-        'xpr_solution_builder.solution', string='Solution', required=True)
+        'xpr_solution_builder.solution', string='Solution')
 
     starting_date = fields.Date('Starting Date')
 

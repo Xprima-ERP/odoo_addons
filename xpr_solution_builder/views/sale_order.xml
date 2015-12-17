@@ -9,7 +9,7 @@
             <field name="arch" type="xml">
                 <field name="client_order_ref" position="after">
                     <field name="starting_date" attrs="{'required': [('category','=', %(xpr_product.advertising)d)]}" />
-                    <field name="solution" />
+                    <field name="solution" required="1" />
                     <field name="category" invisible="1" />
                     <field name="solution_discount" />
                     <button name="sale_solution_option_action" type="object" string="Add Options"/>
