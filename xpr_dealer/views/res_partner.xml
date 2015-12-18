@@ -66,6 +66,7 @@
                   <field name="responsible"/>
                   <field name="user_id" required="1"/>
                   <field name="quoteflag"/>
+                  <field name="lang" required="1"/>
                 </group>
 
                  <group>
