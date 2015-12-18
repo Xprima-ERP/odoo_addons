@@ -66,14 +66,6 @@
                   <field name="responsible"/>
                   <field name="owner"/>
                   <field name="owneremail"/>
-
-                   <field name="market"
-                        domain="[('parent_id', 'child_of', %(category_dealer_market)d)]"/>
-                    <field name="region"
-                        domain="[('parent_id', 'child_of', %(category_dealer_region)d)]"/>
-                    <field name="portalmask" widget="many2many_tags"
-                        domain="[('parent_id', 'child_of', %(category_dealer_portal)d)]"/>
-
                 </group>
 
                  <group>
@@ -96,7 +88,6 @@
                         <field name="mobile"/>
                         <field name="fax"/>
                         <field name="tollfree"/>
-                        <field name="callsource_tollfree"/>
                         <field name="user_ids" invisible="1"/>
                         <field name="email" widget="email" attrs="{'required': [('user_ids','!=', [])]}"/>
                         <field name="title" options="{&quot;no_open&quot;: True}"/>
@@ -220,9 +211,19 @@
                   <field name="billing_country_id"/>
                 </group>
             </page>
-            <page string="XIS details">
+            <page string="Evolio Setup">
+
+                <group>
+                   <field name="market"
+                        domain="[('parent_id', 'child_of', %(category_dealer_market)d)]"/>
+                    <field name="region"
+                        domain="[('parent_id', 'child_of', %(category_dealer_region)d)]"/>
+                    <field name="portalmask" widget="many2many_tags"
+                        domain="[('parent_id', 'child_of', %(category_dealer_portal)d)]"/>
+                </group>
 
                  <group>
+                   <field name="callsource_tollfree"/>
                    <field name="site_type"/>
                    <field name="website" widget="url" placeholder="e.g. www.odoo.com"/>
                    <field name="website_french" widget="url" placeholder="e.g. www.odoo.com"/>
