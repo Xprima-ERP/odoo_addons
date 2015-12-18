@@ -41,6 +41,7 @@
                     
                             <field name="name"/>
                             <field name="description"/>
+                            <field name="category"/>
                             <field name="list_price" />
 
                             <field name="products">

@@ -70,8 +70,7 @@
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
             <field name="subject">Quotation discount to approve: ${object.name} for ${object.partner_id! = False and object.partner_id.name or object.contact_name}</field>
-            <field name="body_html"><![CDATA[This quotation has to be approved for discounts <a href="${object.form_url|safe}">${object.name}</a>.
-            ]]></field>
+            <field name="body_html"><![CDATA[This quotation has to be approved for discounts <a href="${object.form_url|safe}">${object.name}</a>.]]></field>
         </record>
 
         <record model="email.template" id="quotation_availability_reopen_mail">

@@ -81,25 +81,33 @@ class Solution(models.Model):
             # Assign new recordset
             solution.options_extra = extras
 
-    @api.depends('products', 'options')
+    @api.onchange('products', 'options')
     def _get_categories(self):
-        for solution in self:
-            solution.category = None
-            for product in solution.products:
+        def collect_category(products):
+
+            default = None
+
+            priority = [self.env.ref(ref).id for ref in ['xpr_product.adwords', 'xpr_product.seo']]
+
+            for product in products:
                 # Get first category in products.
                 # Should not have more than one anyways.
                 cat = product.categ_term
+
                 if cat:
-                    solution.category = cat
-                    break
+                    if cat.id in priority:
+                        return cat
+
+                    default = cat
+
+            return default
+
+        for solution in self:
+            solution.category = collect_category(solution.products)
 
             if not solution.category:
                 # If nothing found in products, try options
-                for product in solution.options:
-                    cat = product.categ_term
-                    if cat:
-                        solution.category = cat
-                        break
+                solution.category = collect_category(solution.options)
 
     name = fields.Char(required=True, translate=True)
     description = fields.Char(required=True, translate=True)
@@ -127,9 +135,7 @@ class Solution(models.Model):
 
     category = fields.Many2one(
         'product.category',
-        string='Category',
-        compute=_get_categories,
-        store=True)
+        string='Category')
 
 
 class SolutionProductLine(models.Model):
@@ -288,7 +294,7 @@ class SalesOrder(models.Model):
         return order
 
     solution = fields.Many2one(
-        'xpr_solution_builder.solution', string='Solution', required=True)
+        'xpr_solution_builder.solution', string='Solution')
 
     starting_date = fields.Date('Starting Date')
 
