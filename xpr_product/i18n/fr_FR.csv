@@ -11,7 +11,7 @@ xpr_product,view,product.product,xpr_product.product_normal_form_view,Procuremen
 xpr_product,view,product.template,xpr_product.product_template_only_form_view,Procurements,Approvisionnements
 xpr_product,model,"ir.model,name",xpr_product.model_product_template,Product Template,Modèle d'article
 xpr_product,model,"product.category,name",xpr_product.seo,SEO,SEO
-xpr_product,model,"ir.model,name",xpr_product.model_sale_order,Sales Order,Contrats
+xpr_product,model,"ir.model,name",xpr_product.model_sale_order,Sales Order,Bon de commande
 xpr_product,help,"product.template,categ_term",0,Select category for the current product,Choisir la catégorie du produit courant
 xpr_product,model,"product.category,name",xpr_product.visibility,Visibility,Visibilité
 xpr_product,model,"product.category,name",xpr_product.website,Website,Site web

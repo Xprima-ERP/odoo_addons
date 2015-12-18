@@ -69,7 +69,7 @@ xpr_xis_connector,model,"ir.ui.menu,name",xpr_xis_connector.dealer_region_menu,R
 xpr_xis_connector,field,"sale.order,renew_date",0,Renew Date,Date de renouvellement
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_rocky_mountain_house_res_partner_category,Rocky Mountain House (div#9),Rocky Mountain House (div#9)
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_saguenay_lac_st_jean_res_partner_category,Saguenay/Lac-St-Jean,Saguenay/Lac-St-Jean
-xpr_xis_connector,model,"ir.model,name",xpr_xis_connector.model_sale_order,Sales Order,Contrats
+xpr_xis_connector,model,"ir.model,name",xpr_xis_connector.model_sale_order,Sales Order,Bon de commande
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_sarnia_res_partner_category,Sarnia,Sarnia
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_sault_ste_marie_res_partner_category,Sault Ste. Marie,Sault Ste-Marie
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_slave_lake_res_partner_category,Slave Lake (div #17),Slave Lake (div #17)
@@ -83,3 +83,4 @@ xpr_xis_connector,model,"ir.model,name",xpr_xis_connector.model_res_users,Users,
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_windsor_res_partner_category,Windsor,Windsor
 xpr_xis_connector,field,"xpr_xis_connector.dealer.certification,xis_certification_id",0,XIS Certification ID,XIS Certification ID
 xpr_xis_connector,field,"res.users,xis_user_external_id",0,XIS external user,Utilisateur externe XIS
+xpr_xis_connector,field,"sale.order,category",0,Category,Catégorie

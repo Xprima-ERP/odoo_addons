@@ -35,12 +35,11 @@ xpr_sale_process,model,"ir.actions.client,help",xpr_sale_process.action_team_opp
                     No activity found.
                 </p>
             ","<p>
-                  Aucune activité trouvée.
+                    Aucune activité trouvée.
                 </p>
             "
-xpr_sale_process,model,"email.template,body_html",xpr_sale_process.opportunity_reminder_mail,"<p>This opportunity requires your attention today:</p><ul><li>Name: ${object.name}</li><li>ID: ${object.id}</li><li>Action: ${object.title_action}</li></ul>
-            ","<p>Cette opportunité nécessite votre attention aujourd'hui :</p><ul><li>Name: ${object.name}</li><li>ID: ${object.id}</li><li>Action: ${object.title_action}</li></ul>
-            "
+xpr_sale_process,model,"email.template,body_html",xpr_sale_process.opportunity_reminder_mail,"<p>This opportunity requires your attention today:</p><ul><li>Name: ${object.name}</li><li>ID: ${object.id}</li><li>Action: ${object.title_action}</li></ul>","<p>Cette opportunité nécessite votre attention aujourd'hui :</p><ul><li>Name: ${object.name}</li><li>ID: ${object.id}</li><li>Action: ${object.title_action}</li></ul>"
+
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.advertising,Advertising,Publicité
 xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_notify_mail,Advertisment quotation to approve: ${object.name} for ${object.partner_id! = False and object.partner_id.name or object.contact_name},Soumission de publicité à approuver : ${object.name} for ${object.partner_id! = False and object.partner_id.name or object.contact_name}
 xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_refused,Advertising Not available: ${object.partner_id != False and object.partner_id.name or object.contact_name},Publicité non disponible: ${object.partner_id != False and object.partner_id.name or object.contact_name}
@@ -57,8 +56,8 @@ xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Renewal Mont
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Mine,Miens
 xpr_sale_process,field,"sale.order,category",0,Category,Catégorie
 xpr_sale_process,field,"sale.order,renew_date",0,Renew Date,Date de renouvellement
-xpr_sale_process,model,"ir.actions.act_window,name",xpr_sale_process.action_companies,Companies,Compagnies
-xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_companies,Companies,Compagnies
+xpr_sale_process,model,"ir.actions.act_window,name",xpr_sale_process.action_companies,Companies,Sociétés
+xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_companies,Companies,Sociétés
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.create_company,Company Creation,Création de compagnies
 xpr_sale_process,model,"ir.actions.act_window,name",xpr_sale_process.action_contacts,Contacts,Contacts
 xpr_sale_process,model,"ir.ui.menu,name",xpr_sale_process.menu_contacts,Contacts,Contacts
@@ -75,7 +74,7 @@ xpr_sale_process,help,"product.category,approval_group",0,Group of users that mu
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.group_hidden,Hidden,Caché
 xpr_sale_process,field,"xpr_sale_process.availability_message,write_uid",0,Last Updated by,Last Updated by
 xpr_sale_process,field,"xpr_sale_process.availability_message,write_date",0,Last Updated on,Last Updated on
-xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_crm_lead,Lead/Opportunity,Piste/Opportunité
+xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_crm_lead,Lead/Opportunity,Piste/opportunité
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Lost,Perdu
 xpr_sale_process,field,"xpr_sale_process.availability_message,message",0,Message,Message
 xpr_sale_process,model,"ir.actions.client,name",xpr_sale_process.action_my_opportunity,My Opportunity Notes,Mes notes
@@ -87,13 +86,13 @@ xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Order Month,
 xpr_sale_process,field,"xpr_sale_process.availability_message,order_id",0,Order id,Order id
 xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_availability_notify_mail,"You must check the advertisment availability for quotation <a href=""${object.form_url|safe}"">${object.name}</a>.<br/>Salesperson notes:<br/>${ctx.get('message','')}","Validez la disponibilité de publicité de cette soumission : <a href=""${object.form_url|safe}"">${object.name}</a>.<br/>Notes du vendeur:<br/>${ctx.get('message','')}"
 xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_manager_approval_mail,"This quotation has to be approved for discounts <a href=""${object.form_url|safe}"">${object.name}</a>.","Validez les rabais de cette soumission  : <a href=""${object.form_url|safe}"">${object.name}</a>."
-xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_product_category,Product Category,Catégorie d'article
+xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_product_category,Product Category,Catégorie d'articles
 xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_product_template,Product Template,Modèle d'article
 xpr_sale_process,model,"email.template,subject",xpr_sale_process.opportunity_reminder_mail,Reminder on Lead: ${object.id} from ${object.partner_id != False and object.partner_id.name or object.contact_name},Rappel : ${object.id} from ${object.partner_id != False and object.partner_id.name or object.contact_name}
-xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Renewal Month,Mois de renouvelllement
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Renewal Month,Mois de renouvellement
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Reopen,Rouvrir
 xpr_sale_process,model,"email.template,subject",xpr_sale_process.quotation_availability_reopen_mail,Reopened quotation in availability check: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name},Soumission en attente de validation de disponibilité rouverte : ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}
-xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_sale_order,Sales Order,Contrats
+xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_sale_order,Sales Order,Bon de commande
 xpr_sale_process,model,"ir.actions.server,name",xpr_sale_process.opportunity_reminder_action,Send Mail,Envoyer un courriel
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Ask Approval,Demander l'approbation
 xpr_sale_process,model,"ir.actions.server,help",xpr_sale_process.opportunity_reminder_action,Sends opportunity action mail reminder,Envoie un rappel d'action par courriel.
@@ -112,3 +111,4 @@ xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_ava
 xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,To Approval,To Approval
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.rep_ui,Use Rep UI,Utiliser l'interface usager Rep
 xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,Write Approval message,Write Approval message
+xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_crm_make_sale,Make sales,Conclure les ventes
