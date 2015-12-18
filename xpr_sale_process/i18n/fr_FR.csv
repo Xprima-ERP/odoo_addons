@@ -1,4 +1,16 @@
 module,type,name,res_id,src,value
+sale,selection,"sale.order,state",0,Invoice Exception,Incident de facturation
+sale,selection,"sale.order,state",0,Shipping Exception,Incident d'expédition
+sale,selection,"sale.order,state",0,Manager Approved,Approuvé par le gestionnaire
+sale,selection,"sale.order,state",0,Manager Declined,Refusé par le gestionnaire
+sale,selection,"sale.order,state",0,Need Availability Check,Vérification de disponibilité requise
+sale,selection,"sale.order,state",0,Need Manager Approval,Approbation du gestionnaire requise
+sale,selection,"sale.order,state",0,Declined by customer,Refusé par le client
+sale,selection,"sale.order,state",0,Need Customer Approval,Approbation du client requise
+sale,selection,"sale.order,state",0,Draft Quotation,Soumission brouillon
+sale,selection,"sale.order,state",0,Quotation Sent,Soumission envoyée
+sale,selection,"sale.order,state",0,Done,Terminé
+sale,field,"sale.order,user_id",0,Salesperson,Vendeur
 xpr_sale_process,model,"ir.actions.act_window,help",xpr_sale_process.action_contracts,"<p class=""oe_view_nocontent_create"">
                     Click to create a quotation that can be converted into a sales order.
                 </p>
