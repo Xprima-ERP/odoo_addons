@@ -73,7 +73,7 @@ xpr_sale_process,help,"product.category,approval_group",0,Group of users that mu
 xpr_sale_process,model,"res.groups,name",xpr_sale_process.group_hidden,Hidden,Caché
 xpr_sale_process,field,"xpr_sale_process.availability_message,write_uid",0,Last Updated by,Last Updated by
 xpr_sale_process,field,"xpr_sale_process.availability_message,write_date",0,Last Updated on,Last Updated on
-xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_crm_lead,Lead/Opportunity,Piste/opportunité
+xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_crm_lead,Lead/Opportunity,Piste/Opportunité
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Lost,Perdu
 xpr_sale_process,field,"xpr_sale_process.availability_message,message",0,Message,Message
 xpr_sale_process,model,"ir.actions.client,name",xpr_sale_process.action_my_opportunity,My Opportunity Notes,Mes notes
