@@ -39,6 +39,11 @@
                 <xpath expr="//form" position="attributes">
                     <attribute name="create">false</attribute>
                 </xpath>
+
+                <field name="client_order_ref" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+
             </field>
         </record>
 
@@ -70,6 +75,7 @@
                 <field name="amount_total" position="replace">
                     <field name="amount_all_untaxed"/>
                 </field>
+
             </field>
         </record>
 
@@ -83,6 +89,10 @@
                 <xpath expr="//form" position="attributes">
                     <attribute name="create">true</attribute>
                 </xpath>
+
+                <field name="client_order_ref" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </field>
             </field>
         </record>
 
@@ -183,7 +193,7 @@
             <field name="search_view_id" ref="sale.view_sales_order_filter"/>
             <field name="context">{'search_default_my_sale_orders_filter': 1}
             </field>
-            <field name="domain">[('state', 'in', ('contract_not_presented', 'contract_not_approved', 'contract_approved'))]</field>
+            <field name="domain">[('state', 'in', ('contract_approved', 'done'))]</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     Click to create a quotation that can be converted into a sales order.
@@ -201,7 +211,7 @@
         </record>
 
         <record id="sale.action_quotations" model="ir.actions.act_window">
-            <field name="domain">[('state','in',('draft','sent','cancel','need_manager_approval', 'manager_approved', 'manager_not_approved', 'need_availability_check'))]</field>
+            <field name="domain">[('state','not in',('contract_approved', 'done'))]</field>
             <field name="context">{
                 'search_default_my_sale_orders_filter': 1}
             </field>

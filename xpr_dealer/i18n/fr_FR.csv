@@ -310,3 +310,19 @@ xpr_dealer,field,"xpr_dealer.dealer,billing_zip",0,ZIP Billing,Code postal de fa
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,e.g. +32.81.81.37.00,Ex. +32.81.81.37.00
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,e.g. www.odoo.com,Ex. www.odoo.com
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_gta,gta,gta
+xpr_dealer,view,xpr_dealer.dealer_assign,xpr_dealer.dealer_assign_wizard,Cancel,Annuler
+xpr_dealer,field,"xpr_dealer.dealer_assign,dealers",0,Dealers,Concessionnaires
+xpr_dealer,model,"ir.actions.act_window,name",xpr_dealer.unassigned_dealer_action,Unassigned Dealers,Concessionnaires sans vendeurs
+xpr_dealer,field,"xpr_dealer.dealer_assign,salesperson",0,Salesperson,Vendeur
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Vehicle,Véhicule
+xpr_dealer,model,"ir.actions.server,name",xpr_dealer.mark_dealer,Mark dealers,Marquer concessionnaires
+xpr_dealer,model,"ir.model,name",xpr_dealer.model_res_users,Users,Utilisateurs
+xpr_dealer,view,xpr_dealer.dealer_assign,xpr_dealer.dealer_assign_wizard,Assign,Assigner
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Business,Entreprise
+xpr_dealer,model,"ir.actions.server,help",xpr_dealer.mark_dealer,Updates dealer assigned_user when a user active flag is updated,Met a jour les concessionnaires quand leur vendeur est mis a jour
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,State,État
+xpr_dealer,model,"ir.actions.act_window,name",xpr_dealer.assign_dealer_action,Assign Salesperson,Assigner Vendeur
+xpr_dealer,field,"xpr_dealer.dealer,assigned_user",0,Assigned Salesperson,Vendeur Assigné
+xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.unassigned_dealer_menu,Unassigned Dealers,Concessionnaires sans vendeurs
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Makes,Marques
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,City,Ville

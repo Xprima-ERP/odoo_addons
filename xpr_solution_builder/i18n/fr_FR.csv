@@ -60,8 +60,8 @@ xpr_solution_builder,field,"xpr_solution_builder.solution.option,product",0,Prod
 xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,products",0,Product,Produit
 xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_form_view,Products Extra,Produits supplémentaires
 xpr_solution_builder,field,"xpr_solution_builder.solution.line,times",0,Quantity,Quantité
-xpr_solution_builder,model,"ir.model,name",xpr_solution_builder.model_sale_order,Sales Order,Commandes
-xpr_solution_builder,model,"ir.model,name",xpr_solution_builder.model_sale_order_line,Sales Order Line,Ligne de commande
+xpr_solution_builder,model,"ir.model,name",xpr_solution_builder.model_sale_order,Sales Order,Bon de commande
+xpr_solution_builder,model,"ir.model,name",xpr_solution_builder.model_sale_order_line,Sales Order Line,Ligne de commandes de vente
 xpr_solution_builder,view,sale.order,xpr_solution_builder.sale_order_form,Sales Order Lines,Lignes de ventes
 xpr_solution_builder,field,"sale.order,solution",0,Solution,Solution
 xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_builder_search_view,Solution,Solution
