@@ -285,6 +285,10 @@ class SalesOrder(models.Model):
 
             vals['solution'] = self.env.context['solution']
 
+        if 'order_line' in vals:
+            # Let apply solution take care of this
+            vals.pop('order_line')
+
         order = super(SalesOrder, self).create(vals)
 
         if 'solution' in vals and 'order_line' not in vals:
