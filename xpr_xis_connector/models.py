@@ -174,13 +174,13 @@ class Partner(models.Model):
         Upon update, updates XIS with new fields and groups
         """
 
-        if 'user_id' in vals:
-            # Check if user may be updated
-            for partner in self:
-                if not self.may_change_user(partner):
-                    # At least one partner may not be updated
-                    del vals['user_id']
-                    break
+        # if 'user_id' in vals:
+        #     # Check if user may be updated
+        #     for partner in self:
+        #         if not self.may_change_user(partner):
+        #             # At least one partner may not be updated
+        #             del vals['user_id']
+        #             break
 
         # Keep track of old category values if needed
         lst_old_cat = dict()
@@ -209,6 +209,7 @@ class Partner(models.Model):
 
         return status
 
+    # Deprecated
     def may_change_user(self, partner):
         """
         Write helper function. Determines
