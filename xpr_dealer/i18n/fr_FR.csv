@@ -188,6 +188,8 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_m
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto,Moto,Moto
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_moto_guzzi,Moto Guzzi,Moto Guzzi
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,My Dealers,Mes concessionnaires
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Unassigned,Non assignés
+xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,My Team,Mon équipe
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_nanaimo,Nanaimo,Nanaimo
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_navistar,Navistar,Navistar
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_new,New,Neuf
