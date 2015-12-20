@@ -91,6 +91,91 @@ class Dealer(models.Model):
         # TODO: Check if we need to call super class.
         pass
 
+    ######## Mail API redirected to partner. TODO: Make a mixin out of this.
+
+    def message_get_subscription_data(self, cr, uid, ids, user_pid=None, context=None):
+        ids_map = dict([
+            (dealer.id, dealer.partner.id) for dealer in self.browse(cr, uid, ids, context=context)
+        ])
+
+        res = self.pool.get('res.partner').message_get_subscription_data(
+            cr, uid, ids_map.values(), user_pid=user_pid, context=context)
+
+        # Replace partner id with dealer id in returned result
+        return dict([(dealer_id, res[partner_id]) for (dealer_id, partner_id) in ids_map.items()])
+
+    def message_get_suggested_recipients(self, cr, uid, ids, context=None):
+
+        ids_map = dict([
+            (dealer.id, dealer.partner.id) for dealer
+            in self.pool.get('xpr_dealer.dealer').browse(cr, uid, ids, context=context)
+        ])
+
+        context['default_model'] = 'res.partner'
+        context['default_res_id'] = self.pool.get('xpr_dealer.dealer').browse(
+                cr, uid, [context['default_res_id']], context=context)[0].partner.id
+
+        res = self.pool.get('res.partner').message_get_suggested_recipients(
+            cr, uid, ids_map.values(), context=context)
+
+        # Replace partner id with dealer id in returned result
+        res = dict([(dealer_id, res[partner_id]) for (dealer_id, partner_id) in ids_map.items()])
+
+        return res
+
+    def message_post(
+        self, cr, uid, thread_id, body='', subject=None, type='notification',
+        subtype=None, parent_id=False, attachments=None, context=None,
+        content_subtype='html', **kwargs
+    ):
+
+        thread_id = self.pool.get('xpr_dealer.dealer').browse(
+                cr, uid, [thread_id], context=context)[0].partner.id
+
+        return self.pool.get('res.partner').message_post(
+            cr, uid, thread_id, body=body, subject=subject, type=type,
+            subtype=subtype, parent_id=parent_id, attachments=attachments, context=context,
+            content_subtype=content_subtype, **kwargs)
+
+    def message_subscribe_users(
+        self, cr, uid, ids, user_ids=None, subtype_ids=None, context=None
+    ):
+        ids = [dealer.partner.id for dealer in self.browse(cr, uid, ids, context=context)]
+
+        return self.pool.get('res.partner').message_subscribe_users(
+            cr, uid, ids, user_ids=user_ids, subtype_ids=subtype_ids, context=context)
+
+    def message_subscribe(self, cr, uid, ids, partner_ids, subtype_ids=None, context=None):
+        ids = [dealer.partner.id for dealer in self.browse(cr, uid, ids, context=context)]
+
+        return self.pool.get('res.partner').message_subscribe(
+            cr, uid, ids, partner_ids, subtype_ids=subtype_ids, context=context)
+
+    def message_unsubscribe_users(self, cr, uid, ids, user_ids=None, context=None):
+        ids = [dealer.partner.id for dealer in self.browse(cr, uid, ids, context=context)]
+
+        return self.pool.get('res.partner').message_unsubscribe_users(
+            cr, uid, ids, user_ids=user_ids, context=context)
+
+    def message_unsubscribe(self, cr, uid, ids, partner_ids, context=None):
+        ids = [dealer.partner.id for dealer in self.browse(cr, uid, ids, context=context)]
+
+        return self.pool.get('res.partner').message_unsubscribe(
+            cr, uid, ids, partner_ids, context=context)
+
+    def message_auto_subscribe(self, cr, uid, ids, updated_fields, context=None, values=None):
+        ids = [dealer.partner.id for dealer in self.browse(cr, uid, ids, context=context)]
+
+        return self.pool.get('res.partner').message_auto_subscribe(
+            cr, uid, ids, updated_fields, context=context, values=values)
+
+    def read_followers_data(self, cr, uid, follower_ids, context=None):
+
+        return self.pool.get('res.partner').read_followers_data(
+            cr, uid, follower_ids, context=context)
+
+    ######## End of mail API
+
     @api.depends('user_id')
     def _assigned_user(self):
         for dealer in self:
