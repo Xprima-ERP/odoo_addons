@@ -582,6 +582,8 @@ class SalesOrderLine(models.Model):
 
     is_ad_line = fields.Boolean(string="Is Ad", readonly=True, compute=_is_ad_line)
 
+    _defaults = {'name': ' '}
+
 
 class SolutionConfigurator(models.TransientModel):
 
