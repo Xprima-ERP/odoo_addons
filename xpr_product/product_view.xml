@@ -7,9 +7,13 @@
       <field name="inherit_id" ref="product.product_template_only_form_view"/>
       <field name="arch" type="xml">
 
-         <field name="type" position="replace">
+        <field name="type" position="replace">
           <field name="type" invisible="1" />
           <field name="categ_term"/>
+        </field>
+
+        <field name="default_code" position="attributes">
+          <attribute name="attrs">{'invisible': False}</attribute>
         </field>
 
         <field name="sale_ok" position="replace">
