@@ -123,14 +123,22 @@ class Dealer(models.Model):
 
         return res
 
+    def _convert_to_list(self, thread_id):
+        if type(thread_id) is list:
+            return thread_id
+
+        return [thread_id]
+
     def message_post(
         self, cr, uid, thread_id, body='', subject=None, type='notification',
         subtype=None, parent_id=False, attachments=None, context=None,
         content_subtype='html', **kwargs
     ):
 
+        thread_id = self._convert_to_list(thread_id)
+
         thread_id = self.pool.get('xpr_dealer.dealer').browse(
-                cr, uid, [thread_id], context=context)[0].partner.id
+                cr, uid, thread_id, context=context)[0].partner.id
 
         return self.pool.get('res.partner').message_post(
             cr, uid, thread_id, body=body, subject=subject, type=type,
