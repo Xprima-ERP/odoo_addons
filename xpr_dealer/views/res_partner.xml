@@ -215,11 +215,13 @@
 
                 <group>
                    <field name="market"
-                        domain="[('parent_id', 'child_of', %(category_dealer_market)d)]"/>
+                        domain="[('parent_id.parent_id', 'child_of', %(category_dealer_market)d)]"/>
                     <field name="region"
-                        domain="[('parent_id', 'child_of', %(category_dealer_region)d)]"/>
+                        domain="[('parent_id.parent_id', 'child_of', %(category_dealer_region)d)]"/>
                     <field name="portalmask" widget="many2many_tags"
-                        domain="[('parent_id', 'child_of', %(category_dealer_portal)d)]"/>
+                        domain="[('parent_id.parent_id', 'child_of', %(category_dealer_portal)d)]"/>
+                    <field name="customer" widget="many2many_tags"
+                      domain="[('parent_id.parent_id', 'child_of', %(category_dealer_customer)d)]"/>
                 </group>
 
                  <group>
