@@ -146,7 +146,7 @@
 
                     <button type="workflow" name="sig_availability_not_checked_notify" string="Not Available" states="need_availability_check" groups="xpr_sale_process.advertising" />
 
-                    <button type="workflow" name="sig_cancel" string="Lost" states="contract_not_approved" groups="base.group_sale_manager"/>
+                    <button type="workflow" name="sig_lost" string="Lost" states="contract_not_approved" groups="base.group_sale_manager"/>
 
                     <button type="workflow" name="sig_manager_approved" string="Approve" states="need_manager_approval" groups="base.group_sale_manager" />
 

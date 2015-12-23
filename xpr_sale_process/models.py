@@ -43,6 +43,7 @@ class SaleOrder(models.Model):
             ('need_availability_check', 'Need Availability Check'),
             ('sent', 'Quotation Sent'),
             ('cancel', 'Cancelled'),
+            ('lost', 'Lost'),
             ('done', 'Done'),
         ],
         'Status',
