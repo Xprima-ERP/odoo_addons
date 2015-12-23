@@ -121,8 +121,8 @@ class SaleOrder(models.Model):
         """
         Return True if the user triggering this method has the right to approve
         the associated quote. The user has the right if he is some admin
-        or if as a sales manager, is also the manager of
-        the salesperson associated to the quote. An AccessError exception is
+        or if as a sales manager and leader of the users sales team.
+        An AccessError exception is
         raised if sales manager is trying to approve a quote outside his team
         """
 
@@ -141,26 +141,35 @@ class SaleOrder(models.Model):
         if not is_sales_manager:
             return False
 
-        args = [("user_id", "=", self.env.user.id)]
-        hr_approver = self.env["hr.employee"].search(args)
-        args = [("user_id", "=", self.user_id.id)]
-        hr_owner = self.env["hr.employee"].search(args)
-
-        if hr_owner.parent_id == hr_approver:
-            return True
-
-        raise AccessError(
-            "You cannot approve this quote, because you are not"
-            " set as %s's manager in the system"
-            % hr_owner.user_id.name)
+        try:
+            if self.env.user.id == self.user_id.partner_id.section_id.user_id.id:
+                return True
+        except:
+            raise AccessError(
+                "You cannot approve this quote, because you are not"
+                " set as %s's sales team leader in the system"
+                % self.user_id.name)
 
     def notify_manager_approval(self):
+        """
+        Notify team manager of current order salesman for discount approval
+        """
         self.write({'state': 'need_manager_approval'})
 
-        args = [("user_id", "=", self.user_id.id)]
-        hr_owner = self.env["hr.employee"].search(args)
+        salesman = self.user_id.partner_id
 
-        if not hr_owner:
+        if not salesman:
+            # No salesman. No team.
+            return
+
+        team = salesman.section_id
+
+        if not team:
+            # No team, no team leader.
+            return
+
+        if team.user_id.id == self.env.user.id:
+            # User is actually the leader. No need to auto notify.
             return
 
         template = self.env.ref('xpr_sale_process.quotation_manager_approval_mail')
@@ -168,7 +177,7 @@ class SaleOrder(models.Model):
         values = self.env['email.template'].generate_email(
             template.id, self.id)
 
-        values['recipient_ids'] = [(4, hr_owner.user_id.partner_id.id)]
+        values['recipient_ids'] = [(4, team.user_id.partner_id.id)]
 
         self.env['mail.mail'].create(values)
 

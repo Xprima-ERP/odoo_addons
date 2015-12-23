@@ -3,7 +3,7 @@
 {'name': 'Xprima CSI Program',
  'version': '0.001',
  'summary': 'Xprima CSI Program',
- 'description': 'Module that add CSI Program features for Xprima.',
+ 'description': 'Module that add a Customer Satisfactin Index Program features for Xprima.',
  'category': 'Misc',
  'author': 'Xprima',
  'website': 'http://www.xprima.com',
