@@ -12,7 +12,7 @@
  'data': [
      'view/xpr_csi_program_view.xml'
  ],
- 'demo': ['xpr_csi_program_demo_data.xml'],
+ 'demo': [],
  'installable': True,
  'auto_install': False,
  'application': False, }

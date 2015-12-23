@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-  <data noupdate="0">
+  <data>
     <record model="ir.ui.view" id="view_order_form_csi_program">
       <field name="name">view_order_form_csi_program</field>
       <field name="model">sale.order</field>
