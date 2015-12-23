@@ -8,7 +8,7 @@
  'author': 'Xprima',
  'website': 'http://www.xprima.com',
  'license': 'AGPL-3',
- 'depends': ['base', 'sale'],
+ 'depends': ['base', 'sale', 'xpr_dealer'],
  'data': [
      'view/xpr_csi_program_view.xml'
  ],

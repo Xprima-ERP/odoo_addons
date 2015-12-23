@@ -17,22 +17,6 @@ class SaleOrder(models.Model):
 
     csi_contact = fields.Many2one('res.partner', 'CSI Contact Sales')
 
-    # partner_invoice_id = fields.Many2one(
-    #     'res.partner',
-    #     'Invoice Address',
-    #     readonly=True,
-    #     required=False,
-    #     states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
-    #     help="Invoice address for current sales order.")
-
-    # partner_shipping_id = fields.Many2one(
-    #     'res.partner',
-    #     'Delivery Address',
-    #     readonly=True,
-    #     required=False,
-    #     states={'draft': [('readonly', False)], 'sent': [('readonly', False)]},
-    #     help="Delivery address for current sales order.")
-
     # Form helper
 
     def on_change_partner_id(self, cr, uid, ids, partner_id, context):
