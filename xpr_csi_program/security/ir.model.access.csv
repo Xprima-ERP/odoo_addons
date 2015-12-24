@@ -1,2 +1,0 @@
-id,active,perm_create,perm_unlink,group_id/id,name,model_id/id,perm_read,perm_write
-xpr_csi_program.access_model_name_group_group_name,True,True,True,base.group_user,xpr_csi_program.access_model_name_group_group_name,xpr_csi_program.model_model_name,True,True

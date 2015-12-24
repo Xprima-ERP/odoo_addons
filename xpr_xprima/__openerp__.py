@@ -47,8 +47,7 @@ Install notes:
         'xpr_report',
         'xpr_dealer',
         'xpr_xis_connector',
-       
-        #'xpr_csi_program', # Later
+        'xpr_csi_program',
 
         # From 7.0 version
 

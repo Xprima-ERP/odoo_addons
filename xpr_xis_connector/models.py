@@ -151,6 +151,7 @@ class SaleOrder(models.Model):
                 'manager_approved',
                 'contract_approved',
                 'cancel',
+                'lost',
                 'sent',
                 'done',
             ]:

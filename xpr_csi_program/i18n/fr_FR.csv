@@ -1,0 +1,5 @@
+module,type,name,res_id,src,value
+xpr_csi_program,field,"res.partner,csi_contact_am",0,CSI Contact A.M.,Contact ISC Gestionnaire de Compte
+xpr_csi_program,field,"sale.order,csi_contact",0,CSI Contact Sales,Contact ISC Ventes
+xpr_csi_program,model,"ir.model,name",xpr_csi_program.model_res_partner,Partner,Partenaire
+xpr_csi_program,model,"ir.model,name",xpr_csi_program.model_sale_order,Sales Order,Bon de commande

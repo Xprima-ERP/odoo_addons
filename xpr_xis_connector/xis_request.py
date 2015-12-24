@@ -241,6 +241,7 @@ class SaleOrderRequest(XISRequestWrapper):
         #"validated": "Presentation",
         #"sent": "Presentation",
         "cancel": "Closed Lost",
+        "lost": "Closed Lost",
         #"waiting_date": "Presentation",
         #"progress": "Closing",
         #"manual": "Closing",

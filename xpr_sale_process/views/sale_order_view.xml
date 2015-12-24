@@ -18,7 +18,6 @@
             </field>
         </record>
 
-
         <!-- Xprima prefix for sale orders -->
         <record id="sale.seq_sale_order" model="ir.sequence">
             <field name="name">Contract</field>
@@ -42,6 +41,10 @@
 
                 <field name="client_order_ref" position="attributes">
                     <attribute name="readonly">1</attribute>
+                </field>
+
+                <field name="partner_id" position="attributes">
+                    <attribute name="options">{'no_create': True}</attribute>
                 </field>
 
             </field>
@@ -143,7 +146,7 @@
 
                     <button type="workflow" name="sig_availability_not_checked_notify" string="Not Available" states="need_availability_check" groups="xpr_sale_process.advertising" />
 
-                    <button type="workflow" name="sig_cancel" string="Lost" states="contract_not_approved" groups="base.group_sale_manager"/>
+                    <button type="workflow" name="sig_lost" string="Lost" states="contract_not_approved" groups="base.group_sale_manager"/>
 
                     <button type="workflow" name="sig_manager_approved" string="Approve" states="need_manager_approval" groups="base.group_sale_manager" />
 
