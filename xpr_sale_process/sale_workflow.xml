@@ -215,6 +215,14 @@
             <field name="action">notify_manager_approval_interrupt()</field>
         </record>
 
+         <record model="workflow.activity" id="act_lost">
+            <field name="name">Lost</field>
+            <field name="wkf_id" ref="sale.wkf_sale"/>
+            <field name="kind">function</field>
+            <field name="action">write({'state':'lost'})</field>
+            <field name="flow_stop">True</field>
+        </record>
+
         <!-- Custom transitions -->
         <record id="trans_draft_act_check_product_availability" model="workflow.transition">
             <field name="act_from" ref="sale.act_draft"/>
@@ -351,6 +359,12 @@
             <field name="act_from" ref="sale.act_draft"/>
             <field name="act_to" ref="sale.act_cancel"/>
             <field name="signal">sig_cancel</field>
+        </record>
+
+        <record id="trans_act_draft_sale_act_lost" model="workflow.transition">
+            <field name="act_from" ref="sale.act_draft"/>
+            <field name="act_to" ref="act_lost"/>
+            <field name="signal">sig_lost</field>
         </record>
 
     </data>

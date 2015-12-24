@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <openerp>
-  <data noupdate="0">
+  <data>
     <record model="ir.ui.view" id="view_order_form_csi_program">
       <field name="name">view_order_form_csi_program</field>
       <field name="model">sale.order</field>
@@ -14,13 +14,14 @@
         </field>
       </field>
       </record>
+
     <record model="ir.ui.view" id="view_order_form_csi_program_partner">
       <field name="name">view_order_form_csi_program_partner</field>
-      <field name="model">res.partner</field>
-      <field name="inherit_id" ref="base.view_partner_form"/>
+      <field name="model">xpr_dealer.dealer</field>
+      <field name="inherit_id" ref="xpr_dealer.view_dealer_form"/>
       <field name="arch" type="xml">
         <field name="email" position="after">
-          <field name="csi_contact_am" domain="[('parent_id', '=', id)]" />
+          <field name="csi_contact_am" domain="[('parent_id', '=', partner)]" options="{'no_create': True}"/>
         </field>
       </field>
       </record>
