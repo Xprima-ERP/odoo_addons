@@ -39,6 +39,9 @@
                     <attribute name="create">false</attribute>
                 </xpath>
 
+                <xpath expr="/form/header/button[@name='copy_quotation']" position="attributes">
+                    <attribute name="states">cancel,draft,contract_not_approved</attribute>
+                </xpath>
                 <field name="client_order_ref" position="attributes">
                     <attribute name="readonly">1</attribute>
                 </field>
