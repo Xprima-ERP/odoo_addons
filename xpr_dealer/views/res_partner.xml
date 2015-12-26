@@ -222,6 +222,11 @@
                         domain="[('parent_id.parent_id', 'child_of', %(category_dealer_portal)d)]"/>
                     <field name="customer" widget="many2many_tags"
                       domain="[('parent_id.parent_id', 'child_of', %(category_dealer_customer)d)]"/>
+
+                    <field name="makes" widget="many2many_tags"
+                      domain="[('parent_id.parent_id.parent_id', 'child_of', %(category_dealer_industry)d)]"/>
+
+                    <field name="make_sequence" />
                 </group>
 
                  <group>
