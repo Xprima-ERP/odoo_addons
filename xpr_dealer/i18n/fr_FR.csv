@@ -74,6 +74,10 @@ xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.dealer_category_menu,Dealer Tags,�
 xpr_dealer,field,"res.partner,dealer",0,Dealer Info,Info du concessionnaire
 xpr_dealer,model,"ir.actions.act_window,name",xpr_dealer.dealer_action,Dealers,Concessionnaires
 xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.dealer_menu,Dealers,Concessionnaires
+xpr_dealer,model,"ir.actions.act_window,name",xpr_dealer.dealer_team_action,Team Dealers,Concessionnaires Équipe
+xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.dealer_team_menu,Team,Équipe
+xpr_dealer,model,"ir.actions.act_window,name",xpr_dealer.dealer_all_action,All Dealers,Tous Concessionnaires
+xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.dealer_all_menu,All,Tous
 xpr_dealer,field,"xpr_dealer.dealer,owner",0,Dealership Owner,Propriétaire du concessionnaire
 xpr_dealer,field,"xpr_dealer.dealer,owneremail",0,Dealership Owner Email,Courriel du propriétaire du concessionnaire
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_derbi,Derbi,Derbi

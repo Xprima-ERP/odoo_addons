@@ -346,11 +346,37 @@
       <field name="view_mode">tree,form</field>
       <field name="context">{'search_default_my_dealers': 1}</field>
   </record>
+
+  <record model="ir.actions.act_window" id="dealer_team_action">
+      <field name="name">Team Dealers</field>
+      <field name="res_model">xpr_dealer.dealer</field>
+      <field name="view_mode">tree,form</field>
+      <field name="context">{'search_default_my_team': 1}</field>
+  </record>
+
+  <record model="ir.actions.act_window" id="dealer_all_action">
+      <field name="name">All Dealers</field>
+      <field name="res_model">xpr_dealer.dealer</field>
+      <field name="view_mode">tree,form</field>
+  </record>
+
   <menuitem id="dealer_menu" name="Dealers"
     parent="base.menu_sales"
     action="dealer_action"
     sequence="1"
     groups="base.group_sale_salesman"/>
+
+  <menuitem id="dealer_team_menu" name="Team"
+    parent="dealer_menu"
+    action="dealer_team_action"
+    sequence="1"
+    groups="base.group_sale_manager"/>
+
+  <menuitem id="dealer_all_menu" name="All"
+    parent="dealer_menu"
+    action="dealer_all_action"
+    sequence="2"
+    groups="base.group_no_one"/>
 
   <act_window name="Assign Salesperson"
               res_model="xpr_dealer.dealer_assign"
