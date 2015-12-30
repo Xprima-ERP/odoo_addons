@@ -28,5 +28,44 @@
     parent="accpac_menu_root"
     action="invoice_line_action"
     groups="account.group_account_manager"/>
+
+  <record id="invoice_process_wizard" model="ir.ui.view">
+      <field name="name">invoiceline_process_wizard</field>
+      <field name="model">xpr_accpac_connector.invoice_process</field>
+      <field name="arch" type="xml">
+            <form string="Process Invoices">
+                <group>
+                    <field name="lines" readonly="1" invisible="1"/>
+                    <field name="count" readonly="1" />
+                </group>
+
+                <footer>
+
+                <button
+                    string="Process"
+                    type="object"
+                    name="process_import"
+                    class="oe_highlight"
+                />
+                <button
+                    string="Cancel"
+                    class="oe_link"
+                    special="cancel" />
+                </footer>
+            </form>
+    </field>
+  </record>
+
+  <act_window name="Process invoice import"
+    res_model="xpr_accpac_connector.invoice_process"
+    src_model="xpr_accpac_connector.invoiceline"
+    view_mode="form"
+    multi="True"
+    target="new"
+    key2="client_action_multi"
+    id="process_invoiceline_action"
+    groups="account.group_account_manager"
+  />
+
   </data>
 </openerp>

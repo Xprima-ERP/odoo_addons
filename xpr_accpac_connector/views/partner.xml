@@ -7,9 +7,10 @@
       <field name="model">xpr_accpac_connector.client</field>
       <field name="type">tree</field>
       <field name="arch" type="xml">
-        <tree>
-          <field name="idcust" />
-          <field name="namecust" />
+        <tree editable="bottom">
+          <field name="idcust" readonly="1"/>
+          <field name="namecust" readonly="1" />
+          <field name="dealercode" readonly="1" />
           <field name="partner" />
         </tree>
       </field>
@@ -27,11 +28,11 @@
       </field>
   </record>
 
-
   <record model="ir.actions.act_window" id="client_action">
-      <field name="name">Clients</field>
+      <field name="name">Dealers</field>
       <field name="res_model">xpr_accpac_connector.client</field>
       <field name="view_mode">tree</field>
+      <field name="domain">[('idgrp', '=', 'DEALER')]</field>
   </record>
 
   <record model="ir.actions.act_window" id="client_values_action">
@@ -40,22 +41,59 @@
       <field name="view_mode">tree</field>
   </record>
 
-  <menuitem id="accpac_menu_root" name="Accpac"
+  <menuitem id="accpac_menu_root" name="Accpac Import"
     parent="account.menu_finance"
     groups="account.group_account_manager"/>
 
-    <menuitem id="dealer_team_menu" name="Client Values"
+    <menuitem id="cliet_values_menu" name="Client Values"
     sequence="1"
     parent="accpac_menu_root"
     action="client_values_action"
     groups="account.group_account_manager"/>
 
-  <menuitem id="dealer_menu" name="Clients"
+  <menuitem id="client_menu" name="Dealers"
     sequence="2"
     parent="accpac_menu_root"
     action="client_action"
     groups="account.group_account_manager"/>
 
+    <record id="client_process_wizard" model="ir.ui.view">
+      <field name="name">client_process_wizard</field>
+      <field name="model">xpr_accpac_connector.client_process</field>
+      <field name="arch" type="xml">
+            <form string="Process Clients">
+                <group>
+                    <field name="clients" readonly="1" invisible="1"/>
+                    <field name="count" readonly="1" />
+                </group>
+
+                <footer>
+
+                <button
+                    string="Process"
+                    type="object"
+                    name="process_import"
+                    class="oe_highlight"
+                />
+                <button
+                    string="Cancel"
+                    class="oe_link"
+                    special="cancel" />
+                </footer>
+            </form>
+    </field>
+  </record>
+
+  <act_window name="Process client import"
+    res_model="xpr_accpac_connector.client_process"
+    src_model="xpr_accpac_connector.client"
+    view_mode="form"
+    multi="True"
+    target="new"
+    key2="client_action_multi"
+    id="process_client_import_action"
+    groups="account.group_account_manager"
+  />
 
 
   </data>

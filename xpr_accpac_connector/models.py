@@ -30,41 +30,23 @@ class Client(models.Model):
 
     _name = 'xpr_accpac_connector.client'
 
-    @api.depends('idcust')
-    def _get_partner(self):
-        for client in self:
-            code = self.env['xpr_accpac_connector.clientoptionalvalue'].search(
-                [('optfield', '=', 'DEALERCODE'), ('idcust', '=', client.idcust)])
-
-            if not code:
-                client.partner = None
-                continue
-
-            partner = self.env['xpr_accpac_connector.clientoptionalvalue'].search(
-                [('code', '=', code.value)])
-
-            if not partner:
-                # Dealercode might not match. Typo?
-                client.partner = None
-                continue
-
-            client.partner = partner
-
     idcust = fields.Char(string="IDCust", size=50)
 
     namecust = fields.Char(string="NameCust", size=254)
 
     # If not DEALER, we do not care for now
     idgrp = fields.Char(string="IdGrp", size=50)
+
     dateinac = fields.Date(string="DateInac")  # Inactive??
     datestart = fields.Date(string="DateStart")  # ??
     datelastmn = fields.Date(string="DateLastMN")  # ??
 
     # Should be no more than one match, based on dealercode
+    dealercode = fields.Char(string="Dealer Code", size=50) 
     partner = fields.Many2one(
         'res.partner',
         'Partner',
-        readonly=True, _compute=_get_partner, store=True)
+    )
 
     _sql_constraints = [
         (
@@ -102,17 +84,6 @@ class InvoiceLine(models.Model):
 
     _name = 'xpr_accpac_connector.invoiceline'
 
-    @api.depends('idcust')
-    def _get_partner(self):
-        for line in self:
-
-            client = self.env['xpr_accpac_connector.client'].search([('idcust', '=', line.idcust)])
-
-            if client:
-                line.partner = client.partner
-            else:
-                line.partner = None
-
     date = fields.Date(string="Date")
     idcust = fields.Char(string="Customer#", size=50)
     idinvoice = fields.Char(string="Invoice#", size=50)
@@ -124,4 +95,125 @@ class InvoiceLine(models.Model):
     partner = fields.Many2one(
         'res.partner',
         'Partner',
-        readonly=True, _compute=_get_partner, store=True)
+        readonly=True
+    )
+
+
+class ClientProcess(models.TransientModel):
+
+    """
+    Dealer Assign wizard.
+
+    Loaded to assign a sales person to multiple dealers
+    """
+
+    _name = 'xpr_accpac_connector.client_process'
+
+    def _init_clients(self):
+
+        context = self.env.context
+
+        active_ids = context.get('active_ids')
+
+        if not active_ids:
+            return []
+
+        return self.env['xpr_accpac_connector.client'].browse(active_ids)
+
+    def _init_count(self):
+
+        context = self.env.context
+
+        active_ids = context.get('active_ids')
+
+        if not active_ids:
+            return 0
+
+        return len(active_ids)
+
+    clients = fields.Many2many(
+        'xpr_accpac_connector.client',
+        'clients_assign_clients_rel',
+        string='Clients',
+        required=True,
+        default=_init_clients)
+
+    count = fields.Integer("Selected clients", default=_init_count)
+
+    @api.multi
+    def process_import(self):
+
+        for client in self.clients:
+
+            code = self.env['xpr_accpac_connector.clientoptionalvalue'].search([
+                ('idcust', '=', client.idcust)])
+
+            if not code:
+                client.partner = None
+                continue
+
+            client.dealercode = code.value
+
+            partner = self.env['res.partner'].search(
+                [('code', '=', code.value)])
+
+            if not partner:
+                client.partner = None
+                continue
+
+            client.partner = partner
+
+
+class InvoiceProcess(models.TransientModel):
+
+    """
+    Dealer Assign wizard.
+
+    Loaded to assign a sales person to multiple dealers
+    """
+
+    _name = 'xpr_accpac_connector.invoice_process'
+
+    def _init_lines(self):
+
+        context = self.env.context
+
+        active_ids = context.get('active_ids')
+
+        if not active_ids:
+            return []
+
+        return self.env['xpr_accpac_connector.invoiceline'].browse(active_ids)
+
+    def _init_count(self):
+
+        context = self.env.context
+
+        active_ids = context.get('active_ids')
+
+        if not active_ids:
+            return 0
+
+        return len(active_ids)
+
+    lines = fields.Many2many(
+        'xpr_accpac_connector.invoiceline',
+        'invoice_assign_clients_rel',
+        string='Lines',
+        required=True,
+        default=_init_lines)
+
+    count = fields.Integer("Selected lines", default=_init_count)
+
+    @api.multi
+    def process_import(self):
+
+        for line in self.lines:
+
+            client = self.env['xpr_accpac_connector.client'].search(
+                [('idcust', '=', line.idcust)])
+
+            if client:
+                line.partner = client.partner
+            else:
+                line.partner = None
