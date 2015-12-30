@@ -1,0 +1,4 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_clientoptionalvalue_accounting,accounting access to accpac client values import,model_xpr_accpac_connector_clientoptionalvalue,account.group_account_manager,1,1,1,1
+access_client_accounting,accounting access to accpac client import,model_xpr_accpac_connector_client,account.group_account_manager,1,1,1,1
+access_invoiceline_accounting,accounting access to accpac invoice line import,model_xpr_accpac_connector_invoiceline,account.group_account_manager,1,1,1,1

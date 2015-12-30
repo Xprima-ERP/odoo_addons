@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE openerp SYSTEM "openerp.dtd">
+<openerp>
+  <data>
+
+    <record id="view_invoice_line_tree" model="ir.ui.view">
+      <field name="model">xpr_accpac_connector.invoiceline</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="idcust" />
+          <field name="idinvoice" />
+          <field name="date" />
+          <field name="iditem" />
+          <!-- <field name="amount" /> -->
+          <field name="partner" />
+        </tree>
+      </field>
+  </record>
+
+  <record model="ir.actions.act_window" id="invoice_line_action">
+      <field name="name">Invoice Lines</field>
+      <field name="res_model">xpr_accpac_connector.invoiceline</field>
+      <field name="view_mode">tree</field>
+  </record>
+
+  <menuitem id="invoice_line_menu" name="Invoice Lines"
+    parent="accpac_menu_root"
+    action="invoice_line_action"
+    groups="account.group_account_manager"/>
+  </data>
+</openerp>
