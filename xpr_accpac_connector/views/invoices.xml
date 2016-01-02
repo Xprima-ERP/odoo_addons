@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE openerp SYSTEM "openerp.dtd">
+<openerp>
+  <data>
+
+    <record id="view_invoice_line_tree" model="ir.ui.view">
+      <field name="model">xpr_accpac_connector.invoiceline</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="idcust" />
+          <field name="idinvoice" />
+          <field name="date" />
+          <field name="iditem" />
+          <!-- <field name="amount" /> -->
+          <field name="partner" />
+        </tree>
+      </field>
+  </record>
+
+  <record model="ir.actions.act_window" id="invoice_line_action">
+      <field name="name">Invoice Lines</field>
+      <field name="res_model">xpr_accpac_connector.invoiceline</field>
+      <field name="view_mode">tree</field>
+  </record>
+
+  <menuitem id="invoice_line_menu" name="Invoice Lines"
+    parent="accpac_menu_root"
+    action="invoice_line_action"
+    groups="account.group_account_manager"/>
+
+  <record id="invoice_process_wizard" model="ir.ui.view">
+      <field name="name">invoiceline_process_wizard</field>
+      <field name="model">xpr_accpac_connector.invoice_process</field>
+      <field name="arch" type="xml">
+            <form string="Process Invoices">
+                <group>
+                    <field name="lines" readonly="1" invisible="1"/>
+                    <field name="count" readonly="1" />
+                </group>
+
+                <footer>
+
+                <button
+                    string="Process"
+                    type="object"
+                    name="process_import"
+                    class="oe_highlight"
+                />
+                <button
+                    string="Cancel"
+                    class="oe_link"
+                    special="cancel" />
+                </footer>
+            </form>
+    </field>
+  </record>
+
+  <act_window name="Process invoice import"
+    res_model="xpr_accpac_connector.invoice_process"
+    src_model="xpr_accpac_connector.invoiceline"
+    view_mode="form"
+    multi="True"
+    target="new"
+    key2="client_action_multi"
+    id="process_invoiceline_action"
+    groups="account.group_account_manager"
+  />
+
+  </data>
+</openerp>

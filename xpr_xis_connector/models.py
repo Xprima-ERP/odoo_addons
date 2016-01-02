@@ -169,34 +169,19 @@ class Partner(models.Model):
     """
     _inherit = "res.partner"
 
-    @api.multi
-    def write(self, vals):
-        """
-        Upon update, updates XIS with new fields and groups
-        """
-
-        # if 'user_id' in vals:
-        #     # Check if user may be updated
-        #     for partner in self:
-        #         if not self.may_change_user(partner):
-        #             # At least one partner may not be updated
-        #             del vals['user_id']
-        #             break
-
-        # Keep track of old category values if needed
+    def _pre_write(self, vals):
+         # Keep track of old category values if needed
         lst_old_cat = dict()
 
-        dct_cat_vals = vals.get("category_id")
-
-        if dct_cat_vals:
+        if vals.get("category_id"):
             for partner in self:
                 lst_old_cat[partner.id] = set([
                     cat.id for cat in partner.category_id
                 ])
 
-        # Make the standard call
-        status = super(Partner, self).write(vals)
+        return lst_old_cat
 
+    def _post_write(self, lst_old_cat):
         # Update XIS with new fields and categories
         # For dealers only.
         for partner in self:
@@ -208,52 +193,24 @@ class Partner(models.Model):
                 old_categories=lst_old_cat.get(partner.id)
             ).execute()
 
+    @api.multi
+    def write(self, vals):
+        """
+        Upon update, updates XIS with new fields and groups
+        """
+
+        if self.env.context.get('no_xis_synch'):
+            # Happens if this write is triggered Dealer.write
+            return super(Partner, self).write(vals)
+
+        post_write_data = self._pre_write(vals)
+
+        # Make the standard call
+        status = super(Partner, self).write(vals)
+
+        self._post_write(post_write_data)
+
         return status
-
-    # Deprecated
-    def may_change_user(self, partner):
-        """
-        Write helper function. Determines
-        if user may be updated within context
-        """
-
-        # Only the manager of the modifier can change
-        # the user_id of this partner
-
-        authorized_modifiers_groups = set([
-            #'Helpdesk / Agent',
-            #'Administration / Settings',
-            'Sales / Manager',
-            #'Contact Creation',
-        ])
-
-        writer_user = self.env.user
-        user_groups = set([group.full_name for group in writer_user.groups_id])
-
-        for group in authorized_modifiers_groups & authorized_modifiers_groups:
-
-            # Need to be the manager of the user_id
-            # or the coach.
-
-            hr_emp_obj = self.env['hr.employee']
-            s_args = [('user_id', '=', partner.user_id.id)]
-            try:
-                user_id_hr = hr_emp_obj.search(s_args)[0]
-            except IndexError:
-                continue
-
-            user_hr = hr_emp_obj.browse(user_id_hr)
-            manager_hr = user_hr.parent_id
-            coach_hr = user_hr.coach_id
-
-            if (
-                (manager_hr and uid == manager_hr.user_id.id)
-                or (coach_hr and uid == coach_hr.user_id.id)
-                or (partner.user_id and uid == partner.user_id.id)
-            ):
-                return True
-
-        return False
 
 
 class Dealer(models.Model):
@@ -276,6 +233,40 @@ class Dealer(models.Model):
         xis_request.DealerRequest(dealer).execute()
 
         return dealer
+
+    def _pre_write(self, vals):
+        # Copy of Partner method
+        lst_old_cat = dict()
+
+        if vals.get("category_id"):
+            for partner in self:
+                lst_old_cat[partner.id] = set([
+                    cat.id for cat in partner.category_id
+                ])
+
+        return lst_old_cat
+
+    def _post_write(self, lst_old_cat):
+        for dealer in self:
+            if not dealer.partner.customer:
+                continue
+
+            xis_request.DealerRequest(
+                dealer,
+                old_categories=lst_old_cat.get(dealer.id)
+            ).execute()
+
+    @api.multi
+    def write(self, vals):
+
+        post_write_data = self._pre_write(vals)
+
+        # Make the standard call
+        status = super(Dealer, self.with_context(no_xis_synch=True)).write(vals)
+
+        self._post_write(post_write_data)
+
+        return status
 
 
 class User(models.Model):

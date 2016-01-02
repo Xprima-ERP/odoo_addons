@@ -113,7 +113,7 @@ class Dealer(models.Model):
 
         context['default_model'] = 'res.partner'
         context['default_res_id'] = self.pool.get('xpr_dealer.dealer').browse(
-                cr, uid, [context['default_res_id']], context=context)[0].partner.id
+            cr, uid, [context['default_res_id']], context=context)[0].partner.id
 
         res = self.pool.get('res.partner').message_get_suggested_recipients(
             cr, uid, ids_map.values(), context=context)
@@ -138,7 +138,7 @@ class Dealer(models.Model):
         thread_id = self._convert_to_list(thread_id)
 
         thread_id = self.pool.get('xpr_dealer.dealer').browse(
-                cr, uid, thread_id, context=context)[0].partner.id
+            cr, uid, thread_id, context=context)[0].partner.id
 
         return self.pool.get('res.partner').message_post(
             cr, uid, thread_id, body=body, subject=subject, type=type,
@@ -188,6 +188,18 @@ class Dealer(models.Model):
     def _assigned_user(self):
         for dealer in self:
             dealer.assigned_user = dealer.user_id and dealer.user_id.active
+
+    @api.onchange('makes', 'make_sequence')
+    def _check_ordered(self):
+        for dealer in self:
+
+            makes_set = set(m.name for m in dealer.makes)
+            makes_parsed = (dealer.make_sequence or '').split(',')
+
+            # Respect order of present makes
+            new_makes = [m for m in makes_parsed if m in makes_set]
+
+            dealer.make_sequence = ','.join(new_makes + list(makes_set - set(makes_parsed)))
 
     assigned_user = fields.Boolean(
         string="Assigned Salesperson",
@@ -264,6 +276,8 @@ class Dealer(models.Model):
         'dealer_partner_category_make_rel',
         string="Makes",
     )
+
+    make_sequence = fields.Char('Make Sequence')
 
     business = fields.Many2many(
         'res.partner.category',
