@@ -1,0 +1,123 @@
+module,type,name,res_id,src,value
+sale,model,"ir.actions.act_window,help",sale.action_orders,"<p class=""oe_view_nocontent_create"">
+                    Click to create a quotation that can be converted into a sales
+                    order.
+                </p><p>
+                    Odoo will help you efficiently handle the complete sales flow:
+                    quotation, sales order, delivery, invoicing and payment.
+                </p>
+            ","<p class=""oe_view_nocontent_create"">
+Cliquez pour créer une soumission qui peut être converti en bon de commande.
+</p><p>
+Odoo vous aidera à gérer efficacement le flux de vente complet:
+soumission, bon de commande, livraison, facturation et paiement.
+</p>
+            "
+sale,model,"ir.actions.act_window,help",sale.act_res_partner_2_sale_order,"<p class=""oe_view_nocontent_create"">
+                Click to create a quotation or sales order for this customer.
+              </p><p>
+                Odoo will help you efficiently handle the complete sale flow:
+                quotation, sales order, delivery, invoicing and
+                payment.
+              </p><p>
+                The social feature helps you organize discussions on each sales
+                order, and allow your customer to keep track of the evolution
+                of the sales order.
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+Cliquez pour créer une soumission ou bon de commande pour ce client.
+</p><p>
+Odoo vous aidera à gérer efficacement le flux de vente complet:
+soumission, bon de commande, livraison, facturation et paiement.
+</p><p>
+La fonctionnalité sociale vous aide à organiser des discussions sur chaque commande, et permet à votre client de garder trace de l'évolution de la commande.
+</p>
+            "
+sale,model,"ir.actions.act_window,help",sale.action_orders_salesteams,"<p class=""oe_view_nocontent_create"">
+                Click to create a quotation that can be converted into a sales
+                order.
+              </p><p>
+                Odoo will help you efficiently handle the complete sales flow:
+                quotation, sales order, delivery, invoicing and payment.
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+Cliquez pour créer une soumission qui pourra être converti en bon de commande.
+</p><p>
+Odoo vous aidera à gérer efficacement le flux de vente complet:
+soumission, bon de commande, livraison, facturation et paiement.
+</p>
+            "
+sale,model,"ir.actions.act_window,help",sale.action_quotations,"<p class=""oe_view_nocontent_create"">
+                Click to create a quotation, the first step of a new sale.
+              </p><p>
+                Odoo will help you handle efficiently the complete sale flow:
+                from the quotation to the sales order, the
+                delivery, the invoicing and the payment collection.
+              </p><p>
+                The social feature helps you organize discussions on each sales
+                order, and allow your customers to keep track of the evolution
+                of the sales order.
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+Cliquez pour créer une soumission, première étape d'une vente.
+</p><p>
+Odoo vous aidera à gérer efficacement le flux de vente complet:
+soumission, bon de commande, livraison, facturation et paiement.
+</p><p>
+La fonctionnalité sociale vous aide à organiser des discussions sur chaque commande, et permet à votre client de garder trace de l'évolution de la commande.
+</p>
+            "
+sale,model,"ir.actions.act_window,help",sale.action_quotations_salesteams,"<p class=""oe_view_nocontent_create"">
+                Click to create a quotation, the first step of a new sale.
+              </p><p>
+                Odoo will help you handle efficiently the complete sale flow:
+                from the quotation to the sales order, the
+                delivery, the invoicing and the payment collection.
+              </p><p>
+                The social feature helps you organize discussions on each sales
+                order, and allow your customers to keep track of the evolution
+                of the sales order.
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+Cliquez pour créer une soumission, première étape d'une vente.
+</p><p>
+Odoo vous aidera à gérer efficacement le flux de vente complet:
+soumission, bon de commande, livraison, facturation et paiement.
+</p><p>
+La fonctionnalité sociale vous aide à organiser des discussions sur chaque commande, et permet à votre client de garder trace de l'évolution de la commande.
+</p>
+            "
+sale,field,"sale.config.settings,module_website_quote",0,Allow online quotations and templates,Permet les soumissions en ligne et modèles associés
+sale,help,"sale.config.settings,module_sale_stock",0,"Allows you to Make Quotation, Sale Order using different Order policy and Manage Related Stock.
+-This installs the module sale_stock.","Vous permet de faire des soumissions, des bons de commande en utilisant différentes politiques de commande et de gérer le stock associé.
+- Ceci installe le module sale_stock."
+sale,view,sale.order,sale.view_order_form,Cancel Quotation,Annuler la soumission
+sale,help,"crm.case.section,use_quotations",0,Check this box to manage quotations in this sales team.,Cochez cette case pour gérer les soumissions de cette équipe commerciale.
+sale,help,"res.company,sale_note",0,Default terms and conditions for quotations.,Conditions générales pour les soumissions.
+sale,selection,"sale.order,state",0,Draft Quotation,Soumission brouillon
+sale,view,sale.order,sale.view_order_form,New Copy of Quotation,Nouvelle copie de soumission
+sale,model,"ir.actions.act_window,name",sale.action_order_tree,Old Quotations,Ancienes soumissions
+sale,view,sale.order,sale.view_order_form,Quotation,Soumission
+sale,view,sale.order,sale.view_quotation_tree,Quotation,Soumission
+sale,selection,"sale.report,state",0,Quotation,Soumission
+sale,model,"ir.actions.report.xml,name",sale.report_sale_order,Quotation / Order,Soumission / Commande
+sale,view,website,sale.report_saleorder_document,Quotation Date:,Date de la soumission:
+sale,view,sale.order,sale.view_quotation_tree,Quotation Number,N° de soumission
+sale,view,website,sale.report_saleorder_document,Quotation N°,N° de soumission
+sale,model,"mail.message.subtype,name",sale.mt_salesteam_order_sent,Quotation Send,Soumission envoyée
+sale,selection,"sale.order,state",0,Quotation Sent,Soumission envoyée
+sale,model,"mail.message.subtype,description",sale.mt_order_confirmed,Quotation confirmed,Soumission confirmée
+sale,code,addons/sale/sale.py,362,Quotation created,Soumission créé
+sale,model,"mail.message.subtype,description",sale.mt_order_sent,Quotation sent,Soumission envoyée
+sale,model,"mail.message.subtype,name",sale.mt_order_sent,Quotation sent,Soumission envoyée
+sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Quotations,Soumissions
+sale,field,"crm.case.section,use_quotations",0,Quotations,Soumissions
+sale,model,"ir.actions.act_window,name",sale.action_quotations,Quotations,Soumission
+sale,model,"ir.actions.act_window,name",sale.action_quotations_salesteams,Quotations,Soumission
+sale,model,"ir.ui.menu,name",sale.menu_sale_quotations,Quotations,Soumission
+sale,view,sale.order,sale.view_sales_order_filter,Quotations,Soumissions
+sale,model,"ir.actions.act_window,name",sale.action_order_report_quotation_salesteam,Quotations Analysis,Analyse des soumissions
+sale,model,"ir.actions.act_window,name",sale.act_res_partner_2_sale_order,Quotations and Sales,Soumission et ventes
+sale,field,"crm.case.section,monthly_quoted",0,Rate of created quotation per duration,Total mensuel des soumissions
+sale,help,"sale.config.settings,module_website_quote",0,This adds the online quotation,Ajoute la fonction de soumission en ligne.
+sale,model,"ir.actions.act_window,help",sale.action_order_report_all,"This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.","Ce rapport analyse vos soumissions et commandes clients. Il vérifie les revenus liés aux ventes et les classifie selon différents critères (vendeur, partenaire, article, etc.). Vous pouvez utiliser ce rapport pour analyser vos ventes non encore facturées. Si vous souhaitez analyser votre chiffre d'affaires, vous devriez utiliser le rapport ""Analyse des factures clients"" dans l'application comptabilité."
