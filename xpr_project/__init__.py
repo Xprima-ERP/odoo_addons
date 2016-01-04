@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+##############################################################################
 #
 #    OpenERP, Open Source Management Solution
 #    This module copyright (C) 2014 Savoir-faire Linux
@@ -17,16 +18,7 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+##############################################################################
 
-import logging
-from openerp.osv import osv, fields
+from . import models
 
-_logger = logging.getLogger(__name__)
-
-
-class res_users(osv.osv):
-    _inherit = "res.users"
-    _columns = {
-        'xis_user_external_id': fields.integer('XIS external user',
-                                               required=True),
-    }

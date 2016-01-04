@@ -366,7 +366,8 @@
     sequence="1"
     groups="base.group_sale_salesman"/>
 
-  <menuitem id="dealer_team_menu" name="Team"
+<!--
+   <menuitem id="dealer_team_menu" name="Team"
     parent="dealer_menu"
     action="dealer_team_action"
     sequence="1"
@@ -376,7 +377,7 @@
     parent="dealer_menu"
     action="dealer_all_action"
     sequence="2"
-    groups="base.group_no_one"/>
+    groups="base.group_no_one"/> -->
 
   <act_window name="Assign Salesperson"
               res_model="xpr_dealer.dealer_assign"

@@ -2,8 +2,6 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    This module copyright (C) 2014 Savoir-faire Linux
-#    (<http://www.savoirfairelinux.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -21,53 +19,39 @@
 ##############################################################################
 
 {
-    'name': 'Xprima XIS Connector',
-    'version': '0.4',
+    'name': 'Xprima Project',
+    'version': '0.1',
     'author': 'Xprima',
     'maintainer': 'Xprima',
     'website': 'http://www.xprima.com',
     'license': 'AGPL-3',
     'category': 'Sale',
-    'summary': 'Sync information to Xprima XIS',
+    'summary': 'Sync project management with Xprima',
     'description': """
-Xprima XIS Connector
-====================
+Xprima JIRA Connector
+=====================
 
-Send information to system XIS when create/update field.
+Adapts project management to Xprimas needs:
 
-The XIS connector is to be deprecated eventually.
-
-Functionalities not related to XIS are to be migrated out of it.
+- Synchs with JIRA for production needs
+- Gives high level project status.
 
 Contributors
 ------------
-* Mathieu Benoit <mathieu.benoit@savoirfairelinux.com>
 * Charles De Lean <cdelean@xprima.com>
 """,
     'depends': [
         'base',
-        'crm',
-        'sale',
-        'hr',
-        'xpr_dealer',
-        'xpr_product',
-
-        #'account',
-        #'salesforce_data_mapping',
-        #'partner_category_description',
-        #'sale_package_configurator',
-        #'contract_isp',
-        #'account_anglo_saxon',
+        #'project',
     ],
     'external_dependencies': {
-        'python': [],
+        #'python': ['jira'],
     },
     'data': [
-        'security/ir.model.access.csv',
-        'views/res_user.xml',
-        'views/res_partner_categories.xml',
-        'config.xml',
-        'res_partners_categories.xml',
+        #'config.xml',
+        # 'views/res_user.xml',
+        # 'views/res_partner_categories.xml',
+        # 'res_partners_categories.xml',
     ],
     'demo': [],
     'test': [],
