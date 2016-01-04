@@ -112,9 +112,9 @@ sale,model,"mail.message.subtype,description",sale.mt_order_sent,Quotation sent,
 sale,model,"mail.message.subtype,name",sale.mt_order_sent,Quotation sent,Soumission envoyée
 sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Quotations,Soumissions
 sale,field,"crm.case.section,use_quotations",0,Quotations,Soumissions
-sale,model,"ir.actions.act_window,name",sale.action_quotations,Quotations,Soumission
-sale,model,"ir.actions.act_window,name",sale.action_quotations_salesteams,Quotations,Soumission
-sale,model,"ir.ui.menu,name",sale.menu_sale_quotations,Quotations,Soumission
+sale,model,"ir.actions.act_window,name",sale.action_quotations,Quotations,Soumissions
+sale,model,"ir.actions.act_window,name",sale.action_quotations_salesteams,Quotations,Soumissions
+sale,model,"ir.ui.menu,name",sale.menu_sale_quotations,Quotations,Soumissions
 sale,view,sale.order,sale.view_sales_order_filter,Quotations,Soumissions
 sale,model,"ir.actions.act_window,name",sale.action_order_report_quotation_salesteam,Quotations Analysis,Analyse des soumissions
 sale,model,"ir.actions.act_window,name",sale.act_res_partner_2_sale_order,Quotations and Sales,Soumission et ventes
