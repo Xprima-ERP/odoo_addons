@@ -142,6 +142,10 @@
                     <field name="renew_date" />
                 </field>
 
+                <xpath expr="/form/header/button[@name='cancel']" position="attributes">
+                    <attribute name="states">draft,contract_not_approved,sent</attribute>
+                </xpath>
+
                 <xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
                     <button type="workflow" name="sig_check_approval_needed" string="Ask Approval" states="draft,manager_not_approved,contract_not_approved" />
 
