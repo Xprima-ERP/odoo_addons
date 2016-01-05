@@ -32,7 +32,7 @@
       <field name="name">Dealers</field>
       <field name="res_model">xpr_accpac_connector.client</field>
       <field name="view_mode">tree</field>
-      <field name="domain">[('idgrp', '=', 'DEALER')]</field>
+      <field name="domain">[('idgrp', '=', 'DEALER'), ('mapped', '=', False)]</field>
   </record>
 
   <record model="ir.actions.act_window" id="client_values_action">
