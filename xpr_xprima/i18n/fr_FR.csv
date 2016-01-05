@@ -484,3 +484,182 @@ client d'une catégorie d'articles sera calculé en multipliant le prix
 fournisseur par 1.80).
               </p>
             "
+product,field,"product.product,create_uid",0,Created by,Crée par
+product,constraint,decimal.precision,0,Error!  You cannot define the decimal precision of 'Account' as greater than the rounding factor of the company's main currency,"Erreur!  Pour la comptabilité, il est impossible de choisir une précision décimale supérieure au facteur d'arrondi de la devise principale de la compagnie."
+product,field,"product.price.history,create_date",0,Created on,Créé le
+product,field,"pricelist.partnerinfo,suppinfo_id",0,Partner Information,Informations du partenaire
+product,help,"product.product,message_ids",0,Messages and communication history,Historique de messages/communications
+product,field,"product.category,create_date",0,Created on,Créé le
+product,field,"product.template,description_purchase",0,Purchase Description,Description d'achat
+product,field,"pricelist.partnerinfo,create_date",0,Created on,Créé le
+product,field,"product.price.history,id",0,ID,ID
+product,field,"pricelist.partnerinfo,name",0,Description,Description
+product,model,"res.groups,name",product.group_mrp_properties,Manage Properties of Product,Gérer les propriétés d'article
+product,field,"product.supplierinfo,name",0,Supplier,Fournisseur
+product,constraint,product.template,0,Error: The default Unit of Measure and the purchase Unit of Measure must be in the same category.,Erreur! L'unité de mesure par défaut et l'unité de mesure d'achat doivent faire partie de la même catégorie.
+product,help,"product.template,message_last_post",0,Date of the last message posted on the record.,Date du dernier message posté sur le record.
+product,field,"product.price.type,currency_id",0,Currency,Devise
+product,help,"product.pricelist.item,sequence",0,Gives the order in which the pricelist items will be checked. The evaluation gives highest priority to lowest sequence and stops as soon as a matching item is found.,Donne l'ordre dans lequel les entrées de la liste de prix sont vérifiées. L'évaluation donne la plus grande priorité à la séquence la plus petite et arrÌ»te dès qu'elle trouve une entrée qui correspond.
+product,model,"ir.model,name",product.model_product_supplierinfo,Information about a product supplier,Information sur le fournisseur de l'article
+product,view,product.template,product.product_template_form_view,Suppliers,Fournisseurs
+product,field,"product.product,image_variant",0,Variant Image,Image de la variante
+product,field,"product.category,id",0,ID,ID
+product,help,"product.template,image_medium",0,"Medium-sized image of the product. It is automatically resized as a 128x128px image, with aspect ratio preserved, only when the image exceeds one of those sizes. Use this field in form views or some kanban views.","Image de taille moyenne de l'article. Elle sera automatiquement redimensionnée à 128 x 128 px, en préservent le rapport hauteur/largeur, si l'image dépasse une de ces dimensions. Utilisez ce champ dans les vues formulaire ou certaines vues kanban."
+product,field,"product.template,id",0,ID,ID
+product,field,"product.pricelist.version,date_end",0,End Date,Date de fin
+product,help,"product.template,active",0,"If unchecked, it will allow you to hide the product without removing it.",Décocher cette case afin de masquer l'article sans le supprimer.
+product,model,"res.groups,name",product.group_uom,Manage Multiple Units of Measure,Gérer plusieurs unités de mesure
+product,view,product.template,product.product_template_search_view,Consumable,Consommable
+product,view,product.uom,product.product_uom_form_view,e.g: 1 * (this unit) = ratio * (reference unit),Ex. : 1 x (cette unité) = rapport x (unité de référence)
+product,field,"product.attribute.line,id",0,ID,ID
+product,field,"product.supplierinfo,create_date",0,Created on,Créé le
+product,help,"product.template,uos_coeff",0,"Coefficient to convert default Unit of Measure to Unit of Sale
+ uos = uom * coeff","Coefficient permettant de convertir l'unité de mesure en unité de vente
+ UdV = UdM * coeff"
+product,model,"ir.model,name",product.model_product_pricelist_item,Pricelist item,Élément de la liste de prix
+product,selection,"product.template,type",0,Consumable,Consommable
+product,field,"product.pricelist,currency_id",0,Currency,Devise
+product,constraint,res.currency,0,Error!  You cannot define a rounding factor for the company's main currency that is smaller than the decimal precision of 'Account'.,"Erreur!  Pour la devise principale de la compagnie, il est impossible de choisir un facteur d'arrondi inférieur à la précision de la comptabilité."
+product,help,"product.template,packaging_ids",0,Gives the different ways to package the same product. This has no impact on the picking order and is mainly used if you use the EDI module.,"Indique les différentes faÌ¤ons d'emballer un mme article. Ceci n'a pas d'impact sur les ordres de préparation, et sert principalement si vous activez le module d'EDI."
+product,view,website,product.report_pricelist,Currency,Devise
+product,help,"product.template,sale_ok",0,Specify if the product can be selected in a sales order line.,Indique si l'article peut être mis dans une ligne de commande de vente.
+product,help,"product.template,message_ids",0,Messages and communication history,Historique de messages/communications
+product,selection,"product.template,state",0,End of Lifecycle,Fin de cycle de vie
+product,field,"product.uom,create_date",0,Created on,Créé le
+product,help,"product.pricelist.version,date_end",0,Last valid date for the version.,Date de fin de validité de la version.
+product,help,"product.uom,category_id",0,Conversion between Units of Measure can only occur if they belong to the same category. The conversion will be made based on the ratios.,Il est possible de convertir deux unités de mesures si elles appartiennent à la mme catégorie. Cette conversion utilise les rapports définis pour ces unités.
+product,model,"ir.model,name",product.model_product_packaging,Packaging,Packaging
+product,view,website,product.report_pricelist,Print date,Date d'impresssion
+product,view,product.template,product.product_template_form_view,Packaging,Packaging
+product,help,"product.product,message_last_post",0,Date of the last message posted on the record.,Date du dernier message posté sur le record.
+product,field,"pricelist.partnerinfo,create_uid",0,Created by,Crée par
+product,field,"product.packaging,create_date",0,Created on,Créé le
+product,view,product.template,product.product_template_form_view,Description for Quotations,Description pour les soumissions
+product,field,"product.template,seller_delay",0,Supplier Lead Time,Délai du fournisseur
+product,field,"product.price_list,id",0,ID,ID
+product,selection,"product.template,state",0,In Development,En développement
+product,field,"product.price.type,create_date",0,Created on,Créé le
+product,help,"product.pricelist.item,price_min_margin",0,Specify the minimum amount of margin over the base price.,Indique la marge minimum à faire sur le prix de base.
+product,field,"report.product.report_pricelist,id",0,ID,ID
+product,field,"product.template,image_medium",0,Medium-sized image,Image de taille moyenne
+product,field,"product.ul,height",0,Height,Hauteur
+product,help,"product.pricelist.item,product_tmpl_id",0,Specify a template if this rule only applies to one product template. Keep empty otherwise.,Indiquez un modèle si cette règle ne s'applique qu'ÌÊ un modèle de produit. Laissez vide dans le cas contraire.
+product,field,"product.category,create_uid",0,Created by,Crée par
+product,help,"product.template,seller_id",0,Main Supplier who has highest priority in Supplier List.,Fournisseur principal qui a la plus haute priorité dans la liste des fournisseurs.
+product,field,"product.attribute,id",0,ID,ID
+product,selection,"product.ul,type",0,Box,Boîte
+product,field,"product.template,seller_id",0,Main Supplier,Fournisseur principal
+product,help,"product.pricelist.item,price_max_margin",0,Specify the maximum amount of margin over the base price.,Indique la marge maximum à faire sur le prix de base.
+product,field,"product.pricelist.item,create_date",0,Created on,Créé le
+product,field,"product.supplierinfo,delay",0,Delivery Lead Time,Délai de livraison
+product,view,product.template,product.product_template_form_view,Description for Suppliers,Description pour les fournisseurs
+product,field,"product.attribute.value,create_uid",0,Created by,Crée par
+product,view,product.template,product.product_template_form_view,describe the product characteristics...,Décrivez les caractéristiques du produit
+product,field,"product.supplierinfo,create_uid",0,Created by,Crée par
+product,view,product.template,product.product_template_form_view,Sale Conditions,Conditions de vente
+product,view,product.uom,product.product_uom_form_view,e.g: 1 * (reference unit) = ratio * (this unit),Ex : 1 * (unité de référence) = rapport * (cette unité)
+product,field,"product.price_list,create_uid",0,Created by,Crée par
+product,field,"product.template,state",0,Status,Statut
+product,field,"product.ul,create_uid",0,Created by,Crée par
+product,field,"product.product,message_is_follower",0,Is a Follower,Est abonné
+product,help,"product.category,sequence",0,Gives the sequence order when displaying a list of product categories.,Donne l'ordre d'affichage d'une liste de catégories d'articles.
+product,model,"res.groups,name",product.group_uos,Manage Secondary Unit of Measure,Gérer l'unité de mesure secondaire
+product,view,product.template,product.product_template_form_view,Information,Information
+product,field,"product.uom.categ,create_uid",0,Created by,Crée par
+product,field,"product.uom.categ,create_date",0,Created on,Créé le
+product,selection,"product.template,mes_type",0,Fixed,Fixé
+product,field,"product.packaging,create_uid",0,Created by,Crée par
+product,model,"product.uom,name",product.product_uom_cm,cm,cm
+product,field,"product.template,description",0,Description,Description
+product,field,"product.pricelist,create_date",0,Created on,Créé le
+product,field,"product.template,seller_ids",0,Supplier,Fournisseur
+product,field,"product.ul,create_date",0,Created on,Créé le
+product,help,"product.uom,factor_inv",0,"How many times this Unit of Measure is bigger than the reference Unit of Measure in this category:
+1 * (this unit) = ratio * (reference unit)","Combien de fois cette unité de mesure est plus grande que l'unité de mesure de référence de cette catégorie :
+1 x (cette unité) = ratio x (unité de référence)"
+product,constraint,product.pricelist.item,0,Error!  The minimum margin should be lower than the maximum margin.,Erreur!  Le profit minimum doit être inférieur au profit maximum.
+product,view,product.packaging,product.product_packaging_form_view,Packaging,Packaging
+product,field,"product.packaging,id",0,ID,ID
+product,field,"product.attribute,create_uid",0,Created by,Crée par
+product,field,"product.template,color",0,Color Index,Index de couleur
+product,field,"product.product,ean13",0,EAN13 Barcode,Code barre EAN13
+product,field,"product.product,image_medium",0,Medium-sized image,Image de taille moyenne
+product,field,"product.template,create_uid",0,Created by,Crée par
+product,model,"ir.model,name",product.model_res_currency,Currency,Devise
+product,field,"pricelist.partnerinfo,id",0,ID,ID
+product,field,"product.ul,id",0,ID,ID
+product,field,"product.pricelist.item,create_uid",0,Created by,Crée par
+product,view,product.packaging,product.product_packaging_tree_view,Packaging,Packaging
+product,field,"product.pricelist.type,create_date",0,Created on,Créé le
+product,field,"product.attribute.line,create_date",0,Created on,Créé le
+product,help,"product.pricelist.item,categ_id",0,Specify a product category if this rule only applies to products belonging to this category or its children categories. Keep empty otherwise.,Indiquez une catégorie d'articles si cette règle ne s'applique qu'ÌÊ cette catégorie et à ses enfants. Laissez vide dans le cas contraire.
+product,field,"product.attribute.value,create_date",0,Created on,Créé le
+product,field,"product.supplierinfo,id",0,ID,ID
+product,help,"product.packaging,sequence",0,Gives the sequence order when displaying a list of packaging.,Donne l'ordre d'affichage d'une liste de colisage.
+product,field,"product.pricelist,id",0,ID,ID
+product,field,"product.pricelist.type,key",0,Key,Clé
+product,field,"product.packaging,code",0,Code,Code
+product,view,product.packaging,product.product_packaging_form_view_without_product,Packaging,Packaging
+product,view,product.template,product.product_template_form_view,Configurations,Configurations
+product,field,"product.uom,id",0,ID,ID
+product,constraint,product.category,0,Error!  You cannot create recursive categories.,Erreur!  Vous ne pouvez pas créer de catégories récursives.
+product,field,"product.price.type,create_uid",0,Created by,Crée par
+product,help,"product.product,active",0,"If unchecked, it will allow you to hide the product without removing it.",Décocher cette case afin de masquer l'article sans le supprimer.
+product,field,"product.template,uos_coeff",0,Unit of Measure -> UOS Coeff,Coeff. unité de mesure -> UdV
+product,field,"product.price.history,company_id",0,unknown,inconnu
+product,help,"product.pricelist.item,price_surcharge",0,Specify the fixed amount to add or substract(if negative) to the amount calculated with the discount.,"Indique le montant fixe à ajouter (ou à soustraire, si négatif) au montant calculé avec cette remise."
+product,model,"res.groups,name",product.group_stock_packaging,Manage Product Packaging,Gérer le conditionnement des articles
+product,field,"product.pricelist.version,create_uid",0,Created by,Crée par
+product,field,"product.attribute.price,id",0,ID,ID
+product,field,"product.attribute.price,create_date",0,Created on,Créé le
+product,field,"product.pricelist,create_uid",0,Created by,Crée par
+product,model,"product.uom,name",product.product_uom_hour,Hour(s),Heure(s)
+product,field,"product.pricelist.version,create_date",0,Created on,Créé le
+product,field,"product.pricelist.version,id",0,ID,ID
+product,help,"product.uom,factor",0,"How much bigger or smaller this unit is compared to the reference Unit of Measure for this category:
+1 * (reference unit) = ratio * (this unit)","Combien de fois cette unité est plus petite ou plus grande que l'unité de mesure de référence de cette catégorie :
+1 x (unité de référence) = ratio x (cette unité)"
+product,help,"product.pricelist,active",0,"If unchecked, it will allow you to hide the pricelist without removing it.",Décocher cette case permet de masquer la liste de prix sans la supprimer.
+product,field,"product.pricelist.item,id",0,ID,ID
+product,field,"product.template,create_date",0,Created on,Créé le
+product,view,product.packaging,product.product_packaging_tree_view_product,Packaging,Packaging
+product,help,"product.uom,active",0,By unchecking the active field you can disable a unit of measure without deleting it.,Décocher cette case afin de désactiver l'unité de mesure sans la supprimer.
+product,help,"product.pricelist.item,product_id",0,Specify a product if this rule only applies to one product. Keep empty otherwise.,Indiquez un article si cette règle ne s'applique qu'ÌÊ lui. Laissez vide dans le cas contraire.
+product,help,"product.supplierinfo,name",0,Supplier of this product,Fournisseur de cet article
+product,field,"product.template,message_is_follower",0,Is a Follower,Est abonné
+product,model,"product.uom,name",product.product_uom_dozen,Dozen(s),Douzaine(s)
+product,field,"product.attribute.value,id",0,ID,ID
+product,help,"product.pricelist.item,price_round",0,"Sets the price so that it is a multiple of this value.
+Rounding is applied after the discount and before the surcharge.
+To have prices that end in 9.99, set rounding 10, surcharge -0.01","Fixe le prix comme un multiple de cette valeur.
+L'arrondi sera appliqué après la remise et avant la surcharge.
+Pour avoir un prix dont la fin est 9.99, mettre l'arrondi à 10 et la surcharge à -0.01"
+product,field,"product.price_list,create_date",0,Created on,Créé le
+product,view,product.supplierinfo,product.product_supplierinfo_form_view,Supplier Information,Informations du fournisseur
+product,field,"product.pricelist.type,create_uid",0,Created by,Crée par
+product,model,"product.uom,name",product.product_uom_foot,foot (ft),Pied (pi)
+product,view,product.supplierinfo,product.product_supplierinfo_tree_view,Supplier Information,Informations du fournisseur
+product,field,"product.uom,create_uid",0,Created by,Crée par
+product,help,"product.supplierinfo,qty",0,This is a quantity which is converted into Default Unit of Measure.,Il s'agit d'une quantité qui est convertie dans l'unité de mesure par défaut.
+product,help,"product.product,message_summary",0,"Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views.","Contient le résumé de la discussion (nombre de messages, ...). Ce résumé est au format HTML pour permettre son utilisation dans la vue kanban"
+product,field,"product.attribute,create_date",0,Created on,Créé le
+product,field,"product.product,id",0,ID,ID
+product,code,addons/product/product.py,183,Error! ,Erreur! 
+product,field,"product.template,ean13",0,EAN13 Barcode,Code barre EAN13
+product,field,"product.price.type,id",0,ID,ID
+product,view,website,product.report_pricelist,Description,Description
+product,constraint,product.pricelist.item,0,Error!  You cannot assign the Main Pricelist as Other Pricelist in PriceList Item! ,"Erreur!  Dans une ligne de liste de prix, il est impossible d'assigner la liste de prix principale comme autre liste de prix! "
+product,field,"product.pricelist.version,date_start",0,Start Date,Date de début
+product,field,"product.template,description_sale",0,Sale Description,Description de vente
+product,field,"product.uom.categ,id",0,ID,ID
+product,constraint,product.packaging,0,Error: Invalid ean code,Erreur: code EAN invalide
+product,field,"product.packaging,name",0,Description,Description
+product,field,"product.attribute.line,create_uid",0,Created by,Crée par
+product,view,product.template,product.product_template_form_view,Status,Statut
+product,field,"product.product,create_date",0,Created on,Créé le
+product,field,"product.attribute.price,create_uid",0,Created by,Crée par
+product,field,"product.price.history,create_uid",0,Created by,Crée par
+product,field,"product.supplierinfo,product_code",0,Supplier Product Code,Code de l'article chez le fournisseur
+product,help,"product.template,message_summary",0,"Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views.","Contient le résumé de la discussion (nombre de messages, ...). Ce résumé est au format HTML pour permettre son utilisation dans la vue kanban"
+product,model,"ir.actions.report.xml,name",product.report_product_label,Products Labels,Libellés d'articles
+product,field,"product.pricelist.type,id",0,ID,ID
