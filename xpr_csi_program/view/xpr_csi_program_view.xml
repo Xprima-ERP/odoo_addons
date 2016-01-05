@@ -6,15 +6,15 @@
       <field name="model">sale.order</field>
       <field name="inherit_id" ref="sale.view_order_form"/>
       <field name="arch" type="xml">
-        <xpath expr="//field[@name='partner_id']" position="attributes">
-            <attribute name='on_change'>on_change_partner_id(partner_id, context)</attribute>
-        </xpath>
         <field name="partner_id" position="after">
-          <field name="csi_contact" required="1" domain="[('name', '=', '')]" />
+          <field name="csi_contact"
+            attrs="{'required': [('category','=', %(xpr_product.website)d )], 'readonly': [('category','!=', %(xpr_product.website)d )]}" />
+
         </field>
       </field>
-      </record>
+    </record>
 
+<!--
     <record model="ir.ui.view" id="view_order_form_csi_program_partner">
       <field name="name">view_order_form_csi_program_partner</field>
       <field name="model">xpr_dealer.dealer</field>
@@ -24,6 +24,6 @@
           <field name="csi_contact_am" domain="[('parent_id', '=', partner)]" options="{'no_create': True}"/>
         </field>
       </field>
-      </record>
+      </record> -->
   </data>
 </openerp>

@@ -283,7 +283,13 @@ class SaleOrderRequest(XISRequestWrapper):
         # if not ext_id or not self.get_dealer_code():
         #     return
 
-        nb_item = len(self.order.order_line)
+        lines = [line for line in self.order.order_line if line.product_id.default_code]
+
+        nb_item = len(lines)
+
+        if not nb_item:
+            return
+
         data = {
             # "123" sample base dealercode
             "qt_dc": self.get_dealer_code().strip(),
@@ -307,7 +313,7 @@ class SaleOrderRequest(XISRequestWrapper):
         }
 
         i = 0
-        for line in self.order.order_line:
+        for line in lines:
 
             data.update({
                 "qli_ProductCode_%s" % i:
