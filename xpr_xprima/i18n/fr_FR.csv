@@ -149,3 +149,220 @@ auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_tree,Rules,Règles
 auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_form,Subscribe,s'abonner
 auditlog,view,auditlog.log,auditlog.view_auditlog_log_search,User,Utilisateur
 auditlog,view,auditlog.log,auditlog.view_auditlog_log_form,Values,Valeurs
+product,field,"product.attribute.value,attribute_id",0,Attribute,Attribut
+product,model,"ir.ui.menu,name",product.prod_config_main,Product Categories & Attributes,Catégories et attributs de produits
+product,field,"product.template,product_variant_count",0,# of Product Variants,# de variantes de produits
+product,model,"ir.actions.act_window,help",product.product_pricelist_action,"<p class=""oe_view_nocontent_create"">
+                Click to add a pricelist version.
+              </p><p>
+                There can be more than one version of a pricelist, each of
+                these must be valid during a certain period of time. Some
+                examples of versions: Main Prices, 2010, 2011, Summer Sales,
+                etc.
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+                Cliquez pour ajouter une version de la liste de prix.
+              </p><p>
+                Une liste de prix peut avoir plusieurs versions, chacune étant
+                valable pour une certaine durée. Il peut y avoir par exemple des
+                versions : ""Prix de base"", ""Prix 2010"", ""Prix 2011"", ""Ventes d'été"", etc.
+              </p>
+            "
+product,model,"ir.actions.act_window,help",product.product_pricelist_action_for_purchase,"<p class=""oe_view_nocontent_create"">
+                Click to create a pricelist.
+              </p><p>
+                A price list contains rules to be evaluated in order to compute
+                the purchase price. The default price list has only one rule; use
+                the cost price defined on the product form, so that you do not have to
+                worry about supplier pricelists if you have very simple needs.
+              </p><p>
+                But you can also import complex price lists form your supplier
+                that may depends on the quantities ordered or the current
+                promotions.
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+                Cliquez pour créer une nouvelle liste de prix.
+              </p><p>
+Une liste de prix regroupe les règles pour calculer le prix d'achat. La liste
+de prix par défaut n'a qu'une règle : ""utiliser le coût de revient défini pour
+l'article"". Vous n'avez donc pas besoin de gérer de liste de prix fournisseurs
+si vos besoins sont simples.
+              </p><p>
+Cependant vous pouvez importer des listes de prix complexes fournies par
+vos fournisseurs, qui peuvent dépendre des quantités commandées ou de
+promotions en cours.
+              </p>
+            "
+product,model,"ir.actions.act_window,help",product.product_category_action,"<p>
+                Here is a list of all your products classified by category. You
+                can click a category to get the list of all products linked to
+                this category or to a child of this category.
+              </p>
+            ","<p>
+Voici une liste de tous les articles classés par catégorie. Vous
+pouvez cliquer sur une catégorie pour afficher les articles
+de cette catégorie, ainsi que les articles des catégories enfant.
+              </p>
+            "
+product,model,"ir.actions.act_window,help",product.product_normal_action,"<p class=""oe_view_nocontent_create"">
+                Click to define a new product.
+              </p><p>
+                You must define a product for everything you buy or sell,
+                whether it's a physical product, a consumable or service.
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+                Cliquez pour ajouter un nouvel article.
+              </p><p>
+Vous devez définir des articles pour tout ce que vous vendez ou achetez,
+qu'il s'agisse d'un produit physique, d'un consommable ou d'un service.
+              </p>
+            "
+product,model,"ir.actions.act_window,help",product.product_normal_action_sell,"<p class=""oe_view_nocontent_create"">
+                Click to define a new product.
+              </p><p>
+                You must define a product for everything you sell, whether it's
+                a physical product, a consumable or a service you offer to
+                customers.
+              </p><p>
+                The product form contains information to simplify the sale
+                process: price, notes in the quotation, accounting data,
+                procurement methods, etc.
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+                Cliquez pour créer un nouvel article.
+              </p><p>
+                Vous devez créer un article pour tout ce que vous vendez, que ce
+                soit un produit physique ou un service proposé aux clients.
+              </p><p>
+                Les informations du formulaire d'édition d'un article permettent de
+                simplifier le processus de vente, en indiquant le prix, des informations
+                dans les soumissions, les données comptables, les modes d'approvisionnement,
+                etc.
+              </p>
+            "
+product,field,"product.uom,category_id",0,Unit of Measure Category,Catégorie d'unité de mesureCategory
+product,field,"product.pricelist,active",0,Active,Actif
+product,help,"product.template,image",0,"This field holds the image used as image for the product, limited to 1024x1024px.","Ce champ contient l'image utilisée pour cet article, limitée à 1024x1024 px."
+product,code,addons/product/pricelist.py,432,Other Pricelist,Autre liste de prix
+product,model,"ir.actions.act_window,name",product.product_category_action_form,Product Categories,Catégories d'articles
+product,view,product.category,product.product_category_search_view,Product Categories,Catégories d'articles
+product,field,"product.product,active",0,Active,Actif
+product,code,addons/product/product.py,760,%s (copy),%s (copie)
+product,field,"product.price.type,field",0,Product Field,Champ article
+product,view,product.category,product.product_category_form_view,Product Categories,Catégories d'articles
+product,model,"ir.actions.act_window,help",product.product_uom_form_action,"<p class=""oe_view_nocontent_create"">
+                Click to add a new unit of measure.
+              </p><p>
+                You must define a conversion rate between several Units of
+                Measure within the same category.
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+                Cliquez pour ajouter une unité de mesure.
+              </p><p>
+Vous devrez définir des taux de conversion entre plusieurs unités
+de mesure d'une même catégorie.
+              </p>
+            "
+product,code,addons/product/pricelist.py,215,Warning! ,Avertissement! 
+product,model,"ir.actions.act_window,name",product.attribute_action,Attributes,Attributs
+product,view,product.packaging,product.product_packaging_form_view,Other Info,Autre information
+product,field,"product.product,attribute_value_ids",0,Attributes,Attributs
+product,view,product.uom.categ,product.product_uom_categ_form_view,Units of Measure categories,Catégories d'unités de mesure
+product,model,"ir.actions.act_window,name",product.product_uom_categ_form_action,Unit of Measure Categories,Catégories d'unités de mesure
+product,model,"ir.model,name",product.model_product_attribute,Product Attribute,Attribut de produit
+product,code,addons/product/product.py,216,Warning! ,Attention! 
+product,field,"product.product,message_follower_ids",0,Followers,Abonnés
+product,field,"product.uom,active",0,Active,Actif
+product,sql_constraint,product.attribute.value,0,This attribute value already exists! ,Cette valeur d'attribut existe déjà!
+product,model,"ir.ui.menu,name",product.menu_attribute_action,Attributes,Attributs
+product,help,"product.product,price_extra",0,This is the sum of the extra price of all attributes,Ceci est la somme du prix supplémentaire de tous les attributs
+product,model,"ir.model,name",product.model_product_uom_categ,Product uom categ,Catégorie d'UdM d'article
+product,help,"product.price.type,field",0,Associated field in the product form.,Champ associé dans le formulaire de l'article
+product,view,product.category,product.product_category_tree_view,Product Categories,Catégories d'articles
+product,model,"ir.actions.act_window,help",product.product_variant_action,"<p class=""oe_view_nocontent_create"">
+                Click to define a new product.
+              </p><p>
+                You must define a product for everything you buy or sell,
+                whether it's a physical product, a consumable or service.
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+                Cliquez pour ajouter un nouvel article.
+              </p><p>
+Vous devez définir des articles pour tout ce que vous vendez ou achetez,
+qu'il s'agisse d'un produit physique, d'un consommable ou d'un service.
+              </p>
+            "
+product,view,product.price_list,product.view_product_price_list,Calculate Product Price per Unit Based on Pricelist Version.,Calculer le prix de l'article par unité selon cette version de liste de prix
+product,help,"product.template,seller_qty",0,This is minimum quantity to purchase from Main Supplier.,Ceci est la quantité minimum à acheter au fournisseur principal
+product,field,"product.template,message_follower_ids",0,Followers,Abonnés
+product,view,product.template,product.product_template_form_view,Procurements,Approvisionnements
+product,field,"product.category,parent_id",0,Parent Category,Catégorie parent
+product,field,"product.pricelist.item,base_pricelist_id",0,Other Pricelist,Autre liste de prix
+product,model,"ir.actions.act_window,help",product.product_uom_categ_form_action,"<p class=""oe_view_nocontent_create"">
+                Click to add a new unit of measure category.
+              </p><p>
+                Units of measure belonging to the same category can be
+                converted between each others. For example, in the category
+                <i>'Time'</i>, you will have the following units of measure:
+                Hours, Days.
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+                Cliquez pour ajouter une catégorie d'unité de mesure.
+              </p><p>
+                Les unités de mesure d'une même catégorie peuvent être
+                converties entre elles. Par exemple dans la catégorie <i>Durée</i>,
+                on trouvera les unités suivantes : heures, jours.
+              </p>
+            "
+product,view,product.template,product.product_template_form_view,Purchase,Achat
+product,field,"product.pricelist.item,price_round",0,Price Rounding,Arrondissement du prix
+product,view,product.template,product.product_template_only_form_view,Warning,Avertissement
+product,help,"pricelist.partnerinfo,price",0,This price will be considered as a price for the supplier Unit of Measure if any or the default Unit of Measure of the product otherwise,"Ce prix sera considéré comme le prix par unité de mesure fournisseur si celle-ci est renseignée, ou par unité de mesure par défaut de l'article dans le cas contraire."
+product,model,"ir.ui.menu,name",product.menu_product_uom_categ_form_action,Unit of Measure Categories,Catégories d'unités de mesure
+product,view,product.price_list,product.view_product_price_list,Cancel,Annuler
+product,view,res.partner,product.view_partner_property_form,Sales & Purchases,Achats et ventes
+product,field,"product.attribute.line,attribute_id",0,Attribute,Attribut
+product,model,"ir.ui.menu,name",product.menu_product_category_action_form,Product Categories,Catégories d'articles
+product,field,"product.pricelist.version,active",0,Active,Actif
+product,view,product.packaging,product.product_packaging_form_view_without_product,Other Info,Autre information
+product,model,"ir.model,name",product.model_product_category,Product Category,Catégorie d'articles
+product,view,product.category,product.product_category_list_view,Product Categories,Catégories d'articles
+product,view,product.pricelist.item,product.product_pricelist_item_form_view,Price Computation,Calcul du prix
+product,view,product.template,product.product_template_form_view,This note will be displayed on requests for quotation...,Cette note sera affichée sur les demandes de prix...
+product,field,"product.price.type,active",0,Active,Actif
+product,code,addons/product/product.py,1123,%s (copy),%s (copie)
+product,field,"product.category,child_id",0,Child Categories,Catégories enfants
+product,field,"product.template,attribute_line_ids",0,Product Attributes,Attribut de produit
+product,field,"product.pricelist.item,base",0,Based on,Basée sur
+product,help,"res.partner,property_product_pricelist",0,"This pricelist will be used, instead of the default one, for sales to the current partner","Cette liste de prix sera utilisée, à la place de la liste par défaut, pour les ventes faites au partenaire actuel."
+product,field,"product.pricelist.item,categ_id",0,Product Category,Catégorie d'articles
+product,help,"product.supplierinfo,product_uom",0,This comes from the product form.,A pour origine le formulaire de l'article
+product,help,"product.supplierinfo,sequence",0,Assigns the priority to the list of product supplier.,Affecte la priorité du fournisseur de l'article dans la liste.
+product,field,"product.template,active",0,Active,Actif
+product,code,addons/product/pricelist.py,215,"At least one pricelist has no active version! 
+Please create or activate one.","Au moins une liste de prix n'a pas de version active! 
+Créez ou activez en une."
+product,view,product.template,product.product_template_search_view,Category,Catégorie
+product,model,"ir.actions.act_window,help",product.product_pricelist_action2,"<p class=""oe_view_nocontent_create"">
+                Click to create a pricelist.
+              </p><p>
+                A price list contains rules to be evaluated in order to compute
+                the sales price of the products.
+              </p><p>
+                Price lists may have several versions (2010, 2011, Promotion of
+                February 2010, etc.) and each version may have several rules.
+                (e.g. the customer price of a product category will be based on
+                the supplier price multiplied by 1.80).
+              </p>
+            ","<p class=""oe_view_nocontent_create"">
+                Cliquez pour créer une liste de prix.
+              </p><p>
+Une liste de prix contient les règles de calcul du prix de vente des
+articles.
+              </p><p>
+Les listes de prix peuvent avoir plusieurs versions (ex : 2010, 2011, promotion
+de février 2010, etc.), et chaque version peut avoir plusieurs règles (ex : le prix
+client d'une catégorie d'articles sera calculé en multipliant le prix
+fournisseur par 1.80).
+              </p>
+            "
