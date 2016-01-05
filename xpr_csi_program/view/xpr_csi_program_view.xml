@@ -8,11 +8,12 @@
       <field name="arch" type="xml">
         <field name="partner_id" position="after">
           <field name="csi_contact"
-            attrs="{'required': [('category','=', %(xpr_product.website)d )], 'invisible': [('category','!=', %(xpr_product.website)d )]}" />
+            attrs="{'required': [('category','=', %(xpr_product.website)d )], 'readonly': [('category','!=', %(xpr_product.website)d )]}" />
 
         </field>
       </field>
     </record>
+
 <!--
     <record model="ir.ui.view" id="view_order_form_csi_program_partner">
       <field name="name">view_order_form_csi_program_partner</field>
