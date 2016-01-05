@@ -247,15 +247,13 @@ sale,selection,"sale.order,state",0,Sale to Invoice,Commande ‡ facturer
 sale,help,"sale.order,message_ids",0,Messages and communication history,Historique de messages/communications
 sale,model,"ir.actions.act_window,name",sale.action_orders,Sales Orders,Contrats
 sale,view,sale.order,sale.view_sales_order_filter,Sales Team,…quipe de vente
-sale,field,"sale.make.invoice,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sale,field,"sale.make.invoice,write_date",0,Last Updated on,DerniËre mise ‡ jour
 sale,model,"ir.actions.act_window,name",sale.action_orders_salesteams,Sales Orders,Contrats
 sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Click to see a detailed analysis of invoices.,Cliquez pour visualiser l'analyse dÈtaillÈe des factures.
-sale,field,"sale.report,id",0,ID,ID
 sale,view,sale.order.line,sale.view_sales_order_uninvoiced_line_filter,Status,Statut
 sale,view,sale.make.invoice,sale.view_sale_order_make_invoice,Create invoices,CrÈer les factures
 sale,field,"sale.order,procurement_group_id",0,Procurement group,Groupe d'approvisionnement
 sale,view,sale.order,sale.view_sale_order_graph,Sales Orders,Contrats
-sale,field,"sale.advance.payment.inv,id",0,ID,ID
 sale,field,"sale.order,create_uid",0,Created by,CrÈÈ par
 sale,field,"sale.order,currency_id",0,Currency,Devise
 sale,view,sale.order,sale.view_sales_order_filter,Sales Order done,Commandes terminÈes
@@ -268,8 +266,7 @@ sale,view,sale.make.invoice,sale.view_sale_order_make_invoice,Create Invoices,Cr
 sale,code,addons/sale/wizard/sale_line_invoice.py,127,Invoice,Facture
 sale,view,sale.report,sale.view_order_product_search,Extended Filters,Filtres Ètendus
 sale,help,"sale.order,invoice_exists",0,It indicates that sales order has at least one invoice.,indique que la commande a au moins une facture.
-sale,view,res.partner,sale.res_partner_address_type,FALSE,FALSE
-sale,field,"sale.order,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale,field,"sale.order,write_uid",0,Last Updated by,DerniËre mise ‡ jour par
 sale,model,"res.groups,name",sale.group_analytic_accounting,Analytic Accounting for Sales,Comptes analytiques des ventes
 sale,field,"account.invoice.report,section_id",0,Sales Team,…quipe de vente
 sale,view,sale.order.line.make.invoice,sale.view_sale_order_line_make_invoice,Create invoices,CrÈer les factures
@@ -283,7 +280,7 @@ sale,view,sale.report,sale.view_order_product_search,Customer,Client
 sale,code,addons/sale/sale.py,958,Error! ,Erreur! 
 sale,field,"sale.order.line,create_date",0,Created on,CrÈÈ le
 sale,view,sale.report,sale.view_order_product_search,Sales Team,…quipe de vente
-sale,field,"sale.order.line.make.invoice,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale,field,"sale.order.line.make.invoice,write_uid",0,Last Updated by,DerniËre mise ‡ jour par
 sale,code,addons/sale/res_config.py,100,Hour,Heure
 sale,field,"sale.advance.payment.inv,create_uid",0,Created by,CrÈÈ par
 sale,model,"ir.filters,name",sale.filter_sale_report_sales_funnel,Sales Funnel,Entonnoir des ventes
@@ -293,26 +290,25 @@ sale,field,"sale.order,create_date",0,Creation Date,Date de crÈation
 sale,view,sale.order,sale.view_sales_order_filter,Sales Order that haven't yet been confirmed,Commandes pas encore confirmÈes
 sale,view,sale.order.line,sale.view_sales_order_uninvoiced_line_filter,Order,Commande
 sale,view,sale.order,sale.view_sales_order_filter,Group By,Grouper par
-sale,field,"sale.make.invoice,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale,field,"sale.make.invoice,write_uid",0,Last Updated by,DerniËre mise ‡ jour par
 sale,help,"sale.order,create_date",0,Date on which sales order is created.,Date ‡ laquelle le contrat est crÈÈ.
 sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,Invoice Sales Order,Facturer la commande
-sale,field,"sale.order.line,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sale,field,"sale.order.line,write_date",0,Last Updated on,DerniËre mise ‡ jour
 sale,view,sale.order,sale.view_order_form,Terms and conditions...,Termes et conditionsÖ
 sale,selection,"sale.order.line,state",0,Confirmed,ConfirmÈ
 sale,field,"sale.report,date_confirm",0,Date Confirm,Confirmation de la date
 sale,code,addons/sale/sale.py,1055,No Customer Defined! ,Client non prÈcisÈ! 
 sale,field,"res.company,sale_note",0,Default Terms and Conditions,Termes et conditions par dÈfaut
 sale,view,sale.order,sale.view_order_tree,Sales Orders,Contrats
-sale,field,"sale.advance.payment.inv,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale,field,"sale.advance.payment.inv,write_uid",0,Last Updated by,DerniËre mise ‡ jour par
 sale,field,"sale.order,message_is_follower",0,Is a Follower,Est abonnÈ
 sale,view,sale.report,sale.view_order_product_search,Ordered date of the sales order,Contrat commandÈ le
 sale,view,sale.order,sale.view_order_form,Create Invoice,CrÈer la facture
 sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Click to see a detailed analysis.,Cliquez pour visualiser l'analyse dÈtaillÈe.
 sale,field,"sale.order.line,state",0,Status,Statut
-sale,field,"sale.order,id",0,ID,ID
 sale,field,"sale.report,analytic_account_id",0,Analytic Account,Compte analytique
 sale,field,"sale.order,order_policy",0,Create Invoice,CrÈer la facture
-sale,field,"sale.order.line,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale,field,"sale.order.line,write_uid",0,Last Updated by,DerniËre mise ‡ jour par
 sale,field,"sale.order.line,invoiced",0,Invoiced,FacturÈ
 sale,field,"sale.order,origin",0,Source Document,Document d'origine
 sale,model,"mail.message.subtype,name",sale.mt_order_confirmed,Sales Order Confirmed,Commande confirmÈe
@@ -341,7 +337,6 @@ sale,field,"sale.order.line,create_uid",0,Created by,CrÈÈ par
 sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Sales Orders,Contrats
 sale,code,addons/sale/sale.py,590,First cancel all invoices attached to this sales order.,Annuler d'abord toutes les factures liÈes ‡ cette commande client.
 sale,view,sale.order,sale.view_order_form,Confirm Sale,Confirmer la vente
-sale,field,"sale.order.line,id",0,ID,ID
 sale,field,"sale.config.settings,module_sale_stock",0,Trigger delivery orders automatically from sales orders,DÈclenche automatiquement les ordres de livraisons ‡ partir des commandes
 sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,Create Invoice,CrÈer la facture
 sale,view,sale.order,sale.view_order_form,Send by Email,Envoyer par courriel
@@ -393,14 +388,12 @@ sale,model,"ir.model,name",sale.model_crm_case_section,Sales Teams,…quipes de ve
 sale,view,sale.order,sale.view_sales_order_filter,Customer,Client
 sale,field,"sale.make.invoice,create_uid",0,Created by,CrÈÈ par
 sale,field,"sale.order,project_id",0,Contract / Analytic,Contrat / analytique
-sale,field,"sale.advance.payment.inv,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sale,field,"sale.advance.payment.inv,write_date",0,Last Updated on,DerniËre mise ‡ jour
 sale,view,account.invoice.report,sale.view_account_invoice_report_search_inherit,Sales Team,…quipe de vente
 sale,field,"sale.order.line.make.invoice,create_uid",0,Created by,CrÈÈ par
 sale,view,sale.order,sale.view_sales_order_filter,Sales Order,Contrat
 sale,help,"sale.order,date_confirm",0,Date on which sales order is confirmed.,Date ‡ laquelle le contrat est confirmÈ.
-sale,field,"sale.order.line.make.invoice,write_date",0,Last Updated on,DerniËère mise ‡ jour
-sale,field,"sale.order.line.make.invoice,id",0,ID,ID
-sale,field,"sale.make.invoice,id",0,ID,ID
+sale,field,"sale.order.line.make.invoice,write_date",0,Last Updated on,DerniËre mise ‡ jour
 sale,field,"sale.advance.payment.inv,create_date",0,Created on,CrÈÈ le
 sale,field,"sale.make.invoice,grouped",0,Group the invoices,Grouper les factures
 sale,field,"sale.order,date_order",0,Date,Date
@@ -408,10 +401,10 @@ sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Invoiced
 sale,code,addons/sale/wizard/sale_make_invoice_advance.py,105,Incorrect Data,DonnÈes Incorrectes
 sale,model,"res.request.link,name",sale.req_link_sale_order,Sales Order,Contrat
 sale,field,"sale.report,state",0,Order Status,Statut de la commande
-sale,help,"sale.make.invoice,grouped",0,Check the box to group the invoices for the same customers,Cochez cette case pour grouper les factures d'un même client
+sale,help,"sale.make.invoice,grouped",0,Check the box to group the invoices for the same customers,Cochez cette case pour grouper les factures d'un mÍme client
 sale,view,res.company,sale.view_company_inherit_form2,Default Terms and Conditions,Termes et conditions par dÈfaut
-sale,field,"sale.order,write_date",0,Last Updated on,DerniËère mise ‡ jour
-sale_crm,field,"crm.make.sale,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale,field,"sale.order,write_date",0,Last Updated on,DerniËre mise ‡ jour
+sale_crm,field,"crm.make.sale,write_uid",0,Last Updated by,DerniËre mise ‡ jour par
 sale_crm,help,"sale.order,source_id",0,"This is the source of the link Ex: Search Engine, another domain, or name of email list","Source du lien. Ex. moteur de recherche, autre domaine, ou nom d'une liste de courriel."
 sale_crm,code,addons/sale_crm/wizard/crm_make_sale.py,91,Insufficient Data! ,DonnÈes insuffisantes! 
 sale_crm,model,"ir.actions.act_window,name",sale_crm.action_crm_make_sale,Make Quotation,Faire une soumission
@@ -422,7 +415,7 @@ sale_crm,view,crm.lead,sale_crm.crm_case_form_view_oppor,Create Quotation,CrÈer 
 sale_crm,field,"crm.make.sale,create_uid",0,Created by,CrÈe par
 sale_crm,model,"ir.model,name",sale_crm.model_sale_order,Sales Order,Contrats
 sale_crm,field,"sale.order,categ_ids",0,Tags,…tiquettes
-sale_crm,field,"crm.make.sale,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sale_crm,field,"crm.make.sale,write_date",0,Last Updated on,DerniËre mise ‡ jour
 sale_crm,model,"ir.model,name",sale_crm.model_crm_make_sale,Make sales,Effectuer des ventes
 sale_crm,field,"crm.make.sale,partner_id",0,Customer,Client
 sale_crm,field,"sale.order,medium_id",0,Channel,Canal
@@ -438,9 +431,9 @@ sales_team,view,crm.case.section,sales_team.crm_case_section_view_tree,Sales Tea
 sales_team,field,"crm.case.section,note",0,Description,Description
 sales_team,constraint,crm.case.section,0,Error!  You cannot create recursive Sales team.,Erreur!  Vous ne pouvez pas crÈer d'Èquipes de vente rÈcursives.
 sales_team,model,"ir.model,name",sales_team.model_crm_case_section,Sales Teams,…quipes de vente
-sales_team,field,"crm.case.section,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sales_team,field,"crm.case.section,write_date",0,Last Updated on,DerniËre mise ‡ jour
 sales_team,field,"crm.case.section,child_ids",0,Child Teams,…quipes enfant
-sales_team,field,"crm.case.section,message_last_post",0,Last Message Date,DerniËère date de message
+sales_team,field,"crm.case.section,message_last_post",0,Last Message Date,DerniËre date de message
 sales_team,field,"crm.case.section,parent_id",0,Parent Team,…quipe parent
 sales_team,view,crm.case.section.tree,sales_team.crm_case_section_salesteams_search,Group By...,Grouper par
 sales_team,field,"crm.case.section,message_follower_ids",0,Followers,Suiveurs
@@ -701,26 +694,22 @@ product,help,"product.product,message_ids",0,Messages and communication history,
 product,field,"product.category,create_date",0,Created on,CrÈÈ le
 product,field,"product.template,description_purchase",0,Purchase Description,Description d'achat
 product,field,"pricelist.partnerinfo,create_date",0,Created on,CrÈÈ le
-product,field,"product.price.history,id",0,ID,ID
 product,field,"pricelist.partnerinfo,name",0,Description,Description
 product,model,"res.groups,name",product.group_mrp_properties,Manage Properties of Product,GÈrer les propriÈtÈs d'article
 product,field,"product.supplierinfo,name",0,Supplier,Fournisseur
-product,constraint,product.template,0,Error: The default Unit of Measure and the purchase Unit of Measure must be in the same category.,Erreur! L'unitÈ de mesure par dÈfaut et l'unitÈ de mesure d'achat doivent faire partie de la mÍême catÈgorie.
+product,constraint,product.template,0,Error: The default Unit of Measure and the purchase Unit of Measure must be in the same category.,Erreur! L'unitÈ de mesure par dÈfaut et l'unitÈ de mesure d'achat doivent faire partie de la mÍme catÈgorie.
 product,help,"product.template,message_last_post",0,Date of the last message posted on the record.,Date du dernier message postÈ sur le record.
 product,field,"product.price.type,currency_id",0,Currency,Devise
 product,help,"product.pricelist.item,sequence",0,Gives the order in which the pricelist items will be checked. The evaluation gives highest priority to lowest sequence and stops as soon as a matching item is found.,Donne l'ordre dans lequel les entrÈes de la liste de prix sont vÈrifiÈes. L'Èvaluation donne la plus grande prioritÈ ‡ la sÈquence la plus petite et arrÃªte dËs qu'elle trouve une entrÈe qui correspond.
 product,model,"ir.model,name",product.model_product_supplierinfo,Information about a product supplier,Information sur le fournisseur de l'article
 product,view,product.template,product.product_template_form_view,Suppliers,Fournisseurs
 product,field,"product.product,image_variant",0,Variant Image,Image de la variante
-product,field,"product.category,id",0,ID,ID
 product,help,"product.template,image_medium",0,"Medium-sized image of the product. It is automatically resized as a 128x128px image, with aspect ratio preserved, only when the image exceeds one of those sizes. Use this field in form views or some kanban views.","Image de taille moyenne de l'article. Elle sera automatiquement redimensionnÈe ‡ 128 x 128 px, en prÈservent le rapport hauteur/largeur, si l'image dÈpasse une de ces dimensions. Utilisez ce champ dans les vues formulaire ou certaines vues kanban."
-product,field,"product.template,id",0,ID,ID
 product,field,"product.pricelist.version,date_end",0,End Date,Date de fin
 product,help,"product.template,active",0,"If unchecked, it will allow you to hide the product without removing it.",DÈcocher cette case afin de masquer l'article sans le supprimer.
 product,model,"res.groups,name",product.group_uom,Manage Multiple Units of Measure,GÈrer plusieurs unitÈs de mesure
 product,view,product.template,product.product_template_search_view,Consumable,Consommable
 product,view,product.uom,product.product_uom_form_view,e.g: 1 * (this unit) = ratio * (reference unit),Ex. : 1 x (cette unitÈ) = rapport x (unitÈ de rÈfÈrence)
-product,field,"product.attribute.line,id",0,ID,ID
 product,field,"product.supplierinfo,create_date",0,Created on,CrÈÈ le
 product,help,"product.template,uos_coeff",0,"Coefficient to convert default Unit of Measure to Unit of Sale
  uos = uom * coeff","Coefficient permettant de convertir l'unitÈ de mesure en unitÈ de vente
@@ -729,14 +718,14 @@ product,model,"ir.model,name",product.model_product_pricelist_item,Pricelist ite
 product,selection,"product.template,type",0,Consumable,Consommable
 product,field,"product.pricelist,currency_id",0,Currency,Devise
 product,constraint,res.currency,0,Error!  You cannot define a rounding factor for the company's main currency that is smaller than the decimal precision of 'Account'.,"Erreur!  Pour la devise principale de la compagnie, il est impossible de choisir un facteur d'arrondi infÈrieur ‡ la prÈcision de la comptabilitÈ."
-product,help,"product.template,packaging_ids",0,Gives the different ways to package the same product. This has no impact on the picking order and is mainly used if you use the EDI module.,"Indique les diffÈrentes faÃ§ons d'emballer un même article. Ceci n'a pas d'impact sur les ordres de prÈparation, et sert principalement si vous activez le module d'EDI."
+product,help,"product.template,packaging_ids",0,Gives the different ways to package the same product. This has no impact on the picking order and is mainly used if you use the EDI module.,"Indique les diffÈrentes faÃ§ons d'emballer un mÍme article. Ceci n'a pas d'impact sur les ordres de prÈparation, et sert principalement si vous activez le module d'EDI."
 product,view,website,product.report_pricelist,Currency,Devise
 product,help,"product.template,sale_ok",0,Specify if the product can be selected in a sales order line.,Indique si l'article peut Ítre mis dans une ligne de commande de vente.
 product,help,"product.template,message_ids",0,Messages and communication history,Historique de messages/communications
 product,selection,"product.template,state",0,End of Lifecycle,Fin de cycle de vie
 product,field,"product.uom,create_date",0,Created on,CrÈÈ le
 product,help,"product.pricelist.version,date_end",0,Last valid date for the version.,Date de fin de validitÈ de la version.
-product,help,"product.uom,category_id",0,Conversion between Units of Measure can only occur if they belong to the same category. The conversion will be made based on the ratios.,Il est possible de convertir deux unitÈs de mesures si elles appartiennent ‡ la même catÈgorie. Cette conversion utilise les rapports dÈfinis pour ces unitÈs.
+product,help,"product.uom,category_id",0,Conversion between Units of Measure can only occur if they belong to the same category. The conversion will be made based on the ratios.,Il est possible de convertir deux unitÈs de mesures si elles appartiennent ‡ la mÍme catÈgorie. Cette conversion utilise les rapports dÈfinis pour ces unitÈs.
 product,model,"ir.model,name",product.model_product_packaging,Packaging,Packaging
 product,view,website,product.report_pricelist,Print date,Date d'impresssion
 product,view,product.template,product.product_template_form_view,Packaging,Packaging
@@ -745,17 +734,14 @@ product,field,"pricelist.partnerinfo,create_uid",0,Created by,CrÈe par
 product,field,"product.packaging,create_date",0,Created on,CrÈÈ le
 product,view,product.template,product.product_template_form_view,Description for Quotations,Description pour les soumissions
 product,field,"product.template,seller_delay",0,Supplier Lead Time,DÈlai du fournisseur
-product,field,"product.price_list,id",0,ID,ID
 product,selection,"product.template,state",0,In Development,En dÈveloppement
 product,field,"product.price.type,create_date",0,Created on,CrÈÈ le
 product,help,"product.pricelist.item,price_min_margin",0,Specify the minimum amount of margin over the base price.,Indique la marge minimum ‡ faire sur le prix de base.
-product,field,"report.product.report_pricelist,id",0,ID,ID
 product,field,"product.template,image_medium",0,Medium-sized image,Image de taille moyenne
 product,field,"product.ul,height",0,Height,Hauteur
-product,help,"product.pricelist.item,product_tmpl_id",0,Specify a template if this rule only applies to one product template. Keep empty otherwise.,Indiquez un modèËle si cette rËgle ne s'applique qu'Ã  un modèËle de produit. Laissez vide dans le cas contraire.
+product,help,"product.pricelist.item,product_tmpl_id",0,Specify a template if this rule only applies to one product template. Keep empty otherwise.,Indiquez un modËle si cette rËgle ne s'applique qu'‡ un modËle de produit. Laissez vide dans le cas contraire.
 product,field,"product.category,create_uid",0,Created by,CrÈe par
 product,help,"product.template,seller_id",0,Main Supplier who has highest priority in Supplier List.,Fournisseur principal qui a la plus haute prioritÈ dans la liste des fournisseurs.
-product,field,"product.attribute,id",0,ID,ID
 product,selection,"product.ul,type",0,Box,BoÓte
 product,field,"product.template,seller_id",0,Main Supplier,Fournisseur principal
 product,help,"product.pricelist.item,price_max_margin",0,Specify the maximum amount of margin over the base price.,Indique la marge maximum ‡ faire sur le prix de base.
@@ -788,29 +774,23 @@ product,help,"product.uom,factor_inv",0,"How many times this Unit of Measure is 
 1 x (cette unitÈ) = ratio x (unitÈ de rÈfÈrence)"
 product,constraint,product.pricelist.item,0,Error!  The minimum margin should be lower than the maximum margin.,Erreur!  Le profit minimum doit Ítre infÈrieur au profit maximum.
 product,view,product.packaging,product.product_packaging_form_view,Packaging,Packaging
-product,field,"product.packaging,id",0,ID,ID
 product,field,"product.attribute,create_uid",0,Created by,CrÈe par
 product,field,"product.template,color",0,Color Index,Index de couleur
 product,field,"product.product,ean13",0,EAN13 Barcode,Code barre EAN13
 product,field,"product.product,image_medium",0,Medium-sized image,Image de taille moyenne
 product,field,"product.template,create_uid",0,Created by,CrÈe par
 product,model,"ir.model,name",product.model_res_currency,Currency,Devise
-product,field,"pricelist.partnerinfo,id",0,ID,ID
-product,field,"product.ul,id",0,ID,ID
 product,field,"product.pricelist.item,create_uid",0,Created by,CrÈe par
 product,view,product.packaging,product.product_packaging_tree_view,Packaging,Packaging
 product,field,"product.pricelist.type,create_date",0,Created on,CrÈÈ le
 product,field,"product.attribute.line,create_date",0,Created on,CrÈÈ le
-product,help,"product.pricelist.item,categ_id",0,Specify a product category if this rule only applies to products belonging to this category or its children categories. Keep empty otherwise.,Indiquez une catÈgorie d'articles si cette rËgle ne s'applique qu'Ã  cette catÈgorie et ‡ ses enfants. Laissez vide dans le cas contraire.
+product,help,"product.pricelist.item,categ_id",0,Specify a product category if this rule only applies to products belonging to this category or its children categories. Keep empty otherwise.,Indiquez une catÈgorie d'articles si cette rËgle ne s'applique qu'‡ cette catÈgorie et ‡ ses enfants. Laissez vide dans le cas contraire.
 product,field,"product.attribute.value,create_date",0,Created on,CrÈÈ le
-product,field,"product.supplierinfo,id",0,ID,ID
 product,help,"product.packaging,sequence",0,Gives the sequence order when displaying a list of packaging.,Donne l'ordre d'affichage d'une liste de colisage.
-product,field,"product.pricelist,id",0,ID,ID
 product,field,"product.pricelist.type,key",0,Key,ClÈ
 product,field,"product.packaging,code",0,Code,Code
 product,view,product.packaging,product.product_packaging_form_view_without_product,Packaging,Packaging
 product,view,product.template,product.product_template_form_view,Configurations,Configurations
-product,field,"product.uom,id",0,ID,ID
 product,constraint,product.category,0,Error!  You cannot create recursive categories.,Erreur!  Vous ne pouvez pas crÈer de catÈgories rÈcursives.
 product,field,"product.price.type,create_uid",0,Created by,CrÈe par
 product,help,"product.product,active",0,"If unchecked, it will allow you to hide the product without removing it.",DÈcocher cette case afin de masquer l'article sans le supprimer.
@@ -819,25 +799,21 @@ product,field,"product.price.history,company_id",0,unknown,inconnu
 product,help,"product.pricelist.item,price_surcharge",0,Specify the fixed amount to add or substract(if negative) to the amount calculated with the discount.,"Indique le montant fixe ‡ ajouter (ou ‡ soustraire, si nÈgatif) au montant calculÈ avec cette remise."
 product,model,"res.groups,name",product.group_stock_packaging,Manage Product Packaging,GÈrer le conditionnement des articles
 product,field,"product.pricelist.version,create_uid",0,Created by,CrÈe par
-product,field,"product.attribute.price,id",0,ID,ID
 product,field,"product.attribute.price,create_date",0,Created on,CrÈÈ le
 product,field,"product.pricelist,create_uid",0,Created by,CrÈe par
 product,model,"product.uom,name",product.product_uom_hour,Hour(s),Heure(s)
 product,field,"product.pricelist.version,create_date",0,Created on,CrÈÈ le
-product,field,"product.pricelist.version,id",0,ID,ID
 product,help,"product.uom,factor",0,"How much bigger or smaller this unit is compared to the reference Unit of Measure for this category:
 1 * (reference unit) = ratio * (this unit)","Combien de fois cette unitÈ est plus petite ou plus grande que l'unitÈ de mesure de rÈfÈrence de cette catÈgorie :
 1 x (unitÈ de rÈfÈrence) = ratio x (cette unitÈ)"
 product,help,"product.pricelist,active",0,"If unchecked, it will allow you to hide the pricelist without removing it.",DÈcocher cette case permet de masquer la liste de prix sans la supprimer.
-product,field,"product.pricelist.item,id",0,ID,ID
 product,field,"product.template,create_date",0,Created on,CrÈÈ le
 product,view,product.packaging,product.product_packaging_tree_view_product,Packaging,Packaging
 product,help,"product.uom,active",0,By unchecking the active field you can disable a unit of measure without deleting it.,DÈcocher cette case afin de dÈsactiver l'unitÈ de mesure sans la supprimer.
-product,help,"product.pricelist.item,product_id",0,Specify a product if this rule only applies to one product. Keep empty otherwise.,Indiquez un article si cette rËgle ne s'applique qu'Ã  lui. Laissez vide dans le cas contraire.
+product,help,"product.pricelist.item,product_id",0,Specify a product if this rule only applies to one product. Keep empty otherwise.,Indiquez un article si cette rËgle ne s'applique qu'‡ lui. Laissez vide dans le cas contraire.
 product,help,"product.supplierinfo,name",0,Supplier of this product,Fournisseur de cet article
 product,field,"product.template,message_is_follower",0,Is a Follower,Est abonnÈ
 product,model,"product.uom,name",product.product_uom_dozen,Dozen(s),Douzaine(s)
-product,field,"product.attribute.value,id",0,ID,ID
 product,help,"product.pricelist.item,price_round",0,"Sets the price so that it is a multiple of this value.
 Rounding is applied after the discount and before the surcharge.
 To have prices that end in 9.99, set rounding 10, surcharge -0.01","Fixe le prix comme un multiple de cette valeur.
@@ -852,15 +828,12 @@ product,field,"product.uom,create_uid",0,Created by,CrÈe par
 product,help,"product.supplierinfo,qty",0,This is a quantity which is converted into Default Unit of Measure.,Il s'agit d'une quantitÈ qui est convertie dans l'unitÈ de mesure par dÈfaut.
 product,help,"product.product,message_summary",0,"Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views.","Contient le rÈsumÈ de la discussion (nombre de messages, ...). Ce rÈsumÈ est au format HTML pour permettre son utilisation dans la vue kanban"
 product,field,"product.attribute,create_date",0,Created on,CrÈÈ le
-product,field,"product.product,id",0,ID,ID
 product,code,addons/product/product.py,183,Error! ,Erreur! 
 product,field,"product.template,ean13",0,EAN13 Barcode,Code barre EAN13
-product,field,"product.price.type,id",0,ID,ID
 product,view,website,product.report_pricelist,Description,Description
 product,constraint,product.pricelist.item,0,Error!  You cannot assign the Main Pricelist as Other Pricelist in PriceList Item! ,"Erreur!  Dans une ligne de liste de prix, il est impossible d'assigner la liste de prix principale comme autre liste de prix! "
 product,field,"product.pricelist.version,date_start",0,Start Date,Date de dÈbut
 product,field,"product.template,description_sale",0,Sale Description,Description de vente
-product,field,"product.uom.categ,id",0,ID,ID
 product,constraint,product.packaging,0,Error: Invalid ean code,Erreur: code EAN invalide
 product,field,"product.packaging,name",0,Description,Description
 product,field,"product.attribute.line,create_uid",0,Created by,CrÈe par
@@ -871,4 +844,5 @@ product,field,"product.price.history,create_uid",0,Created by,CrÈe par
 product,field,"product.supplierinfo,product_code",0,Supplier Product Code,Code de l'article chez le fournisseur
 product,help,"product.template,message_summary",0,"Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views.","Contient le rÈsumÈ de la discussion (nombre de messages, ...). Ce rÈsumÈ est au format HTML pour permettre son utilisation dans la vue kanban"
 product,model,"ir.actions.report.xml,name",product.report_product_label,Products Labels,LibellÈs d'articles
-product,field,"product.pricelist.type,id",0,ID,ID
+report,view,website,report.external_layout_footer,Fax,TÈlÈc.
+canadian_provinces,model,"ir.model,name",canadian_provinces.model_res_country_state,Country state,…tat
