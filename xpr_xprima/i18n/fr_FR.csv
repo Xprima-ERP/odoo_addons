@@ -102,8 +102,8 @@ sale,view,sale.order,sale.view_quotation_tree,Quotation,Soumission
 sale,selection,"sale.report,state",0,Quotation,Soumission
 sale,model,"ir.actions.report.xml,name",sale.report_sale_order,Quotation / Order,Soumission / Commande
 sale,view,website,sale.report_saleorder_document,Quotation Date:,Date de la soumission:
-sale,view,sale.order,sale.view_quotation_tree,Quotation Number,N¬∞ de soumission
-sale,view,website,sale.report_saleorder_document,Quotation N¬∞,N¬∞ de soumission
+sale,view,sale.order,sale.view_quotation_tree,Quotation Number,N∞ de soumission
+sale,view,website,sale.report_saleorder_document,Quotation N∞,N∞ de soumission
 sale,model,"mail.message.subtype,name",sale.mt_salesteam_order_sent,Quotation Send,Soumission envoyÈe
 sale,selection,"sale.order,state",0,Quotation Sent,Soumission envoyÈe
 sale,model,"mail.message.subtype,description",sale.mt_order_confirmed,Quotation confirmed,Soumission confirmÈe
@@ -125,16 +125,16 @@ sale,model,"res.groups,name",sale.group_invoice_so_lines,Enable Invoicing Sales 
 sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,Show Lines to Invoice,Afficher les lignes ‡ facturer
 sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,"After clicking 'Show Lines to Invoice', select lines to invoice and create the invoice from the 'More' dropdown menu.","AprËs avoir cliquÈ sur ""Afficher les lignes ‡ facturer"", sÈlectionnez des lignes ‡ facturer et crÈez la facture ‡ partir du menu dÈroulant ""Autres options""."
 sale,view,sale.report,sale.view_order_product_search,Sales Analysis,Analyse des ventes
-sale,selection,"sale.order,order_policy",0,On Demand,√Ä la demande
-sale,view,sale.order,sale.view_sales_order_filter,To Invoice,√Ä facturer
+sale,selection,"sale.order,order_policy",0,On Demand,¿ la demande
+sale,view,sale.order,sale.view_sales_order_filter,To Invoice,¿ facturer
 sale,field,"sale.config.settings,module_sale_margin",0,Display margins on sales orders,Afficher les profits sur les contrats
-sale,view,sale.config.settings,sale.view_sales_config,Warehouse Features,CaractÈristiques de l'entrep√¥t
+sale,view,sale.config.settings,sale.view_sales_config,Warehouse Features,CaractÈristiques de l'entrepÙt
 sale,view,sale.order,sale.view_order_form,Cancel Order,Annuler la commande
 sale,code,addons/sale/sale.py,274,Invalid Action! ,Action invalide! 
 sale,model,"ir.actions.act_window,name",sale.action_account_invoice_report_salesteam,Invoices Analysis,Analyse des factures
-sale,help,"sale.order,invoice_ids",0,This is the list of invoices that have been generated for this sales order. The same sales order may have been invoiced in several times (by line for example).,Liste de factures gÈnÈrÈes pour les contrats. Le mÍême contrat peut avoir ÈtÈ facturÈ en plusieurs temps (par ligne par exemple).
+sale,help,"sale.order,invoice_ids",0,This is the list of invoices that have been generated for this sales order. The same sales order may have been invoiced in several times (by line for example).,Liste de factures gÈnÈrÈes pour les contrats. Le mÍme contrat peut avoir ÈtÈ facturÈ en plusieurs temps (par ligne par exemple).
 sale,view,sale.order.line,sale.view_order_line_form2,Cancel Line,Annuler la ligne
-sale,model,"ir.actions.act_window,help",sale.action_account_invoice_report_salesteam,"From this report, you can have an overview of the amount invoiced to your customer. The tool search can also be used to personalise your Invoices reports and so, match this analysis to your needs.","√Ä partir de ce rapport, vous avez un aperÁu du montant total facturÈ ‡ votre client. L'outil de recherche peut aussi Ítre utilisÈ pour personnaliser l'analyse de la facturation, et ainsi mieux correspondre ‡ vos besoins."
+sale,model,"ir.actions.act_window,help",sale.action_account_invoice_report_salesteam,"From this report, you can have an overview of the amount invoiced to your customer. The tool search can also be used to personalise your Invoices reports and so, match this analysis to your needs.","¿ partir de ce rapport, vous avez un aperÁu du montant total facturÈ ‡ votre client. L'outil de recherche peut aussi Ítre utilisÈ pour personnaliser l'analyse de la facturation, et ainsi mieux correspondre ‡ vos besoins."
 sale,field,"sale.order.line,procurement_ids",0,Procurements,Approvisionnements
 sale,selection,"sale.report,state",0,Waiting Schedule,Attente de planification
 sale,view,sale.report,sale.view_order_product_graph,Sales Analysis,Analyse des ventes
@@ -143,7 +143,7 @@ sale,selection,"sale.order,state",0,Cancelled,AnnulÈe
 sale,code,addons/sale/wizard/sale_make_invoice_advance.py,62,Advance of %s %s,Avance de %s %s
 sale,help,"sale.order,invoiced",0,It indicates that an invoice has been paid.,Indique que la facture a ÈtÈ payÈe.
 sale,code,addons/sale/wizard/sale_line_invoice.py,113,Warning! ,Attention! 
-sale,view,sale.order.line,sale.view_sales_order_line_filter,To Invoice,√Ä facturer
+sale,view,sale.order.line,sale.view_sales_order_line_filter,To Invoice,¿ facturer
 sale,model,"ir.actions.act_window,help",sale.action_order_line_tree2,"<p>
                 Here is a list of each sales order line to be invoiced. You can
                 invoice sales orders partially, by lines of sales order. You do
@@ -178,8 +178,8 @@ This gives the profitability by calculating the difference between the Unit Pric
 Calcule la profitabilitÈ en calculant la diffÈrence entre le prix facturÈ et le prix de revient.
 Installe le module Marge de ventes [sale_margin]."
 sale,selection,"sale.report,state",0,Cancelled,AnnulÈe
-sale,field,"sale.config.settings,module_sale_journal",0,Allow batch invoicing of delivery orders through journals,Autoriser la facturation par lot des livraisons sortantes gr√å¬¢ce aux journaux
-sale,view,sale.order.line,sale.view_sales_order_uninvoiced_line_filter,To Do,√Ä faire
+sale,field,"sale.config.settings,module_sale_journal",0,Allow batch invoicing of delivery orders through journals,Autoriser la facturation par lot des livraisons sortantes gr√å¢ce aux journaux
+sale,view,sale.order.line,sale.view_sales_order_uninvoiced_line_filter,To Do,¿ faire
 sale,help,"account.config.settings,module_sale_analytic_plans",0,This allows install module sale_analytic_plans.,Installe le module sale_analytic_plans.
 sale,view,sale.order,sale.view_order_form,(update),(Mettre ‡ jour)
 sale,model,"ir.actions.act_window,help",sale.act_res_partner_2_sale_order,"<p class=""oe_view_nocontent_create"">
