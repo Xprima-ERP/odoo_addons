@@ -121,3 +121,31 @@ sale,model,"ir.actions.act_window,name",sale.act_res_partner_2_sale_order,Quotat
 sale,field,"crm.case.section,monthly_quoted",0,Rate of created quotation per duration,Total mensuel des soumissions
 sale,help,"sale.config.settings,module_website_quote",0,This adds the online quotation,Ajoute la fonction de soumission en ligne.
 sale,model,"ir.actions.act_window,help",sale.action_order_report_all,"This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.","Ce rapport analyse vos soumissions et commandes clients. Il vérifie les revenus liés aux ventes et les classifie selon différents critères (vendeur, partenaire, article, etc.). Vous pouvez utiliser ce rapport pour analyser vos ventes non encore facturées. Si vous souhaitez analyser votre chiffre d'affaires, vous devriez utiliser le rapport ""Analyse des factures clients"" dans l'application comptabilité."
+auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_search,Subscribed,Abonné
+auditlog,model,"ir.ui.menu,name",auditlog.menu_audit,Audit,Audit
+auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_search,Draft,Brouillon
+auditlog,view,auditlog.log,auditlog.view_auditlog_log_form,Fields updated,Champs modifiés
+auditlog,view,auditlog.log,auditlog.view_auditlog_log_search,Date,Date
+auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_form,Unsubscribe,Désabonner
+auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_search,State,État
+auditlog,view,auditlog.log,auditlog.view_auditlog_log_search,Group By...,Grouper par...
+auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_search,Group By...,Grouper par...
+auditlog,view,auditlog.log,auditlog.view_auditlog_log_search,Resource ID,ID de l'enregistrement
+auditlog,view,auditlog.log,auditlog.view_auditlog_log_form,Log,Journal
+auditlog,view,auditlog.log,auditlog.view_auditlog_log_form,Log - Field updated,Journal - Champs modifiés
+auditlog,model,"ir.model,name",auditlog.model_auditlog_log,Auditlog - Log,Journal d'audit
+auditlog,model,"ir.model,name",auditlog.model_auditlog_log_line,Auditlog - Log details (fields updated),Journal d'audit - Détails (champs modifiés)
+auditlog,model,"ir.model,name",auditlog.model_auditlog_rule,Auditlog - Rule,Journal d'audit - Règle
+auditlog,model,"ir.actions.act_window,name",auditlog.action_auditlog_log_tree,Logs,Journaux
+auditlog,model,"ir.ui.menu,name",auditlog.menu_audit_logs,Logs,Journaux
+auditlog,view,auditlog.log,auditlog.view_auditlog_log_search,Logs,Journaux
+auditlog,view,auditlog.log,auditlog.view_auditlog_log_tree,Logs,Journaux
+auditlog,view,auditlog.log,auditlog.view_auditlog_log_search,Model,Modèle
+auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_form,Rule,Règle
+auditlog,model,"ir.actions.act_window,name",auditlog.action_auditlog_rule_tree,Rules,Règles
+auditlog,model,"ir.ui.menu,name",auditlog.menu_action_auditlog_rule_tree,Rules,Règles
+auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_search,Rules,Règles
+auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_tree,Rules,Règles
+auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_form,Subscribe,s'abonner
+auditlog,view,auditlog.log,auditlog.view_auditlog_log_search,User,Utilisateur
+auditlog,view,auditlog.log,auditlog.view_auditlog_log_form,Values,Valeurs
