@@ -93,7 +93,7 @@ sale,help,"sale.config.settings,module_sale_stock",0,"Allows you to Make Quotati
 - Ceci installe le module sale_stock."
 sale,view,sale.order,sale.view_order_form,Cancel Quotation,Annuler la soumission
 sale,help,"crm.case.section,use_quotations",0,Check this box to manage quotations in this sales team.,Cochez cette case pour gÈrer les soumissions de cette Èquipe commerciale.
-sale,help,"res.company,sale_note",0,Default terms and conditions for quotations.,Conditions gÈnÈrales pour les soumissions.
+sale,help,"res.company,sale_note",0,Default terms and conditions for quotations.,Termes et conditions par dÈfaut des soumissions.
 sale,selection,"sale.order,state",0,Draft Quotation,Soumission brouillon
 sale,view,sale.order,sale.view_order_form,New Copy of Quotation,Nouvelle copie de soumission
 sale,model,"ir.actions.act_window,name",sale.action_order_tree,Old Quotations,Anciennes soumissions
@@ -127,12 +127,12 @@ sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,"After cli
 sale,view,sale.report,sale.view_order_product_search,Sales Analysis,Analyse des ventes
 sale,selection,"sale.order,order_policy",0,On Demand,√Ä la demande
 sale,view,sale.order,sale.view_sales_order_filter,To Invoice,√Ä facturer
-sale,field,"sale.config.settings,module_sale_margin",0,Display margins on sales orders,Afficher les marges sur les contrats
+sale,field,"sale.config.settings,module_sale_margin",0,Display margins on sales orders,Afficher les profits sur les contrats
 sale,view,sale.config.settings,sale.view_sales_config,Warehouse Features,CaractÈristiques de l'entrep√¥t
 sale,view,sale.order,sale.view_order_form,Cancel Order,Annuler la commande
 sale,code,addons/sale/sale.py,274,Invalid Action! ,Action invalide! 
 sale,model,"ir.actions.act_window,name",sale.action_account_invoice_report_salesteam,Invoices Analysis,Analyse des factures
-sale,help,"sale.order,invoice_ids",0,This is the list of invoices that have been generated for this sales order. The same sales order may have been invoiced in several times (by line for example).,Ceci est la liste des factures qui ont ÈtÈ gÈnÈrÈes pour les contrats. Le mÍme contrat peut avoir ÈtÈ facturÈ en plusieurs temps (par ligne par exemple).
+sale,help,"sale.order,invoice_ids",0,This is the list of invoices that have been generated for this sales order. The same sales order may have been invoiced in several times (by line for example).,Liste de factures gÈnÈrÈes pour les contrats. Le mÍême contrat peut avoir ÈtÈ facturÈ en plusieurs temps (par ligne par exemple).
 sale,view,sale.order.line,sale.view_order_line_form2,Cancel Line,Annuler la ligne
 sale,model,"ir.actions.act_window,help",sale.action_account_invoice_report_salesteam,"From this report, you can have an overview of the amount invoiced to your customer. The tool search can also be used to personalise your Invoices reports and so, match this analysis to your needs.","√Ä partir de ce rapport, vous avez un aperÁu du montant total facturÈ ‡ votre client. L'outil de recherche peut aussi Ítre utilisÈ pour personnaliser l'analyse de la facturation, et ainsi mieux correspondre ‡ vos besoins."
 sale,field,"sale.order.line,procurement_ids",0,Procurements,Approvisionnements
@@ -141,7 +141,7 @@ sale,view,sale.report,sale.view_order_product_graph,Sales Analysis,Analyse des v
 sale,model,"ir.model,name",sale.model_procurement_order,Procurement,Approvisionnement
 sale,selection,"sale.order,state",0,Cancelled,AnnulÈe
 sale,code,addons/sale/wizard/sale_make_invoice_advance.py,62,Advance of %s %s,Avance de %s %s
-sale,help,"sale.order,invoiced",0,It indicates that an invoice has been paid.,Cela indique que la facture a ÈtÈ payÈe.
+sale,help,"sale.order,invoiced",0,It indicates that an invoice has been paid.,Indique que la facture a ÈtÈ payÈe.
 sale,code,addons/sale/wizard/sale_line_invoice.py,113,Warning! ,Attention! 
 sale,view,sale.order.line,sale.view_sales_order_line_filter,To Invoice,√Ä facturer
 sale,model,"ir.actions.act_window,help",sale.action_order_line_tree2,"<p>
@@ -180,7 +180,7 @@ Installe le module Marge de ventes [sale_margin]."
 sale,selection,"sale.report,state",0,Cancelled,AnnulÈe
 sale,field,"sale.config.settings,module_sale_journal",0,Allow batch invoicing of delivery orders through journals,Autoriser la facturation par lot des livraisons sortantes gr√å¬¢ce aux journaux
 sale,view,sale.order.line,sale.view_sales_order_uninvoiced_line_filter,To Do,√Ä faire
-sale,help,"account.config.settings,module_sale_analytic_plans",0,This allows install module sale_analytic_plans.,Cela installe le module sale_analytic_plans.
+sale,help,"account.config.settings,module_sale_analytic_plans",0,This allows install module sale_analytic_plans.,Installe le module sale_analytic_plans.
 sale,view,sale.order,sale.view_order_form,(update),(Mettre ‡ jour)
 sale,model,"ir.actions.act_window,help",sale.act_res_partner_2_sale_order,"<p class=""oe_view_nocontent_create"">
                     Click to create a quotation that can be converted into a contract.
@@ -239,6 +239,215 @@ sale,code,addons/sale/sale.py,1055,"Before choosing a product,
 sale,view,website,sale.report_saleorder_document,Invoice address:,Adresse de facturation :
 sale,code,addons/sale/sale.py,1178,Invalid Action! ,Action invalide! 
 sale,code,addons/sale/wizard/sale_make_invoice.py,55,Warning! ,Attention! 
+sale,field,"res.partner,sale_order_ids",0,Sales Order,Contrat
+sale,model,"mail.message.subtype,name",sale.mt_salesteam_order_confirmed,Sales Order Confirmed,Commande confirmÈe
+sale,field,"sale.order,date_confirm",0,Confirmation Date,Date de confirmation
+sale,selection,"sale.report,state",0,In Progress,En cours
+sale,selection,"sale.order,state",0,Sale to Invoice,Commande ‡ facturer
+sale,help,"sale.order,message_ids",0,Messages and communication history,Historique de messages/communications
+sale,model,"ir.actions.act_window,name",sale.action_orders,Sales Orders,Contrats
+sale,view,sale.order,sale.view_sales_order_filter,Sales Team,…quipe de vente
+sale,field,"sale.make.invoice,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sale,model,"ir.actions.act_window,name",sale.action_orders_salesteams,Sales Orders,Contrats
+sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Click to see a detailed analysis of invoices.,Cliquez pour visualiser l'analyse dÈtaillÈe des factures.
+sale,field,"sale.report,id",0,ID,ID
+sale,view,sale.order.line,sale.view_sales_order_uninvoiced_line_filter,Status,Statut
+sale,view,sale.make.invoice,sale.view_sale_order_make_invoice,Create invoices,CrÈer les factures
+sale,field,"sale.order,procurement_group_id",0,Procurement group,Groupe d'approvisionnement
+sale,view,sale.order,sale.view_sale_order_graph,Sales Orders,Contrats
+sale,field,"sale.advance.payment.inv,id",0,ID,ID
+sale,field,"sale.order,create_uid",0,Created by,CrÈÈ par
+sale,field,"sale.order,currency_id",0,Currency,Devise
+sale,view,sale.order,sale.view_sales_order_filter,Sales Order done,Commandes terminÈes
+sale,field,"account.invoice,section_id",0,Sales Team,…quipe de vente
+sale,view,sale.order.line.make.invoice,sale.view_sale_order_line_make_invoice,Create Invoices,CrÈer les factures
+sale,model,"ir.actions.act_window,name",sale.action_invoice_salesteams,Invoices,Factures
+sale,model,"ir.actions.report.xml,name",sale.report_sale_order,Form,Formulaire
+sale,view,sale.order.line,sale.view_sales_order_line_filter,Status,Statut
+sale,view,sale.make.invoice,sale.view_sale_order_make_invoice,Create Invoices,CrÈer les factures
+sale,code,addons/sale/wizard/sale_line_invoice.py,127,Invoice,Facture
+sale,view,sale.report,sale.view_order_product_search,Extended Filters,Filtres Ètendus
+sale,help,"sale.order,invoice_exists",0,It indicates that sales order has at least one invoice.,indique que la commande a au moins une facture.
+sale,view,res.partner,sale.res_partner_address_type,FALSE,FALSE
+sale,field,"sale.order,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale,model,"res.groups,name",sale.group_analytic_accounting,Analytic Accounting for Sales,Comptes analytiques des ventes
+sale,field,"account.invoice.report,section_id",0,Sales Team,…quipe de vente
+sale,view,sale.order.line.make.invoice,sale.view_sale_order_line_make_invoice,Create invoices,CrÈer les factures
+sale,model,"ir.actions.act_window,name",sale.action_orders_in_progress,Sales Order in Progress,Contrats en cours
+sale,view,sale.order.line,sale.view_sales_order_line_filter,Order,Commande
+sale,code,addons/sale/wizard/sale_make_invoice_advance.py,99,Configuration Error! ,Erreur de configuration! 
+sale,view,sale.config.settings,sale.view_sales_config,Contracts Management,Gestion des contrats
+sale,field,"sale.make.invoice,create_date",0,Created on,CrÈÈ le
+sale,code,addons/sale/sale.py,154,Error! ,Erreur! 
+sale,view,sale.report,sale.view_order_product_search,Customer,Client
+sale,code,addons/sale/sale.py,958,Error! ,Erreur! 
+sale,field,"sale.order.line,create_date",0,Created on,CrÈÈ le
+sale,view,sale.report,sale.view_order_product_search,Sales Team,…quipe de vente
+sale,field,"sale.order.line.make.invoice,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale,code,addons/sale/res_config.py,100,Hour,Heure
+sale,field,"sale.advance.payment.inv,create_uid",0,Created by,CrÈÈ par
+sale,model,"ir.filters,name",sale.filter_sale_report_sales_funnel,Sales Funnel,Entonnoir des ventes
+sale,field,"sale.order.line,name",0,Description,Description
+sale,code,addons/sale/wizard/sale_line_invoice.py,102,Invoice created,Facture crÈÈe
+sale,field,"sale.order,create_date",0,Creation Date,Date de crÈation
+sale,view,sale.order,sale.view_sales_order_filter,Sales Order that haven't yet been confirmed,Commandes pas encore confirmÈes
+sale,view,sale.order.line,sale.view_sales_order_uninvoiced_line_filter,Order,Commande
+sale,view,sale.order,sale.view_sales_order_filter,Group By,Grouper par
+sale,field,"sale.make.invoice,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale,help,"sale.order,create_date",0,Date on which sales order is created.,Date ‡ laquelle le contrat est crÈÈ.
+sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,Invoice Sales Order,Facturer la commande
+sale,field,"sale.order.line,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sale,view,sale.order,sale.view_order_form,Terms and conditions...,Termes et conditionsÖ
+sale,selection,"sale.order.line,state",0,Confirmed,ConfirmÈ
+sale,field,"sale.report,date_confirm",0,Date Confirm,Confirmation de la date
+sale,code,addons/sale/sale.py,1055,No Customer Defined! ,Client non prÈcisÈ! 
+sale,field,"res.company,sale_note",0,Default Terms and Conditions,Termes et conditions par dÈfaut
+sale,view,sale.order,sale.view_order_tree,Sales Orders,Contrats
+sale,field,"sale.advance.payment.inv,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale,field,"sale.order,message_is_follower",0,Is a Follower,Est abonnÈ
+sale,view,sale.report,sale.view_order_product_search,Ordered date of the sales order,Contrat commandÈ le
+sale,view,sale.order,sale.view_order_form,Create Invoice,CrÈer la facture
+sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Click to see a detailed analysis.,Cliquez pour visualiser l'analyse dÈtaillÈe.
+sale,field,"sale.order.line,state",0,Status,Statut
+sale,field,"sale.order,id",0,ID,ID
+sale,field,"sale.report,analytic_account_id",0,Analytic Account,Compte analytique
+sale,field,"sale.order,order_policy",0,Create Invoice,CrÈer la facture
+sale,field,"sale.order.line,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale,field,"sale.order.line,invoiced",0,Invoiced,FacturÈ
+sale,field,"sale.order,origin",0,Source Document,Document d'origine
+sale,model,"mail.message.subtype,name",sale.mt_order_confirmed,Sales Order Confirmed,Commande confirmÈe
+sale,field,"sale.config.settings,group_invoice_so_lines",0,Generate invoices based on the sales order lines,GÈnÈrer les factures ‡ partir des lignes de commande
+sale,model,"ir.actions.act_window,name",sale.action_view_sale_order_line_make_invoice,Create Invoice,CrÈer la facture
+sale,selection,"sale.advance.payment.inv,advance_payment_method",0,Invoice the entire order,Facturer toute la commande
+sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Click to acces the Sales Analysis.,Cliquez pour accÈder ‡ l'analyse des ventes.
+sale,view,sale.order.line,sale.view_sales_order_uninvoiced_line_filter,Shipped,ExpÈdiÈ
+sale,code,addons/sale/sale.py,607,Error! ,Erreur! 
+sale,view,account.invoice,sale.account_invoice_tree,Sales Team,…quipe de vente
+sale,code,addons/sale/sale.py,522,Error! ,Erreur! 
+sale,view,sale.order,sale.view_order_form,Invoice,Facture
+sale,view,sale.order.line,sale.view_order_line_form2,Create Invoice,CrÈer la facture
+sale,view,sale.order.line,sale.view_sales_order_uninvoiced_line_filter,Group By,Grouper par
+sale,field,"sale.order.line,order_partner_id",0,Customer,Client
+sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,Create and View Invoice,CrÈer et afficher la facture
+sale,field,"sale.order,message_last_post",0,Last Message Date,Date du dernier message
+sale,code,addons/sale/sale.py,941,Error! ,Erreur! 
+sale,field,"sale.order,partner_id",0,Customer,Client
+sale,code,addons/sale/sale.py,464,Customer Invoices,Factures clients
+sale,field,"sale.order,payment_term",0,Payment Term,Condition de paiement
+sale,help,"sale.order,message_last_post",0,Date of the last message posted on the record.,Date du dernier message postÈ sur cet enregistrement
+sale,code,addons/sale/sale.py,284,Sales Order,Contrat
+sale,field,"sale.order,section_id",0,Sales Team,…quipe de vente
+sale,field,"sale.order.line,create_uid",0,Created by,CrÈÈ par
+sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Sales Orders,Contrats
+sale,code,addons/sale/sale.py,590,First cancel all invoices attached to this sales order.,Annuler d'abord toutes les factures liÈes ‡ cette commande client.
+sale,view,sale.order,sale.view_order_form,Confirm Sale,Confirmer la vente
+sale,field,"sale.order.line,id",0,ID,ID
+sale,field,"sale.config.settings,module_sale_stock",0,Trigger delivery orders automatically from sales orders,DÈclenche automatiquement les ordres de livraisons ‡ partir des commandes
+sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,Create Invoice,CrÈer la facture
+sale,view,sale.order,sale.view_order_form,Send by Email,Envoyer par courriel
+sale,field,"sale.order,state",0,Status,Statut
+sale,view,website,sale.report_saleorder_document,Date Ordered,CommandÈ le
+sale,field,"sale.order,invoice_ids",0,Invoices,Factures
+sale,field,"account.config.settings,group_analytic_account_for_sales",0,Analytic accounting for sales,ComptabilitÈ analytique pour les ventes
+sale,view,website,sale.report_saleorder_document,Description,Description
+sale,code,addons/sale/sale.py,390,Error! ,Erreur! 
+sale,field,"sale.report,date",0,Date Order,Date de la commande
+sale,view,sale.order.line,sale.view_sales_order_line_filter,Group By,Grouper par
+sale,field,"sale.order,note",0,Terms and conditions,Termes et conditions
+sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Invoices,Factures
+sale,field,"sale.make.invoice,invoice_date",0,Invoice Date,Date de facturation
+sale,model,"ir.ui.menu,name",sale.menu_sale_order,Sales Orders,Commandes
+sale,help,"sale.order.line,sequence",0,Gives the sequence order when displaying a list of sales order lines.,Donne l'ordre de la sÈquence lors de l'affichage d'une liste des lignes de commande.
+sale,view,website,sale.report_saleorder_document,Quotation Date,Date de la soumission
+sale,help,"sale.advance.payment.inv,product_id",0,"Select a product of type service which is called 'Advance Product'.
+                You may have to create it and set it as a default value on this field.","Choisissez un article de type ""service"" nommÈ ""Produit d'avance"". Il vous faudra peut-Ítre le crÈer et l'attribuer comme valeur par dÈfaut ‡ ce champ."
+sale,view,account.invoice,sale.account_invoice_groupby_inherit,Sales Team,…quipe de vente
+sale,help,"sale.order,message_summary",0,"Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views.","Contient le rÈsumÈ de la discussion (nombre de messages, ...). Ce rÈsumÈ est au format HTML pour permettre son utilisation dans la vue kanban."
+sale,view,sale.order,sale.view_order_form,Sales Order,Contrat
+sale,code,addons/sale/wizard/sale_make_invoice_advance.py,95,Configuration Error! ,Erreur de configuration! 
+sale,field,"sale.order.line,delay",0,Delivery Lead Time,DÈlai de livraison
+sale,field,"sale.report,section_id",0,Sales Team,…quipe de vente
+sale,field,"sale.order.line.make.invoice,create_date",0,Created on,CrÈÈ le
+sale,view,sale.report,sale.view_order_product_search,Group By,Grouper par
+sale,code,addons/sale/sale.py,1231,Invoice paid,Facture rÈglÈe
+sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,"Select how you want to invoice this order. This
+                        will create a draft invoice that can be modified
+                        before validation.","Choisissez comment vous voulez facturer cette commande. 
+                        Une facture brouillon sera gÈnÈrÈe et pourra 
+                        Ítre modifiÈe avant validation."
+sale,model,"ir.model,name",sale.model_sale_order,Sales Order,Contrat
+sale,view,website,sale.report_saleorder_document,Payment Term,Conditions de paiement
+sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Define an invoicing target in the sales team settings to see the period's achievement and forecast at a glance.,DÈfinissez les objectifs de facturation dans les paramËtres de cette Èquipe commerciale afin de visualiser prÈvisions et rÈalisations de la pÈriode en un clin d'oeil.
+sale,view,sale.order.line.make.invoice,sale.view_sale_order_line_make_invoice,Create & View Invoice,CrÈer et afficher la facture
+sale,view,sale.report,sale.view_order_product_search,Status,Statut
+sale,view,sale.order,sale.view_sale_order_calendar,Sales Orders,Contrats
+sale,model,"ir.model,name",sale.model_account_invoice,Invoice,Facture
+sale,field,"sale.order,invoice_exists",0,Invoiced,FacturÈ
+sale,code,addons/sale/wizard/sale_make_invoice_advance.py,96,There is no income account defined as global property.,Il n'y a pas de compte de revenu dÈfini par dÈfaut.
+sale,model,"ir.actions.act_window,name",sale.action_sale_order_make_invoice,Make Invoices,GÈnÈrer les factures
+sale,code,addons/sale/sale.py,1155,Configuration Error! ,Erreur de paramÈtrage! 
+sale,selection,"sale.order,state",0,Sales Order,Contrat
+sale,model,"ir.actions.act_window,name",sale.action_orders_exception,Sales in Exception,Ventes en exception
+sale,view,sale.order,sale.view_sales_order_filter,Sales Order ready to be invoiced,Contrats prÍts ‡ facturer
+sale,model,"ir.model,name",sale.model_crm_case_section,Sales Teams,…quipes de vente
+sale,view,sale.order,sale.view_sales_order_filter,Customer,Client
+sale,field,"sale.make.invoice,create_uid",0,Created by,CrÈÈ par
+sale,field,"sale.order,project_id",0,Contract / Analytic,Contrat / analytique
+sale,field,"sale.advance.payment.inv,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sale,view,account.invoice.report,sale.view_account_invoice_report_search_inherit,Sales Team,…quipe de vente
+sale,field,"sale.order.line.make.invoice,create_uid",0,Created by,CrÈÈ par
+sale,view,sale.order,sale.view_sales_order_filter,Sales Order,Contrat
+sale,help,"sale.order,date_confirm",0,Date on which sales order is confirmed.,Date ‡ laquelle le contrat est confirmÈ.
+sale,field,"sale.order.line.make.invoice,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sale,field,"sale.order.line.make.invoice,id",0,ID,ID
+sale,field,"sale.make.invoice,id",0,ID,ID
+sale,field,"sale.advance.payment.inv,create_date",0,Created on,CrÈÈ le
+sale,field,"sale.make.invoice,grouped",0,Group the invoices,Grouper les factures
+sale,field,"sale.order,date_order",0,Date,Date
+sale,view,crm.case.section,sale.crm_case_section_salesteams_view_kanban,Invoiced,FacturÈ
+sale,code,addons/sale/wizard/sale_make_invoice_advance.py,105,Incorrect Data,DonnÈes Incorrectes
+sale,model,"res.request.link,name",sale.req_link_sale_order,Sales Order,Contrat
+sale,field,"sale.report,state",0,Order Status,Statut de la commande
+sale,help,"sale.make.invoice,grouped",0,Check the box to group the invoices for the same customers,Cochez cette case pour grouper les factures d'un même client
+sale,view,res.company,sale.view_company_inherit_form2,Default Terms and Conditions,Termes et conditions par dÈfaut
+sale,field,"sale.order,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sale_crm,field,"crm.make.sale,write_uid",0,Last Updated by,DerniËère mise ‡ jour par
+sale_crm,help,"sale.order,source_id",0,"This is the source of the link Ex: Search Engine, another domain, or name of email list","Source du lien. Ex. moteur de recherche, autre domaine, ou nom d'une liste de courriel."
+sale_crm,code,addons/sale_crm/wizard/crm_make_sale.py,91,Insufficient Data! ,DonnÈes insuffisantes! 
+sale_crm,model,"ir.actions.act_window,name",sale_crm.action_crm_make_sale,Make Quotation,Faire une soumission
+sale_crm,field,"crm.make.sale,create_date",0,Created on,CrÈÈ le
+sale_crm,help,"crm.make.sale,close",0,Check this to close the opportunity after having created the sales order.,Cochez ceci pour fermer l'opportunitÈ aprËs la crÈation d'une commande de vente.
+sale_crm,view,crm.make.sale,sale_crm.view_crm_make_sale,Convert to Quotation,Convertir en soumission
+sale_crm,view,crm.lead,sale_crm.crm_case_form_view_oppor,Create Quotation,CrÈer une soumission
+sale_crm,field,"crm.make.sale,create_uid",0,Created by,CrÈe par
+sale_crm,model,"ir.model,name",sale_crm.model_sale_order,Sales Order,Contrats
+sale_crm,field,"sale.order,categ_ids",0,Tags,…tiquettes
+sale_crm,field,"crm.make.sale,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sale_crm,model,"ir.model,name",sale_crm.model_crm_make_sale,Make sales,Effectuer des ventes
+sale_crm,field,"crm.make.sale,partner_id",0,Customer,Client
+sale_crm,field,"sale.order,medium_id",0,Channel,Canal
+sale_crm,help,"sale.order,medium_id",0,"This is the method of delivery. Ex: Postcard, Email, or Banner Ad","Mode de transmission. Ex. par carte postale, courriel, banniËre publicitaire."
+sale_crm,view,crm.lead,sale_crm.crm_case_form_view_oppor,Convert to Quotation,Convertir en soumission
+sales_team,field,"crm.case.section,name",0,Sales Team,…quipe de vente
+sales_team,field,"crm.case.section,create_uid",0,Created by,CrÈÈ par
+sales_team,field,"crm.case.section,color",0,Color Index,Index de couleur
+sales_team,field,"crm.case.section,create_date",0,Created on,CrÈÈ le
+sales_team,view,crm.case.section,sales_team.crm_case_section_view_form,Sales Team,…quipe de vente
+sales_team,help,"crm.case.section,message_last_post",0,Date of the last message posted on the record.,Date du dernier message postÈ sur le record.
+sales_team,view,crm.case.section,sales_team.crm_case_section_view_tree,Sales Team,…quipe de vente
+sales_team,field,"crm.case.section,note",0,Description,Description
+sales_team,constraint,crm.case.section,0,Error!  You cannot create recursive Sales team.,Erreur!  Vous ne pouvez pas crÈer d'Èquipes de vente rÈcursives.
+sales_team,model,"ir.model,name",sales_team.model_crm_case_section,Sales Teams,…quipes de vente
+sales_team,field,"crm.case.section,write_date",0,Last Updated on,DerniËère mise ‡ jour
+sales_team,field,"crm.case.section,child_ids",0,Child Teams,…quipes enfant
+sales_team,field,"crm.case.section,message_last_post",0,Last Message Date,DerniËère date de message
+sales_team,field,"crm.case.section,parent_id",0,Parent Team,…quipe parent
+sales_team,view,crm.case.section.tree,sales_team.crm_case_section_salesteams_search,Group By...,Grouper par
+sales_team,field,"crm.case.section,message_follower_ids",0,Followers,Suiveurs
+sales_team,field,"res.users,default_section_id",0,Default Sales Team,…quipe de vente (par dÈfaut)
+sales_team,view,crm.case.section,sales_team.crm_case_section_view_form,Follow this salesteam to automatically track the events associated to users of this team.,Follow this salesteam to automatically track the events associated to users of this team.
+sales_team,model,"ir.ui.menu,name",sales_team.menu_sales_team_act,Sales Teams,…quipes de vente
+sales_team,field,"crm.case.section,code",0,Code,Code
 auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_search,Subscribed,AbonnÈ
 auditlog,model,"ir.ui.menu,name",auditlog.menu_audit,Audit,Audit
 auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_search,Draft,Brouillon
