@@ -42,19 +42,12 @@ class Client(models.Model):
     datelastmn = fields.Date(string="DateLastMN")  # ??
 
     # Should be no more than one match, based on dealercode
-    dealercode = fields.Char(string="Dealer Code", size=50) 
+    dealercode = fields.Char(string="Dealer Code", size=50)
+    mapped = fields.Boolean(strong="Is Mapped")  # Map is confirmed.
     partner = fields.Many2one(
         'res.partner',
         'Partner',
     )
-
-    _sql_constraints = [
-        (
-            'uniq_idcust',
-            'unique(idcust)',
-            "A customer already exists with this id. Cust ID must be unique."
-        ),
-    ]
 
 
 class ClientOptionalValue(models.Model):
@@ -91,12 +84,14 @@ class InvoiceLine(models.Model):
 
     amount = fields.Float(string='Amount', digits=(6, 2), default=0)
 
-    # Should be no more than one match, based on customer match
+    # Based on customer match
     partner = fields.Many2one(
         'res.partner',
         'Partner',
         readonly=True
     )
+
+    mapped = fields.Boolean(strong="Is Mapped")
 
 
 class ClientProcess(models.TransientModel):
@@ -143,10 +138,63 @@ class ClientProcess(models.TransientModel):
     @api.multi
     def process_import(self):
 
+        mapped_ids = set()
+
+        # Kill duplicate optional values
+        for value in self.env['xpr_accpac_connector.clientoptionalvalue'].search([]):
+            key = (value.idcust, value.optfield)
+
+            if key in mapped_ids:
+                # Kill duplicate
+                value.unlink()
+            else:
+                mapped_ids.add(key)
+
+        # Kill duplicates of unmarked entries
+
+        mapped_ids = set()
         for client in self.clients:
 
+            if client.mapped:
+                continue
+
+            key = client.idcust
+
+            if key in mapped_ids:
+                # Kill duplicate
+                client.unlink()
+            else:
+                mapped_ids.add(key)
+
+        # Mark mapped clients
+
+        mapped_ids = set([
+            client.idcust for client
+            in self.env['xpr_accpac_connector.client'].search([('mapped', '=', True)])
+        ])
+
+        for client in self.clients:
+
+            if not client.partner or client.mapped:
+                continue
+
+            if client.idcust in mapped_ids:
+                # Alread mapped. Kill duplicate.
+                client.unlink()
+                continue
+
+            mapped_ids.add(client.idcust)
+            client.mapped = True
+
+        # Map partner
+        for client in self.clients:
+
+            if client.idcust in mapped_ids and not client.mapped:
+                client.unlink()
+                continue
+
             code = self.env['xpr_accpac_connector.clientoptionalvalue'].search([
-                ('idcust', '=', client.idcust)])
+                ('idcust', '=', client.idcust), ('optfield', '=', 'DEALERCODE')])
 
             if not code:
                 client.partner = None
@@ -208,12 +256,54 @@ class InvoiceProcess(models.TransientModel):
     @api.multi
     def process_import(self):
 
+        # Kill duplicates of unmarked entries
+
+        mapped_ids = set([
+            (line.idcust, line.idinvoice, line.iditem) for line
+            in self.env['xpr_accpac_connector.invoiceline'].search([('mapped', '=', False)])
+        ])
+
         for line in self.lines:
 
-            client = self.env['xpr_accpac_connector.client'].search(
-                [('idcust', '=', line.idcust)])
+            key = (line.idcust, line.idinvoice, line.iditem)
+
+            if key in mapped_ids:
+                # Mark as visited
+                mapped_ids.remove(key)
+            else:
+                # Kill duplicate
+                line.unlink()
+
+        mapped_ids = set([
+            (line.idcust, line.idinvoice, line.iditem) for line
+            in self.env['xpr_accpac_connector.invoiceline'].search([('mapped', '=', True)])
+        ])
+
+         # Mark mapped lines
+        for line in self.lines:
+
+            if line.mapped:
+                continue
+
+            if (line.idcust, line.idinvoice, line.iditem) in mapped_ids:
+                # Alread mapped. Kill duplicate.
+                line.unlink()
+                continue
+
+            if line.partner:
+                # New map
+                mapped_ids.add((line.idcust, line.idinvoice, line.iditem))
+                line.mapped = True
+
+        # Map lines
+        for line in self.lines:
+
+            client = self.env['xpr_accpac_connector.client'].search([
+                ('idcust', '=', line.idcust), ('mapped', '=', True)])
 
             if client:
                 line.partner = client.partner
             else:
+                # This should never happen. Customer removed??
                 line.partner = None
+                line.mapped = False
