@@ -61,8 +61,8 @@ sale,model,"ir.actions.act_window,help",sale.action_quotations,"<p class=""oe_vi
             ","<p class=""oe_view_nocontent_create"">
 Cliquez pour créer une soumission, première étape d'une vente.
 </p><p>
-Odoo vous aidera à gérer efficacement le flux de vente complet:
-soumission, bon de commande, livraison, facturation et paiement.
+Odoo vous aidera à gérer efficacement le processus de vente complet:
+soumission, contrat, livraison, facturation et paiement.
 </p><p>
 La fonctionnalité sociale vous aide à organiser des discussions sur chaque commande, et permet à votre client de garder trace de l'évolution de la commande.
 </p>
@@ -81,8 +81,8 @@ sale,model,"ir.actions.act_window,help",sale.action_quotations_salesteams,"<p cl
             ","<p class=""oe_view_nocontent_create"">
 Cliquez pour créer une soumission, première étape d'une vente.
 </p><p>
-Odoo vous aidera à gérer efficacement le flux de vente complet:
-soumission, bon de commande, livraison, facturation et paiement.
+Odoo vous aidera à gérer efficacement le processus de vente complet:
+soumission, contrat, livraison, facturation et paiement.
 </p><p>
 La fonctionnalité sociale vous aide à organiser des discussions sur chaque commande, et permet à votre client de garder trace de l'évolution de la commande.
 </p>
@@ -96,7 +96,7 @@ sale,help,"crm.case.section,use_quotations",0,Check this box to manage quotation
 sale,help,"res.company,sale_note",0,Default terms and conditions for quotations.,Conditions générales pour les soumissions.
 sale,selection,"sale.order,state",0,Draft Quotation,Soumission brouillon
 sale,view,sale.order,sale.view_order_form,New Copy of Quotation,Nouvelle copie de soumission
-sale,model,"ir.actions.act_window,name",sale.action_order_tree,Old Quotations,Ancienes soumissions
+sale,model,"ir.actions.act_window,name",sale.action_order_tree,Old Quotations,Anciennes soumissions
 sale,view,sale.order,sale.view_order_form,Quotation,Soumission
 sale,view,sale.order,sale.view_quotation_tree,Quotation,Soumission
 sale,selection,"sale.report,state",0,Quotation,Soumission
@@ -120,7 +120,125 @@ sale,model,"ir.actions.act_window,name",sale.action_order_report_quotation_sales
 sale,model,"ir.actions.act_window,name",sale.act_res_partner_2_sale_order,Quotations and Sales,Soumission et ventes
 sale,field,"crm.case.section,monthly_quoted",0,Rate of created quotation per duration,Total mensuel des soumissions
 sale,help,"sale.config.settings,module_website_quote",0,This adds the online quotation,Ajoute la fonction de soumission en ligne.
-sale,model,"ir.actions.act_window,help",sale.action_order_report_all,"This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.","Ce rapport analyse vos soumissions et commandes clients. Il vérifie les revenus liés aux ventes et les classifie selon différents critères (vendeur, partenaire, article, etc.). Vous pouvez utiliser ce rapport pour analyser vos ventes non encore facturées. Si vous souhaitez analyser votre chiffre d'affaires, vous devriez utiliser le rapport ""Analyse des factures clients"" dans l'application comptabilité."
+sale,model,"ir.actions.act_window,help",sale.action_order_report_all,"This report performs analysis on your quotations and sales orders. Analysis check your sales revenues and sort it by different group criteria (salesman, partner, product, etc.) Use this report to perform analysis on sales not having invoiced yet. If you want to analyse your turnover, you should use the Invoice Analysis report in the Accounting application.","Ce rapport analyse vos soumissions et contrats clients. Il vérifie les revenus liés aux ventes et les classifie selon différents critères (vendeur, partenaire, article, etc.). Vous pouvez utiliser ce rapport pour analyser vos ventes non encore facturées. Si vous souhaitez analyser votre chiffre d'affaires, vous devriez utiliser le rapport ""Analyse des factures clients"" dans l'application comptabilité."
+sale,model,"res.groups,name",sale.group_invoice_so_lines,Enable Invoicing Sales order lines,Activer la facturation par ligne de commande
+sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,Show Lines to Invoice,Afficher les lignes à facturer
+sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,"After clicking 'Show Lines to Invoice', select lines to invoice and create the invoice from the 'More' dropdown menu.","Après avoir cliqué sur ""Afficher les lignes à facturer"", sélectionnez des lignes à facturer et créez la facture à partir du menu déroulant ""Autres options""."
+sale,view,sale.report,sale.view_order_product_search,Sales Analysis,Analyse des ventes
+sale,selection,"sale.order,order_policy",0,On Demand,À la demande
+sale,view,sale.order,sale.view_sales_order_filter,To Invoice,À facturer
+sale,field,"sale.config.settings,module_sale_margin",0,Display margins on sales orders,Afficher les marges sur les contrats
+sale,view,sale.config.settings,sale.view_sales_config,Warehouse Features,Caractéristiques de l'entrepôt
+sale,view,sale.order,sale.view_order_form,Cancel Order,Annuler la commande
+sale,code,addons/sale/sale.py,274,Invalid Action! ,Action invalide! 
+sale,model,"ir.actions.act_window,name",sale.action_account_invoice_report_salesteam,Invoices Analysis,Analyse des factures
+sale,help,"sale.order,invoice_ids",0,This is the list of invoices that have been generated for this sales order. The same sales order may have been invoiced in several times (by line for example).,Ceci est la liste des factures qui ont été générées pour les contrats. Le même contrat peut avoir été facturé en plusieurs temps (par ligne par exemple).
+sale,view,sale.order.line,sale.view_order_line_form2,Cancel Line,Annuler la ligne
+sale,model,"ir.actions.act_window,help",sale.action_account_invoice_report_salesteam,"From this report, you can have an overview of the amount invoiced to your customer. The tool search can also be used to personalise your Invoices reports and so, match this analysis to your needs.","À partir de ce rapport, vous avez un aperu du montant total facturé à votre client. L'outil de recherche peut aussi être utilisé pour personnaliser l'analyse de la facturation, et ainsi mieux correspondre à vos besoins."
+sale,field,"sale.order.line,procurement_ids",0,Procurements,Approvisionnements
+sale,selection,"sale.report,state",0,Waiting Schedule,Attente de planification
+sale,view,sale.report,sale.view_order_product_graph,Sales Analysis,Analyse des ventes
+sale,model,"ir.model,name",sale.model_procurement_order,Procurement,Approvisionnement
+sale,selection,"sale.order,state",0,Cancelled,Annulée
+sale,code,addons/sale/wizard/sale_make_invoice_advance.py,62,Advance of %s %s,Avance de %s %s
+sale,help,"sale.order,invoiced",0,It indicates that an invoice has been paid.,Cela indique que la facture a été payée.
+sale,code,addons/sale/wizard/sale_line_invoice.py,113,Warning! ,Attention! 
+sale,view,sale.order.line,sale.view_sales_order_line_filter,To Invoice,À facturer
+sale,model,"ir.actions.act_window,help",sale.action_order_line_tree2,"<p>
+                Here is a list of each sales order line to be invoiced. You can
+                invoice sales orders partially, by lines of sales order. You do
+                not need this list if you invoice from the delivery orders or
+                if you invoice sales totally.
+              </p>
+            ","<p>
+                Voici la liste de lignes à facturer. Vous pouvez aussi
+                facturer les commandes partiellement, par lignes. Vous 
+                n'avez pas besoin de cette liste si vous facturez sur livraison,
+                ou si vous facturez les commandes totalement.
+              </p>
+            "
+sale,field,"sale.config.settings,group_sale_delivery_address",0,Allow a different address for delivery and invoicing ,Autoriser une adresse différente pour la livraison et la facturation 
+sale,model,"ir.actions.act_window,help",sale.action_orders_salesteams,"<p class=""oe_view_nocontent_create"">
+                    Click to create a quotation that can be converted into a contract.
+                </p><p>
+                    Odoo will help you efficiently handle the complete sales process:
+                   lead, opportunity, quotation and contract.
+                </p>","<p class=""oe_view_nocontent_create"">
+Cliquez pour créer une soumission qui peut être convertie en contrat.
+</p><p>
+Odoo vous aidera ˆ gérer efficacement le processus de vente complet incluant la piste, l'opportunité, la soumission, et le contrat.
+</p>
+            "
+sale,field,"sale.order,message_follower_ids",0,Followers,Abonnés
+sale,model,"ir.actions.act_window,name",sale.action_order_report_so_salesteam,Sales Analysis,Analyse des ventes
+sale,help,"sale.order,partner_invoice_id",0,Invoice address for current sales order.,Adresse de facturation pour le contrat actuel
+sale,help,"sale.config.settings,module_sale_margin",0,"This adds the 'Margin' on sales order.
+This gives the profitability by calculating the difference between the Unit Price and Cost Price.
+-This installs the module sale_margin.","Ajoute le profit aux commandes.
+Calcule la profitabilité en calculant la différence entre le prix facturé et le prix de revient.
+Installe le module Marge de ventes [sale_margin]."
+sale,selection,"sale.report,state",0,Cancelled,Annulée
+sale,field,"sale.config.settings,module_sale_journal",0,Allow batch invoicing of delivery orders through journals,Autoriser la facturation par lot des livraisons sortantes grÌ¢ce aux journaux
+sale,view,sale.order.line,sale.view_sales_order_uninvoiced_line_filter,To Do,À faire
+sale,help,"account.config.settings,module_sale_analytic_plans",0,This allows install module sale_analytic_plans.,Cela installe le module sale_analytic_plans.
+sale,view,sale.order,sale.view_order_form,(update),(Mettre à jour)
+sale,model,"ir.actions.act_window,help",sale.act_res_partner_2_sale_order,"<p class=""oe_view_nocontent_create"">
+                    Click to create a quotation that can be converted into a contract.
+                </p><p>
+                    Odoo will help you efficiently handle the complete sales process:
+                   lead, opportunity, quotation and contract.
+                </p>","<p class=""oe_view_nocontent_create"">
+Cliquez pour créer une soumission qui peut être convertie en contrat.
+</p><p>
+Odoo vous aidera ˆ gérer efficacement le processus de vente complet incluant la piste, l'opportunité, la soumission, et le contrat.
+</p>
+            "
+sale,code,addons/sale/sale.py,304,Pricelist Warning! ,Avertissement sur la liste de prix! 
+sale,view,sale.order,sale.view_order_form,View Invoice,Afficher la facture
+sale,selection,"sale.advance.payment.inv,advance_payment_method",0,Some order lines,Certaines lignes de commande
+sale,view,sale.order,sale.view_order_form,Other Information,Autre information
+sale,selection,"sale.order,state",0,Waiting Schedule,Attente de planification
+sale,selection,"sale.order.line,state",0,Cancelled,Annulée
+sale,code,addons/sale/wizard/sale_make_invoice_advance.py,100,"There is no income account defined for this product: ""%s"" (id:%d).","Aucun compte de revenu n'a été défini pour cet article : ""%s"" ( id. : %d)."
+sale,view,sale.report,sale.view_order_product_search,This Year,Cette année
+sale,selection,"sale.order.line,state",0,Draft,Brouillon
+sale,code,addons/sale/sale.py,959,There is no Fiscal Position defined or Income category account defined for default properties of Product categories.,Aucun régime fiscal ou aucun compte de revenu de catégorie n'a été défini comme propriété par défaut des catégories d'articles.
+sale,model,"res.groups,name",sale.group_delivery_invoice_address,Addresses in Sales Orders,Adresses des commandes
+sale,model,"ir.actions.act_window,help",sale.action_orders,"<p class=""oe_view_nocontent_create"">
+                    Click to create a quotation that can be converted into a contract.
+                </p><p>
+                    Odoo will help you efficiently handle the complete sales process:
+                   lead, opportunity, quotation and contract.
+                </p>
+            ","<p class=""oe_view_nocontent_create"">
+Cliquez pour créer une soumission qui peut être convertie en contrat.
+</p><p>
+Odoo vous aidera ˆ gérer efficacement le processus de vente complet incluant la piste, l'opportunité, la soumission, et le contrat.
+</p>
+            "
+sale,field,"sale.report,categ_id",0,Category of Product,Catégorie d'article
+sale,help,"sale.order,partner_shipping_id",0,Delivery address for current sales order.,Adresse de livraison du contrat en cours.
+sale,view,sale.report,sale.view_order_product_search,Category of Product,Catégorie d'article
+sale,model,"ir.actions.act_window,name",sale.action_order_report_all,Sales Analysis,Analyse des ventes
+sale,code,addons/sale/wizard/sale_make_invoice_advance.py,62,Advance of %s %%,Avance de %s %%
+sale,field,"sale.order,partner_invoice_id",0,Invoice Address,Adresse de facturation
+sale,model,"ir.ui.menu,name",sale.menu_report_product_all,Sales Analysis,Analyse des ventes
+sale,field,"sale.order,partner_shipping_id",0,Delivery Address,Adresse de livraison
+sale,code,addons/sale/sale.py,997,Invalid Action! ,Action invalide! 
+sale,selection,"sale.order,state",0,Customer Approved,Approuvé par le client
+sale,view,sale.advance.payment.inv,sale.view_sale_advance_payment_inv,Cancel,Annuler
+sale,view,sale.make.invoice,sale.view_sale_order_make_invoice,Cancel,Annuler
+sale,model,"ir.model,name",sale.model_mail_compose_message,Email composition wizard,Assistant de composition de courriel
+sale,view,website,sale.report_saleorder_document,Invoice and shipping address:,Adresse de facturation/livraison
+sale,view,sale.order.line.make.invoice,sale.view_sale_order_line_make_invoice,Cancel,Annuler
+sale,view,sale.config.settings,sale.view_sales_config,Contract Features,Caractéristiques du contrat
+sale,code,addons/sale/wizard/sale_make_invoice.py,42,Warning! ,Attention! 
+sale,code,addons/sale/sale.py,1055,"Before choosing a product,
+ select a customer in the sales form.","Avant de choisir un article,
+ choisir un client dans le formulaire de vente."
+sale,view,website,sale.report_saleorder_document,Invoice address:,Adresse de facturation :
+sale,code,addons/sale/sale.py,1178,Invalid Action! ,Action invalide! 
+sale,code,addons/sale/wizard/sale_make_invoice.py,55,Warning! ,Attention! 
 auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_search,Subscribed,Abonné
 auditlog,model,"ir.ui.menu,name",auditlog.menu_audit,Audit,Audit
 auditlog,view,auditlog.rule,auditlog.view_auditlog_rule_search,Draft,Brouillon
