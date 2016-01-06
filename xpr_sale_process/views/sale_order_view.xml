@@ -39,6 +39,18 @@
                     <attribute name="create">false</attribute>
                 </xpath>
 
+                <field name="solution" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state','!=','draft')]}</attribute>
+                </field>
+
+                 <field name="solution_discount" position="attributes">
+                    <attribute name="attrs">{'readonly': [('state','!=','draft')]}</attribute>
+                </field>
+
+                <xpath expr="//button[@name='sale_solution_option_action']" position="attributes">
+                    <attribute name="states">draft</attribute>
+                </xpath>
+
                 <xpath expr="/form/header/button[@name='copy_quotation']" position="attributes">
                     <attribute name="states">cancel,draft,contract_not_approved</attribute>
                 </xpath>
@@ -94,6 +106,18 @@
             <field name="arch" type="xml">
                 <xpath expr="//form" position="attributes">
                     <attribute name="create">true</attribute>
+                </xpath>
+
+                 <field name="solution" position="attributes">
+                    <attribute name="attrs">{'readonly': False}</attribute>
+                </field>
+
+                 <field name="solution_discount" position="attributes">
+                    <attribute name="attrs">{'readonly': False}</attribute>
+                </field>
+
+                 <xpath expr="//button[@name='sale_solution_option_action']" position="attributes">
+                    <attribute name="states"></attribute>
                 </xpath>
 
                 <field name="client_order_ref" position="attributes">
