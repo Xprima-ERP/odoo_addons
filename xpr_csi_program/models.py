@@ -15,9 +15,12 @@ class SaleOrder(models.Model):
     #_name = 'sale.order'
     _inherit = 'sale.order'
 
-    @api.onchange('partner_id')
-    def _change_csi_contact_domain(self):
-        return {'domain': {'csi_contact': [('parent_id', '=', self.partner_id)]}}
+    # Extend parnter onchange method
+    def onchange_partner_id(self, cr, uid, ids, part, context=None):
+        res = super(SaleOrder, self).onchange_partner_id(cr, uid, ids, part, context)
+        res.update({'domain': {'csi_contact': [('parent_id', '=', part)]}})
+
+        return res
 
     @api.onchange('solution')
     def _reset_csi_contact(self):
