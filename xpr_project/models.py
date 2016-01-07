@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 #
 #    OpenERP, Open Source Management Solution
-#    This module copyright (C) 2014 Savoir-faire Linux
-#    (<http://www.savoirfairelinux.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -16,7 +14,7 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
+
 
 from openerp import models, fields, api
 from openerp.tools.translate import _

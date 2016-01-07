@@ -45,7 +45,7 @@ Contributors
         #'project',
     ],
     'external_dependencies': {
-        #'python': ['jira'],
+        'python': ['jira'],
     },
     'data': [
         #'config.xml',
