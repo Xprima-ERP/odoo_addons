@@ -11,6 +11,10 @@
                 <filter name="my_sale_orders_filter" position="attributes">
                     <attribute name="string">Mine</attribute>
                 </filter>
+
+                <filter name="my_sale_orders_filter" position="after">
+                    <filter help="My Team" name="my_team" domain="[('user_id.partner_id.section_id.user_id', 'in', [uid])]" />
+                </filter>
                 <filter string="Order Month" position="after">
                     <filter string="Renewal Month" domain="[]" context="{'group_by':'renew_date'}"/>
                     <filter string="Category" domain="[]" context="{'group_by':'category'}"/>
