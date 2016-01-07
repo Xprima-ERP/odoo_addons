@@ -51,7 +51,7 @@
 
                 <xpath expr="//label[@for='name']" position="replace">
                     <group>
-                        <field name="category" required="1"/>
+                        <field name="category" required="1" domain="[('parent_id.parent_id','child_of', %(product.product_category_all)d )]"/>
                         <field name="solution" required="1"/>
                     </group>
                 </xpath> 
