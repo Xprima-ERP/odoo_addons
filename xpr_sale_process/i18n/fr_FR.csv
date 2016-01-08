@@ -84,6 +84,9 @@ xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Lost,Perdu
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Not Available,Pas disponible
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,Order Month,Mois de commande
+xpr_sale_process,view,crm.lead,xpr_sale_process.lead_search,My Team,Mon équipe
+xpr_sale_process,view,crm.lead,xpr_sale_process.opportunity_search,My Team,Mon équipe
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_search,My Team,Mon équipe
 xpr_sale_process,field,"xpr_sale_process.availability_message,order_id",0,Order id,Order id
 xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_availability_notify_mail,"You must check the advertisment availability for quotation <a href=""${object.form_url|safe}"">${object.name}</a>.<br/>Salesperson notes:<br/>${ctx.get('message','')}","Validez la disponibilité de publicité de cette soumission : <a href=""${object.form_url|safe}"">${object.name}</a>.<br/>Notes du vendeur:<br/>${ctx.get('message','')}"
 xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_manager_approval_mail,"This quotation has to be approved for discounts <a href=""${object.form_url|safe}"">${object.name}</a>.","Validez les rabais de cette soumission  : <a href=""${object.form_url|safe}"">${object.name}</a>."

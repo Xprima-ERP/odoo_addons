@@ -844,6 +844,6 @@ product,field,"product.price.history,create_uid",0,Created by,Crée par
 product,field,"product.supplierinfo,product_code",0,Supplier Product Code,Code de l'article chez le fournisseur
 product,help,"product.template,message_summary",0,"Holds the Chatter summary (number of messages, ...). This summary is directly in html format in order to be inserted in kanban views.","Contient le résumé de la discussion (nombre de messages, ...). Ce résumé est au format HTML pour permettre son utilisation dans la vue kanban"
 product,model,"ir.actions.report.xml,name",product.report_product_label,Products Labels,Libellés d'articles
-product,field,"product.category,name",0,All,Toutes
+product,model,"product.category,name",product.product_category_all,All,Toutes
 report,view,website,report.external_layout_footer,Fax,Téléc.
 canadian_provinces,model,"ir.model,name",canadian_provinces.model_res_country_state,Country state,État
