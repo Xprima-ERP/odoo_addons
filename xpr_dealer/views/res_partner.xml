@@ -3,6 +3,17 @@
 <openerp>
   <data>
 
+    <record id="sale_order_remove_create_form" model="ir.ui.view">
+      <field name="name">sale.order.select.company</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field name="arch" type="xml">
+          <field name="partner_id" position="attributes">
+              <attribute name="domain">[('is_company', '=', 'True')]</attribute>
+          </field>
+      </field>
+  </record>
+
   <!-- partners -->
   <record id="view_partner_form" model="ir.ui.view">
       <field name="model">res.partner</field>
@@ -20,7 +31,6 @@
             <field name="category_id" placeholder="Tags..." widget="many2many_tags" domain="['|', '|', '|', '|',('parent_id','child_of', %(category_dealer_group)d ), ('id','child_of', %(category_dealer_certification_automatic)d ), ('id','child_of', %(category_dealer_certification_manual)d ), ('id','child_of', %(category_dealer_marketing_association)d ), ('id','child_of', %(category_dealer_association)d )]"/>
 
         </field>
-
     </field>
   </record>
 

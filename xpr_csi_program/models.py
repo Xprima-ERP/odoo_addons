@@ -18,8 +18,19 @@ class SaleOrder(models.Model):
     # Extend parnter onchange method
     def onchange_partner_id(self, cr, uid, ids, part, context=None):
         res = super(SaleOrder, self).onchange_partner_id(cr, uid, ids, part, context)
-        res.update({'domain': {'csi_contact': [('parent_id', '=', part)]}})
 
+        if not res:
+            # Juse in case
+            res = {}
+
+        if not 'domain' in res:
+            res['domain'] = {}
+
+        if not 'value' in res:
+            res['value'] = {}
+
+        res['domain'].update({'csi_contact': [('parent_id', '=', part)]})
+        res['value'].update({'csi_contact': None})
         return res
 
     @api.onchange('solution')
