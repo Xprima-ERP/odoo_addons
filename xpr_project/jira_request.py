@@ -14,6 +14,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+from jira import JIRA
 
 _logger = logging.getLogger(__name__)
 
@@ -57,8 +58,6 @@ class JIRARequest(object):
             if enable != '1' and enable != 'true':
                 _logger.info("jira.enable is not set.")
                 return None
-
-            from jira import JIRA
 
             self._jira = JIRA(
                 #basic_auth=('user', 'userpassword'), #TODO Fill in a user here
@@ -105,6 +104,14 @@ class CreateIssueRequest(JIRARequest):
         #jira.add_attachment(i.key, "~/Desktop/deleteme")
 
         #jira.add_comment(i.key, "My comment")
+
+        # t = self.jira.create_issue(
+        #     fields=dict(
+        #         project={'key': self.get_project()},
+        #         summary='Sub task test',
+        #         description='This is a task test',
+        #         issuetype={'name': 'Sub-task'},
+        #         parent={ 'id' : rootnn.key}))
 
 
 class CreateProduction(CreateIssueRequest):

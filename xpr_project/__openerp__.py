@@ -42,13 +42,13 @@ Contributors
 """,
     'depends': [
         'base',
-        #'project',
+        'project',
     ],
     'external_dependencies': {
         'python': ['jira'],
     },
     'data': [
-        #'config.xml',
+        # 'config.xml',
         # 'views/res_user.xml',
         # 'views/res_partner_categories.xml',
         # 'res_partners_categories.xml',
