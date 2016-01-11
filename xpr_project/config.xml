@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data noupdate="1">
+    <record model="ir.config_parameter" id="config_param_enable">
+        <field name="key">jira.enable</field>
+        <field name="value">False</field>
+    </record>
+
+    <record model="ir.config_parameter" id="config_param_url">
+        <field name="key">jira.url</field>
+        <field name="value">https://xis.xprima.com/jira</field>
+    </record>
+
+    <record model="ir.config_parameter" id="config_param_url">
+        <field name="key">jira.production.project</field>
+        <field name="value">XPRIMAERP</field>
+    </record>
+
+  </data>
+</openerp>

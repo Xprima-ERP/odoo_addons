@@ -3,6 +3,17 @@
 <openerp>
   <data>
 
+    <record id="sale_order_remove_create_form" model="ir.ui.view">
+      <field name="name">sale.order.select.company</field>
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_form"/>
+      <field name="arch" type="xml">
+          <field name="partner_id" position="attributes">
+              <attribute name="domain">[('is_company', '=', 'True')]</attribute>
+          </field>
+      </field>
+  </record>
+
   <!-- partners -->
   <record id="view_partner_form" model="ir.ui.view">
       <field name="model">res.partner</field>
@@ -13,14 +24,13 @@
         </xpath>
 
         <field name="category_id" position="replace">
-            <field name="code" placeholder="Code" attrs="{'invisible': [('is_company','=', False)], 'required' : [('is_company','=', True)]}"/>
+            <field name="code" placeholder="Dealer Code" attrs="{'invisible': [('is_company','=', False)], 'required' : [('is_company','=', True)]}"/>
            <!--  <label for="dealer" string="Is a Dealer" attrs="{'invisible': [('is_company','=', False)]}"/>
             <field name="dealer" widget="many2onebutton" readonly="True" attrs="{'invisible': [('is_company','=', False)]}" /> -->
 
             <field name="category_id" placeholder="Tags..." widget="many2many_tags" domain="['|', '|', '|', '|',('parent_id','child_of', %(category_dealer_group)d ), ('id','child_of', %(category_dealer_certification_automatic)d ), ('id','child_of', %(category_dealer_certification_manual)d ), ('id','child_of', %(category_dealer_marketing_association)d ), ('id','child_of', %(category_dealer_association)d )]"/>
 
         </field>
-
     </field>
   </record>
 
@@ -59,7 +69,7 @@
             <h1><field name="name" readonly="1"/></h1>
 
             <group>
-              <field name="partner"/>
+              <field name="partner" domain="[('dealer','=', False)]" attrs="{'readonly': [('partner','!=', False)]}"/>
               <field name="code" readonly="1"/>
               <field name="category_id" placeholder="Tags..." widget="many2many_tags" domain="['|', '|', '|', '|',('parent_id','child_of', %(category_dealer_group)d ), ('id','child_of', %(category_dealer_certification_automatic)d ), ('id','child_of', %(category_dealer_certification_manual)d ), ('id','child_of', %(category_dealer_marketing_association)d ), ('id','child_of', %(category_dealer_association)d )]"/>
               <field name="corpname"/>
@@ -222,6 +232,11 @@
                         domain="[('parent_id.parent_id', 'child_of', %(category_dealer_portal)d)]"/>
                     <field name="customer" widget="many2many_tags"
                       domain="[('parent_id.parent_id', 'child_of', %(category_dealer_customer)d)]"/>
+
+                    <field name="makes" widget="many2many_tags"
+                      domain="[('parent_id.parent_id.parent_id', 'child_of', %(category_dealer_industry)d)]"/>
+
+                    <field name="make_sequence" />
                 </group>
 
                  <group>
@@ -341,11 +356,38 @@
       <field name="view_mode">tree,form</field>
       <field name="context">{'search_default_my_dealers': 1}</field>
   </record>
+
+  <record model="ir.actions.act_window" id="dealer_team_action">
+      <field name="name">Team Dealers</field>
+      <field name="res_model">xpr_dealer.dealer</field>
+      <field name="view_mode">tree,form</field>
+      <field name="context">{'search_default_my_team': 1}</field>
+  </record>
+
+  <record model="ir.actions.act_window" id="dealer_all_action">
+      <field name="name">All Dealers</field>
+      <field name="res_model">xpr_dealer.dealer</field>
+      <field name="view_mode">tree,form</field>
+  </record>
+
   <menuitem id="dealer_menu" name="Dealers"
     parent="base.menu_sales"
     action="dealer_action"
     sequence="1"
     groups="base.group_sale_salesman"/>
+
+<!--
+   <menuitem id="dealer_team_menu" name="Team"
+    parent="dealer_menu"
+    action="dealer_team_action"
+    sequence="1"
+    groups="base.group_sale_manager"/>
+
+  <menuitem id="dealer_all_menu" name="All"
+    parent="dealer_menu"
+    action="dealer_all_action"
+    sequence="2"
+    groups="base.group_no_one"/> -->
 
   <act_window name="Assign Salesperson"
               res_model="xpr_dealer.dealer_assign"

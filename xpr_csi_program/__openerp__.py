@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 
 {'name': 'Xprima CSI Program',
- 'version': '0.001',
+ 'version': '0.1',
  'summary': 'Xprima CSI Program',
- 'description': 'Module that add a Customer Satisfactin Index Program features for Xprima.',
+ 'description': 'Customer Satisfaction Index Program features for Xprima.',
  'category': 'Misc',
  'author': 'Xprima',
  'website': 'http://www.xprima.com',
  'license': 'AGPL-3',
- 'depends': ['base', 'sale', 'xpr_dealer'],
+ 'depends': ['base', 'sale', 'xpr_dealer', 'xpr_solution_builder'],
  'data': [
      'view/xpr_csi_program_view.xml'
  ],

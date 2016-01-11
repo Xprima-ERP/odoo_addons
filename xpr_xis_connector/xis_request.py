@@ -283,7 +283,13 @@ class SaleOrderRequest(XISRequestWrapper):
         # if not ext_id or not self.get_dealer_code():
         #     return
 
-        nb_item = len(self.order.order_line)
+        lines = [line for line in self.order.order_line if line.product_id.default_code]
+
+        nb_item = len(lines)
+
+        if not nb_item:
+            return
+
         data = {
             # "123" sample base dealercode
             "qt_dc": self.get_dealer_code().strip(),
@@ -307,7 +313,7 @@ class SaleOrderRequest(XISRequestWrapper):
         }
 
         i = 0
-        for line in self.order.order_line:
+        for line in lines:
 
             data.update({
                 "qli_ProductCode_%s" % i:
@@ -480,11 +486,6 @@ class DealerRequest(XISRequestWrapper):
     def get_portalmask(self):
         return ';'.join(mask.name for mask in self.dealer.portalmask)
 
-    def get_xis_makes(self):
-
-        makes = set(m.name for m in self.dealer.makes)
-        return ','.join(makes)
-
     def get_area_code(self):
 
         if not self.partner.phone:
@@ -540,7 +541,7 @@ class DealerRequest(XISRequestWrapper):
             # force to take 'en' of 'en_US'
             'language': p.lang and p.lang[:2] or '',
             'lastmoddate': self.get_last_modif_date(),
-            'makes': self.get_xis_makes(),
+            'makes': self.dealer.make_sequence,
             'market': market or '',
             'membertype': self.get_member_type() or '',
             'newemail': '',  # This field must go from xis to OE.
