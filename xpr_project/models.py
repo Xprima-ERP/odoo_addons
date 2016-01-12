@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 #
 #    OpenERP, Open Source Management Solution
-#    This module copyright (C) 2014 Savoir-faire Linux
-#    (<http://www.savoirfairelinux.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -16,8 +14,56 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
+
 
 from openerp import models, fields, api
 from openerp.tools.translate import _
 import jira_request
+
+
+class SaleOrder(models.Model):
+    _inherit = "sale.order"
+
+    def approve_contract(self):
+        """
+        Extends approval action. Called in workflow.
+        """
+
+        # If fails, do not execute super
+        self._create_contract()
+        super(SaleOrder, self).approve_contract()
+
+    def _create_contract(self):
+
+        project_categories = [
+            self.env.ref("xpr_product.{0}".format(name))
+            for name in ['website']
+        ]
+
+        if self.category not in project_categories:
+            return None
+
+        contract = self.env['project.project'].create(dict(
+            name="{0} - {1}".format(self.partner_id.name, self.name),
+            order=self.id,
+            partner_id=self.partner_id.id,
+            #parent_id=None
+        ))
+
+    project = fields.One2many('project.project', 'order', string="Project")
+
+    def sale_specifications(self, cr, uid, ids, context):
+
+        project = self.pool.get('project.project')
+        projects_ids = project.search(cr, uid, [('order', 'in', ids)])
+        return project.attachment_tree_view(cr, uid, projects_ids, context)
+
+
+class Project(models.Model):
+    _inherit = "project.project"
+
+    order = fields.Many2one('sale.order', string="Original Order")
+
+    @api.one
+    def start_project(self):
+        jira_request.LinkProject(self).execute()

@@ -1,9 +1,4 @@
-#!/usr/bin/env python2
 # -*- encoding: utf-8 -*-
-#
-#    OpenERP, Open Source Management Solution
-#    This module copyright (C) 2014 Savoir-faire Linux
-#    (<http://www.savoirfairelinux.com>).
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -17,7 +12,6 @@
 #
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
 
 import logging
 
@@ -26,6 +20,8 @@ _logger = logging.getLogger(__name__)
 CONFIG_KEY_ENABLE = 'jira.enable'
 CONFIG_KEY_URL = 'jira.url'
 CONFIG_KEY_PRODUCTION_PROJECT = 'jira.production.project'
+CONFIG_KEY_USER = 'jira.config_param_user'
+CONFIG_KEY_PWD = 'jira.config_param_pwd'
 
 
 class JIRARequest(object):
@@ -37,13 +33,13 @@ class JIRARequest(object):
     Class to send request to XIS software. Using POST http request.
     """
 
-    def __init__(self, model_instance):
-        self.model_instance = model_instance
+    def __init__(self, project):
+        self.project = project
 
     def get_config(self, key):
 
         if not self._config_params:
-            self._config_params = model_instance.env['ir.config_parameter']
+            self._config_params = project.env['ir.config_parameter']
 
         lst_param = self._config_params.search([
             ('key', '=', key)])
@@ -57,6 +53,10 @@ class JIRARequest(object):
     def jira(self):
 
         if not self._jira:
+            # Late import since this library is not standard Odoo.
+            # Avoids issues if module is not meant to be installed.
+
+            from jira import JIRA
 
             enable = (self.get_config(CONFIG_KEY_ENABLE) or '').lower()
 
@@ -64,10 +64,10 @@ class JIRARequest(object):
                 _logger.info("jira.enable is not set.")
                 return None
 
-            from jira import JIRA
-
             self._jira = JIRA(
-                #basic_auth=('user', 'userpassword'), #TODO Fill in a user here
+                basic_auth=(
+                    self.get_config(CONFIG_KEY_USER),
+                    self.get_config(CONFIG_KEY_PWD)),
                 server=self.get_config(CONFIG_KEY_URL))
 
         return self._jira
@@ -90,34 +90,40 @@ class JIRARequest(object):
         return None
 
 
-class CreateIssueRequest(JIRARequest):
+class LinkProject(JIRARequest):
 
-    def get_project(self):
-        """
-        Override this function to provide the JIRA project name
-        """
-
-        return None
-
-    def safe_execute(self):
-
+    def create_project(self, project, category_filter, task_name):
         i = self.jira.create_issue(
             fields=dict(
                 project={'key': self.get_project()},
+                name=self.project.name,
                 summary='Remote test',
                 description='This is a test',
                 issuetype={'name': 'Story'}))
+
+        # TODO: Add task to project that links to issue.
+        # Something like self.project.add_task(task_name, <link to i>)
 
         #jira.add_attachment(i.key, "~/Desktop/deleteme")
 
         #jira.add_comment(i.key, "My comment")
 
+        # t = self.jira.create_issue(
+        #     fields=dict(
+        #         project={'key': self.get_project()},
+        #         summary='Sub task test',
+        #         description='This is a task test',
+        #         issuetype={'name': 'Sub-task'},
+        #         parent={ 'id' : i.key}))
 
-class CreateProduction(CreateIssueRequest):
+    def safe_execute(self):
 
-    def get_project(self):
-        """
-        Override this function to provide the JIRA project name
-        """
+        project_map = {
+            CONFIG_KEY_PRODUCTION_PROJECT: ['website']
+        }
 
-        return self.get_config(CONFIG_KEY_PRODUCTION_PROJECT)
+        for p in project_map:
+            self.create_project(
+                self.get_config(CONFIG_KEY_USER),
+                ['xpr_project.{0}'.format(category) for category in project_map[0]]
+            )
