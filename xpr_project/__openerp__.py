@@ -49,10 +49,7 @@ Contributors
         'python': ['jira'],
     },
     'data': [
-        # 'config.xml',
-        # 'views/res_user.xml',
-        # 'views/res_partner_categories.xml',
-        # 'res_partners_categories.xml',
+        'config.xml',
     ],
     'demo': [],
     'test': [],
