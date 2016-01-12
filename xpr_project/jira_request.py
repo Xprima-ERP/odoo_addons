@@ -66,7 +66,7 @@ class JIRARequest(object):
 
             self._jira = JIRA(
                 basic_auth=(
-                    elf.get_config(CONFIG_KEY_USER),
+                    self.get_config(CONFIG_KEY_USER),
                     self.get_config(CONFIG_KEY_PWD)),
                 server=self.get_config(CONFIG_KEY_URL))
 
@@ -90,23 +90,19 @@ class JIRARequest(object):
         return None
 
 
-class CreateIssueRequest(JIRARequest):
+class LinkProject(JIRARequest):
 
-    def get_project(self):
-        """
-        Override this function to provide the JIRA project name
-        """
-
-        return None
-
-    def safe_execute(self):
-
+    def create_project(self, project, category_filter, task_name):
         i = self.jira.create_issue(
             fields=dict(
                 project={'key': self.get_project()},
+                name=self.project.name,
                 summary='Remote test',
                 description='This is a test',
                 issuetype={'name': 'Story'}))
+
+        # TODO: Add task to project that links to issue.
+        # Something like self.project.add_task(task_name, <link to i>)
 
         #jira.add_attachment(i.key, "~/Desktop/deleteme")
 
@@ -118,14 +114,16 @@ class CreateIssueRequest(JIRARequest):
         #         summary='Sub task test',
         #         description='This is a task test',
         #         issuetype={'name': 'Sub-task'},
-        #         parent={ 'id' : rootnn.key}))
+        #         parent={ 'id' : i.key}))
 
+    def safe_execute(self):
 
-class CreateProduction(CreateIssueRequest):
+        project_map = {
+            CONFIG_KEY_PRODUCTION_PROJECT: ['website']
+        }
 
-    def get_project(self):
-        """
-        Override this function to provide the JIRA project name
-        """
-
-        return self.get_config(CONFIG_KEY_PRODUCTION_PROJECT)
+        for p in project_map:
+            self.create_project(
+                self.get_config(CONFIG_KEY_USER),
+                ['xpr_project.{0}'.format(category) for category in project_map[0]]
+            )

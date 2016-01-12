@@ -24,20 +24,36 @@ import jira_request
 class SaleOrder(models.Model):
     _inherit = "sale.order"
 
-    # Creates project when sales order is approved
-    # TODO: Take care of cancellation too. Stop project, propagate to JIRA
-    # Called by automated action
-    @api.one
-    def _trigger_project(self):
-        if self.state == 'contract_approved':
-            self.env['project.project'].create_from_order(self)
+    def approve_contract(self):
+        """
+        Extends approval action. Called in workflow.
+        """
+
+        # If fails, do not execute super
+        self._create_contract()
+        super(SaleOrder, self).approve_contract()
+
+    def _create_contract(self):
+
+        project_categories = [
+            self.env.ref("xpr_product.{0}".format(name))
+            for name in ['website']
+        ]
+
+        if self.category not in project_categories:
+            return None
+
+        contract = self.env['project.project'].create(dict(
+            name="{0} - {1}".format(self.partner_id.name, self.name),
+            order=self.id
+        ))
 
 
 class Project(models.Model):
     _inherit = "project.project"
 
-    @api.model
-    def create_from_order(self, order):
-        return self.create(dict(
-            name="{0} - {1}".format(order.partner_id.name, order.name),
-        ))
+    order = fields.Many2one('sale.order', string="Original Order")
+
+    @api.one
+    def start_project(self):
+        jira_request.LinkProject(self).execute()
