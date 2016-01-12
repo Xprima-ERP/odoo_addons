@@ -45,8 +45,18 @@ class SaleOrder(models.Model):
 
         contract = self.env['project.project'].create(dict(
             name="{0} - {1}".format(self.partner_id.name, self.name),
-            order=self.id
+            order=self.id,
+            partner_id=self.partner_id.id,
+            #parent_id=None
         ))
+
+    project = fields.One2many('project.project', 'order', string="Project")
+
+    def sale_specifications(self, cr, uid, ids, context):
+
+        project = self.pool.get('project.project')
+        projects_ids = project.search(cr, uid, [('order', 'in', ids)])
+        return project.attachment_tree_view(cr, uid, projects_ids, context)
 
 
 class Project(models.Model):
