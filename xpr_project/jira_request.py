@@ -14,13 +14,14 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from jira import JIRA
 
 _logger = logging.getLogger(__name__)
 
 CONFIG_KEY_ENABLE = 'jira.enable'
 CONFIG_KEY_URL = 'jira.url'
 CONFIG_KEY_PRODUCTION_PROJECT = 'jira.production.project'
+CONFIG_KEY_USER = 'jira.config_param_user'
+CONFIG_KEY_PWD = 'jira.config_param_pwd'
 
 
 class JIRARequest(object):
@@ -32,13 +33,13 @@ class JIRARequest(object):
     Class to send request to XIS software. Using POST http request.
     """
 
-    def __init__(self, model_instance):
-        self.model_instance = model_instance
+    def __init__(self, project):
+        self.project = project
 
     def get_config(self, key):
 
         if not self._config_params:
-            self._config_params = model_instance.env['ir.config_parameter']
+            self._config_params = project.env['ir.config_parameter']
 
         lst_param = self._config_params.search([
             ('key', '=', key)])
@@ -52,6 +53,10 @@ class JIRARequest(object):
     def jira(self):
 
         if not self._jira:
+            # Late import since this library is not standard Odoo.
+            # Avoids issues if module is not meant to be installed.
+
+            from jira import JIRA
 
             enable = (self.get_config(CONFIG_KEY_ENABLE) or '').lower()
 
@@ -60,7 +65,9 @@ class JIRARequest(object):
                 return None
 
             self._jira = JIRA(
-                #basic_auth=('user', 'userpassword'), #TODO Fill in a user here
+                basic_auth=(
+                    elf.get_config(CONFIG_KEY_USER),
+                    self.get_config(CONFIG_KEY_PWD)),
                 server=self.get_config(CONFIG_KEY_URL))
 
         return self._jira

@@ -43,6 +43,7 @@ Contributors
     'depends': [
         'base',
         'project',
+        'xpr_sale_process',
     ],
     'external_dependencies': {
         'python': ['jira'],

@@ -19,3 +19,25 @@
 from openerp import models, fields, api
 from openerp.tools.translate import _
 import jira_request
+
+
+class SaleOrder(models.Model):
+    _inherit = "sale.order"
+
+    # Creates project when sales order is approved
+    # TODO: Take care of cancellation too. Stop project, propagate to JIRA
+    # Called by automated action
+    @api.one
+    def _trigger_project(self):
+        if self.state == 'contract_approved':
+            self.env['project.project'].create_from_order(self)
+
+
+class Project(models.Model):
+    _inherit = "project.project"
+
+    @api.model
+    def create_from_order(self, order):
+        return self.create(dict(
+            name="{0} - {1}".format(order.partner_id.name, order.name),
+        ))

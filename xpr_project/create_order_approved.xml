@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+<data>
+
+    <record model="ir.actions.server" id="create_project">
+        <field name="name">Create project</field>
+        <field name="state">code</field>
+        <field name="type">ir.actions.server</field>
+        <field name="help">Creates project when sales order is approved</field>
+        <field name="model_id" ref="sale.model_sale_order" />
+        <field name="use_create">new</field>
+        <field name="sequence">0</field>
+        <field name="code">object._trigger_project()</field>
+        <field name="use_relational_model">base</field>
+        <field name="use_write">current</field>
+    </record>
+
+    <record model="base.action.rule" id="project_create_rule">
+        <field name="name">Project creation entry point</field>
+        <field name="model">sale.order</field>
+        <field name="model_id" ref="sale.model_sale_order" />
+        <field name="sequence">0</field>
+        <field name="server_action_ids" eval="[(4, ref('create_project'))]"/>
+        <field name="kind">on_write</field>
+    </record>
+</data>
+
+</openerp>
