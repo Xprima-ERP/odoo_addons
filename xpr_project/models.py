@@ -39,6 +39,7 @@ class SaleOrder(models.Model):
         order = self
 
         if order.project_id:
+            # Already created.
             return
 
         routes = self.env['xpr_project.routing'].search([('categories', 'in', [order.category.id])])
@@ -53,6 +54,13 @@ class SaleOrder(models.Model):
             partner_id=order.partner_id.id
         ))
 
+        order.env['project.task'].create(dict(
+            name="Confirm specs",
+            description="Specifications must be confirmed to start production",
+            project_id=project.id,
+            rule='specs'
+        ))
+
         order.project_id = project.analytic_account_id
 
         for route in routes:
@@ -63,6 +71,7 @@ class SaleOrder(models.Model):
                 partner_id=order.partner_id.id,
                 user_id=route.manager.id,
                 parent_id=order.project_id.id,
+                state='pending',
             ))
 
             order.env['project.task'].create(dict(
@@ -70,12 +79,19 @@ class SaleOrder(models.Model):
                 description=contract.name,
                 notes=order.note,
                 project_id=contract.id,
-                jira_project_name=route.jira_project_name
+                jira_project_name=route.jira_project_name,
+                active=False,
             ))
 
     def sale_specifications(self, cr, uid, ids, context):
 
-        ids = [order.project_id for order in self.pool.get('sale.order')]
+        project = self.pool.get('project.project')
+
+        ids = [
+            order.project_id.id for order in
+            self.pool.get('sale.order').browse(cr, uid, ids, context=context)
+        ]
+
         projects_ids = project.search(cr, uid, [('analytic_account_id', 'in', ids)])
         return project.attachment_tree_view(cr, uid, projects_ids, context)
 
@@ -90,19 +106,98 @@ class Routing(models.Model):
         string="Categories")
 
 
-class task(models.Model):
+class Task(models.Model):
     _inherit = "project.task"
 
+    def sale_specifications(self, cr, uid, ids, context):
+
+        project = self.pool.get('project.project')
+
+        ids = [
+            task.project_id.id for task in
+            self.browse(cr, uid, ids, context=context)]
+
+        return project.attachment_tree_view(cr, uid, ids, context)
+
     @api.depends('stage_id')
-    def _start_project(self):
+    def start_project(self):
+        """
+        Triggers stuff when stage is updated
+        """
+
         for task in self:
-            if task.stage_id != self.env.ref('project.project_tt_development'):
-                continue
 
-            if task.jira_issue_key:
-                continue
+            if task.rule == 'specs':
+                if task.stage_id != self.env.ref('project.project_tt_deployment'):
+                    continue
 
-            task.jira_issue_key = jira_request.CreateIssue(task).execute()
+                # Enable sub projects
+                task.project_id.reset_project()
 
+                # for order in self.env['sale.order'].search(
+                #     [('project_id', '=', task.project_id.analytic_account_id)]
+                # ):
+                #     order.state = 'sent'
+
+                task.jira_issue_key = ''  # Bogus assignation.
+
+            if task.rule == 'jira':
+                if task.stage_id != self.env.ref('project.project_tt_development'):
+                    continue
+
+                if task.jira_issue_key:
+                    continue
+
+                task.jira_issue_key = jira_request.CreateIssue(task).execute()
+
+    @api.multi
+    def ask_update(self):
+        """
+        Starts Wizard to get specs from rep
+        """
+        for task in self:
+            return {
+                'name': 'Specification request',
+                'type': 'ir.actions.act_window',
+                'res_model': 'xpr_project.update_message',
+                'views': [[False, "form"]],
+                'target': 'new',
+                'view_id': self.env.ref('xpr_project.ask_update_message').id,
+                'context': {'project_id': task.project_id.id}
+            }
+
+    rule = fields.Char(string="Rule", default="jira")
     jira_project_name = fields.Char(string="JIRA Project")
-    jira_issue_key = fields.Char(string="JIRA Issue", compute=_start_project)
+    jira_issue_key = fields.Char(string="JIRA Issue", store=True, compute=start_project)
+
+
+class AskUpdateMessage(models.TransientModel):
+
+    _name = 'xpr_project.update_message'
+
+    def _default_project(self):
+        return self.env['project.project'].browse(self._context.get('project_id'))
+
+    @api.one
+    def ask_update(self):
+
+        project = self.project_id
+
+        template = self.env.ref('xpr_project.ask_update_mail')
+
+        # Only one project per order
+        order = self.env['sale.order'].search([
+            ('project_id', '=', project.analytic_account_id.id)
+        ])[0]
+
+        values = self.env['email.template'].with_context(message=self.message).generate_email(
+            template.id, order.id)
+
+        destination_ids = [order.user_id.partner_id.id]
+
+        values['recipient_ids'] = [(4, pid) for pid in destination_ids]
+
+        self.env['mail.mail'].create(values)
+
+    project_id = fields.Many2one('project.project', default=_default_project)
+    message = fields.Text("Message")

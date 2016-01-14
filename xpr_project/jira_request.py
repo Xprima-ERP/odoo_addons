@@ -35,6 +35,9 @@ class JIRARequest(object):
     Instances are seen as decorators around and Odoo models instance
     """
 
+    class NoSetup(Exception):
+        pass
+
     def __init__(self, instance):
         self.instance = instance
 
@@ -64,7 +67,7 @@ class JIRARequest(object):
 
             if enable != '1' and enable != 'true':
                 _logger.info("jira.enable is not set.")
-                return None
+                raise NoSetup()
 
             self._jira = JIRA(
                 basic_auth=(
@@ -81,6 +84,8 @@ class JIRARequest(object):
         """
         try:
             return self.safe_execute()
+        except NoSetup:
+            return None
         except Exception as e:
             _logger.error("jira connector error: {0}".format(e))
             raise

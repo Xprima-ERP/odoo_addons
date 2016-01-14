@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+  <record id="task_form" model="ir.ui.view">
+      <field name="model">project.task</field>
+      <field name="type">form</field>
+      <field name="inherit_id" ref="project.view_task_form2" />
+      <field name="arch" type="xml">
+
+        <xpath expr="//group" position="inside">
+          <field name="rule"  />
+        </xpath>
+
+        <xpath expr="//header" position="inside">
+          <button name="sale_specifications" type="object" string="See Specifications" attrs="{'invisible': [('rule', '!=', 'specs')]}"/>
+          <button name="ask_update" type="object" string="Ask Update" attrs="{'invisible': [('rule', '!=', 'specs')]}"/>
+        </xpath>
+      </field>
+  </record>
+
+  <record id="ask_update_message" model="ir.ui.view">
+      <field name="name">specification request capture</field>
+      <field name="model">xpr_project.update_message</field>
+      <field name="arch" type="xml">
+          <form string="Write Approval message">
+              <group>
+                  <field name="project_id" invisible="1" />
+                  <field name="message" widget="textbox" />
+              </group>
+
+              <footer>
+                  <button
+                      string="Ask specification update"
+                      type="object"
+                      name="ask_update"
+                      class="oe_highlight"
+                  />
+
+                  <button
+                      string="Cancel"
+                      class="oe_link"
+                      special="cancel" />
+              </footer>
+          </form>
+      </field>
+  </record>
+
+  <record model="email.template" id="ask_update_mail">
+      <field name="name">Project requires specification update</field>
+      <field name="model_id" ref="portal_sale.model_sale_order" />
+      <field name="auto_delete">True</field>
+      <field name="email_from">no_reply@xprima.com</field>
+      <field name="email_to">${(object.user_id != False and object.user_id.email)|safe}</field>
+      <field name="subject">Specification request for ${object.name} from ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+      <field name="body_html"><![CDATA[Specifications must be updated to start production of <a href="${object.form_url|safe}">${object.name}</a>.<br/>Production notes:<br/>${ctx.get('message','')}]]></field>
+  </record>
+
+
+  </data>
+</openerp>

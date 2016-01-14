@@ -54,6 +54,7 @@ Contributors
         'config.xml',
         'views/saleorder.xml',
         'views/routing.xml',
+        'views/task.xml',
         'security/ir.model.access.csv',
     ],
     'demo': [],
