@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+  <record id="routing_form" model="ir.ui.view">
+      <field name="model">xpr_project.routing</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form>
+        <sheet>
+          <group>
+            <field name="manager" />
+            <field name="jira_project_name" />
+            <field name="categories" widget="many2many_tags" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="routing_tree" model="ir.ui.view">
+      <field name="model">xpr_project.routing</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="manager" />
+            <field name="jira_project_name" />
+            <field name="categories" widget="many2many_tags" />
+        </tree>
+    </field>
+  </record>
+
+  <record model="ir.actions.act_window" id="routing_action">
+      <field name="name">Routing</field>
+      <field name="res_model">xpr_project.routing</field>
+      <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="routing_menu" name="Routing"
+    parent="base.menu_main_pm"/>
+
+  <menuitem id="routing_rules_menu" name="Rules"
+    parent="routing_menu"
+    action="routing_action"/>
+
+  </data>
+</openerp>

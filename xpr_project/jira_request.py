@@ -30,16 +30,18 @@ class JIRARequest(object):
     _config_params = None
 
     """
-    Class to send request to XIS software. Using POST http request.
+    Class to send request to XIS software.
+    Using POST http request.
+    Instances are seen as decorators around and Odoo models instance
     """
 
-    def __init__(self, project):
-        self.project = project
+    def __init__(self, instance):
+        self.instance = instance
 
     def get_config(self, key):
 
         if not self._config_params:
-            self._config_params = project.env['ir.config_parameter']
+            self._config_params = self.instance.env['ir.config_parameter']
 
         lst_param = self._config_params.search([
             ('key', '=', key)])
@@ -90,15 +92,21 @@ class JIRARequest(object):
         return None
 
 
-class LinkProject(JIRARequest):
+class CreateIssue(JIRARequest):
 
-    def create_project(self, project, category_filter, task_name):
+    def safe_execute(self):
+
+        # Instance is a task
+        task = self.instance
+
         i = self.jira.create_issue(
             fields=dict(
-                project={'key': self.get_project()},
-                name=self.project.name,
-                summary='Remote test',
-                description='This is a test',
+                project={'key': task.jira_project_name},
+                name=task.name,
+                summary=task.project_id.order.name,
+                description='This project has been approved for the production of <a href="{0}">{1}</a>'.format(
+                    task.project_id.order.form_url, # Probably need to add site root here
+                    task.project_id.order.name),
                 issuetype={'name': 'Story'}))
 
         # TODO: Add task to project that links to issue.
@@ -115,15 +123,3 @@ class LinkProject(JIRARequest):
         #         description='This is a task test',
         #         issuetype={'name': 'Sub-task'},
         #         parent={ 'id' : i.key}))
-
-    def safe_execute(self):
-
-        project_map = {
-            CONFIG_KEY_PRODUCTION_PROJECT: ['website']
-        }
-
-        for p in project_map:
-            self.create_project(
-                self.get_config(CONFIG_KEY_USER),
-                ['xpr_project.{0}'.format(category) for category in project_map[0]]
-            )

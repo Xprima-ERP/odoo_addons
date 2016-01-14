@@ -7,7 +7,17 @@
       <field name="arch" type="xml">
         <button name="sig_contract_reopened" position="after">
           <button name="sale_specifications" type="object" string="Specifications" states="contract_approved"/>
-        </button>
+          </button>
+
+        <field name="project_id" position="attributes">
+          <attribute name="readonly">True</attribute>
+        </field>
+
+       <!--  <field name="project_id" position="after">
+          <button name="create_project" type="object" string="Start Contract" states="contract_approved"/>
+        </field> -->
+
+
     </field>
   </record>
   </data>

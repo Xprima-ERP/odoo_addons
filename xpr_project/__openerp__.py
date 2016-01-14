@@ -52,7 +52,8 @@ Contributors
     },
     'data': [
         'config.xml',
-        'views/partner.xml',
+        'views/saleorder.xml',
+        'views/routing.xml',
         'security/ir.model.access.csv',
     ],
     'demo': [],

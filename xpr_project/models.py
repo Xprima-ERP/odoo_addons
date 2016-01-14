@@ -30,40 +30,79 @@ class SaleOrder(models.Model):
         """
 
         # If fails, do not execute super
-        self._create_contract()
+        self.create_project()
         super(SaleOrder, self).approve_contract()
 
-    def _create_contract(self):
+    @api.one
+    def create_project(self):
 
-        project_categories = [
-            self.env.ref("xpr_product.{0}".format(name))
-            for name in ['website']
-        ]
+        order = self
 
-        if self.category not in project_categories:
-            return None
+        if order.project_id:
+            return
 
-        contract = self.env['project.project'].create(dict(
-            name="{0} - {1}".format(self.partner_id.name, self.name),
-            order=self.id,
-            partner_id=self.partner_id.id,
-            #parent_id=None
+        routes = self.env['xpr_project.routing'].search([('categories', 'in', [order.category.id])])
+
+        if not routes:
+            # No route.
+            # order.state = 'sent'
+            return
+
+        project = self.env['project.project'].create(dict(
+            name="{0} - {1}".format(order.partner_id.name, order.name),
+            partner_id=order.partner_id.id
         ))
 
-    project = fields.One2many('project.project', 'order', string="Project")
+        order.project_id = project.analytic_account_id
+
+        for route in routes:
+
+            contract = self.env['project.project'].create(dict(
+                name="{0} - {1} - {2}".format(
+                    order.partner_id.name, order.name, order.category.name),
+                partner_id=order.partner_id.id,
+                user_id=route.manager.id,
+                parent_id=order.project_id.id,
+            ))
+
+            order.env['project.task'].create(dict(
+                name=order.category.name,
+                description=contract.name,
+                notes=order.note,
+                project_id=contract.id,
+                jira_project_name=route.jira_project_name
+            ))
 
     def sale_specifications(self, cr, uid, ids, context):
 
-        project = self.pool.get('project.project')
-        projects_ids = project.search(cr, uid, [('order', 'in', ids)])
+        ids = [order.project_id for order in self.pool.get('sale.order')]
+        projects_ids = project.search(cr, uid, [('analytic_account_id', 'in', ids)])
         return project.attachment_tree_view(cr, uid, projects_ids, context)
 
 
-class Project(models.Model):
-    _inherit = "project.project"
+class Routing(models.Model):
 
-    order = fields.Many2one('sale.order', string="Original Order")
+    _name = "xpr_project.routing"
+    jira_project_name = fields.Char(string="JIRA Project")
+    manager = fields.Many2one('res.users', string="Project Manager")
+    categories = fields.Many2many(
+        'product.category', 'xpr_project_routing_category',
+        string="Categories")
 
-    @api.one
-    def start_project(self):
-        jira_request.LinkProject(self).execute()
+
+class task(models.Model):
+    _inherit = "project.task"
+
+    @api.depends('stage_id')
+    def _start_project(self):
+        for task in self:
+            if task.stage_id != self.env.ref('project.project_tt_development'):
+                continue
+
+            if task.jira_issue_key:
+                continue
+
+            task.jira_issue_key = jira_request.CreateIssue(task).execute()
+
+    jira_project_name = fields.Char(string="JIRA Project")
+    jira_issue_key = fields.Char(string="JIRA Issue", compute=_start_project)

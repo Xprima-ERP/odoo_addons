@@ -11,11 +11,6 @@
         <field name="value">https://xis.xprima.com/jira</field>
     </record>
 
-    <record model="ir.config_parameter" id="config_param_url">
-        <field name="key">jira.production.project</field>
-        <field name="value">XPRIMAERP</field>
-    </record>
-
     <record model="ir.config_parameter" id="config_param_user">
         <field name="key">jira.user</field>
         <field name="value">odoo</field>
