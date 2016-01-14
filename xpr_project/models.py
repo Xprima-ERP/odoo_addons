@@ -134,10 +134,11 @@ class Task(models.Model):
                 # Enable sub projects
                 task.project_id.reset_project()
 
-                # for order in self.env['sale.order'].search(
-                #     [('project_id', '=', task.project_id.analytic_account_id)]
-                # ):
-                #     order.state = 'sent'
+                # Mark order as complete
+                for order in self.env['sale.order'].search(
+                    [('project_id', '=', task.project_id.analytic_account_id.id)]
+                ):
+                    order.write({'state': 'sent'})
 
                 task.jira_issue_key = ''  # Bogus assignation.
 
