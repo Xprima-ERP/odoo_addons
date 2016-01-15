@@ -196,6 +196,9 @@ class SaleOrder(models.Model):
 
         self.env['mail.mail'].create(values)
 
+    def approve_contract(self):
+        self.write({'state': 'contract_approved'})
+
     # Template helper
     @property
     def form_url(self):

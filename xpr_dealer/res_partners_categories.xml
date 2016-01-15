@@ -12,7 +12,6 @@
                   parent="base.menu_sales"
                   action="dealer_category_action"
                   groups="base.group_sale_manager"/>
-
 </data>
 <data>
     <!-- Not a dealer category. TODO: move in a different module -->
