@@ -1,2 +1,2 @@
 id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
-access_xpr_project_project,access_xpr_project_project,model_project_project,base.group_sale_salesman,1,0,1,0
+access_xpr_project_project,access_xpr_project_project,portal_project.model_project_project,base.group_sale_salesman,1,0,1,0
