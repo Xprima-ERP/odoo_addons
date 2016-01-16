@@ -28,14 +28,19 @@ CONFIG_KEY_SITE_URL = 'web.base.url'
 
 class JIRARequest(object):
 
+    """
+    Base Class to build requests to XIS software.
+    Using POST http request.
+    Instances are seen as decorators around and Odoo models instance.
+    Holds some useful features for all requests:
+
+    - Lazy jira import since jira is not a standard Odoo module
+    - Config retrieval
+    - Exception handler
+    """
+
     _jira = None
     _config_params = None
-
-    """
-    Class to send request to XIS software.
-    Using POST http request.
-    Instances are seen as decorators around and Odoo models instance
-    """
 
     class NoSetup(Exception):
         pass
@@ -101,6 +106,15 @@ class JIRARequest(object):
 
 class CreateIssue(JIRARequest):
 
+    """
+    Class that builds a new Story for a task.
+
+    From order and project:
+    - Builds story
+    - Adds attachments
+    - Adds subtasks
+    """
+
     def safe_execute(self):
 
         # Instance is a task
@@ -127,7 +141,7 @@ class CreateIssue(JIRARequest):
             ),
             issuetype={'name': 'Story'})
 
-        _logger.info("JIRA request {0}".format(fields))
+        _logger.info("JIRA create issue {0}".format(fields))
 
         story = self.jira.create_issue(fields=fields)
 
@@ -141,6 +155,7 @@ class CreateIssue(JIRARequest):
             ('res_model', '=', 'project.project'),
             ('res_id', '=', root_project.id)]
         ):
+            _logger.info("JIRA add attatchment {0}".format(attachment.datas_fname))
             stream = io.StringIO(unicode(attachment.datas.decode('base64')))
             self.jira.add_attachment(story.key, stream, filename=attachment.datas_fname)
 
@@ -160,7 +175,7 @@ class CreateIssue(JIRARequest):
                 description=line.product_id.description_sale or ''
             )
 
-            print 'Task', fields
+            _logger.info("JIRA create task {0}".format(fields))
             self.jira.create_issue(fields=fields)
 
         return story and story.key or None
