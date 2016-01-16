@@ -8,7 +8,7 @@
       <field name="arch" type="xml">
 
         <xpath expr="//group" position="inside">
-          <field name="rule"  />
+          <field name="rule"  invisible="1"/>
         </xpath>
 
         <xpath expr="//header" position="inside">
