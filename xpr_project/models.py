@@ -119,7 +119,7 @@ class Task(models.Model):
 
         return project.attachment_tree_view(cr, uid, ids, context)
 
-    @api.depends('stage_id')
+    @api.multi
     def start_project(self):
         """
         Triggers stuff when stage is updated
@@ -138,18 +138,14 @@ class Task(models.Model):
                 for order in self.env['sale.order'].search(
                     [('project_id', '=', task.project_id.analytic_account_id.id)]
                 ):
-                    order.write({'state': 'sent'})
-
-                task.jira_issue_key = ''  # Bogus assignation.
+                    order.state = 'sent'
 
             if task.rule == 'jira':
                 if task.stage_id != self.env.ref('project.project_tt_development'):
                     continue
 
-                if task.jira_issue_key:
-                    continue
-
-                task.jira_issue_key = jira_request.CreateIssue(task).execute()
+                if not task.jira_issue_key:
+                    task.jira_issue_key = jira_request.CreateIssue(task).execute()
 
     @api.multi
     def ask_update(self):
@@ -167,9 +163,20 @@ class Task(models.Model):
                 'context': {'project_id': task.project_id.id}
             }
 
+    @api.multi
+    def write(self, vals):
+
+        res = super(Task, self).write(vals)
+
+        if 'stage_id' in vals:
+            # Not using a depends. Side order depends on actual value.
+            self.start_project()
+
+        return res
+
     rule = fields.Char(string="Rule", default="jira")
     jira_project_name = fields.Char(string="JIRA Project")
-    jira_issue_key = fields.Char(string="JIRA Issue", store=True, compute=start_project)
+    jira_issue_key = fields.Char(string="JIRA Issue", store=True)
 
 
 class AskUpdateMessage(models.TransientModel):
