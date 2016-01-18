@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.cron" id="project_feedack">
+            <field name="name">Read JIRA updates</field>
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_type">hours</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="help">Read project updates from JIRA</field>
+            <field name="model">project.task</field>
+            <field name="function">read_jira_updates</field>
+        </record>
+    </data>
+</openerp>
+

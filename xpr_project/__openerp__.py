@@ -52,6 +52,7 @@ Contributors
     },
     'data': [
         'config.xml',
+        'feedback.xml',
         'views/saleorder.xml',
         'views/routing.xml',
         'views/task.xml',
