@@ -179,3 +179,35 @@ class CreateIssue(JIRARequest):
             self.jira.create_issue(fields=fields)
 
         return story and story.key or None
+
+
+class BrowseTasks(JIRARequest):
+
+    """
+    Class that reads the statuses of stories related to tasks.
+
+    """
+
+    class TaskModel(object):
+        """
+        Decorator object that exposes JIRA object as a pseudo task
+        """
+        def __init__(self, env, instance):
+            self.jira_issue_key = instance.key
+
+            status = instance.fields.status.name
+            if status == 'Resolved':
+                status = 'project.project_tt_deployment'
+            elif status == 'Closed':
+                status = 'project.project_tt_cancel'
+            else:
+                status = 'project.project_tt_development'
+
+            self.stage_id = env.ref(status)
+
+    def __init__(self, instance, keys):
+        super(BrowseTasks, self).__init__(instance)
+        self.keys = keys
+
+    def safe_execute(self):
+        return [BrowseTasks.TaskModel(self.instance.env, self.jira.issue(key)) for key in self.keys]

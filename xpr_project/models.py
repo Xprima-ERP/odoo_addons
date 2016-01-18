@@ -163,6 +163,21 @@ class Task(models.Model):
                 'context': {'project_id': task.project_id.id}
             }
 
+    @api.model
+    def read_jira_updates(self):
+        tasks = self.search([('stage_id', '=', self.env.ref('project.project_tt_development').id)])
+
+        key_to_tasks = dict([(t.jira_issue_key, t) for t in tasks if t.jira_issue_key])
+
+        updates = jira_request.BrowseTasks(self, key_to_tasks.keys()).execute() or []
+
+        for update in updates:
+
+            target = key_to_tasks[update.jira_issue_key]
+
+        if update.stage_id != target.stage_id:
+            target.write({'stage_id': update.stage_id.id})
+
     @api.multi
     def write(self, vals):
 
