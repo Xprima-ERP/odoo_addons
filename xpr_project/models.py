@@ -255,6 +255,21 @@ class Task(models.Model):
             # Order goes to next step
             order.state = 'manual'
 
+             # Send mail to affected project managers
+
+            template = self.env.ref('xpr_project.template_order_bill_ready')
+
+            values = self.env['email.template'].generate_email(
+                template.id, order.id)
+
+            values['recipient_ids'] = [
+                (4, u.partner_id.id)
+                for u in self.env.ref('account.group_account_user').users
+                if u.partner_id
+            ]
+
+            self.env['mail.mail'].create(values)
+
     @api.multi
     def write(self, vals):
 
