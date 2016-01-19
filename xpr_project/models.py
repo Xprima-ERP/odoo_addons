@@ -63,6 +63,17 @@ class SaleOrder(models.Model):
 
         order.project_id = project.analytic_account_id
 
+        # Send mail to affected project managers
+
+        template = self.env.ref('xpr_project.template_project_confirmation')
+
+        values = self.env['email.template'].generate_email(
+            template.id, project.id)
+
+        values['recipient_ids'] = [(4, route.manager.partner_id.id) for route in routes]
+
+        self.env['mail.mail'].create(values)
+
     @api.one
     def create_sub_projects(self):
 
@@ -112,6 +123,17 @@ class Routing(models.Model):
     categories = fields.Many2many(
         'product.category', 'xpr_project_routing_category',
         string="Categories")
+
+
+class Project(models.Model):
+
+    _inherit = "project.project"
+
+    # Template helper
+    @property
+    def form_url(self):
+        return "/web#id={0}&view_type=form&model=project.project".format(
+            self.id)
 
 
 class Task(models.Model):
@@ -246,7 +268,7 @@ class Task(models.Model):
 
     rule = fields.Char(string="Rule", default="jira")
     jira_project_name = fields.Char(string="JIRA Project")
-    jira_issue_key = fields.Char(string="JIRA Issue", store=True)
+    jira_issue_key = fields.Char(string="JIRA Issue", required=False)
 
     _sql_constraints = [
         (

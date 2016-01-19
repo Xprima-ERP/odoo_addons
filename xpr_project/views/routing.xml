@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
+
+  <record model="email.template" id="template_project_confirmation">
+      <field name="name">Project specification cconfirmation</field>
+      <field name="model_id" ref="portal_project.model_project_project" />
+      <field name="auto_delete">True</field>
+      <field name="lang">${object.partner_id.lang}</field>
+      <field name="email_from">${(object.partner_id.user_id.email or '')|safe}</field>
+      <field name="subject">Project specs to approve: ${object.name}</field>
+      <field name="body_html"><![CDATA[Please confirm specification files for project <a href="${object.form_url|safe}">${object.name}</a>.]]></field>
+  </record>
+
   <record id="routing_form" model="ir.ui.view">
       <field name="model">xpr_project.routing</field>
       <field name="type">form</field>
