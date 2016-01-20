@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
   <data>
-  <record id="view_partner_form" model="ir.ui.view">
+  <record id="view_order_form" model="ir.ui.view">
       <field name="model">sale.order</field>
       <field name="inherit_id" ref="sale.view_order_form"/>
       <field name="arch" type="xml">
@@ -13,11 +13,26 @@
           <attribute name="readonly">True</attribute>
         </field>
 
+        <field name="starting_date" position="after">
+          <field name="delivery_date" readonly="1" />
+        </field>
+
        <!--  <field name="project_id" position="after">
           <button name="create_project" type="object" string="Start Contract" states="contract_approved"/>
         </field> -->
 
     </field>
   </record>
+
+  <record id="view_order_tree" model="ir.ui.view">
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="sale.view_order_tree"/>
+      <field name="arch" type="xml">
+        <field name="date_order" position="after">
+          <field name="delivery_date"/>
+        </field>
+    </field>
+  </record>
+
   </data>
 </openerp>

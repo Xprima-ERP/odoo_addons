@@ -43,7 +43,7 @@
                             <field name="description"/>
                             <field name="category"/>
                             <field name="list_price" />
-
+                            <field name="budget" />
                             <field name="products">
                                 <tree string="Mandatory Products">
                                     <field name="name" />

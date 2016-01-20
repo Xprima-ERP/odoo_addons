@@ -19,6 +19,7 @@
 from openerp import models, fields, api
 from openerp.tools.translate import _
 import jira_request
+import datetime
 
 
 class SaleOrder(models.Model):
@@ -51,14 +52,15 @@ class SaleOrder(models.Model):
 
         project = self.env['project.project'].create(dict(
             name="{0} - {1}".format(order.partner_id.name, order.name),
-            partner_id=order.partner_id.id
+            partner_id=order.partner_id.id,
+            date=order.starting_date,
         ))
 
         order.env['project.task'].create(dict(
             name="Confirm specs",
             description="Specifications must be confirmed to start production",
             project_id=project.id,
-            rule='specs'
+            rule='specs',
         ))
 
         order.project_id = project.analytic_account_id
@@ -91,7 +93,8 @@ class SaleOrder(models.Model):
                 partner_id=order.partner_id.id,
                 user_id=route.manager.id,
                 parent_id=order.project_id.id,
-                state='open'
+                state='open',
+                date=order.starting_date,
             ))
 
             order.env['project.task'].create(dict(
@@ -99,7 +102,7 @@ class SaleOrder(models.Model):
                 description=contract.name,
                 notes=order.note,
                 project_id=contract.id,
-                jira_project_name=route.jira_project_name
+                jira_project_name=route.jira_project_name,
             ))
 
     def sale_specifications(self, cr, uid, ids, context):
@@ -113,6 +116,8 @@ class SaleOrder(models.Model):
 
         projects_ids = project.search(cr, uid, [('analytic_account_id', 'in', ids)])
         return project.attachment_tree_view(cr, uid, projects_ids, context)
+
+    delivery_date = fields.Date('Delivery Date')
 
 
 class Routing(models.Model):
@@ -173,7 +178,9 @@ class Task(models.Model):
                     continue
 
                 if not task.jira_issue_key:
-                    task.write({'jira_issue_key': jira_request.CreateIssue(task).execute()})
+                    task.with_context(from_jira=True).write({
+                        'jira_issue_key': jira_request.CreateIssue(task).execute()
+                    })
 
                 # Mark order as in production
                 order = self.env['sale.order'].search([
@@ -218,7 +225,7 @@ class Task(models.Model):
             if update.stage_id == target.stage_id:
                 continue
 
-            target.stage_id = update.stage_id.id
+            target.with_context(from_jira=True).stage_id = update.stage_id.id
 
             if target.stage_id == done:
                 projects[target.project_id.id] = target.project_id
@@ -239,14 +246,20 @@ class Task(models.Model):
                 # At least one child is not done
                 continue
 
-            if parent_projects[key].state == 'close':
-                continue
-
             # Last subproject is done
 
-            project.search([
+            p = project.search([
                 ('analytic_account_id', '=', key),
-            ]).state = 'close'
+                ('state', '!=', 'close')
+            ])
+
+            if not p:
+                # Already closed
+                continue
+
+            p.set_done()
+            # Deactivates tasks in project tree
+            p.set_template()
 
             order = self.env['sale.order'].search([
                 ('project_id', '=', key)
@@ -254,8 +267,9 @@ class Task(models.Model):
 
             # Order goes to next step
             order.state = 'manual'
+            order.delivery_date = datetime.datetime.now()
 
-             # Send mail to affected project managers
+            # Send mail to affected project managers
 
             template = self.env.ref('xpr_project.template_order_bill_ready')
 
@@ -273,10 +287,40 @@ class Task(models.Model):
     @api.multi
     def write(self, vals):
 
+        if 'stage_id' in vals and not self.env.context.get('from_jira'):
+            # JIRA tasks stage_ids can be set to 'done' or 'cancel' from Jira update only
+
+            has_jira_task = False
+            impossible_stage_updates = set()
+
+            for task in self:
+                if task.rule == 'jira':
+                    has_jira_task = True
+                    break
+
+            if has_jira_task:
+                impossible_stage_updates = set([
+                    self.env.ref('project.project_tt_deployment').id,
+                    self.env.ref('project.project_tt_cancel').id,
+                ])
+
+            if vals['stage_id'] in impossible_stage_updates:
+                # Manual update not possible for this stage.
+
+                del vals['stage_id']
+
         res = super(Task, self).write(vals)
 
+        if self.env.context.get('from_jira'):
+            # Not user interaction. No need to go further.
+            # This avoids recursive loops.
+
+            return res
+
         if 'stage_id' in vals:
-            # Not using a depends. Side order depends on actual value.
+            # Not using a 'depends' decorator.
+            # Update depends on actual value in db.
+
             self.start_project()
 
         return res
