@@ -37,17 +37,30 @@ class Client(models.Model):
     # If not DEALER, we do not care for now
     idgrp = fields.Char(string="IdGrp", size=50)
 
-    dateinac = fields.Date(string="DateInac")  # Inactive??
-    datestart = fields.Date(string="DateStart")  # ??
-    datelastmn = fields.Date(string="DateLastMN")  # ??
+    # dateinac = fields.Date(string="DateInac")  # Inactive??
+    # datestart = fields.Date(string="DateStart")  # ??
+    # datelastmn = fields.Date(string="DateLastMN")  # ??
 
     # Should be no more than one match, based on dealercode
     dealercode = fields.Char(string="Dealer Code", size=50)
-    mapped = fields.Boolean(strong="Is Mapped")  # Map is confirmed.
+    mapped = fields.Boolean(string="Is Mapped")  # Map is confirmed.
     partner = fields.Many2one(
         'res.partner',
         'Partner',
     )
+
+    @api.one
+    def merge_into(self, target):
+        # Copy import data not part of the key.
+        # TODO: Add adress when it is available in model
+
+        target.namecust = self.namecust
+        target.idgrp = self.idgrp
+        #target.dateinac = self.idgrp
+        #target.datestart = self.idgrp
+        #target.datelastmn = self.idgrp
+
+        self.unlink()
 
 
 class ClientOptionalValue(models.Model):
@@ -66,6 +79,15 @@ class ClientOptionalValue(models.Model):
 
     # Meaning of this field depends on optfield
     value = fields.Char(string="Value", size=254)
+
+    # Result of previous import. Proper target for data merges
+    mapped = fields.Boolean(string="Is Mapped")
+
+    @api.one
+    def merge_into(self, target):
+        # Copy data. The key is the same already.
+        target.value = self.value
+        self.unlink()
 
 
 class InvoiceLine(models.Model):
@@ -92,6 +114,11 @@ class InvoiceLine(models.Model):
     )
 
     mapped = fields.Boolean(strong="Is Mapped")
+
+    @api.one
+    def merge_into(self, target):
+        # Nothing to copy. Simply unlink.
+        self.unlink()
 
 
 class ClientProcess(models.TransientModel):
@@ -135,24 +162,45 @@ class ClientProcess(models.TransientModel):
 
     count = fields.Integer("Selected clients", default=_init_count)
 
-    @api.multi
-    def process_import(self):
+    def _process_optional_values(self):
+        """
+        Takes care of processing optional values.
+        Duplicate values are merged into one entry, current one if possible.
+        """
+        mapped_ids = dict([
+            (value.id, (value.idcust, value.optfield))
+            for value in self.env['xpr_accpac_connector.clientoptionalvalue'].search([
+                ('mapped', '=', True)
+            ])
+        ])
 
-        mapped_ids = set()
+        # Merge duplicate optional values
 
-        # Kill duplicate optional values
-        for value in self.env['xpr_accpac_connector.clientoptionalvalue'].search([]):
+        for value in self.env['xpr_accpac_connector.clientoptionalvalue'].search(
+            [('mapped', '=', False)]
+        ):
             key = (value.idcust, value.optfield)
 
             if key in mapped_ids:
-                # Kill duplicate
-                value.unlink()
-            else:
-                mapped_ids.add(key)
+                # Merge duplicate
+                value.merge_into(mapped_ids[key])
+                continue
 
-        # Kill duplicates of unmarked entries
+            # Optional values automatically map if no merge
 
-        mapped_ids = set()
+            value.mapped = True
+            mapped_ids[key] = value
+
+    def _process_clients(self):
+        """
+        Duplicate clients are merged into one, current mapped one if possible.
+        """
+
+        mapped_ids = dict([
+            (client.idcust, client) for client
+            in self.env['xpr_accpac_connector.client'].search([('mapped', '=', True)])
+        ])
+
         for client in self.clients:
 
             if client.mapped:
@@ -161,37 +209,20 @@ class ClientProcess(models.TransientModel):
             key = client.idcust
 
             if key in mapped_ids:
-                # Kill duplicate
-                client.unlink()
-            else:
-                mapped_ids.add(key)
-
-        # Mark mapped clients
-
-        mapped_ids = set([
-            client.idcust for client
-            in self.env['xpr_accpac_connector.client'].search([('mapped', '=', True)])
-        ])
-
-        for client in self.clients:
-
-            if not client.partner or client.mapped:
+                # Merge duplicate
+                client.merge_into(mapped_ids[key])
                 continue
 
-            if client.idcust in mapped_ids:
-                # Alread mapped. Kill duplicate.
-                client.unlink()
+            # Make available for merges
+
+            mapped_ids[key] = client
+
+            if client.partner:
+                # Mark it. This is a confirmation that partner is good.
+                client.mapped = True
                 continue
 
-            mapped_ids.add(client.idcust)
-            client.mapped = True
-
-        # Map partner
-        for client in self.clients:
-
-            if client.idcust in mapped_ids and not client.mapped:
-                client.unlink()
-                continue
+            # Attempt to find partner.
 
             code = self.env['xpr_accpac_connector.clientoptionalvalue'].search([
                 ('idcust', '=', client.idcust), ('optfield', '=', 'DEALERCODE')])
@@ -210,6 +241,12 @@ class ClientProcess(models.TransientModel):
                 continue
 
             client.partner = partner
+
+    @api.multi
+    def process_import(self):
+
+        self._process_optional_values()
+        self._process_clients()
 
 
 class InvoiceProcess(models.TransientModel):
@@ -256,54 +293,58 @@ class InvoiceProcess(models.TransientModel):
     @api.multi
     def process_import(self):
 
-        # Kill duplicates of unmarked entries
+        # Merge duplicates of unmarked entries
 
-        mapped_ids = set([
-            (line.idcust, line.idinvoice, line.iditem) for line
-            in self.env['xpr_accpac_connector.invoiceline'].search([('mapped', '=', False)])
-        ])
-
-        for line in self.lines:
-
-            key = (line.idcust, line.idinvoice, line.iditem)
-
-            if key in mapped_ids:
-                # Mark as visited
-                mapped_ids.remove(key)
-            else:
-                # Kill duplicate
-                line.unlink()
-
-        mapped_ids = set([
-            (line.idcust, line.idinvoice, line.iditem) for line
+        mapped_ids = dict([
+            ((line.idcust, line.idinvoice, line.iditem), line) for line
             in self.env['xpr_accpac_connector.invoiceline'].search([('mapped', '=', True)])
         ])
 
-         # Mark mapped lines
         for line in self.lines:
 
             if line.mapped:
                 continue
 
-            if (line.idcust, line.idinvoice, line.iditem) in mapped_ids:
-                # Alread mapped. Kill duplicate.
-                line.unlink()
+            key = (line.idcust, line.idinvoice, line.iditem)
+
+            if key in mapped_ids:
+                # Merge
+                line.merge_into(mapped_ids[key])
                 continue
 
-            if line.partner:
-                # New map
-                mapped_ids.add((line.idcust, line.idinvoice, line.iditem))
-                line.mapped = True
+            # Make available for merges.
+            mapped_ids[key] = line
 
-        # Map lines
+            if line.partner:
+                # Mark as confirmation that map is correct
+                line.mapped = True
+                continue
+
+        # Map or remap lines to customer. Customer may have changed.
+
+        mapped_ids = dict([
+            (client.idcust, client) for client in
+            self.env['xpr_accpac_connector.client'].search([
+                ('idcust', 'in', [int(line.idcust) for line in self.lines]),
+                ('mapped', '=', True)
+            ])
+        ])
+
         for line in self.lines:
 
-            client = self.env['xpr_accpac_connector.client'].search([
-                ('idcust', '=', line.idcust), ('mapped', '=', True)])
+            key = line.idcust
 
-            if client:
-                line.partner = client.partner
+            if line.idcust in mapped_ids:
+                line.partner = mapped_ids[key].partner
             else:
                 # This should never happen. Customer removed??
                 line.partner = None
                 line.mapped = False
+
+
+class Partner(models.Model):
+    _inherit = 'res.partner'
+
+    accpac_source = fields.One2many(
+        'xpr_accpac_connector.client',
+        'partner')
