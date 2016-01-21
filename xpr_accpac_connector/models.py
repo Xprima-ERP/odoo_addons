@@ -334,12 +334,16 @@ class InvoiceProcess(models.TransientModel):
 
             key = line.idcust
 
-            if line.idcust in mapped_ids:
-                line.partner = mapped_ids[key].partner
-            else:
+            if key not in mapped_ids:
                 # This should never happen. Customer removed??
                 line.partner = None
                 line.mapped = False
+                continue
+
+            line.partner = mapped_ids[key].partner
+
+            if not line.partner or line.partner.last_bill_date < line.date:
+                line.partner.last_bill_date = line.date
 
 
 class Partner(models.Model):
@@ -348,3 +352,5 @@ class Partner(models.Model):
     accpac_source = fields.One2many(
         'xpr_accpac_connector.client',
         'partner')
+
+    last_bill_date = fields.Date(string="Last Bill Date", help="Last date this partner was billed")
