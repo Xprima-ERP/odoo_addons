@@ -3,6 +3,41 @@
 <openerp>
   <data>
 
+
+  <record id="invoice_line_search_view" model="ir.ui.view">
+    <field name="name">invoice.line.search</field>
+    <field name="model">xpr_accpac_connector.invoiceline</field>
+    <field name="type">search</field>
+    <field name="arch" type="xml">
+      <search string="Invoice line rules">
+        <group col="10" colspan="4">
+          <field name="idcust"/>
+          <field name="idinvoice"/>
+          <field name="date"/>
+          <field name="partner"/>
+        </group>
+        <newline/>
+        <group string="Group By..." expand="0" col="10" colspan="4">
+          <filter name="group_partner" string="Customer" context="{'group_by': 'partner'}"/>
+          <filter name="group_invoice" string="Invoice" context="{'group_by': 'idinvoice'}"/>
+          <filter name="group_month" string="Month" context="{'group_by': 'date'}"/>
+        </group>
+      </search>
+    </field>
+  </record>
+
+   <record id="view_invoice_line_graph" model="ir.ui.view">
+      <field name="model">xpr_accpac_connector.invoiceline</field>
+      <field name="type">graph</field>
+      <field name="arch" type="xml">
+        <graph string="Invoice" type="bar">
+          <field name="partner" type="row"/>
+          <!-- <field name="amount" type="measure"/> -->
+        </graph>
+      </field>
+  </record>
+
+
     <record id="view_invoice_line_tree" model="ir.ui.view">
       <field name="model">xpr_accpac_connector.invoiceline</field>
       <field name="type">tree</field>
@@ -21,14 +56,25 @@
   <record model="ir.actions.act_window" id="invoice_line_action">
       <field name="name">Invoice Lines</field>
       <field name="res_model">xpr_accpac_connector.invoiceline</field>
-      <field name="view_mode">tree</field>
+      <field name="view_mode">tree,graph</field>
       <field name="domain">[('mapped', '=', False)]</field>
   </record>
 
+  <record model="ir.actions.act_window" id="invoice_line_export_action">
+      <field name="name">Invoice Lines</field>
+      <field name="res_model">xpr_accpac_connector.invoiceline</field>
+      <field name="view_mode">tree,graph</field>
+      <field name="domain">[('mapped', '=', True)]</field>
+  </record>
+
+
   <menuitem id="invoice_line_menu" name="Invoice Lines"
-    parent="accpac_menu_root"
-    action="invoice_line_action"
-    groups="account.group_account_manager"/>
+    parent="accpac_menu_import"
+    action="invoice_line_action"/>
+
+  <menuitem id="invoice_line_menu-export" name="Mapped Invoice Lines"
+    parent="accpac_menu_export"
+    action="invoice_line_export_action"/>
 
   <record id="invoice_process_wizard" model="ir.ui.view">
       <field name="name">invoiceline_process_wizard</field>

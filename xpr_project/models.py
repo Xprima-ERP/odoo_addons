@@ -117,6 +117,7 @@ class SaleOrder(models.Model):
         projects_ids = project.search(cr, uid, [('analytic_account_id', 'in', ids)])
         return project.attachment_tree_view(cr, uid, projects_ids, context)
 
+    expected_delivery_date = fields.Date('Expected Delivery Date')
     delivery_date = fields.Date('Delivery Date')
 
 

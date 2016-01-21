@@ -39,6 +39,7 @@ Contributors
     'depends': [
         "base",
         "account",
+        "xpr_dealer"
     ],
     'data': [
         'security/ir.model.access.csv',
