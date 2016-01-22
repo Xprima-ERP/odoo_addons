@@ -259,8 +259,9 @@ class Task(models.Model):
                 continue
 
             p.set_done()
+
             # Deactivates tasks in project tree
-            p.set_template()
+            # p.set_template()
 
             order = self.env['sale.order'].search([
                 ('project_id', '=', key)
