@@ -177,7 +177,7 @@
             <field name="name">Contract Approved</field>
             <field name="wkf_id" ref="sale.wkf_sale"/>
             <field name="kind">function</field>
-            <field name="action">write({'state':'contract_approved'})</field>
+            <field name="action">approve_contract()</field>
             <field name="flow_stop">True</field>
         </record>
 

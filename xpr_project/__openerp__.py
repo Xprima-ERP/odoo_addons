@@ -28,13 +28,15 @@
     'category': 'Sale',
     'summary': 'Sync project management with Xprima',
     'description': """
-Xprima JIRA Connector
-=====================
+Xprima Project Management
+=========================
 
 Adapts project management to Xprimas needs:
 
 - Synchs with JIRA for production needs
 - Gives high level project status.
+- Preproduction involves specification negociation
+- Post production involves notifying accounting
 
 Contributors
 ------------
@@ -42,16 +44,19 @@ Contributors
 """,
     'depends': [
         'base',
-        #'project',
+        'project',
+        'xpr_sale_process',
     ],
     'external_dependencies': {
-        #'python': ['jira'],
+        'python': ['jira'],
     },
     'data': [
-        #'config.xml',
-        # 'views/res_user.xml',
-        # 'views/res_partner_categories.xml',
-        # 'res_partners_categories.xml',
+        'config.xml',
+        'feedback.xml',
+        'views/saleorder.xml',
+        'views/routing.xml',
+        'views/task.xml',
+        'security/ir.model.access.csv',
     ],
     'demo': [],
     'test': [],

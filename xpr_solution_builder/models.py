@@ -137,6 +137,11 @@ class Solution(models.Model):
         'product.category',
         string='Category')
 
+    budget = fields.Float(
+        string='Budget',
+        help="If set, expected budget this solution is for",
+        digits=(6, 2),
+        default=0)
 
 class SolutionProductLine(models.Model):
     """

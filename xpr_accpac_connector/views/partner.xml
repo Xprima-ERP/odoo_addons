@@ -16,6 +16,20 @@
       </field>
   </record>
 
+  <record id="view_clients_mapped" model="ir.ui.view">
+      <field name="model">xpr_accpac_connector.client</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree create="0" delete="0" editable="bottom">
+          <field name="idcust" readonly="1"/>
+          <field name="namecust" readonly="1" />
+          <field name="dealercode" readonly="1" />
+          <field name="partner" />
+        </tree>
+      </field>
+  </record>
+
+
   <record id="view_client_values_tree" model="ir.ui.view">
       <field name="model">xpr_accpac_connector.clientoptionalvalue</field>
       <field name="type">tree</field>
@@ -28,11 +42,31 @@
       </field>
   </record>
 
+  <record id="view_partner_tree" model="ir.ui.view">
+      <field name="model">res.partner</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree create="0" delete="0" edit="0">
+          <field name="name" />
+          <field name="code" />
+        </tree>
+      </field>
+  </record>
+
   <record model="ir.actions.act_window" id="client_action">
       <field name="name">Dealers</field>
       <field name="res_model">xpr_accpac_connector.client</field>
       <field name="view_mode">tree</field>
+      <field name="view_id" ref="view_clients_tree" />
       <field name="domain">[('idgrp', '=', 'DEALER'), ('mapped', '=', False)]</field>
+  </record>
+
+  <record model="ir.actions.act_window" id="mapped_client_action">
+      <field name="name">Dealers</field>
+      <field name="res_model">xpr_accpac_connector.client</field>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="view_clients_mapped" />
+      <field name="domain">[('idgrp', '=', 'DEALER'), ('mapped', '=', True)]</field>
   </record>
 
   <record model="ir.actions.act_window" id="client_values_action">
@@ -41,21 +75,41 @@
       <field name="view_mode">tree</field>
   </record>
 
-  <menuitem id="accpac_menu_root" name="Accpac Import"
+  <record model="ir.actions.act_window" id="partner_export_action">
+      <field name="name">Partners to Export</field>
+      <field name="res_model">res.partner</field>
+      <field name="view_mode">tree</field>
+      <field name="view_id" ref="view_partner_tree" />
+      <field name="domain">[('accpac_source', '=', False), ('code', '!=', '')]</field>
+  </record>
+
+  <menuitem id="accpac_menu_root" name="Accpac"
     parent="account.menu_finance"
     groups="account.group_account_manager"/>
 
-    <menuitem id="cliet_values_menu" name="Client Values"
+  <menuitem id="accpac_menu_import" name="Import"
+    parent="accpac_menu_root"/>
+
+  <menuitem id="accpac_menu_export" name="Export"
+    parent="accpac_menu_root"/>
+
+  <menuitem id="client_values_menu" name="Client Values"
     sequence="1"
-    parent="accpac_menu_root"
-    action="client_values_action"
-    groups="account.group_account_manager"/>
+    parent="accpac_menu_import"
+    action="client_values_action"/>
 
   <menuitem id="client_menu" name="Dealers"
     sequence="2"
-    parent="accpac_menu_root"
-    action="client_action"
-    groups="account.group_account_manager"/>
+    parent="accpac_menu_import"
+    action="client_action"/>
+
+  <menuitem id="partner_export_menu" name="Unmapped Partners"
+    parent="accpac_menu_export"
+    action="partner_export_action"/>
+
+  <menuitem id="mapped_client_menu" name="Mapped Dealers"
+    parent="accpac_menu_export"
+    action="mapped_client_action"/>
 
     <record id="client_process_wizard" model="ir.ui.view">
       <field name="name">client_process_wizard</field>

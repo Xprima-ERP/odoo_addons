@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+  <record model="email.template" id="template_project_confirmation">
+      <field name="name">Project specification confirmation</field>
+      <field name="model_id" ref="portal_project.model_project_project" />
+      <field name="auto_delete">True</field>
+      <field name="lang">${object.partner_id.lang}</field>
+      <field name="email_from">${(object.partner_id.user_id.email or '')|safe}</field>
+      <field name="subject">Project specs to approve: ${object.name}</field>
+      <field name="body_html"><![CDATA[Please confirm specification files for project <a href="${object.form_url|safe}">${object.name}</a>.]]></field>
+  </record>
+
+  <record model="email.template" id="template_order_bill_ready">
+      <field name="name">Order ready to bill</field>
+      <field name="model_id" ref="sale.model_sale_order" />
+      <field name="auto_delete">True</field>
+      <field name="lang">${object.partner_id.lang}</field>
+      <field name="email_from">${(object.partner_id.user_id.email or '')|safe}</field>
+      <field name="subject">Order ready to be billed: ${object.name}</field>
+      <field name="body_html"><![CDATA[The following order is ready tp be billed <a href="${object.form_url|safe}">${object.name}</a>.]]></field>
+  </record>
+
+  <record id="routing_form" model="ir.ui.view">
+      <field name="model">xpr_project.routing</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form>
+        <sheet>
+          <group>
+            <field name="manager" />
+            <field name="jira_project_name" />
+            <field name="categories" widget="many2many_tags" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="routing_tree" model="ir.ui.view">
+      <field name="model">xpr_project.routing</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="manager" />
+            <field name="jira_project_name" />
+            <field name="categories" widget="many2many_tags" />
+        </tree>
+    </field>
+  </record>
+
+  <record model="ir.actions.act_window" id="routing_action">
+      <field name="name">Routing</field>
+      <field name="res_model">xpr_project.routing</field>
+      <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="routing_menu" name="Routing"
+    parent="base.menu_main_pm"/>
+
+  <menuitem id="routing_rules_menu" name="Rules"
+    parent="routing_menu"
+    action="routing_action"/>
+
+  </data>
+</openerp>

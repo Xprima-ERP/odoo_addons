@@ -29,11 +29,10 @@ class SaleOrder(models.Model):
     state = fields.Selection(
         [
             ('draft', 'Draft Quotation'),
+            # ('progress', 'Sales Order'),
+            # ('shipping_except', 'Shipping Exception'),
+            # ('invoice_except', 'Invoice Exception'),
             ('waiting_date', 'Waiting Schedule'),
-            ('progress', 'Sales Order'),
-            ('manual', 'Sale to Invoice'),
-            ('shipping_except', 'Shipping Exception'),
-            ('invoice_except', 'Invoice Exception'),
             ('need_manager_approval', 'Need Manager Approval'),
             ('manager_approved', 'Manager Approved'),
             ('manager_not_approved', 'Manager Declined'),
@@ -41,7 +40,9 @@ class SaleOrder(models.Model):
             ('contract_approved', 'Approved by Customer'),
             ('contract_not_approved', 'Not Approved by Customer'),
             ('need_availability_check', 'Need Availability Check'),
-            ('sent', 'Quotation Sent'),
+            # ('sent', 'Quotation Sent'),
+            ('production', 'Prod'),
+            ('manual', 'Sale to Invoice'),
             ('cancel', 'Cancelled'),
             ('lost', 'Lost'),
             ('done', 'Done'),
@@ -196,6 +197,9 @@ class SaleOrder(models.Model):
 
         self.env['mail.mail'].create(values)
 
+    def approve_contract(self):
+        self.write({'state': 'contract_approved'})
+
     # Template helper
     @property
     def form_url(self):
@@ -249,6 +253,23 @@ class Lead(models.Model, LeadMixin):
 #         'Funnel Score',
 #         compute=_get_funnel_score,
 #         store=True)
+
+    @api.onchange('planned_revenue', 'category')
+    def _select_default_solution(self):
+        # Based on expected revenue, we solution with closest budget.
+        # This logic is needed for Adwords
+
+        if not self.planned_revenue or not self.category:
+            return
+
+        proposed_solutions = self.env['xpr_solution_builder.solution'].search([
+            ('category', '=', self.category.id),
+            ('budget', '<', self.planned_revenue),
+        ], order='budget')
+
+        if proposed_solutions:
+            # Best fit is last element
+            self.solution = proposed_solutions[-1]
 
 
 class LeadMakeSale(models.TransientModel, LeadMixin):
