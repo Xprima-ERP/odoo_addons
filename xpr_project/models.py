@@ -124,7 +124,7 @@ class SaleOrder(models.Model):
 class Routing(models.Model):
 
     _name = "xpr_project.routing"
-    jira_project_name = fields.Char(string="JIRA Project")
+    jira_template_name = fields.Char(string="JIRA Template Name")
     manager = fields.Many2one('res.users', string="Project Manager")
     categories = fields.Many2many(
         'product.category', 'xpr_project_routing_category',

@@ -20,7 +20,6 @@ _logger = logging.getLogger(__name__)
 
 CONFIG_KEY_ENABLE = 'jira.enable'
 CONFIG_KEY_URL = 'jira.url'
-CONFIG_KEY_PRODUCTION_PROJECT = 'jira.production.project'
 CONFIG_KEY_USER = 'jira.user'
 CONFIG_KEY_PWD = 'jira.pwd'
 CONFIG_KEY_SITE_URL = 'web.base.url'
@@ -131,8 +130,10 @@ class CreateIssue(JIRARequest):
 
         # Create Story
 
+        jira_project_key = task.jira_template_name.split('-')[0]
+
         fields = dict(
-            project={'key': task.jira_project_name},
+            project={'key': jira_project_key},
             summary=task.project_id.name,
             description='Project for order [{0}|{1}{2}]'.format(
                 order.name,
@@ -168,7 +169,7 @@ class CreateIssue(JIRARequest):
                 continue
 
             fields = dict(
-                project={'key': task.jira_project_name},
+                project={'key': jira_project_key},
                 issuetype={'name': 'Technical Task'},
                 parent={'id': story.key},
                 summary=line.product_id.name or line.product_id.default_code,

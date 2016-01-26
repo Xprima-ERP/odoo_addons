@@ -30,7 +30,7 @@
         <sheet>
           <group>
             <field name="manager" />
-            <field name="jira_project_name" />
+            <field name="jira_template_name" />
             <field name="categories" widget="many2many_tags" />
           </group>
         </sheet>
@@ -44,7 +44,7 @@
       <field name="arch" type="xml">
         <tree>
             <field name="manager" />
-            <field name="jira_project_name" />
+            <field name="jira_template_name" />
             <field name="categories" widget="many2many_tags" />
         </tree>
     </field>
