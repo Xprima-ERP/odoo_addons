@@ -35,6 +35,8 @@ class Partner(models.Model):
     # 'xis_dc': fields.char('XIS dealer code', size=254),
     code = fields.Char('Code', size=254)  # Required for companies. Unique.
 
+    is_test = fields.Boolean('Is Test') # Indicates if this is a test dealer.
+
     # TODO: dealer != null
     # "is_dealer": fields.boolean("Is Dealer"),
 

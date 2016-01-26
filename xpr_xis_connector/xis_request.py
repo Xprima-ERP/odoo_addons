@@ -517,7 +517,7 @@ class DealerRequest(XISRequestWrapper):
 
         dealers = {
             'address': p.street or '',
-            'buyit': 'false',
+            'buyit': p.is_test and 'true' or 'false',
             'callsource_tollfree': self.dealer.callsource_tollfree or '',
             'city': p.city or '',
             'corpcontracts': '',  # p.pin
