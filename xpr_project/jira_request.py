@@ -326,7 +326,11 @@ class CreateIssue(JIRARequest):
 
         story = self.jira.create_issue(fields=fields)
 
-        # Copy attachments
+        # Copy non empty attachments
+
+        # Attachement name must be either:
+        # - in the routing that created the task
+        # TODO: in no route triggered when subprojects were created.
 
         root_project = task.env['project.project'].search([
             ('analytic_account_id', '=', task.project_id.parent_id.id)
@@ -334,11 +338,12 @@ class CreateIssue(JIRARequest):
 
         for attachment in task.env['ir.attachment'].search([
             ('res_model', '=', 'project.project'),
-            ('res_id', '=', root_project.id)]
+            ('res_id', '=', root_project.id),
+            ('file_size', '!=', 0)]
         ):
-            _logger.info("JIRA add attatchment {0}".format(attachment.datas_fname))
+            _logger.info("JIRA add attachment {0}".format(attachment.datas_fname))
             stream = io.StringIO(unicode(attachment.datas.decode('base64')))
-            self.jira.add_attachment(story.key, stream, filename=attachment.datas_fname)
+            self.jira.add_attachment(story.key, stream, filename=attachment.name)
 
         # Clone tasks
 

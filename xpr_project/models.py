@@ -50,6 +50,8 @@ class SaleOrder(models.Model):
             # order.state = 'sent'
             return
 
+        # Create project
+
         project = self.env['project.project'].create(dict(
             name="{0} - {1}".format(order.partner_id.name, order.name),
             partner_id=order.partner_id.id,
@@ -62,6 +64,20 @@ class SaleOrder(models.Model):
             project_id=project.id,
             rule='specs',
         ))
+
+        # Add empty attachment for all subprojets
+
+        names = set([
+            attachment.name for route in routes
+            for attachment in route.attachment_names])
+
+        for name in names:
+            order.env['ir.attachment'].create(dict(
+                res_model='project.project',
+                res_id=project.id,
+                name=name))
+
+        # Link project to order
 
         order.project_id = project.analytic_account_id
 
@@ -139,10 +155,17 @@ class Routing(models.Model):
         'product.category', 'xpr_project_routing_category',
         string="Categories")
 
-    attachments = fields.Many2many(
+    attachment_names = fields.Many2many(
         'xpr_project.attachment.label', 'xpr_project_routing_attachment',
         string="Attachments")
 
+    _sql_constraints = [
+        (
+            'uniq_jira_template_name',
+            'unique(jira_template_name)',
+            "A route already exists with this JIRA template. Key must be unique."
+        ),
+    ]
 
 class Project(models.Model):
 
