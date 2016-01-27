@@ -121,6 +121,15 @@ class SaleOrder(models.Model):
     delivery_date = fields.Date('Delivery Date')
 
 
+class AttachmentLabel(models.Model):
+    """
+    Tags reserved to name attachments.
+    """
+
+    _name = "xpr_project.attachment.label"
+    _inherit = "project.category"
+
+
 class Routing(models.Model):
 
     _name = "xpr_project.routing"
@@ -129,6 +138,10 @@ class Routing(models.Model):
     categories = fields.Many2many(
         'product.category', 'xpr_project_routing_category',
         string="Categories")
+
+    attachments = fields.Many2many(
+        'xpr_project.attachment.label', 'xpr_project_routing_attachment',
+        string="Attachments")
 
 
 class Project(models.Model):

@@ -23,6 +23,36 @@
 
   </data>
 
+   <data noupdate="1">
+
+    <!-- Attachments. Original setup. -->
+
+    <record model="xpr_project.attachment.label" id="attachment_label_isw">
+        <field name="name">ISW</field>
+    </record>
+
+    <record model="xpr_project.attachment.label" id="attachment_label_questionnaire">
+        <field name="name">Questionnaire</field>
+    </record>
+
+    <record model="xpr_project.attachment.label" id="attachment_label_ttr">
+        <field name="name">TTR</field>
+    </record>
+
+    <record model="xpr_project.attachment.label" id="attachment_label_domain">
+        <field name="name">Domain Form</field>
+    </record>
+
+    <record model="xpr_project.attachment.label" id="attachment_label_ppa">
+        <field name="name">PPA</field>
+    </record>
+
+    <record model="xpr_project.attachment.label" id="attachment_label_commit">
+        <field name="name">Commit Clauses</field>
+    </record>
+
+  </data>
+
   <data>
 
     <!-- Removing unused states from default stages -->
