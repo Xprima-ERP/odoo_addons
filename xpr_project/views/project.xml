@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+  <record id="project_form" model="ir.ui.view">
+      <field name="model">project.project</field>
+      <field name="type">form</field>
+      
+      <field name="inherit_id" ref="project.edit_project"/>
+      <field name="arch" type="xml">
+
+        <field name="use_tasks" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </field>
+
+        <!-- Remove tabs -->
+
+         <notebook position="attributes">
+          <attribute name="invisible">1</attribute>
+         </notebook>
+
+         <page name="team" position="attributes">
+          <attribute name="invisible">1</attribute>
+         </page>
+
+          <page string="Other Info" position="attributes">
+          <attribute name="invisible">1</attribute>
+         </page>
+
+        <page name="project_stages" position="attributes">
+          <attribute name="invisible">1</attribute>
+         </page>
+
+        <!-- Move fields around. Avoid duplicates.-->
+        <field name="date_start" position="replace" />
+        <field name="date" position="replace" />
+
+        <group name="group_alias" position="before">
+          <group name="gantt_group">
+            <field name="date_start" />
+            <field name="date" />
+          </group>
+        </group>
+
+    </field>
+  </record>
+
+ 
+
+  </data>
+</openerp>
