@@ -102,7 +102,7 @@ class SaleOrder(models.Model):
                 description=contract.name,
                 notes=order.note,
                 project_id=contract.id,
-                jira_project_name=route.jira_project_name,
+                jira_template_name=route.jira_template_name,
             ))
 
     def sale_specifications(self, cr, uid, ids, context):
@@ -328,7 +328,7 @@ class Task(models.Model):
         return res
 
     rule = fields.Char(string="Rule", default="jira")
-    jira_project_name = fields.Char(string="JIRA Project")
+    jira_template_name = fields.Char(string="JIRA Project Template")
     jira_issue_key = fields.Char(string="JIRA Issue", required=False)
 
     _sql_constraints = [
