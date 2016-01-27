@@ -108,8 +108,8 @@ class JIRAParameterContextMapper(object):
     Computes values for different context values available in custom value format strings.
     """
     def __init__(self, order):
-        self.order = order
-        self.partner = order.partner_id
+        self.order = order.with_context(lang='en_US')
+        self.partner = self.order.partner_id
         self.dealer = self.partner.dealer
 
     @property
@@ -138,15 +138,15 @@ class JIRAParameterContextMapper(object):
 
     @property
     def contract(self):
-        return self.order.client_order_ref
+        return self.order.client_order_ref or ''
 
     @property
     def province(self):
-        return self.partner.state_id
+        return self.partner.state_id.name
 
     @property
     def ptl(self):
-        return 'McGill'
+        return ''
 
     @property
     def package(self):
@@ -188,15 +188,15 @@ class JIRAParameterContextMapper(object):
 
     @property
     def makes(self):
-        return self.dealer.make_sequence.split(',')
+        return (self.dealer.make_sequence or '').replace(',',';')
 
     @property
     def primary_url(self):
-        return self.partner.website
+        return self.partner.website or ''
 
     @property
     def date_order(self):
-        return self.order.date_order
+        return self.order.date_order or ''
 
     @property
     def salesperson(self):
@@ -206,12 +206,12 @@ class JIRAParameterContextMapper(object):
     def dealer_group(self):
         group_id = self.order.env.ref('xpr_dealer.category_dealer_group').id
 
-        categories = [cat.name for cat in self.dealer.category_id if cat.parent_id == group_id]
+        categories = [cat.name for cat in self.dealer.category_id if cat.parent_id.id == group_id]
 
         if not categories:
-            return ""
+            return ''
 
-        return categories[0]
+        return categories[0].title()
 
 
 class CreateIssue(JIRARequest):
@@ -321,9 +321,8 @@ class CreateIssue(JIRARequest):
             ),
             issuetype={'name': template.fields().issuetype.name})
 
-        _logger.info("JIRA create issue {0}".format(fields))
-
         fields.update(self.get_custom_fields(template))
+        _logger.info("JIRA create issue {0}".format(fields))
 
         story = self.jira.create_issue(fields=fields)
 
