@@ -446,13 +446,13 @@ class BrowseTasks(JIRARequest):
         def __init__(self, env, instance):
             self.jira_issue_key = instance.key
 
-            status = instance.fields.status.name
-            if status == 'Resolved':
+            status = instance.fields.resolution.name
+            if status == 'Completed':
                 status = 'project.project_tt_deployment'
-            elif status == 'Closed':
-                status = 'project.project_tt_cancel'
-            else:
+            elif not status:
                 status = 'project.project_tt_development'
+            else:
+                status = 'project.project_tt_cancel'
 
             self.stage_id = env.ref(status)
 
