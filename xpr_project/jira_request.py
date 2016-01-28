@@ -188,7 +188,7 @@ class JIRAParameterContextMapper(object):
 
     @property
     def makes(self):
-        return (self.dealer.make_sequence or '').replace(',',';')
+        return (self.dealer.make_sequence or '').replace(',', ';')
 
     @property
     def primary_url(self):
@@ -302,6 +302,23 @@ class CreateIssue(JIRARequest):
 
             return None
 
+        all_tasks = task.search([
+            ('project_id.parent_id', 'in', [order.project_id.id])
+        ])
+
+        all_routing = task.env['xpr_project.routing'].search([
+            ('jira_template_name', 'in', [task.jira_template_name for task in all_tasks])])
+
+        all_attachment_names = set()
+        own_attachement_names = set()
+
+        for route in all_routing:
+            names = set([label.name for label in route.attachment_names])
+            if route.jira_template_name == task.jira_template_name:
+                own_attachement_names = names
+
+            all_attachment_names |= names
+
         self.jira_project_key = task.jira_template_name.split('-')[0]
 
         template = self.jira.issue(task.jira_template_name)
@@ -310,15 +327,21 @@ class CreateIssue(JIRARequest):
 
         # Create Story
 
+        description = template.fields().description or ''
+        if description:
+            description += "\n"
+
+        description = '{description}*Odoo [{name}|{root}{url}]*'.format(
+            description=description,
+            name=order.name,
+            root=self.get_config(CONFIG_KEY_SITE_URL),
+            url=order.form_url,
+        )
+
         fields = dict(
             project={'key': self.jira_project_key},
             summary=self.context.dealercode,
-            description='{description}\n*Odoo [{name}|{root}{url}]*'.format(
-                description=template.fields().description,
-                name=order.name,
-                root=self.get_config(CONFIG_KEY_SITE_URL),
-                url=order.form_url,
-            ),
+            description=description,
             issuetype={'name': template.fields().issuetype.name})
 
         fields.update(self.get_custom_fields(template))
@@ -330,17 +353,23 @@ class CreateIssue(JIRARequest):
 
         # Attachement name must be either:
         # - in the routing that created the task
-        # TODO: in no route triggered when subprojects were created.
+        # - in no other route triggered when subprojects were created.
 
         root_project = task.env['project.project'].search([
             ('analytic_account_id', '=', task.project_id.parent_id.id)
         ])[0]
+
+        # Refuse attachements used by other routing but not ours.
+        refused_attatchments = all_attachment_names - own_attachement_names
 
         for attachment in task.env['ir.attachment'].search([
             ('res_model', '=', 'project.project'),
             ('res_id', '=', root_project.id),
             ('file_size', '!=', 0)]
         ):
+            if attachment.name in refused_attatchments:
+                continue
+
             _logger.info("JIRA add attachment {0}".format(attachment.datas_fname))
             stream = io.StringIO(unicode(attachment.datas.decode('base64')))
             self.jira.add_attachment(story.key, stream, filename=attachment.name)
