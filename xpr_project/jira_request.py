@@ -362,13 +362,15 @@ class CreateIssue(JIRARequest):
             url=order.form_url,
         )
 
-        fields = dict(
-            project={'key': self.jira_project_key},
+        fields = self.get_custom_fields(template)
+
+        fields.update(dict(
+            #project={'key': self.jira_project_key},
             summary=self.context.dealercode,
             description=description,
-            issuetype={'name': template.fields().issuetype.name})
+            #issuetype={'name': template.fields().issuetype.name}
+        ))
 
-        fields.update(self.get_custom_fields(template))
         _logger.info("JIRA create issue {0}".format(fields))
 
         story = self.jira.create_issue(fields=fields)
@@ -415,17 +417,18 @@ class CreateIssue(JIRARequest):
                     # dependent and current language is not in it
                     continue
 
-            fields = dict(
-                project={'key': self.jira_project_key},
-                issuetype={'name': task.fields().issuetype.name},
+            fields = self.get_custom_fields(task)
+
+            fields.update(dict(
+                #project={'key': self.jira_project_key},
+                #issuetype={'name': task.fields().issuetype.name},
                 parent={'id': story.key},
                 summary=summary.replace(
                     'Dealercode',
                     self.context.dealercode),
                 description=task.fields().description or ''
-            )
+            ))
 
-            fields.update(self.get_custom_fields(task))
             _logger.info("JIRA create task {0}".format(fields))
             task = self.jira.create_issue(fields=fields)
 
