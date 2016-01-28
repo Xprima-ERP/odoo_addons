@@ -35,6 +35,8 @@ class Partner(models.Model):
     # 'xis_dc': fields.char('XIS dealer code', size=254),
     code = fields.Char('Code', size=254)  # Required for companies. Unique.
 
+    is_test = fields.Boolean('Is Test') # Indicates if this is a test dealer.
+
     # TODO: dealer != null
     # "is_dealer": fields.boolean("Is Dealer"),
 
@@ -347,6 +349,13 @@ class Dealer(models.Model):
     user40e = fields.Char("User40e", size=40)
     user80 = fields.Char("User80", size=80)
 
+    _sql_constraints = [
+        (
+            'uniq_partner',
+            'unique(partner)',
+            "This partner is already a dealer. Must not have duplicate definitions."
+        ),
+    ]
 
 class DealerAssign(models.TransientModel):
 

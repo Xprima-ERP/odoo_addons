@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+  <record model="ir.actions.act_window" id="attachment_action">
+      <field name="name">Attachments</field>
+      <field name="res_model">xpr_project.attachment.label</field>
+      <field name="view_mode">tree,form</field>
+  </record>
+
+<!-- project.menu_project_category_act -->
+
+
+  <menuitem id="attachment_action_menu" name="Attachments"
+    parent="base.menu_definitions"
+    action="attachment_action"/>
+
+  </data>
+</openerp>

@@ -24,6 +24,9 @@
         </xpath>
 
         <field name="category_id" position="replace">
+            <field name="is_test" />
+            <label for="is_test" string="Is Test" />
+
             <field name="code" placeholder="Dealer Code" attrs="{'invisible': [('is_company','=', False)], 'required' : [('is_company','=', True)]}"/>
            <!--  <label for="dealer" string="Is a Dealer" attrs="{'invisible': [('is_company','=', False)]}"/>
             <field name="dealer" widget="many2onebutton" readonly="True" attrs="{'invisible': [('is_company','=', False)]}" /> -->
