@@ -11,6 +11,10 @@
           <field name="rule"  invisible="1"/>
         </xpath>
 
+        <xpath expr="//page[@string='Extra Info']" position="attributes">
+          <attribute name="invisible">1</attribute>
+        </xpath>
+
         <xpath expr="//header" position="inside">
           <button name="sale_specifications" type="object" string="See Specifications" attrs="{'invisible': [('rule', '!=', 'specs')]}"/>
           <button name="ask_update" type="object" string="Ask Update" attrs="{'invisible': [('rule', '!=', 'specs')]}"/>

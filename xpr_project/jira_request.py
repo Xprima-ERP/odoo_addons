@@ -20,7 +20,6 @@ _logger = logging.getLogger(__name__)
 
 CONFIG_KEY_ENABLE = 'jira.enable'
 CONFIG_KEY_URL = 'jira.url'
-CONFIG_KEY_PRODUCTION_PROJECT = 'jira.production.project'
 CONFIG_KEY_USER = 'jira.user'
 CONFIG_KEY_PWD = 'jira.pwd'
 CONFIG_KEY_SITE_URL = 'web.base.url'
@@ -104,16 +103,190 @@ class JIRARequest(object):
         return None
 
 
+class JIRAParameterContextMapper(object):
+    """
+    Computes values for different context values available in custom value format strings.
+    """
+    def __init__(self, order):
+        self.order = order.with_context(lang='en_US')
+        self.partner = self.order.partner_id
+        self.dealer = self.partner.dealer
+
+    @property
+    def dealercode(self):
+        return self.partner.code
+
+    @property
+    def lang(self):
+        lang = self.partner.lang
+
+        if not lang:
+            return 'EN'
+
+        return lang.split('_')[0].upper()
+
+    @property
+    def new_client(self):
+        """
+        New client of no order has ever been delivered yet
+        """
+        orders = self.order.search([
+            ('partner_id', '=', self.order.partner_id.id),
+            ('delivery_date', '!=', False)])
+
+        return len(orders) and "Yes" or "No"
+
+    @property
+    def contract(self):
+        return self.order.client_order_ref or ''
+
+    @property
+    def province(self):
+        return self.partner.state_id.name
+
+    @property
+    def ptl(self):
+        return ''
+
+    @property
+    def package(self):
+
+        # From: VO - New Cars - Starter Express Bilingual
+        # Extract: Starter Express
+
+        s = self.order.solution.name.split('-')
+
+        if not s:
+            return ""
+
+        s = s[-1].split()
+
+        if len(s) > 2:
+            return '{0} {1}'.format(s[0], s[1])
+        elif s:
+            return s[0]
+
+        return ""
+
+    @property
+    def unilingual(self):
+
+        # From: VO - New Cars - Starter Express Unilingual
+        # Extract: Unilingual
+
+        s = self.order.solution.name.split('-')
+
+        if not s:
+            return ""
+
+        s = s[-1].split()
+
+        if s:
+            return s[-1]
+
+        return ""
+
+    @property
+    def makes(self):
+        return (self.dealer.make_sequence or '').replace(',', ';')
+
+    @property
+    def primary_url(self):
+        return self.partner.website or ''
+
+    @property
+    def date_order(self):
+        return self.order.date_order or ''
+
+    @property
+    def salesperson(self):
+        return self.order.user_id.name
+
+    @property
+    def dealer_group(self):
+        group_id = self.order.env.ref('xpr_dealer.category_dealer_group').id
+
+        categories = [cat.name for cat in self.dealer.category_id if cat.parent_id.id == group_id]
+
+        if not categories:
+            return ''
+
+        return categories[0].title()
+
+
 class CreateIssue(JIRARequest):
+
+    jira_project_key = None
 
     """
     Class that builds a new Story for a task.
 
-    From order and project:
+    From order and JIRA template
     - Builds story
     - Adds attachments
     - Adds subtasks
     """
+
+    def get_custom_fields(self, issue):
+
+        field_meta = self.jira.createmeta(
+            projectKeys=self.jira_project_key,
+            issuetypeNames=issue.fields.issuetype.name,
+            expand='projects.issuetypes.fields')['projects'][0]['issuetypes'][0]['fields']
+
+        # TODO: Move these formats into project config found in database
+        field_to_format = {
+            #"Account Manager": "", #select
+            "Province": "{object.province}",
+            "PTL": "{object.ptl}",
+            "Package": "{object.package}",
+            "Make": "{object.makes}",
+            "Dealer Code": "{object.dealercode}",
+            "Primary URL": "{object.primary_url}",
+            # "Client Status": "", # select
+            # "Live Date": "{object.delivery_date}",
+            "Contract Date": "{object.date_order}",
+            "Representant": "{object.salesperson}",
+            "Contract #": "{object.contract}",
+            "Dealer Group": "{object.dealer_group}",
+            "New Client": "{object.new_client}",
+        }
+
+        custom_fields = dict()
+
+        for name, value in issue.raw['fields'].items():
+            if not name.startswith('customfield') or name not in field_meta:
+                continue
+
+            meta = field_meta[name]
+
+            if meta['name'] in field_to_format:
+
+                formatted_value = field_to_format[meta['name']].format(object=self.context).strip()
+
+                if meta['schema']['type'] == 'date' and formatted_value:
+                    # Take away possible time part
+                    formatted_value = formatted_value.split()[0]
+
+                if meta['schema']['custom'].endswith(':select'):
+                    # Accept only allowed values
+                    if formatted_value in [val['value'] for val in meta['allowedValues']]:
+                        custom_fields[name] = formatted_value and {'value': formatted_value}
+                    else:
+                        custom_fields[name] = None
+                elif meta['schema']['custom'].endswith(':multiselect'):
+                    # Accept only allowed values
+                    custom_fields[name] = [
+                        {'value': v} for v in formatted_value.split(';')
+                        if v in [val['value'] for val in meta['allowedValues']]
+                    ]
+                elif meta['schema']['custom'].endswith(':datepicker'):
+                    custom_fields[name] = formatted_value or None
+                else:
+                    # Strings
+                    custom_fields[name] = formatted_value
+
+        return custom_fields
 
     def safe_execute(self):
 
@@ -129,54 +302,108 @@ class CreateIssue(JIRARequest):
 
             return None
 
+        all_tasks = task.search([
+            ('project_id.parent_id', 'in', [order.project_id.id])
+        ])
+
+        all_routing = task.env['xpr_project.routing'].search([
+            ('jira_template_name', 'in', [task.jira_template_name for task in all_tasks])])
+
+        all_attachment_names = set()
+        own_attachement_names = set()
+
+        for route in all_routing:
+            names = set([label.name for label in route.attachment_names])
+            if route.jira_template_name == task.jira_template_name:
+                own_attachement_names = names
+
+            all_attachment_names |= names
+
+        self.jira_project_key = task.jira_template_name.split('-')[0]
+
+        template = self.jira.issue(task.jira_template_name)
+
+        self.context = JIRAParameterContextMapper(order)
+
         # Create Story
 
-        fields = dict(
-            project={'key': task.jira_project_name},
-            summary=task.project_id.name,
-            description='Project for order [{0}|{1}{2}]'.format(
-                order.name,
-                self.get_config(CONFIG_KEY_SITE_URL),
-                order.form_url,
-            ),
-            issuetype={'name': 'Story'})
+        description = template.fields().description or ''
+        if description:
+            description += "\n"
 
+        description = '{description}*Odoo [{name}|{root}{url}]*'.format(
+            description=description,
+            name=order.name,
+            root=self.get_config(CONFIG_KEY_SITE_URL),
+            url=order.form_url,
+        )
+
+        fields = dict(
+            project={'key': self.jira_project_key},
+            summary=self.context.dealercode,
+            description=description,
+            issuetype={'name': template.fields().issuetype.name})
+
+        fields.update(self.get_custom_fields(template))
         _logger.info("JIRA create issue {0}".format(fields))
 
         story = self.jira.create_issue(fields=fields)
 
-         # Copy attachments
+        # Copy non empty attachments
+
+        # Attachement name must be either:
+        # - in the routing that created the task
+        # - in no other route triggered when subprojects were created.
 
         root_project = task.env['project.project'].search([
             ('analytic_account_id', '=', task.project_id.parent_id.id)
         ])[0]
 
+        # Refuse attachements used by other routing but not ours.
+        refused_attatchments = all_attachment_names - own_attachement_names
+
         for attachment in task.env['ir.attachment'].search([
             ('res_model', '=', 'project.project'),
-            ('res_id', '=', root_project.id)]
+            ('res_id', '=', root_project.id),
+            ('file_size', '!=', 0)]
         ):
-            _logger.info("JIRA add attatchment {0}".format(attachment.datas_fname))
-            stream = io.StringIO(unicode(attachment.datas.decode('base64')))
-            self.jira.add_attachment(story.key, stream, filename=attachment.datas_fname)
-
-        # Each order line becomes a task
-
-        for line in order.order_line:
-
-            if not line.product_id:
-                # Filter out correction order lines
+            if attachment.name in refused_attatchments:
                 continue
 
+            _logger.info("JIRA add attachment {0}".format(attachment.datas_fname))
+            stream = io.StringIO(unicode(attachment.datas.decode('base64')))
+            self.jira.add_attachment(story.key, stream, filename=attachment.name)
+
+        # Clone tasks
+
+        lang = self.context.lang
+
+        for task in template.fields().subtasks:
+            task = self.jira.issue(task.key)
+
+            summary = task.fields().summary or ''
+
+            if self.context.unilingual == 'Unilingual':
+                words = summary.split()
+
+                if ('EN' in words or 'FR' in words) and (lang not in words):
+                    # Based on summary, it is language
+                    # dependent and current language is not in it
+                    continue
+
             fields = dict(
-                project={'key': task.jira_project_name},
-                issuetype={'name': 'Technical Task'},
+                project={'key': self.jira_project_key},
+                issuetype={'name': task.fields().issuetype.name},
                 parent={'id': story.key},
-                summary=line.product_id.name or line.product_id.default_code,
-                description=line.product_id.description_sale or ''
+                summary=summary.replace(
+                    'Dealercode',
+                    self.context.dealercode),
+                description=task.fields().description or ''
             )
 
+            fields.update(self.get_custom_fields(task))
             _logger.info("JIRA create task {0}".format(fields))
-            self.jira.create_issue(fields=fields)
+            task = self.jira.create_issue(fields=fields)
 
         return story and story.key or None
 

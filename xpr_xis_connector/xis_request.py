@@ -517,7 +517,7 @@ class DealerRequest(XISRequestWrapper):
 
         dealers = {
             'address': p.street or '',
-            'buyit': 'false',
+            'buyit': p.is_test and 'true' or 'false',
             'callsource_tollfree': self.dealer.callsource_tollfree or '',
             'city': p.city or '',
             'corpcontracts': '',  # p.pin
@@ -541,7 +541,7 @@ class DealerRequest(XISRequestWrapper):
             # force to take 'en' of 'en_US'
             'language': p.lang and p.lang[:2] or '',
             'lastmoddate': self.get_last_modif_date(),
-            'makes': self.dealer.make_sequence,
+            'makes': self.dealer.make_sequence or '',
             'market': market or '',
             'membertype': self.get_member_type() or '',
             'newemail': '',  # This field must go from xis to OE.
