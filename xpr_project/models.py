@@ -306,7 +306,7 @@ class Task(models.Model):
 
             # Order goes to next step
             order.state = 'manual'
-            order.delivery_date = datetime.datetime.now()
+            order.delivery_date = fields.Date.context_today(order)
 
             # Send mail to affected project managers
 
