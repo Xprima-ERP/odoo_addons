@@ -34,7 +34,7 @@
             <field name="arch" type="xml">
                 <form string="Definition">
                     <header>
-                        <button name="%(action_solution_combiner)d" string="Combine" type="action"/>
+                        <button name="%(action_solution_combiner)d" string="Combine" type="action" groups="base.group_sale_manager"/>
                     </header>
                     <sheet>
                         <group>
