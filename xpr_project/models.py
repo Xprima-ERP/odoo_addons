@@ -167,6 +167,7 @@ class Routing(models.Model):
         ),
     ]
 
+
 class Project(models.Model):
 
     _inherit = "project.project"
@@ -208,6 +209,7 @@ class Task(models.Model):
                     ('project_id', '=', task.project_id.analytic_account_id.id)
                 ])
 
+                order.write({'date_confirm': fields.Date.context_today(self)})
                 order.create_sub_projects()
 
             if task.rule == 'jira':
@@ -216,8 +218,7 @@ class Task(models.Model):
 
                 if not task.jira_issue_key:
                     task.with_context(from_jira=True).write({
-                        'jira_issue_key': jira_request.CreateIssue(task).execute()
-                    })
+                        'jira_issue_key': jira_request.CreateIssue(task).execute()})
 
                 # Mark order as in production
                 order = self.env['sale.order'].search([

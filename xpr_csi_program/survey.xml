@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<openerp>
+  <data>
+
+    <record model="email.template" id="survey_mail">
+        <field name="name">CSI - Survey</field>
+        <field name="model_id" ref="sale.model_sale_order" />
+        <field name="auto_delete">True</field>
+        <field name="email_from">no_reply@xprima.com</field>
+        <field name="email_to">${(object.user_id != False and object.user_id.email)|safe}</field>
+        <field name="subject">CSI Survey: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+        <field name="body_html"><![CDATA[Contract <a href="${object.form_url|safe}">${object.name}</a> is approved for production. It is time to send the CSI survey to ${(object.partner_id.email != False and object.partner_id.email or '')|safe}]]></field>
+    </record>
+
+    <record model="ir.actions.server" id="survey_mail_action">
+        <field name="name">First CSI Survey</field>
+        <field name="state">email</field>
+        <field name="type">ir.actions.server</field>
+        <field name="help">Sends First CSI Survey</field>
+        <field name="model_id" ref="portal_sale.model_sale_order" />
+        <field name="use_create">new</field>
+        <field name="template_id" ref="survey_mail" />
+        <field name="sequence">0</field>
+        <field name="crud_model_id" ref="portal_sale.model_sale_order" />
+        <field name="wkf_model_id" ref="portal_sale.model_sale_order" />
+        <field name="use_relational_model">base</field>
+        <field name="use_write">current</field>
+    </record>
+
+    <record model="base.action.rule" id="survey_mail_rule">
+        <field name="name">First CSI Survey</field>
+        <field name="model">sale.order</field>
+        <field name="model_id" ref="portal_sale.model_sale_order" />
+        <field name="sequence">0</field>
+        <field name="trg_date_range_type">day</field>
+        <field name="trg_date_id" ref="sale.field_sale_order_date_confirm" />
+        <field name="server_action_ids" eval="[(4, ref('survey_mail_action'))]"/>
+        <field name="kind">on_time</field>
+    </record>
+
+  </data>
+</openerp>
