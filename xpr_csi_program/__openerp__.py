@@ -13,7 +13,8 @@
         'base',
         'sale',
         'xpr_dealer',
-        'xpr_solution_builder'
+        'xpr_solution_builder',
+        'xpr_project'
     ],
 
     'data': [
