@@ -45,6 +45,15 @@
     </field>
   </record>
 
+  <!-- Changing view order and defaut view -->
+  <record id="project.open_view_project_all" model="ir.actions.act_window">
+    <field name="name">Projects</field>
+    <field name="res_model">project.project</field>
+    <field name="view_type">form</field>
+    <field name="domain">[]</field>
+    <field name="view_mode">tree,form,kanban,gantt</field>
+    <field name="view_id" ref="project.view_project"/>
+ </record>
  
 
   </data>

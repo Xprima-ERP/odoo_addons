@@ -145,8 +145,12 @@ class JIRAParameterContextMapper(object):
         return self.partner.state_id.name
 
     @property
-    def ptl(self):
-        return ''
+    def account_manager(self):
+
+        if self.partner.state_id.code in ['ON', 'MB', 'AB', 'SK', 'BC']:
+            return 'Cliff Denham'
+
+        return 'Dave Bélisle'
 
     @property
     def package(self):
@@ -236,14 +240,14 @@ class CreateIssue(JIRARequest):
 
         # TODO: Move these formats into project config found in database
         field_to_format = {
-            #"Account Manager": "", #select
+            "Account Manager": "{object.account_manager}",
             "Province": "{object.province}",
-            "PTL": "{object.ptl}",
+            #"PTL": "",
             "Package": "{object.package}",
             "Make": "{object.makes}",
             "Dealer Code": "{object.dealercode}",
             "Primary URL": "{object.primary_url}",
-            # "Client Status": "", # select
+            #"Client Status": "Active",
             # "Live Date": "{object.delivery_date}",
             "Contract Date": "{object.date_order}",
             "Representant": "{object.salesperson}",
@@ -254,37 +258,57 @@ class CreateIssue(JIRARequest):
 
         custom_fields = dict()
 
-        for name, value in issue.raw['fields'].items():
-            if not name.startswith('customfield') or name not in field_meta:
-                continue
+        def map_value(name):
+            """
+            Returns custom field value from self.context or None
+            """
+            if not name.startswith('customfield'):
+                return None
 
             meta = field_meta[name]
 
-            if meta['name'] in field_to_format:
+            if meta['name'] not in field_to_format:
+                return None
 
-                formatted_value = field_to_format[meta['name']].format(object=self.context).strip()
+            formatted_value = field_to_format[meta['name']].format(object=self.context).strip()
 
-                if meta['schema']['type'] == 'date' and formatted_value:
-                    # Take away possible time part
-                    formatted_value = formatted_value.split()[0]
+            if meta['schema']['type'] == 'date' and formatted_value:
+                # Take away possible time part
+                formatted_value = formatted_value.split()[0]
 
-                if meta['schema']['custom'].endswith(':select'):
-                    # Accept only allowed values
-                    if formatted_value in [val['value'] for val in meta['allowedValues']]:
-                        custom_fields[name] = formatted_value and {'value': formatted_value}
-                    else:
-                        custom_fields[name] = None
-                elif meta['schema']['custom'].endswith(':multiselect'):
-                    # Accept only allowed values
-                    custom_fields[name] = [
-                        {'value': v} for v in formatted_value.split(';')
-                        if v in [val['value'] for val in meta['allowedValues']]
-                    ]
-                elif meta['schema']['custom'].endswith(':datepicker'):
-                    custom_fields[name] = formatted_value or None
-                else:
-                    # Strings
-                    custom_fields[name] = formatted_value
+            if meta['schema']['custom'].endswith(':select'):
+                # Accept only allowed values
+                if formatted_value in [val['value'] for val in meta['allowedValues']]:
+                    return formatted_value and {'value': formatted_value}
+
+                return None
+
+            elif meta['schema']['custom'].endswith(':multiselect'):
+                # Accept only allowed values
+                return [
+                    {'value': v} for v in formatted_value.split(';')
+                    if v in [val['value'] for val in meta['allowedValues']]
+                ]
+            elif meta['schema']['custom'].endswith(':datepicker'):
+                return formatted_value or None
+
+            # Strings/default behavior
+            return formatted_value
+
+        # Assignation loop
+
+        for name, value in issue.raw['fields'].items():
+            if name not in field_meta:
+                continue
+
+            m = map_value(name)
+
+            if not m:
+                # No provided value. Default to template.
+                m = value
+
+            if m:
+                custom_fields[name] = m
 
         return custom_fields
 
@@ -338,13 +362,15 @@ class CreateIssue(JIRARequest):
             url=order.form_url,
         )
 
-        fields = dict(
-            project={'key': self.jira_project_key},
+        fields = self.get_custom_fields(template)
+
+        fields.update(dict(
+            #project={'key': self.jira_project_key},
             summary=self.context.dealercode,
             description=description,
-            issuetype={'name': template.fields().issuetype.name})
+            #issuetype={'name': template.fields().issuetype.name}
+        ))
 
-        fields.update(self.get_custom_fields(template))
         _logger.info("JIRA create issue {0}".format(fields))
 
         story = self.jira.create_issue(fields=fields)
@@ -391,17 +417,18 @@ class CreateIssue(JIRARequest):
                     # dependent and current language is not in it
                     continue
 
-            fields = dict(
-                project={'key': self.jira_project_key},
-                issuetype={'name': task.fields().issuetype.name},
+            fields = self.get_custom_fields(task)
+
+            fields.update(dict(
+                #project={'key': self.jira_project_key},
+                #issuetype={'name': task.fields().issuetype.name},
                 parent={'id': story.key},
                 summary=summary.replace(
                     'Dealercode',
                     self.context.dealercode),
                 description=task.fields().description or ''
-            )
+            ))
 
-            fields.update(self.get_custom_fields(task))
             _logger.info("JIRA create task {0}".format(fields))
             task = self.jira.create_issue(fields=fields)
 
@@ -422,13 +449,13 @@ class BrowseTasks(JIRARequest):
         def __init__(self, env, instance):
             self.jira_issue_key = instance.key
 
-            status = instance.fields.status.name
-            if status == 'Resolved':
+            status = instance.fields.resolution.name
+            if status == 'Completed':
                 status = 'project.project_tt_deployment'
-            elif status == 'Closed':
-                status = 'project.project_tt_cancel'
-            else:
+            elif not status:
                 status = 'project.project_tt_development'
+            else:
+                status = 'project.project_tt_cancel'
 
             self.stage_id = env.ref(status)
 
