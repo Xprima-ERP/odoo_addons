@@ -15,6 +15,7 @@
 
 import logging
 import io
+import re
 
 _logger = logging.getLogger(__name__)
 
@@ -107,10 +108,16 @@ class JIRAParameterContextMapper(object):
     """
     Computes values for different context values available in custom value format strings.
     """
-    def __init__(self, order):
+    def __init__(self, order, issue, request):
         self.order = order.with_context(lang='en_US')
         self.partner = self.order.partner_id
         self.dealer = self.partner.dealer
+        self.issue = issue
+        self.request = request
+
+    @property
+    def fields(self):
+        return self.issue.fields
 
     @property
     def dealercode(self):
@@ -217,10 +224,15 @@ class JIRAParameterContextMapper(object):
 
         return categories[0].title()
 
+    @property
+    def order_url(self):
+        return "{root}{url}".format(
+            root=self.request.get_config(CONFIG_KEY_SITE_URL),
+            url=self.order.form_url
+        )
+
 
 class CreateIssue(JIRARequest):
-
-    jira_project_key = None
 
     """
     Class that builds a new Story for a task.
@@ -231,37 +243,63 @@ class CreateIssue(JIRARequest):
     - Adds subtasks
     """
 
-    def get_custom_fields(self, issue):
+    jira_project_key = None
+
+    # Common formats. Shared custom fields.
+
+    formats = {
+        "Account Manager": "{object.account_manager}",
+        "Province": "{object.province}",
+        #"PTL": "",
+        "Package": "{object.package}",
+        "Make": "{object.makes}",
+        "Dealer Code": "{object.dealercode}",
+        "Primary URL": "{object.primary_url}",
+        #"Client Status": "Active",
+        # "Live Date": "{object.delivery_date}",
+        "Contract Date": "{object.date_order}",
+        "Representant": "{object.salesperson}",
+        "Contract #": "{object.contract}",
+        "Dealer Group": "{object.dealer_group}",
+        "New Client": "{object.new_client}",
+    }
+
+    # Formats reserved for the root projects only
+    project_formats = {
+        'EPM': {
+            'Summary': "{object.dealercode}",
+            "Description": u"{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
+        },
+        'EPMCR': {
+            'Summary': u"Inbound Marketing ({object.dealercode})",
+            "Description": u"{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
+        },
+    }
+
+    def get_fields(self, context, parent=None):
+
+        issue = context.issue
 
         field_meta = self.jira.createmeta(
             projectKeys=self.jira_project_key,
             issuetypeNames=issue.fields.issuetype.name,
             expand='projects.issuetypes.fields')['projects'][0]['issuetypes'][0]['fields']
 
-        # TODO: Move these formats into project config found in database
-        field_to_format = {
-            "Account Manager": "{object.account_manager}",
-            "Province": "{object.province}",
-            #"PTL": "",
-            "Package": "{object.package}",
-            "Make": "{object.makes}",
-            "Dealer Code": "{object.dealercode}",
-            "Primary URL": "{object.primary_url}",
-            #"Client Status": "Active",
-            # "Live Date": "{object.delivery_date}",
-            "Contract Date": "{object.date_order}",
-            "Representant": "{object.salesperson}",
-            "Contract #": "{object.contract}",
-            "Dealer Group": "{object.dealer_group}",
-            "New Client": "{object.new_client}",
-        }
+        field_to_format = dict(CreateIssue.formats)
+
+        if parent is None:
+            field_to_format.update(CreateIssue.project_formats.get(self.jira_project_key, {}))
 
         custom_fields = dict()
 
         def map_value(name):
             """
-            Returns custom field value from self.context or None
+            Returns custom field value from context or None
             """
+
+            if name in ['summary', 'description']:
+                return field_to_format[name.title()].format(object=context).strip()
+
             if not name.startswith('customfield'):
                 return None
 
@@ -270,7 +308,7 @@ class CreateIssue(JIRARequest):
             if meta['name'] not in field_to_format:
                 return None
 
-            formatted_value = field_to_format[meta['name']].format(object=self.context).strip()
+            formatted_value = field_to_format[meta['name']].format(object=context).strip()
 
             if meta['schema']['type'] == 'date' and formatted_value:
                 # Take away possible time part
@@ -310,6 +348,22 @@ class CreateIssue(JIRARequest):
             if m:
                 custom_fields[name] = m
 
+        if parent is not None:
+            # Sub task case.
+            # Insert dealercode in summary if dealercode keyword found.
+            # Indicate cloned parent
+
+            summary = issue.fields.summary
+
+            regex = re.compile('dealercode', re.IGNORECASE)
+
+            summary = regex.sub(context.dealercode, summary)
+
+            custom_fields.update(dict(
+                parent={'id': parent.key},
+                summary=summary,
+            ))
+
         return custom_fields
 
     def safe_execute(self):
@@ -347,29 +401,11 @@ class CreateIssue(JIRARequest):
 
         template = self.jira.issue(task.jira_template_name)
 
-        self.context = JIRAParameterContextMapper(order)
+        project_context = JIRAParameterContextMapper(order, template, self)
 
         # Create Story
 
-        description = template.fields().description or ''
-        if description:
-            description += "\n"
-
-        description = '{description}*Odoo [{name}|{root}{url}]*'.format(
-            description=description,
-            name=order.name,
-            root=self.get_config(CONFIG_KEY_SITE_URL),
-            url=order.form_url,
-        )
-
-        fields = self.get_custom_fields(template)
-
-        fields.update(dict(
-            #project={'key': self.jira_project_key},
-            summary=self.context.dealercode,
-            description=description,
-            #issuetype={'name': template.fields().issuetype.name}
-        ))
+        fields = self.get_fields(project_context)
 
         _logger.info("JIRA create issue {0}".format(fields))
 
@@ -402,14 +438,14 @@ class CreateIssue(JIRARequest):
 
         # Clone tasks
 
-        lang = self.context.lang
+        lang = project_context.lang
 
         for task in template.fields().subtasks:
             task = self.jira.issue(task.key)
 
             summary = task.fields().summary or ''
 
-            if self.context.unilingual == 'Unilingual':
+            if project_context.unilingual == 'Unilingual':
                 words = summary.split()
 
                 if ('EN' in words or 'FR' in words) and (lang not in words):
@@ -417,17 +453,9 @@ class CreateIssue(JIRARequest):
                     # dependent and current language is not in it
                     continue
 
-            fields = self.get_custom_fields(task)
-
-            fields.update(dict(
-                #project={'key': self.jira_project_key},
-                #issuetype={'name': task.fields().issuetype.name},
-                parent={'id': story.key},
-                summary=summary.replace(
-                    'Dealercode',
-                    self.context.dealercode),
-                description=task.fields().description or ''
-            ))
+            fields = self.get_fields(
+                JIRAParameterContextMapper(order, task, self),
+                parent=story)
 
             _logger.info("JIRA create task {0}".format(fields))
             task = self.jira.create_issue(fields=fields)
