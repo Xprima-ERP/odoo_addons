@@ -477,7 +477,11 @@ class BrowseTasks(JIRARequest):
         def __init__(self, env, instance):
             self.jira_issue_key = instance.key
 
-            status = instance.fields.resolution.name
+            status = None
+
+            if instance.fields.resolution:
+                status = instance.fields.resolution.name
+
             if status == 'Completed':
                 status = 'project.project_tt_deployment'
             elif not status:
