@@ -23,6 +23,7 @@ import urllib2
 import logging
 import time
 import json
+import re
 
 _logger = logging.getLogger(__name__)
 
@@ -320,7 +321,7 @@ class SaleOrderRequest(XISRequestWrapper):
                 line.product_id.default_code or "",
 
                 "qli_ListPrice_%s" % i:
-                    int(line.product_uom_qty) * line.price_unit,
+                int(line.product_uom_qty) * line.price_unit,
 
                 "qli_Quantity_%s" % i: line.product_uom_qty,
                 "qli_UnitPrice_%s" % i: line.price_unit,
@@ -483,8 +484,27 @@ class DealerRequest(XISRequestWrapper):
     def get_customermasks(self):
         return ';'.join(cm.name for cm in self.dealer.customer)
 
+    def get_is_not_used(self):
+
+        # Patch meant to disable a dealer based on its name.
+        # Unil we have a proper way to disable a dealer.
+
+        return re.search(
+            "(not used)|(do not use)|(closed)",
+            self.partner.name,
+            re.IGNORECASE) and True or False
+
     def get_portalmask(self):
+
+        if self.get_is_not_used():
+            return ''
+
         return ';'.join(mask.name for mask in self.dealer.portalmask)
+
+    def get_is_test(self):
+
+        p = self.partner
+        return p.is_test or self.get_is_not_used()
 
     def get_area_code(self):
 
@@ -517,7 +537,7 @@ class DealerRequest(XISRequestWrapper):
 
         dealers = {
             'address': p.street or '',
-            'buyit': p.is_test and 'true' or 'false',
+            'buyit': self.get_is_test() and 'true' or 'false',
             'callsource_tollfree': self.dealer.callsource_tollfree or '',
             'city': p.city or '',
             'corpcontracts': '',  # p.pin
