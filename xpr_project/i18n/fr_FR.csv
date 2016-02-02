@@ -1,60 +1,56 @@
 module,type,name,res_id,src,value
-xpr_project,sql_constraint,xpr_project.routing,0,A route already exists with this JIRA template. Key must be unique.,A route already exists with this JIRA template. Key must be unique.
-xpr_project,sql_constraint,project.task,0,A task already exists with this JIRA key. Key must be unique.,A task already exists with this JIRA key. Key must be unique.
+xpr_project,sql_constraint,xpr_project.routing,0,A route already exists with this JIRA template. Key must be unique.,Une règle existe déjà pour ce patron JIRA. La clé doit être unique.
+xpr_project,sql_constraint,project.task,0,A task already exists with this JIRA key. Key must be unique.,Une tâche existe déjà avec cette clé JIRA. La clé doit être unique.
 xpr_project,model,"ir.model,name",xpr_project.model_base_action_rule,Action Rules,Règles d'action
-xpr_project,view,project.task,xpr_project.task_form,Ask Update,Ask Update
-xpr_project,view,xpr_project.update_message,xpr_project.ask_update_message,Ask specification update,Ask specification update
+xpr_project,view,project.task,xpr_project.task_form,Ask Update,Demander une mise à jour
+xpr_project,view,xpr_project.update_message,xpr_project.ask_update_message,Ask specification update,Demander une mise à jour des spécifications
 xpr_project,model,"ir.actions.act_window,name",xpr_project.attachment_action,Attachments,Pièces jointes
 xpr_project,model,"ir.ui.menu,name",xpr_project.attachment_action_menu,Attachments,Pièces jointes
-xpr_project,field,"xpr_project.routing,attachment_names",0,Attachments,Attachments
-xpr_project,view,xpr_project.update_message,xpr_project.ask_update_message,Cancel,Cancel
-xpr_project,field,"xpr_project.routing,categories",0,Categories,Categories
+xpr_project,field,"xpr_project.routing,attachment_names",0,Attachments,Pièces jointes
+xpr_project,view,xpr_project.update_message,xpr_project.ask_update_message,Cancel,Canceler
+xpr_project,field,"xpr_project.routing,categories",0,Categories,Catégories
 xpr_project,model,"ir.model,name",xpr_project.model_xpr_project_attachment_label,"Category of project's task, issue, ...","Catégorie des tâches de projet, des problèmes, ..."
-xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_commit,Commit Clauses,Commit Clauses
-xpr_project,field,"xpr_project.attachment.label,create_uid",0,Created by,Created by
-xpr_project,field,"xpr_project.routing,create_uid",0,Created by,Created by
-xpr_project,field,"xpr_project.update_message,create_uid",0,Created by,Created by
-xpr_project,field,"xpr_project.attachment.label,create_date",0,Created on,Created on
-xpr_project,field,"xpr_project.routing,create_date",0,Created on,Created on
-xpr_project,field,"xpr_project.update_message,create_date",0,Created on,Created on
-xpr_project,field,"sale.order,delivery_date",0,Delivery Date,Delivery Date
-xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_domain,Domain Form,Domain Form
-xpr_project,field,"sale.order,expected_delivery_date",0,Expected Delivery Date,Expected Delivery Date
-xpr_project,field,"xpr_project.attachment.label,id",0,ID,ID
-xpr_project,field,"xpr_project.routing,id",0,ID,ID
-xpr_project,field,"xpr_project.update_message,id",0,ID,ID
+xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_commit,Commit Clauses,Sauvegarder Clauses
+xpr_project,field,"xpr_project.attachment.label,create_uid",0,Created by,Créé par
+xpr_project,field,"xpr_project.routing,create_uid",0,Created by,Créé par
+xpr_project,field,"xpr_project.update_message,create_uid",0,Created by,Créé par
+xpr_project,field,"xpr_project.attachment.label,create_date",0,Created on,Créé le
+xpr_project,field,"xpr_project.routing,create_date",0,Created on,Créé le
+xpr_project,field,"xpr_project.update_message,create_date",0,Created on,Créé le
+xpr_project,field,"sale.order,delivery_date",0,Delivery Date,Date Livraison
+xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_domain,Domain Form,Formulaire de domaine
+xpr_project,field,"sale.order,expected_delivery_date",0,Expected Delivery Date,Date de Livraison prévue
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_isw,ISW,ISW
-xpr_project,field,"project.task,jira_issue_key",0,JIRA Issue,JIRA Issue
-xpr_project,field,"project.task,jira_template_name",0,JIRA Project Template,JIRA Project Template
-xpr_project,field,"xpr_project.routing,jira_template_name",0,JIRA Template Name,JIRA Template Name
-xpr_project,field,"xpr_project.attachment.label,write_uid",0,Last Updated by,Last Updated by
-xpr_project,field,"xpr_project.routing,write_uid",0,Last Updated by,Last Updated by
-xpr_project,field,"xpr_project.update_message,write_uid",0,Last Updated by,Last Updated by
-xpr_project,field,"xpr_project.attachment.label,write_date",0,Last Updated on,Last Updated on
-xpr_project,field,"xpr_project.routing,write_date",0,Last Updated on,Last Updated on
-xpr_project,field,"xpr_project.update_message,write_date",0,Last Updated on,Last Updated on
+xpr_project,field,"project.task,jira_issue_key",0,JIRA Issue,Entée JIRA
+xpr_project,field,"project.task,jira_template_name",0,JIRA Project Template,Patron de projet JIRA
+xpr_project,field,"xpr_project.routing,jira_template_name",0,JIRA Template Name,Patron de projet JIRA
+xpr_project,field,"xpr_project.attachment.label,write_uid",0,Last Updated by,Dernière mise à jour par
+xpr_project,field,"xpr_project.routing,write_uid",0,Last Updated by,Dernière mise à jour par
+xpr_project,field,"xpr_project.update_message,write_uid",0,Last Updated by,Dernière mise à jour par
+xpr_project,field,"xpr_project.attachment.label,write_date",0,Last Updated on,Dernière mise à jour le
+xpr_project,field,"xpr_project.routing,write_date",0,Last Updated on,Dernière mise à jour le
+xpr_project,field,"xpr_project.update_message,write_date",0,Last Updated on,Dernière mise à jour le
 xpr_project,field,"xpr_project.update_message,message",0,Message,Message
-xpr_project,field,"xpr_project.attachment.label,name",0,Name,Name
-xpr_project,model,"email.template,subject",xpr_project.template_order_bill_ready,Order ready to be billed: ${object.name},Order ready to be billed: ${object.name}
+xpr_project,field,"xpr_project.attachment.label,name",0,Name,Nom
+xpr_project,model,"email.template,subject",xpr_project.template_order_bill_ready,Order ready to be billed: ${object.name},Contrat prêt à être facturé: ${object.name}
 xpr_project,view,project.project,xpr_project.project_form,Other Info,Autres informations
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_ppa,PPA,PPA
-xpr_project,model,"email.template,body_html",xpr_project.template_project_confirmation,"Please confirm specification files for project <a href=""${object.form_url|safe}"">${object.name}</a>.","Please confirm specification files for project <a href=""${object.form_url|safe}"">${object.name}</a>."
+xpr_project,model,"email.template,body_html",xpr_project.template_project_confirmation,"Please confirm specification files for project <a href=""${object.form_url|safe}"">${object.name}</a>.","Confirmez les fichiers de spécifications pour le projet <a href=""${object.form_url|safe}"">${object.name}</a>."
 xpr_project,model,"ir.model,name",xpr_project.model_project_project,Project,Projet
-xpr_project,field,"xpr_project.routing,manager",0,Project Manager,Project Manager
+xpr_project,field,"xpr_project.routing,manager",0,Project Manager,Gestionnaire de Project
 xpr_project,field,"xpr_project.update_message,project_id",0,Project id,Project id
-xpr_project,model,"email.template,subject",xpr_project.template_project_confirmation,Project specs to approve: ${object.name},Project specs to approve: ${object.name}
+xpr_project,model,"email.template,subject",xpr_project.template_project_confirmation,Project specs to approve: ${object.name},Spécifications de projet à approuver: ${object.name}
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_questionnaire,Questionnaire,Questionnaire
-xpr_project,model,"ir.actions.act_window,name",xpr_project.routing_action,Routing,Routing
-xpr_project,model,"ir.ui.menu,name",xpr_project.routing_menu,Routing,Routing
-xpr_project,field,"project.task,rule",0,Rule,Rule
+xpr_project,model,"ir.actions.act_window,name",xpr_project.routing_action,Routing,Aiguillage
+xpr_project,model,"ir.ui.menu,name",xpr_project.routing_menu,Routing,Aiguillage
+xpr_project,field,"project.task,rule",0,Rule,Règle
 xpr_project,model,"ir.ui.menu,name",xpr_project.routing_rules_menu,Rules,Règles
 xpr_project,model,"ir.model,name",xpr_project.model_sale_order,Sales Order,Commande de vente
-xpr_project,view,project.task,xpr_project.task_form,See Specifications,See Specifications
-xpr_project,model,"email.template,subject",xpr_project.ask_update_mail,Specification request for ${object.name} from ${object.partner_id != False and object.partner_id.name or object.contact_name},Specification request for ${object.name} from ${object.partner_id != False and object.partner_id.name or object.contact_name}
-xpr_project,view,sale.order,xpr_project.view_order_form,Specifications,Specifications
-xpr_project,model,"email.template,body_html",xpr_project.ask_update_mail,"Specifications must be updated to start production of <a href=""${object.form_url|safe}"">${object.name}</a>.<br/>Production notes:<br/>${ctx.get('message','')}","Specifications must be updated to start production of <a href=""${object.form_url|safe}"">${object.name}</a>.<br/>Production notes:<br/>${ctx.get('message','')}"
+xpr_project,view,project.task,xpr_project.task_form,See Specifications,Voir Spécifications
+xpr_project,model,"email.template,subject",xpr_project.ask_update_mail,Specification request for ${object.name} from ${object.partner_id != False and object.partner_id.name or object.contact_name},Demande de spécification pour ${object.name} de ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_project,view,sale.order,xpr_project.view_order_form,Specifications,Spécifications
+xpr_project,model,"email.template,body_html",xpr_project.ask_update_mail,"Specifications must be updated to start production of <a href=""${object.form_url|safe}"">${object.name}</a>.<br/>Production notes:<br/>${ctx.get('message','')}","Les Spécifications doivent être mis à jour pour commencer la production de <a href=""${object.form_url|safe}"">${object.name}</a>.<br/>Notes de la production:<br/>${ctx.get('message','')}"
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_ttr,TTR,TTR
 xpr_project,model,"ir.model,name",xpr_project.model_project_task,Task,Tâche
-xpr_project,model,"email.template,body_html",xpr_project.template_order_bill_ready,"The following order is ready tp be billed <a href=""${object.form_url|safe}"">${object.name}</a>.","The following order is ready tp be billed <a href=""${object.form_url|safe}"">${object.name}</a>."
-xpr_project,view,sale.order,xpr_project.view_order_form,True,True
-xpr_project,view,xpr_project.update_message,xpr_project.ask_update_message,Write Approval message,Write Approval message
+xpr_project,model,"email.template,body_html",xpr_project.template_order_bill_ready,"The following order is ready tp be billed <a href=""${object.form_url|safe}"">${object.name}</a>.","Le prochain contrat est prêt à être facturé <a href=""${object.form_url|safe}"">${object.name}</a>."
+xpr_project,view,xpr_project.update_message,xpr_project.ask_update_message,Write Approval message,Écrivez un message d'approbation
