@@ -266,13 +266,15 @@ class CreateIssue(JIRARequest):
 
     # Formats reserved for the root projects only
     project_formats = {
+        'Default': {
+            #'Summary': "{object.dealercode}",
+            "Description": u"{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
+        },
         'EPM': {
             'Summary': "{object.dealercode}",
-            "Description": u"{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
         },
         'EPMCR': {
             'Summary': u"Inbound Marketing ({object.dealercode})",
-            "Description": u"{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
         },
     }
 
@@ -288,7 +290,11 @@ class CreateIssue(JIRARequest):
         field_to_format = dict(CreateIssue.formats)
 
         if parent is None:
-            field_to_format.update(CreateIssue.project_formats.get(self.jira_project_key, {}))
+            field_to_format.update(CreateIssue.project_formats.get('Default', {}))
+            field_to_format.update(
+                CreateIssue.project_formats.get(
+                    self.jira_project_key, {})
+            )
 
         custom_fields = dict()
 
@@ -298,7 +304,13 @@ class CreateIssue(JIRARequest):
             """
 
             if name in ['summary', 'description']:
-                return field_to_format[name.title()].format(object=context).strip()
+
+                format_string = field_to_format.get(name.title())
+
+                if not format_string:
+                    return None
+
+                return format_string.format(object=context).strip()
 
             if not name.startswith('customfield'):
                 return None
