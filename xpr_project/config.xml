@@ -74,4 +74,26 @@
     </record>
 
   </data>
+
+  <data>
+
+    <record model="project.project" id="project_legacy">
+        <field name="name">Legacy projects</field>
+        <field name="parent_id" ref="project.all_projects_account" />
+    </record>
+
+    <record model="project.project" id="project_legacy_epm">
+        <field name="name">Legacy EPM</field>
+        <field name="project_id" ref="project_legacy" />
+        <field name="parent_id" ref="project.all_projects_account" />
+    </record>
+
+     <record model="project.project" id="project_legacy_epmcr">
+        <field name="name">Legacy EPMCR</field>
+        <field name="project_id" ref="project_legacy" />
+        <field name="parent_id" ref="project.all_projects_account" />
+
+    </record>
+
+  </data>
 </openerp>

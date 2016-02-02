@@ -41,7 +41,7 @@ class SaleOrder(models.Model):
     def _validate_csi_contact(self):
 
         for order in self:
-            if order.csi_contact.email:
+            if not order.csi_contact or order.csi_contact.email:
                 # All is fine
                 continue
 

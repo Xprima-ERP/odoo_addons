@@ -216,9 +216,11 @@ class Task(models.Model):
                 if task.stage_id != self.env.ref('project.project_tt_development'):
                     continue
 
-                if not task.jira_issue_key:
-                    task.with_context(from_jira=True).write({
-                        'jira_issue_key': jira_request.CreateIssue(task).execute()})
+                if task.jira_issue_key:
+                    continue
+
+                task.with_context(from_jira=True).write({
+                    'jira_issue_key': jira_request.CreateIssue(task).execute()})
 
                 # Mark order as in production
                 order = self.env['sale.order'].search([
