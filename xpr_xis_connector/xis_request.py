@@ -513,14 +513,14 @@ class DealerRequest(XISRequestWrapper):
             return ''
 
         code = self.partner.phone.replace('(', '').replace(')', '')
-        code = code.replace('-', '').strip()
+        code = code.replace('-', '').replace(' ', '').strip()
 
         if code[0] == '1':
             code = code[1:4]
         else:
             code = code[:3]
 
-        if len(code.strip()) == 3:
+        if len(code) == 3:
             return code
 
         return ''
