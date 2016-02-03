@@ -268,7 +268,7 @@ class CreateIssue(JIRARequest):
     project_formats = {
         'Default': {
             #'Summary': "{object.dealercode}",
-            "Description": u"{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
+            "Description": u"{object.fields.description or ''}\n*Odoo [{object.order.name}|{object.order_url}]*"
         },
         'EPM': {
             'Summary': "{object.dealercode}",
