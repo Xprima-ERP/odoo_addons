@@ -81,34 +81,6 @@ class Solution(models.Model):
             # Assign new recordset
             solution.options_extra = extras
 
-    @api.onchange('products', 'options')
-    def _get_categories(self):
-        def collect_category(products):
-
-            default = None
-
-            priority = [self.env.ref(ref).id for ref in ['xpr_product.adwords', 'xpr_product.seo']]
-
-            for product in products:
-                # Get first category in products.
-                # Should not have more than one anyways.
-                cat = product.categ_term
-
-                if cat:
-                    if cat.id in priority:
-                        return cat
-
-                    default = cat
-
-            return default
-
-        for solution in self:
-            solution.category = collect_category(solution.products)
-
-            if not solution.category:
-                # If nothing found in products, try options
-                solution.category = collect_category(solution.options)
-
     name = fields.Char(required=True, translate=True)
     description = fields.Char(required=True, translate=True)
     list_price = fields.Float(string='Solution Price', digits=(6, 2))
@@ -143,6 +115,7 @@ class Solution(models.Model):
         digits=(6, 2),
         default=0)
 
+
 class SolutionProductLine(models.Model):
     """
     Solution line model. Permits additional info on
@@ -159,11 +132,12 @@ class SolutionProductLine(models.Model):
     solution = fields.Many2one(
         'xpr_solution_builder.solution',
         string='Solution',
+        ondelete='cascade',
         readonly=True)
 
     # Should always contain exactly 1 record.
     product = fields.Many2one(
-        'product.product', 'Product', readonly=True)
+        'product.product', 'Product', ondelete='cascade', readonly=True)
 
 
 class SolutionOptionLine(models.Model):
@@ -183,10 +157,11 @@ class SolutionOptionLine(models.Model):
     solution = fields.Many2one(
         'xpr_solution_builder.solution',
         string='Solution',
+        ondelete='cascade',
         readonly=True)
 
     # Should always contain exactly 1 record.
-    product = fields.Many2one('product.product', 'Product', readonly=True)
+    product = fields.Many2one('product.product', 'Product', ondelete='cascade', readonly=True)
 
 
 class SalesOrder(models.Model):

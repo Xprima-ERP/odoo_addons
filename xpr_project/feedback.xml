@@ -11,6 +11,13 @@
             <field name="model">project.task</field>
             <field name="function">read_jira_updates</field>
         </record>
+
+    <!--     "id","name","alias_id/id","alias_contact","alias_model","alias_model_id/id","analytic_account_id/id","alias_defaults","privacy_visibility","state","type","parent_id/id","alias_parent_model_id/id","description"
+"__export__.project_project_17","OPENERPTESTSEB - C00010","__export__.mail_alias_200","everyone","project.task","project.model_project_task","__export__.account_analytic_account_18","{'project_id': 17}","employees","In Progress","contract","project.all_projects_account","portal_project.model_project_project",""
+"__export__.project_project_18","OPENERPTESTSEB - C00010 - AdWords","__export__.mail_alias_201","everyone","project.task","project.model_project_task","__export__.account_analytic_account_19","{'project_id': 18}","employees","In Progress","contract","__export__.account_analytic_account_18","portal_project.model_project_project",""
+
+ -->
+
     </data>
 </openerp>
 

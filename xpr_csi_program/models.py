@@ -37,4 +37,20 @@ class SaleOrder(models.Model):
     def _reset_csi_contact(self):
         self.csi_contact = None
 
+    @api.onchange('csi_contact')
+    def _validate_csi_contact(self):
+
+        for order in self:
+            if not order.csi_contact or order.csi_contact.email:
+                # All is fine
+                continue
+
+            order.csi_contact = None
+            return {
+                'warning': {
+                    'title': 'Error',
+                    'message': "CSI contact must have an email. Set email of select another one."
+                }
+            }
+
     csi_contact = fields.Many2one('res.partner', 'CSI Contact Sales')
