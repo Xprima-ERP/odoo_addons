@@ -310,7 +310,10 @@ class Task(models.Model):
             order.state = 'manual'
             order.delivery_date = fields.Date.context_today(order)
 
-            # Send mail to affected project managers
+    @api.model
+    def notify_project_live(self):
+
+            # Send mail to accounting
 
             template = self.env.ref('xpr_project.template_order_bill_ready')
 

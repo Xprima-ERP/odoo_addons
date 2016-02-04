@@ -48,16 +48,17 @@ Install notes:
         'xpr_dealer',
         'xpr_xis_connector',
         'xpr_csi_program',
+        'xpr_project',
 
         # From 7.0 version
 
         # 'xpr_dealer_group', # Merged into xpr_dealer
         # 'xpr_dropdowns_values', # Merged into xpr_dealer
         # 'xpr_product_variant_filters',  # Deprecated
-        # 'project', # Abandoned, was for helpdesk.
+        # 'project', # Abandoned, was for helpdesk. Replaced with xpr_project.
         # 'xpr_hd_ticket', # Helpdesk abandoned bridge.
-        # 'sale_package_configurator', # Replaced by xpr_solution_builder
-        # 'product_custom_attributes', # Replaced by xpr_solution_builder
+        # 'sale_package_configurator', # Replaced with xpr_solution_builder
+        # 'product_custom_attributes', # Replaced with xpr_solution_builder
         #' xprima_sale_order', # Merged into xpr_solution_builder
         # 'audittrail', # auditlog seems to suffice.
 
