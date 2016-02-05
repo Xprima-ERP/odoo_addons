@@ -108,6 +108,17 @@ class JIRAParameterContextMapper(object):
     """
     Computes values for different context values available in custom value format strings.
     """
+
+    class FieldHolder(object):
+        """
+        Replaces None values with an empty string
+        """
+        def __init__(self, field):
+            self.field = field
+
+        def __getattr__(self, name):
+            return self.field.__dict__.get(name, '') or ''
+
     def __init__(self, order, issue, request):
         self.order = order.with_context(lang='en_US')
         self.partner = self.order.partner_id
@@ -117,7 +128,7 @@ class JIRAParameterContextMapper(object):
 
     @property
     def fields(self):
-        return self.issue.fields
+        return JIRAParameterContextMapper.FieldHolder(self.issue.fields)
 
     @property
     def dealercode(self):
@@ -268,13 +279,7 @@ class CreateIssue(JIRARequest):
     project_formats = {
         'Default': {
             #'Summary': "{object.dealercode}",
-            "Description": u"{object.fields.description or ''}\n*Odoo [{object.order.name}|{object.order_url}]*"
-        },
-        'EPM': {
-            'Summary': "{object.dealercode}",
-        },
-        'EPMCR': {
-            'Summary': u"Inbound Marketing ({object.dealercode})",
+            "Description": u"{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
         },
     }
 
@@ -360,20 +365,23 @@ class CreateIssue(JIRARequest):
             if m:
                 custom_fields[name] = m
 
+        # Insert dealercode in summary if dealercode keyword found.
+
+        summary = issue.fields.summary
+
+        regex = re.compile('dealercode', re.IGNORECASE)
+
+        summary = regex.sub(context.dealercode, summary)
+
+        custom_fields.update(dict(
+            summary=summary,
+        ))
+
         if parent is not None:
-            # Sub task case.
-            # Insert dealercode in summary if dealercode keyword found.
             # Indicate cloned parent
-
-            summary = issue.fields.summary
-
-            regex = re.compile('dealercode', re.IGNORECASE)
-
-            summary = regex.sub(context.dealercode, summary)
 
             custom_fields.update(dict(
                 parent={'id': parent.key},
-                summary=summary,
             ))
 
         return custom_fields
@@ -384,30 +392,22 @@ class CreateIssue(JIRARequest):
         task = self.instance
 
         order = task.env['sale.order'].search(
-            [('project_id', '=', task.project_id.parent_id.id)])
+            [('project_id', '=', task.project_id.analytic_account_id.id)])
 
         if not order:
-            _logger.info("JIRA update: Order not found for project {0}".format(
+            _logger.error("JIRA update: Order not found for project {0}".format(
                 task.project_id.name))
 
             return None
 
-        all_tasks = task.search([
-            ('project_id.parent_id', 'in', [order.project_id.id])
-        ])
+        routing = task.env['xpr_project.routing'].search([
+            ('jira_template_name', '=', task.jira_template_name)])
 
-        all_routing = task.env['xpr_project.routing'].search([
-            ('jira_template_name', 'in', [task.jira_template_name for task in all_tasks])])
+        attachement_names = set()
 
-        all_attachment_names = set()
-        own_attachement_names = set()
-
-        for route in all_routing:
+        for route in routing:
             names = set([label.name for label in route.attachment_names])
-            if route.jira_template_name == task.jira_template_name:
-                own_attachement_names = names
-
-            all_attachment_names |= names
+            attachement_names |= names
 
         self.jira_project_key = task.jira_template_name.split('-')[0]
 
@@ -425,23 +425,12 @@ class CreateIssue(JIRARequest):
 
         # Copy non empty attachments
 
-        # Attachement name must be either:
-        # - in the routing that created the task
-        # - in no other route triggered when subprojects were created.
-
-        root_project = task.env['project.project'].search([
-            ('analytic_account_id', '=', task.project_id.parent_id.id)
-        ])[0]
-
-        # Refuse attachements used by other routing but not ours.
-        refused_attatchments = all_attachment_names - own_attachement_names
-
         for attachment in task.env['ir.attachment'].search([
             ('res_model', '=', 'project.project'),
-            ('res_id', '=', root_project.id),
+            ('res_id', '=', task.project_id.analytic_account_id.id),
             ('file_size', '!=', 0)]
         ):
-            if attachment.name in refused_attatchments:
+            if attachment.name not in attachement_names:
                 continue
 
             _logger.info("JIRA add attachment {0}".format(attachment.datas_fname))

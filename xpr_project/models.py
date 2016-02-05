@@ -55,7 +55,9 @@ class SaleOrder(models.Model):
         project = self.env['project.project'].create(dict(
             name="{0} - {1}".format(order.partner_id.name, order.name),
             partner_id=order.partner_id.id,
-            date=order.starting_date,
+            date_start=fields.Date.context_today(self),
+            date=order.expected_delivery_date,
+            salesperson=order.user_id.id,
         ))
 
         order.env['project.task'].create(dict(
@@ -63,13 +65,15 @@ class SaleOrder(models.Model):
             description="Specifications must be confirmed to start production",
             project_id=project.id,
             rule='specs',
+            salesperson=order.user_id.id,
         ))
 
         # Add empty attachment for all subprojets
 
         names = set([
-            attachment.name for route in routes
-            for attachment in route.attachment_names])
+            label.name
+            for label in order.env['xpr_project.attachment.label'].search([])
+        ])
 
         for name in names:
             order.env['ir.attachment'].create(dict(
@@ -92,35 +96,6 @@ class SaleOrder(models.Model):
 
         self.env['mail.mail'].create(values)
 
-    @api.one
-    def create_sub_projects(self):
-
-        order = self
-
-        order.state = 'waiting_date'
-
-        routes = self.env['xpr_project.routing'].search([('categories', 'in', [order.category.id])])
-
-        for route in routes:
-
-            contract = self.env['project.project'].create(dict(
-                name="{0} - {1} - {2}".format(
-                    order.partner_id.name, order.name, order.category.name),
-                partner_id=order.partner_id.id,
-                user_id=route.manager.id,
-                parent_id=order.project_id.id,
-                state='open',
-                date=order.starting_date,
-            ))
-
-            order.env['project.task'].create(dict(
-                name=order.category.name,
-                description=contract.name,
-                notes=order.note,
-                project_id=contract.id,
-                jira_template_name=route.jira_template_name,
-            ))
-
     def sale_specifications(self, cr, uid, ids, context):
 
         project = self.pool.get('project.project')
@@ -135,6 +110,7 @@ class SaleOrder(models.Model):
 
     expected_delivery_date = fields.Date('Expected Delivery Date')
     delivery_date = fields.Date('Delivery Date')
+    live_date = fields.Date('Live Date')
 
 
 class AttachmentLabel(models.Model):
@@ -172,6 +148,109 @@ class Project(models.Model):
 
     _inherit = "project.project"
 
+    @api.one
+    def create_sub_tasks(self, order):
+
+        order.state = 'waiting_date'
+
+        routes = self.env['xpr_project.routing'].search([('categories', 'in', [order.category.id])])
+
+        self.state = 'open'
+
+        date_start = fields.Date.context_today(self)
+
+        for route in routes:
+
+            fields = dict(
+                user_id=route.manager.id,
+                name=order.category.name,
+                salesperson=order.user_id.id,
+                description=order.name,
+                notes=order.note,
+                project_id=self.id,
+                jira_template_name=route.jira_template_name,
+                date_start=fields.Date.context_today(self),
+                date_end=order.expected_delivery_date,
+            )
+
+            # if order.expected_delivery_date > date_start:
+            #     fields.update(dict(
+            #         date_start=date_start,
+            #         date_end=order.expected_delivery_date,
+            #     ))
+
+            order.env['project.task'].create(fields).trigger_project()
+
+    @api.multi
+    def start_project(self):
+        """
+        Triggers stuff when stage is updated
+        """
+
+        for task in self.tasks:
+
+            if task.rule == 'specs':
+                task.stage_id = self.env.ref('project.project_tt_deployment')
+            else:
+                task.stage_id = self.env.ref('project.project_tt_development')
+
+    @api.multi
+    def sale_specifications(self):
+
+        for project in self:
+            for task in project.tasks:
+
+                if task.rule == 'specs':
+                    return task.sale_specifications()
+
+    @api.multi
+    def ask_update(self):
+        """
+        Starts Wizard to get specs from rep
+        """
+        for project in self:
+            for task in project.tasks:
+
+                if task.rule == 'specs':
+                    return task.ask_update()
+
+    @api.multi
+    def set_live(self):
+        ids = [project.analytic_account_id.id for project in self]
+
+        self.env['sale.order'].search([
+            ('project_id', 'in', ids)
+        ]).write({
+            'live_date': fields.Date.context_today(self)
+        })
+
+        self.notify_project_live()
+
+    @api.model
+    def notify_project_live(self):
+
+        # Send mail to accounting
+
+        template = self.env.ref('xpr_project.template_order_bill_ready')
+
+        for project in self:
+            order = self.env['sale.order'].search([
+                ('project_id', '=', project.analytic_account_id.id)
+            ])
+
+            values = self.env['email.template'].generate_email(
+                template.id, order.id)
+
+            values['recipient_ids'] = [
+                (4, u.partner_id.id)
+                for u in self.env.ref('account.group_account_user').users
+                if u.partner_id
+            ]
+
+            self.env['mail.mail'].create(values)
+
+    salesperson = fields.Many2one('res.users', string="Salesperson")
+
     # Template helper
     @property
     def form_url(self):
@@ -193,7 +272,7 @@ class Task(models.Model):
         return project.attachment_tree_view(cr, uid, ids, context)
 
     @api.multi
-    def start_project(self):
+    def trigger_project(self):
         """
         Triggers stuff when stage is updated
         """
@@ -210,9 +289,11 @@ class Task(models.Model):
                 ])
 
                 order.write({'date_confirm': fields.Date.context_today(self)})
-                order.create_sub_projects()
+
+                task.project_id.create_sub_tasks(order)
 
             if task.rule == 'jira':
+
                 if task.stage_id != self.env.ref('project.project_tt_development'):
                     continue
 
@@ -224,7 +305,7 @@ class Task(models.Model):
 
                 # Mark order as in production
                 order = self.env['sale.order'].search([
-                    ('project_id', '=', task.project_id.parent_id.id)
+                    ('project_id', '=', task.project_id.analytic_account_id.id)
                 ])
 
                 order.state = 'production'
@@ -247,16 +328,20 @@ class Task(models.Model):
 
     @api.model
     def read_jira_updates(self):
-        tasks = self.search([('stage_id', '=', self.env.ref('project.project_tt_development').id)])
+        tasks = self.search([
+            ('stage_id', '=', self.env.ref('project.project_tt_development').id),
+            ('rule', 'in', ['jira', 'legacy'])
+        ])
 
         key_to_tasks = dict([(t.jira_issue_key, t) for t in tasks if t.jira_issue_key])
 
         updates = jira_request.BrowseTasks(self, key_to_tasks.keys()).execute() or []
 
         projects = dict()
-        parent_projects = dict()
 
         done = self.env.ref('project.project_tt_deployment')
+        development = self.env.ref('project.project_tt_development')
+        #cancel = self.env.ref('project.project_tt_cancel')
 
         for update in updates:
 
@@ -265,65 +350,45 @@ class Task(models.Model):
             if update.stage_id == target.stage_id:
                 continue
 
-            target.with_context(from_jira=True).stage_id = update.stage_id.id
+            target.with_context(from_jira=True).write({'stage_id': update.stage_id.id})
 
-            if target.stage_id == done:
+            # if update.stage_id == done:
+            #     target.date_end = fields.Date.context_today(self)
+
+            if update.stage_id != development and target.rule == 'jira':
                 projects[target.project_id.id] = target.project_id
 
         for key, project in projects.items():
-            # Sub-Projects have a single task for now.
-            project.state = 'close'
-            parent_projects[project.parent_id.id] = project.parent_id
 
-        project = self.env['project.project']
-
-        for key in parent_projects.keys():
-
-            if project.search([
-                ('parent_id', '=', key),
-                ('state', '!=', 'close')
-            ]):
-                # At least one child is not done
+            if [t for t in project.tasks if t.stage_id != done]:
+                # Not all done
                 continue
 
-            # Last subproject is done
-
-            p = project.search([
-                ('analytic_account_id', '=', key),
-                ('state', '!=', 'close')
-            ])
-
-            if not p:
-                # Already closed
-                continue
-
-            p.set_done()
+            project.set_done()
 
             # Deactivates tasks in project tree
             # p.set_template()
 
             order = self.env['sale.order'].search([
-                ('project_id', '=', key)
+                ('project_id', '=', project.analytic_account_id.id)
             ])
 
             # Order goes to next step
             order.state = 'manual'
             order.delivery_date = fields.Date.context_today(order)
 
-            # Send mail to affected project managers
+    @api.multi
+    def _jira_url(self):
+        for task in self:
 
-            template = self.env.ref('xpr_project.template_order_bill_ready')
+            if not task.jira_issue_key:
+                task.jira_url = ''
+                continue
 
-            values = self.env['email.template'].generate_email(
-                template.id, order.id)
-
-            values['recipient_ids'] = [
-                (4, u.partner_id.id)
-                for u in self.env.ref('account.group_account_user').users
-                if u.partner_id
-            ]
-
-            self.env['mail.mail'].create(values)
+            task.jira_url = '{0}/browse/{1}'.format(
+                self.env.ref('xpr_project.config_param_url').value,
+                self.jira_issue_key
+            )
 
     @api.multi
     def write(self, vals):
@@ -362,13 +427,15 @@ class Task(models.Model):
             # Not using a 'depends' decorator.
             # Update depends on actual value in db.
 
-            self.start_project()
+            self.trigger_project()
 
         return res
 
     rule = fields.Char(string="Rule", default="jira")
     jira_template_name = fields.Char(string="JIRA Project Template")
     jira_issue_key = fields.Char(string="JIRA Issue", required=False)
+    jira_url = fields.Char(string="JIRA Url", compute=_jira_url)
+    salesperson = fields.Many2one('res.users', string="Salesperson")
 
     _sql_constraints = [
         (
