@@ -157,9 +157,11 @@ class Project(models.Model):
 
         self.state = 'open'
 
+        date_start = fields.Date.context_today(self)
+
         for route in routes:
 
-            order.env['project.task'].create(dict(
+            fields = dict(
                 user_id=route.manager.id,
                 name=order.category.name,
                 salesperson=order.user_id.id,
@@ -168,8 +170,16 @@ class Project(models.Model):
                 project_id=self.id,
                 jira_template_name=route.jira_template_name,
                 date_start=fields.Date.context_today(self),
-                date_deadline=order.expected_delivery_date,
-            )).trigger_project()
+                date_end=order.expected_delivery_date,
+            )
+
+            # if order.expected_delivery_date > date_start:
+            #     fields.update(dict(
+            #         date_start=date_start,
+            #         date_end=order.expected_delivery_date,
+            #     ))
+
+            order.env['project.task'].create(fields).trigger_project()
 
     @api.multi
     def start_project(self):
@@ -213,6 +223,31 @@ class Project(models.Model):
         ]).write({
             'live_date': fields.Date.context_today(self)
         })
+
+        self.notify_project_live()
+
+    @api.model
+    def notify_project_live(self):
+
+        # Send mail to accounting
+
+        template = self.env.ref('xpr_project.template_order_bill_ready')
+
+        for project in self:
+            order = self.env['sale.order'].search([
+                ('project_id', '=', project.analytic_account_id.id)
+            ])
+
+            values = self.env['email.template'].generate_email(
+                template.id, order.id)
+
+            values['recipient_ids'] = [
+                (4, u.partner_id.id)
+                for u in self.env.ref('account.group_account_user').users
+                if u.partner_id
+            ]
+
+            self.env['mail.mail'].create(values)
 
     salesperson = fields.Many2one('res.users', string="Salesperson")
 
@@ -305,7 +340,7 @@ class Task(models.Model):
         projects = dict()
 
         done = self.env.ref('project.project_tt_deployment')
-        development = self.env.ref('project.project_tt_deployment')
+        development = self.env.ref('project.project_tt_development')
         #cancel = self.env.ref('project.project_tt_cancel')
 
         for update in updates:
@@ -315,12 +350,12 @@ class Task(models.Model):
             if update.stage_id == target.stage_id:
                 continue
 
-            target.with_context(from_jira=True).stage_id = update.stage_id.id
+            target.with_context(from_jira=True).write({'stage_id': update.stage_id.id})
 
-            if update.stage_id == done:
-                target.date_end = fields.Date.context_today(self)
+            # if update.stage_id == done:
+            #     target.date_end = fields.Date.context_today(self)
 
-            if target.stage_id != development and target.rule == 'jira':
+            if update.stage_id != development and target.rule == 'jira':
                 projects[target.project_id.id] = target.project_id
 
         for key, project in projects.items():
@@ -341,24 +376,6 @@ class Task(models.Model):
             # Order goes to next step
             order.state = 'manual'
             order.delivery_date = fields.Date.context_today(order)
-
-    @api.model
-    def notify_project_live(self):
-
-            # Send mail to accounting
-
-            template = self.env.ref('xpr_project.template_order_bill_ready')
-
-            values = self.env['email.template'].generate_email(
-                template.id, order.id)
-
-            values['recipient_ids'] = [
-                (4, u.partner_id.id)
-                for u in self.env.ref('account.group_account_user').users
-                if u.partner_id
-            ]
-
-            self.env['mail.mail'].create(values)
 
     @api.multi
     def _jira_url(self):
