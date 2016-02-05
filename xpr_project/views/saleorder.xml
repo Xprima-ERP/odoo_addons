@@ -16,6 +16,7 @@
         <field name="starting_date" position="after">
           <field name="expected_delivery_date" />
           <field name="delivery_date" readonly="1" />
+          <field name="live_date" readonly="1" />
         </field>
 
        <!--  <field name="project_id" position="after">

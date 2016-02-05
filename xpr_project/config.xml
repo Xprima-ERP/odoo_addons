@@ -53,11 +53,11 @@
 
   </data>
 
-  <data>
+  <data noupdate="1">
 
     <!-- Removing unused states from default stages -->
 
-    <record model="project.task.type" id="project.project_tt_analysis">
+<!--     <record model="project.task.type" id="project.project_tt_analysis">
         <field name="case_default">False</field>
     </record>
 
@@ -71,7 +71,7 @@
 
     <record model="project.task.type" id="project.project_tt_merge">
         <field name="case_default">False</field>
-    </record>
+    </record> -->
 
   </data>
 
