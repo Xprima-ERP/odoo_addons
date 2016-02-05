@@ -7,9 +7,14 @@
       <field name="inherit_id" ref="project.view_task_form2" />
       <field name="arch" type="xml">
 
-        <xpath expr="//group" position="inside">
+        <field name="planned_hours" position="after">
           <field name="rule"  invisible="1"/>
-        </xpath>
+          <field name="salesperson" />
+          <field name="jira_url" attrs="{'invisible': [('rule', '!=', 'jira')]}" widget="url" />
+          <field name="date_start" />
+          <field name="date_deadline" />
+          <field name="date_end" />
+        </field>
 
         <xpath expr="//page[@string='Extra Info']" position="attributes">
           <attribute name="invisible">1</attribute>
