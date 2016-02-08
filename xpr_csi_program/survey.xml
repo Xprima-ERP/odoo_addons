@@ -7,7 +7,7 @@
         <field name="model_id" ref="sale.model_sale_order" />
         <field name="auto_delete">True</field>
         <field name="email_from">no_reply@xprima.com</field>
-        <field name="email_to">${(object.user_id != False and object.user_id.email)|safe}</field>
+        <field name="email_to">ekrummen@evolio.ca</field>
         <field name="subject">CSI Survey: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
         <field name="body_html"><![CDATA[Contract <a href="${object.form_url|safe}">${object.name}</a> is approved for production. It is time to send the CSI survey to ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}]]></field>
     </record>
@@ -17,7 +17,7 @@
         <field name="model_id" ref="sale.model_sale_order" />
         <field name="auto_delete">True</field>
         <field name="email_from">no_reply@xprima.com</field>
-        <field name="email_to">${(object.user_id != False and object.user_id.email)|safe}</field>
+        <field name="email_to">ekrummen@evolio.ca</field>
         <field name="subject">CSI Recall Survey: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
         <field name="body_html"><![CDATA[Contract <a href="${object.form_url|safe}">${object.name}</a> was live on ${object.live_date != False or ''}. It is time to send the CSI recall survey to ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}]]></field>
     </record>
