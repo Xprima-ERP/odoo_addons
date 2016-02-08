@@ -52,11 +52,13 @@ class SaleOrder(models.Model):
 
         # Create project
 
+        today = fields.Date.context_today(self)
+
         project = self.env['project.project'].create(dict(
             name=u"{0} - {1}".format(order.partner_id.name, order.name),
             partner_id=order.partner_id.id,
-            date_start=fields.Date.context_today(self),
-            date=order.expected_delivery_date,
+            date_start=today,
+            date=max(order.expected_delivery_date, today),
             salesperson=order.user_id.id,
         ))
 
@@ -169,15 +171,9 @@ class Project(models.Model):
                 notes=order.note,
                 project_id=self.id,
                 jira_template_name=route.jira_template_name,
-                date_start=fields.Date.context_today(self),
-                date_end=order.expected_delivery_date,
+                date_start=date_start,
+                date_end=max(order.expected_delivery_date, date_start),
             )
-
-            # if order.expected_delivery_date > date_start:
-            #     vals.update(dict(
-            #         date_start=date_start,
-            #         date_end=order.expected_delivery_date,
-            #     ))
 
             order.env['project.task'].create(vals).trigger_project()
 

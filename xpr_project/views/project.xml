@@ -78,8 +78,8 @@
 
         <group name="group_alias" position="before">
           <group name="gantt_group">
-            <field name="date_start" />
-            <field name="date" />
+            <field name="date_start" invisible="1" />
+            <field name="date" string="Expected Delivery Date"/>
             <field name="salesperson" />
           </group>
         </group>
