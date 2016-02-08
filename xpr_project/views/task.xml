@@ -34,6 +34,8 @@
           <form string="Write Approval message">
               <group>
                   <field name="project_id" invisible="1" />
+                  <field name="salesperson" readonly="1"/>
+                  <field name="carbon_copy" widget="many2many_tags" options="{'no_create': True}" domain="[('customer', '=', False), ('is_company', '=', False)]"/>
                   <field name="message" widget="textbox" />
               </group>
 
