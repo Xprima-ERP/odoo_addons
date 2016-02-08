@@ -138,9 +138,11 @@ class SaleOrder(models.Model):
 
         status = super(SaleOrder, self).write(vals)
 
-        # Client_order_ref is an output variable from XIS. No need to feedback.
-        if 'client_order_ref' in vals:
-            vals.pop('client_order_ref')
+        # No need to feedback output fields or fields that have no effect in XIS.
+
+        for key in ['client_order_ref']:
+            if key in vals:
+                vals.pop(key)
 
         if not vals:
             return status
@@ -263,6 +265,13 @@ class Dealer(models.Model):
 
         # Make the standard call
         status = super(Dealer, self.with_context(no_xis_synch=True)).write(vals)
+
+        for key in ['assigned_user']:
+            if key in vals:
+                vals.pop(key)
+
+        if not vals:
+            return status
 
         self._post_write(post_write_data)
 

@@ -53,7 +53,7 @@ class SaleOrder(models.Model):
         # Create project
 
         project = self.env['project.project'].create(dict(
-            name="{0} - {1}".format(order.partner_id.name, order.name),
+            name=u"{0} - {1}".format(order.partner_id.name, order.name),
             partner_id=order.partner_id.id,
             date_start=fields.Date.context_today(self),
             date=order.expected_delivery_date,
@@ -161,7 +161,7 @@ class Project(models.Model):
 
         for route in routes:
 
-            fields = dict(
+            vals = dict(
                 user_id=route.manager.id,
                 name=order.category.name,
                 salesperson=order.user_id.id,
@@ -174,12 +174,12 @@ class Project(models.Model):
             )
 
             # if order.expected_delivery_date > date_start:
-            #     fields.update(dict(
+            #     vals.update(dict(
             #         date_start=date_start,
             #         date_end=order.expected_delivery_date,
             #     ))
 
-            order.env['project.task'].create(fields).trigger_project()
+            order.env['project.task'].create(vals).trigger_project()
 
     @api.multi
     def start_project(self):
@@ -323,7 +323,10 @@ class Task(models.Model):
                 'views': [[False, "form"]],
                 'target': 'new',
                 'view_id': self.env.ref('xpr_project.ask_update_message').id,
-                'context': {'project_id': task.project_id.id}
+                'context': {
+                    'project_id': task.project_id.id,
+                    'salesperson': task.salesperson.id
+                }
             }
 
     @api.model
@@ -453,6 +456,9 @@ class AskUpdateMessage(models.TransientModel):
     def _default_project(self):
         return self.env['project.project'].browse(self._context.get('project_id'))
 
+    def _default_salesperson(self):
+        return self.env['res.users'].browse(self._context.get('salesperson'))
+
     @api.one
     def ask_update(self):
 
@@ -468,11 +474,13 @@ class AskUpdateMessage(models.TransientModel):
         values = self.env['email.template'].with_context(message=self.message).generate_email(
             template.id, order.id)
 
-        destination_ids = [order.user_id.partner_id.id]
+        destination_ids = [order.user_id.partner_id.id] + [u.partner_id.id for u in self.carbon_copy]
 
         values['recipient_ids'] = [(4, pid) for pid in destination_ids]
 
         self.env['mail.mail'].create(values)
 
     project_id = fields.Many2one('project.project', default=_default_project)
+    salesperson = fields.Many2one('res.users', string="Salesperson", default=_default_salesperson)
     message = fields.Text("Message")
+    carbon_copy = fields.Many2many('res.users', string="Also to:")

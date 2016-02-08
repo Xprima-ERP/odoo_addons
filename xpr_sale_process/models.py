@@ -78,6 +78,7 @@ class SaleOrder(models.Model):
     )
 
     renew_date = fields.Date(string="Renew Date", compute=_get_renew_date, store=True)
+    date_signature = fields.Date(string="Signature Date")
 
     def check_manager_approval_needed(self):
 
@@ -198,7 +199,10 @@ class SaleOrder(models.Model):
         self.env['mail.mail'].create(values)
 
     def approve_contract(self):
-        self.write({'state': 'contract_approved'})
+        self.write({
+            'state': 'contract_approved',
+            'date_signature': fields.Date.context_today(self)
+        })
 
     # Template helper
     @property
