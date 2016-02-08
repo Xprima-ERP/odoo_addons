@@ -259,8 +259,8 @@ class CreateIssue(JIRARequest):
     # Common formats. Shared custom fields.
 
     formats = {
-        "Account Manager": u"{object.account_manager}",
-        "Province": u"{object.province}",
+        "Account Manager": "{object.account_manager}",
+        "Province": "{object.province}",
         #"PTL": "",
         "Package": "{object.package}",
         "Make": "{object.makes}",
@@ -269,9 +269,9 @@ class CreateIssue(JIRARequest):
         #"Client Status": "Active",
         # "Live Date": "{object.delivery_date}",
         "Contract Date": "{object.date_order}",
-        "Representant": u"{object.salesperson}",
+        "Representant": "{object.salesperson}",
         "Contract #": "{object.contract}",
-        "Dealer Group": u"{object.dealer_group}",
+        "Dealer Group": "{object.dealer_group}",
         "New Client": "{object.new_client}",
     }
 
@@ -279,7 +279,7 @@ class CreateIssue(JIRARequest):
     project_formats = {
         'Default': {
             #'Summary': "{object.dealercode}",
-            "Description": u"{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
+            "Description": "{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
         },
     }
 
@@ -315,7 +315,7 @@ class CreateIssue(JIRARequest):
                 if not format_string:
                     return None
 
-                return format_string.format(object=context).strip()
+                return unicode(format_string).format(object=context).strip()
 
             if not name.startswith('customfield'):
                 return None
@@ -325,7 +325,7 @@ class CreateIssue(JIRARequest):
             if meta['name'] not in field_to_format:
                 return None
 
-            formatted_value = field_to_format[meta['name']].format(object=context).strip()
+            formatted_value = unicode(field_to_format[meta['name']]).format(object=context).strip()
 
             if meta['schema']['type'] == 'date' and formatted_value:
                 # Take away possible time part
