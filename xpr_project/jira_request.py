@@ -168,7 +168,7 @@ class JIRAParameterContextMapper(object):
         if self.partner.state_id.code in ['ON', 'MB', 'AB', 'SK', 'BC']:
             return 'Cliff Denham'
 
-        return 'Dave Bélisle'
+        return u'Dave Bélisle'
 
     @property
     def package(self):
@@ -325,6 +325,7 @@ class CreateIssue(JIRARequest):
             if meta['name'] not in field_to_format:
                 return None
 
+            print '------------------', meta['name']
             formatted_value = unicode(field_to_format[meta['name']]).format(object=context).strip()
 
             if meta['schema']['type'] == 'date' and formatted_value:
