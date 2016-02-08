@@ -161,7 +161,7 @@ class Project(models.Model):
 
         for route in routes:
 
-            fields = dict(
+            vals = dict(
                 user_id=route.manager.id,
                 name=order.category.name,
                 salesperson=order.user_id.id,
@@ -174,12 +174,12 @@ class Project(models.Model):
             )
 
             # if order.expected_delivery_date > date_start:
-            #     fields.update(dict(
+            #     vals.update(dict(
             #         date_start=date_start,
             #         date_end=order.expected_delivery_date,
             #     ))
 
-            order.env['project.task'].create(fields).trigger_project()
+            order.env['project.task'].create(vals).trigger_project()
 
     @api.multi
     def start_project(self):
