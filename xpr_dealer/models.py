@@ -26,6 +26,21 @@ class Partner(models.Model):
 
     _inherit = "res.partner"
 
+    @api.onchange('code')
+    def _check_code_case(self):
+        for partner in self:
+
+            if partner.code:
+                partner.code = partner.code.strip().upper()
+
+            if not partner.code:
+                return {
+                    'warning': {
+                        'title': 'Error',
+                        'message': "Dealercode must not be empty"
+                    }
+                }
+
     dealer = fields.One2many(
         'xpr_dealer.dealer',
         'partner',
@@ -35,7 +50,7 @@ class Partner(models.Model):
     # 'xis_dc': fields.char('XIS dealer code', size=254),
     code = fields.Char('Code', size=254)  # Required for companies. Unique.
 
-    is_test = fields.Boolean('Is Test') # Indicates if this is a test dealer.
+    is_test = fields.Boolean('Is Test')  # Indicates if this is a test partner (i.e. PTL).
 
     # TODO: dealer != null
     # "is_dealer": fields.boolean("Is Dealer"),
@@ -65,13 +80,16 @@ class Users(models.Model):
     # Called by automated action
     @api.one
     def _mark_dealers(self):
-        for dealer in self.env['xpr_dealer.dealer'].search([('partner.user_id', '=', self.id)]):
-            dealer.assigned_user = self.active
+        self.env['xpr_dealer.dealer'].search(
+            [('partner.user_id', '=', self.id)]
+        ).write({
+            'assigned_user': self.active
+        })
 
 
 class Dealer(models.Model):
     """
-    Additional Parnter data.
+    Additional Partner data.
     Mandatory for EVOLIO dealers.
     """
 
@@ -356,6 +374,7 @@ class Dealer(models.Model):
             "This partner is already a dealer. Must not have duplicate definitions."
         ),
     ]
+
 
 class DealerAssign(models.TransientModel):
 

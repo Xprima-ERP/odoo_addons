@@ -80,6 +80,7 @@
           <group name="gantt_group">
             <field name="date_start" />
             <field name="date" />
+            <field name="salesperson" />
           </group>
         </group>
 

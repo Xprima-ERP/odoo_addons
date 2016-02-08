@@ -7,7 +7,7 @@
         <field name="model_id" ref="sale.model_sale_order" />
         <field name="auto_delete">True</field>
         <field name="email_from">no_reply@xprima.com</field>
-        <field name="email_to">${(object.user_id != False and object.user_id.email)|safe}</field>
+        <field name="email_to">ekrummen@evolio.ca</field>
         <field name="subject">CSI Survey: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
         <field name="body_html"><![CDATA[Contract <a href="${object.form_url|safe}">${object.name}</a> is approved for production. It is time to send the CSI survey to ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}]]></field>
     </record>
@@ -17,9 +17,9 @@
         <field name="model_id" ref="sale.model_sale_order" />
         <field name="auto_delete">True</field>
         <field name="email_from">no_reply@xprima.com</field>
-        <field name="email_to">${(object.user_id != False and object.user_id.email)|safe}</field>
+        <field name="email_to">ekrummen@evolio.ca</field>
         <field name="subject">CSI Recall Survey: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
-        <field name="body_html"><![CDATA[Contract <a href="${object.form_url|safe}">${object.name}</a> was delivered on ${object.delivery_date != False or ''}. It is time to send the CSI recall survey to ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}]]></field>
+        <field name="body_html"><![CDATA[Contract <a href="${object.form_url|safe}">${object.name}</a> was live on ${object.live_date != False or ''}. It is time to send the CSI recall survey to ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}]]></field>
     </record>
 
     <record model="ir.actions.server" id="survey_mail_action">
@@ -58,7 +58,7 @@
         <field name="model_id" ref="portal_sale.model_sale_order" />
         <field name="sequence">0</field>
         <field name="trg_date_range_type">day</field>
-        <field name="trg_date_id" ref="sale.field_sale_order_date_confirm" />
+        <field name="trg_date_id" ref="xpr_sale_process.field_sale_order_date_signature" />
         <field name="server_action_ids" eval="[(4, ref('survey_mail_action'))]"/>
         <field name="kind">on_time</field>
     </record>
@@ -70,7 +70,7 @@
         <field name="sequence">0</field>
         <field name="trg_date_range">45</field>
         <field name="trg_date_range_type">day</field>
-        <field name="trg_date_id" ref="xpr_project.field_sale_order_delivery_date" />
+        <field name="trg_date_id" ref="xpr_project.field_sale_order_live_date" />
         <field name="server_action_ids" eval="[(4, ref('recall_survey_mail_action'))]"/>
         <field name="kind">on_time</field>
     </record>

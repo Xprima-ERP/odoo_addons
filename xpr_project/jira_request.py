@@ -184,7 +184,7 @@ class JIRAParameterContextMapper(object):
         s = s[-1].split()
 
         if len(s) > 2:
-            return '{0} {1}'.format(s[0], s[1])
+            return u'{0} {1}'.format(s[0], s[1])
         elif s:
             return s[0]
 
@@ -259,8 +259,8 @@ class CreateIssue(JIRARequest):
     # Common formats. Shared custom fields.
 
     formats = {
-        "Account Manager": "{object.account_manager}",
-        "Province": "{object.province}",
+        "Account Manager": u"{object.account_manager}",
+        "Province": u"{object.province}",
         #"PTL": "",
         "Package": "{object.package}",
         "Make": "{object.makes}",
@@ -269,9 +269,9 @@ class CreateIssue(JIRARequest):
         #"Client Status": "Active",
         # "Live Date": "{object.delivery_date}",
         "Contract Date": "{object.date_order}",
-        "Representant": "{object.salesperson}",
+        "Representant": u"{object.salesperson}",
         "Contract #": "{object.contract}",
-        "Dealer Group": "{object.dealer_group}",
+        "Dealer Group": u"{object.dealer_group}",
         "New Client": "{object.new_client}",
     }
 
@@ -433,7 +433,7 @@ class CreateIssue(JIRARequest):
             if attachment.name not in attachement_names:
                 continue
 
-            _logger.info("JIRA add attachment {0}".format(attachment.datas_fname))
+            _logger.info(u"JIRA add attachment {0}".format(attachment.datas_fname))
             stream = io.StringIO(unicode(attachment.datas.decode('base64')))
             self.jira.add_attachment(story.key, stream, filename=attachment.name)
 
@@ -458,7 +458,7 @@ class CreateIssue(JIRARequest):
                 JIRAParameterContextMapper(order, task, self),
                 parent=story)
 
-            _logger.info("JIRA create task {0}".format(fields))
+            _logger.info(u"JIRA create task {0}".format(fields))
             task = self.jira.create_issue(fields=fields)
 
         return story and story.key or None
