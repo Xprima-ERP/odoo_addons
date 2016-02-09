@@ -42,6 +42,8 @@ class SaleOrder(models.Model):
 
             if date:
                 date = fields.Date.from_string(date)
+            else:
+                continue
 
             if order.category.id == self.env.ref('xpr_product.website').id:
                 delta = datetime.timedelta(days=365 * 2)
@@ -53,7 +55,9 @@ class SaleOrder(models.Model):
             order.renew_date = date
 
     def _route_account_manager(self):
-
+        """
+        Calculates account manager when routing order/order signed
+        """
         class RouteContext(object):
             def __init__(self, order):
                 self.order = order
@@ -83,6 +87,26 @@ class SaleOrder(models.Model):
 
         return None
 
+    def _expected_delivery(self, today):
+        """
+        Calculates expected delivery date when routing order/order signed
+        """
+
+        today = fields.Date.from_string(today)
+        delivery_date = today
+
+        if self.live_date:
+            delivery_date = fields.Date.from_string(self.live_date)
+        else:
+            # Might have some filters one day. For now, simply return first found.
+
+            for delay in self.env['xpr_project.delivery_delay'].search([]):
+                delivery_date = today + datetime.timedelta(days=delay.delay)
+                break
+
+        # Whatever was found, be sure it is not in the past.
+        return fields.Date.to_string(max(delivery_date, today))
+
     @api.one
     def create_project(self):
 
@@ -105,12 +129,15 @@ class SaleOrder(models.Model):
 
         today = fields.Date.context_today(self)
 
+        # Calculate expected delivery date
+        order.expected_delivery_date = order._expected_delivery(today)
+
         project = self.env['project.project'].create(dict(
             name=u"{0} - {1}".format(order.partner_id.name, order.name),
             partner_id=order.partner_id.id,
             user_id=manager and manager.id or None,
             date_start=today,
-            date=max(order.expected_delivery_date, today),
+            date=order.expected_delivery_date,
             salesperson=order.user_id.id,
             state='draft'
         ))
@@ -212,6 +239,12 @@ class AccountManager(models.Model):
     manager = fields.Many2one('res.users', string="Project Manager", required=True)
 
 
+class DeliveryDelay(models.Model):
+    _name = 'xpr_project.delivery_delay'
+
+    delay = fields.Integer(string="Delay in Days", default=60)
+
+
 class Project(models.Model):
 
     _inherit = "project.project"
@@ -236,7 +269,7 @@ class Project(models.Model):
                 project_id=self.id,
                 jira_template_name=route.jira_template_name,
                 date_start=date_start,
-                date_end=max(order.expected_delivery_date, date_start),
+                date_end=self.date,
             )
 
             order.env['project.task'].create(vals).trigger_project()

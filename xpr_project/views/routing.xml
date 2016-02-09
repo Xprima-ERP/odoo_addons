@@ -51,7 +51,7 @@
     </field>
   </record>
 
-   <record id="account_manager_form" model="ir.ui.view">
+  <record id="account_manager_form" model="ir.ui.view">
       <field name="model">xpr_project.account_manager</field>
       <field name="type">form</field>
       <field name="arch" type="xml">
@@ -79,6 +79,30 @@
     </field>
   </record>
 
+  <record id="delivery_delay_form" model="ir.ui.view">
+      <field name="model">xpr_project.delivery_delay</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form>
+        <sheet>
+          <group>
+            <field name="delay" />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+<record id="delivery_delay_tree" model="ir.ui.view">
+      <field name="model">xpr_project.delivery_delay</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="delay" />
+        </tree>
+    </field>
+  </record>
+
   <record model="ir.actions.act_window" id="routing_action">
       <field name="name">Routing</field>
       <field name="res_model">xpr_project.routing</field>
@@ -91,7 +115,11 @@
       <field name="view_mode">tree,form</field>
   </record>
 
-
+  <record model="ir.actions.act_window" id="delivery_delay_action">
+      <field name="name">Delivery Delay</field>
+      <field name="res_model">xpr_project.delivery_delay</field>
+      <field name="view_mode">tree,form</field>
+  </record>
 
   <menuitem id="routing_menu" name="Routing"
     parent="base.menu_main_pm"/>
@@ -103,6 +131,11 @@
    <menuitem id="account_manager_menu" name="Account Manager"
     parent="routing_menu"
     action="account_manager_action"/>
+
+     <menuitem id="delivery_delay_menu" name="Delivery Delay"
+    parent="routing_menu"
+    action="delivery_delay_action"/>
+
 
   </data>
 </openerp>

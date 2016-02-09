@@ -4,3 +4,7 @@ access_xpr_project_routing_all,Xprima Project Routing for All,model_xpr_project_
 access_xpr_project_routing_manager,Xprima Project Routing for Manager,model_xpr_project_routing,project.group_project_manager,1,1,1,1
 access_xpr_project_account_manager_all,Xprima Project Account Manager for All,model_xpr_project_account_manager,base.group_user,1,0,0,0
 access_xpr_project_account_manager,Xprima Project Account Manager for Manager,model_xpr_project_account_manager,project.group_project_manager,1,1,1,1
+access_xpr_project_delivery_delay_all,Xprima Project Delay Delivery for All,model_xpr_project_delivery_delay,base.group_user,1,0,0,0
+access_xpr_project_delivery_delay,Xprima Project Delay Delivery for Manager,model_xpr_project_delivery_delay,project.group_project_manager,1,1,1,1
+
+
