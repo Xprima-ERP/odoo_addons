@@ -357,8 +357,8 @@ class Task(models.Model):
 
             target.with_context(from_jira=True).write({'stage_id': update.stage_id.id})
 
-            if udpate.live_date:
-                live_tasks[target.id] = udpate.live_date
+            if update.live_date:
+                live_tasks[target.id] = update.live_date
 
             if update.cancel_date:
                 cancelled_tasks[target.id] = update.cancel_date
@@ -375,7 +375,7 @@ class Task(models.Model):
                 ('project_id', '=', project.analytic_account_id.id)
             ])
 
-            ids = set([t.id for t in project.tasks])
+            ids = set([t.id for t in project.tasks if t.rule in ['jira', 'legacy']])
 
             if ids <= set(live_tasks.keys()):
                 # All tasks are cancelled
