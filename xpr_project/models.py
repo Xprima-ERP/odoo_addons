@@ -330,10 +330,14 @@ class Task(models.Model):
 
     @api.model
     def read_jira_updates(self):
+        # Check tasks in development
+
+        done = self.env.ref('project.project_tt_deployment')
+        development = self.env.ref('project.project_tt_development')
+
         tasks = self.search([
-            ('stage_id', '!=', self.env.ref('project.project_tt_cancel').id),
+            ('stage_id', '=', development.id),
             ('rule', 'in', ['jira', 'legacy']),
-            ('live_date', '=', False)
         ])
 
         key_to_tasks = dict([(t.jira_issue_key, t) for t in tasks if t.jira_issue_key])
@@ -341,10 +345,8 @@ class Task(models.Model):
         updates = jira_request.BrowseTasks(self, key_to_tasks.keys()).execute() or []
 
         projects = dict()
-
-        done = self.env.ref('project.project_tt_deployment')
-        development = self.env.ref('project.project_tt_development')
-        #cancel = self.env.ref('project.project_tt_cancel')
+        live_tasks = dict()
+        cancelled_tasks = dict()
 
         for update in updates:
 
@@ -353,15 +355,13 @@ class Task(models.Model):
             if update.stage_id == target.stage_id:
                 continue
 
-            vals = {'stage_id': update.stage_id.id}
+            target.with_context(from_jira=True).write({'stage_id': update.stage_id.id})
 
             if udpate.live_date:
-                vals['live_date'] = udpate.live_date
+                live_tasks[target.id] = udpate.live_date
 
             if update.cancel_date:
-                vals['cancel_date'] = udpate.cancel_date
-
-            target.with_context(from_jira=True).write(vals)
+                cancelled_tasks[target.id] = update.cancel_date
 
             # if update.stage_id == done:
             #     target.date_end = fields.Date.context_today(self)
@@ -371,6 +371,20 @@ class Task(models.Model):
 
         for key, project in projects.items():
 
+            order = self.env['sale.order'].search([
+                ('project_id', '=', project.analytic_account_id.id)
+            ])
+
+            ids = set([t.id for t in project.tasks])
+
+            if ids <= set(live_tasks.keys()):
+                # All tasks are cancelled
+                order.live_date = max([live_tasks[t] for t in ids])
+
+            if ids <= set(cancelled_tasks.keys()):
+                # All tasks are cancelled
+                order.cancel_date = max([cancelled_tasks[t] for t in ids])
+
             if [t for t in project.tasks if t.stage_id != done]:
                 # Not all done
                 continue
@@ -379,10 +393,6 @@ class Task(models.Model):
 
             # Deactivates tasks in project tree
             # p.set_template()
-
-            order = self.env['sale.order'].search([
-                ('project_id', '=', project.analytic_account_id.id)
-            ])
 
             # Order goes to next step
             order.state = 'manual'

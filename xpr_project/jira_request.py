@@ -489,10 +489,29 @@ class BrowseTasks(JIRARequest):
         """
         Decorator object that exposes JIRA object as a pseudo task
         """
-        def __init__(self, env, instance):
+        def __init__(self, env, instance, jira):
             self.jira_issue_key = instance.key
-
+            self.jira = jira
             status = None
+
+            self._live_date = None
+            self._cancel_date = None
+
+            field_meta = self.jira.createmeta(
+                projectKeys=self.jira_issue_key.split('-')[0],
+                issuetypeNames=instance.fields.issuetype.name,
+                expand='projects.issuetypes.fields')['projects'][0]['issuetypes'][0]['fields']
+
+            for name, value in instance.raw['fields'].items():
+                if not name.startswith('customfield') or not value or name not in field_meta:
+                    continue
+
+                meta = field_meta[name]
+                if meta['name'] == 'Live Date':
+                    self._live_date = value
+
+                if meta['name'] == 'Cancellation Date':
+                    self._cancel_date = value
 
             if instance.fields.resolution:
                 status = instance.fields.resolution.name
@@ -508,19 +527,19 @@ class BrowseTasks(JIRARequest):
 
         @property
         def live_date(self):
-            # Name = 'Live Date'
-            #TODO: Implement this
-            return None
+            return self._live_date
 
         @property
         def cancel_date(self):
-            #Name = 'Cancellation Date'
-            #TODO: Implement this
-            return None
+            return self._cancel_date
 
     def __init__(self, instance, keys):
         super(BrowseTasks, self).__init__(instance)
         self.keys = keys
 
     def safe_execute(self):
-        return [BrowseTasks.TaskModel(self.instance.env, self.jira.issue(key)) for key in self.keys]
+        return [BrowseTasks.TaskModel(
+            self.instance.env,
+            self.jira.issue(key),
+            self.jira
+        ) for key in self.keys]
