@@ -34,6 +34,24 @@ class SaleOrder(models.Model):
         self.create_project()
         super(SaleOrder, self).approve_contract()
 
+    @api.depends('live_date')
+    def _get_renew_date(self):
+        for order in self:
+
+            date = order.live_date
+
+            if date:
+                date = fields.Date.from_string(date)
+
+            if order.category.id == self.env.ref('xpr_product.website').id:
+                delta = datetime.timedelta(days=365 * 2)
+            else:
+                continue
+
+            date = fields.Date.to_string(date + delta)
+
+            order.renew_date = date
+
     @api.one
     def create_project(self):
 
@@ -116,7 +134,7 @@ class SaleOrder(models.Model):
     delivery_date = fields.Date('Delivery Date')
     live_date = fields.Date('Live Date')
     cancel_date = fields.Date('Cancel Date')
-
+    renew_date = fields.Date(string="Renew Date", compute=_get_renew_date, store=True)
 
 class AttachmentLabel(models.Model):
     """
@@ -214,13 +232,17 @@ class Project(models.Model):
                     return task.ask_update()
 
     @api.multi
-    def set_live(self):
+    def set_live(self, date=None):
+
+        if not date:
+            date = fields.Date.context_today(self)
+
         ids = [project.analytic_account_id.id for project in self]
 
         self.env['sale.order'].search([
             ('project_id', 'in', ids)
         ]).write({
-            'live_date': fields.Date.context_today(self)
+            'live_date': date
         })
 
         self.notify_project_live()
@@ -357,8 +379,8 @@ class Task(models.Model):
 
             target.with_context(from_jira=True).write({'stage_id': update.stage_id.id})
 
-            if udpate.live_date:
-                live_tasks[target.id] = udpate.live_date
+            if update.live_date:
+                live_tasks[target.id] = update.live_date
 
             if update.cancel_date:
                 cancelled_tasks[target.id] = update.cancel_date
@@ -375,11 +397,11 @@ class Task(models.Model):
                 ('project_id', '=', project.analytic_account_id.id)
             ])
 
-            ids = set([t.id for t in project.tasks])
+            ids = set([t.id for t in project.tasks if t.rule in ['jira', 'legacy']])
 
             if ids <= set(live_tasks.keys()):
                 # All tasks are cancelled
-                order.live_date = max([live_tasks[t] for t in ids])
+                order.set_live(max([live_tasks[t] for t in ids]))
 
             if ids <= set(cancelled_tasks.keys()):
                 # All tasks are cancelled

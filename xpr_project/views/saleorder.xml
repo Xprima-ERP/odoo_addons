@@ -13,10 +13,11 @@
           <attribute name="readonly">True</attribute>
         </field>
 
-        <field name="starting_date" position="after">
+        <field name="solution" position="before">
           <field name="expected_delivery_date" />
           <field name="delivery_date" readonly="1" />
-          <field name="live_date" readonly="1" />
+          <field name="live_date" attrs="{'required': [('category','=', %(xpr_product.advertising)d)]}" />
+          <field name="renew_date" />
         </field>
 
        <!--  <field name="project_id" position="after">
@@ -33,6 +34,7 @@
         <field name="date_order" position="after">
           <field name="expected_delivery_date" />
           <field name="delivery_date"/>
+          <field name="renew_date" />
         </field>
     </field>
   </record>

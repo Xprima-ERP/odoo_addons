@@ -43,7 +43,8 @@ Contributors
 """,
     'depends': [
         'sale',
-        'xpr_product'
+        'xpr_product',
+        'xpr_project'
     ],
     'external_dependencies': {
         'python': [],
