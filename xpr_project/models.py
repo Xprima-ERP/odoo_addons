@@ -310,10 +310,9 @@ class Project(models.Model):
                     return task.ask_update()
 
     @api.multi
-    def set_live(self, date=None):
+    def set_live(self):
 
-        if not date:
-            date = fields.Date.context_today(self)
+        date = self.env.context.get("live_date", fields.Date.context_today(self))
 
         ids = [project.analytic_account_id.id for project in self]
 
@@ -479,7 +478,9 @@ class Task(models.Model):
 
             if ids <= set(live_tasks.keys()):
                 # All tasks are cancelled
-                order.set_live(max([live_tasks[t] for t in ids]))
+                project.with_context(
+                    live_date=max([live_tasks[t] for t in ids])
+                ).set_live()
 
             if ids <= set(cancelled_tasks.keys()):
                 # All tasks are cancelled
