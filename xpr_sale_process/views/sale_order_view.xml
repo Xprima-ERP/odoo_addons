@@ -66,6 +66,10 @@
                     <attribute name="options">{'no_create': True}</attribute>
                 </field>
 
+                <field name="date_order" position="after">
+                    <field name="date_signature" />
+                </field>
+
             </field>
         </record>
 
