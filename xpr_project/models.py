@@ -185,7 +185,7 @@ class Routing(models.Model):
     ]
 
 
-class AccountManager(models.model):
+class AccountManager(models.Model):
     _name = 'xpr_project.account_manager'
     _order = 'sequence'
 
