@@ -206,7 +206,7 @@
           <para style="terp_tblheader_General_Centre"><b>[[ o.state not in ['draft','sent'] and removeParentNode('para') ]] Quotation Date</b></para>
         </td>
         <td>
-          <para style="terp_tblheader_General_Centre"><b>Starting Date</b></para>
+          <para style="terp_tblheader_General_Centre"><b>Live Date</b></para>
         </td>
         <td>
           <para style="terp_tblheader_General_Centre"><b>Salesperson</b></para>
@@ -225,7 +225,7 @@
           <para style="terp_default_Centre_8">[[ formatLang(o.date_order,date = True) ]]</para>
         </td>
         <td>
-          <para style="terp_default_Centre_8">[[ formatLang(o.starting_date,date = True) ]]</para>
+          <para style="terp_default_Centre_8">[[ formatLang(o.live_date,date = True) ]]</para>
         </td>
         <td>
           <para style="terp_default_Centre_8">[[ (o.user_id and o.user_id.name) or '' ]]</para>

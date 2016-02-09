@@ -34,6 +34,24 @@ class SaleOrder(models.Model):
         self.create_project()
         super(SaleOrder, self).approve_contract()
 
+    @api.depends('live_date')
+    def _get_renew_date(self):
+        for order in self:
+
+            date = order.live_date
+
+            if date:
+                date = fields.Date.from_string(date)
+
+            if order.category.id == self.env.ref('xpr_product.website').id:
+                delta = datetime.timedelta(days=365 * 2)
+            else:
+                continue
+
+            date = fields.Date.to_string(date + delta)
+
+            order.renew_date = date
+
     @api.one
     def create_project(self):
 
@@ -116,7 +134,7 @@ class SaleOrder(models.Model):
     delivery_date = fields.Date('Delivery Date')
     live_date = fields.Date('Live Date')
     cancel_date = fields.Date('Cancel Date')
-
+    renew_date = fields.Date(string="Renew Date", compute=_get_renew_date, store=True)
 
 class AttachmentLabel(models.Model):
     """
