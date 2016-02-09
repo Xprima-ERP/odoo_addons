@@ -60,6 +60,7 @@ class SaleOrder(models.Model):
             date_start=today,
             date=max(order.expected_delivery_date, today),
             salesperson=order.user_id.id,
+            state='draft'
         ))
 
         order.env['project.task'].create(dict(
@@ -95,6 +96,7 @@ class SaleOrder(models.Model):
             template.id, project.id)
 
         values['recipient_ids'] = [(4, route.manager.partner_id.id) for route in routes]
+        values['recipient_ids'].append((4, order.user_id.partner_id.id))
 
         self.env['mail.mail'].create(values)
 
@@ -113,6 +115,7 @@ class SaleOrder(models.Model):
     expected_delivery_date = fields.Date('Expected Delivery Date')
     delivery_date = fields.Date('Delivery Date')
     live_date = fields.Date('Live Date')
+    cancel_date = fields.Date('Cancel Date')
 
 
 class AttachmentLabel(models.Model):
@@ -157,8 +160,6 @@ class Project(models.Model):
 
         routes = self.env['xpr_project.routing'].search([('categories', 'in', [order.category.id])])
 
-        self.state = 'open'
-
         date_start = fields.Date.context_today(self)
 
         for route in routes:
@@ -176,6 +177,8 @@ class Project(models.Model):
             )
 
             order.env['project.task'].create(vals).trigger_project()
+
+        self.state = 'open'
 
     @api.multi
     def start_project(self):
@@ -328,8 +331,9 @@ class Task(models.Model):
     @api.model
     def read_jira_updates(self):
         tasks = self.search([
-            ('stage_id', '=', self.env.ref('project.project_tt_development').id),
-            ('rule', 'in', ['jira', 'legacy'])
+            ('stage_id', '!=', self.env.ref('project.project_tt_cancel').id),
+            ('rule', 'in', ['jira', 'legacy']),
+            ('live_date', '=', False)
         ])
 
         key_to_tasks = dict([(t.jira_issue_key, t) for t in tasks if t.jira_issue_key])
@@ -349,7 +353,15 @@ class Task(models.Model):
             if update.stage_id == target.stage_id:
                 continue
 
-            target.with_context(from_jira=True).write({'stage_id': update.stage_id.id})
+            vals = {'stage_id': update.stage_id.id}
+
+            if udpate.live_date:
+                vals['live_date'] = udpate.live_date
+
+            if update.cancel_date:
+                vals['cancel_date'] = udpate.cancel_date
+
+            target.with_context(from_jira=True).write(vals)
 
             # if update.stage_id == done:
             #     target.date_end = fields.Date.context_today(self)
@@ -470,7 +482,11 @@ class AskUpdateMessage(models.TransientModel):
         values = self.env['email.template'].with_context(message=self.message).generate_email(
             template.id, order.id)
 
-        destination_ids = [order.user_id.partner_id.id] + [u.partner_id.id for u in self.carbon_copy]
+        destination_ids = [
+            order.user_id.partner_id.id
+        ] + [
+            u.partner_id.id for u in self.carbon_copy
+        ]
 
         values['recipient_ids'] = [(4, pid) for pid in destination_ids]
 

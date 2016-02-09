@@ -280,7 +280,8 @@ class CreateIssue(JIRARequest):
     project_formats = {
         'Default': {
             #'Summary': "{object.dealercode}",
-            "Description": "{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
+            "Description":
+            "{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
         },
     }
 
@@ -496,14 +497,26 @@ class BrowseTasks(JIRARequest):
             if instance.fields.resolution:
                 status = instance.fields.resolution.name
 
-            if status == 'Completed':
+            if status == 'Completed' or self.live_date:
                 status = 'project.project_tt_deployment'
-            elif not status:
+            elif not status and not self.cancel_date:
                 status = 'project.project_tt_development'
             else:
                 status = 'project.project_tt_cancel'
 
             self.stage_id = env.ref(status)
+
+        @property
+        def live_date(self):
+            # Name = 'Live Date'
+            #TODO: Implement this
+            return None
+
+        @property
+        def cancel_date(self):
+            #Name = 'Cancellation Date'
+            #TODO: Implement this
+            return None
 
     def __init__(self, instance, keys):
         super(BrowseTasks, self).__init__(instance)
