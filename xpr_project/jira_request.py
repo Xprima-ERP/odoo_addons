@@ -16,6 +16,7 @@
 import logging
 import io
 import re
+import urllib2
 
 _logger = logging.getLogger(__name__)
 
@@ -325,7 +326,6 @@ class CreateIssue(JIRARequest):
             if meta['name'] not in field_to_format:
                 return None
 
-            print '------------------', meta['name']
             formatted_value = unicode(field_to_format[meta['name']]).format(object=context).strip()
 
             if meta['schema']['type'] == 'date' and formatted_value:
@@ -354,7 +354,7 @@ class CreateIssue(JIRARequest):
         # Assignation loop
 
         for name, value in issue.raw['fields'].items():
-            if name not in field_meta:
+            if name == 'attachment' or name not in field_meta:
                 continue
 
             m = map_value(name)
@@ -424,11 +424,22 @@ class CreateIssue(JIRARequest):
 
         story = self.jira.create_issue(fields=fields)
 
+        # Clone attachements
+
+        for attachment in template.fields.attachment:
+            stream = io.StringIO(unicode(attachment.get()))
+
+            self.jira.add_attachment(
+                story.key,
+                stream,
+                filename=attachment.filename)
+            stream.close()
+
         # Copy non empty attachments
 
         for attachment in task.env['ir.attachment'].search([
             ('res_model', '=', 'project.project'),
-            ('res_id', '=', task.project_id.analytic_account_id.id),
+            ('res_id', '=', task.project_id.id),
             ('file_size', '!=', 0)]
         ):
             if attachment.name not in attachement_names:
@@ -437,6 +448,7 @@ class CreateIssue(JIRARequest):
             _logger.info(u"JIRA add attachment {0}".format(attachment.datas_fname))
             stream = io.StringIO(unicode(attachment.datas.decode('base64')))
             self.jira.add_attachment(story.key, stream, filename=attachment.name)
+            stream.close()
 
         # Clone tasks
 
