@@ -60,7 +60,7 @@
           <group>
             <field name="sequence" />
             <field name="rule" />
-            <field name="user_id"  />
+            <field name="manager"  />
           </group>
         </sheet>
       </form>
@@ -74,7 +74,7 @@
         <tree>
             <field name="sequence" />
             <field name="rule" />
-            <field name="user_id"  />
+            <field name="manager"  />
         </tree>
     </field>
   </record>

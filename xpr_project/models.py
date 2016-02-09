@@ -52,19 +52,34 @@ class SaleOrder(models.Model):
 
             order.renew_date = date
 
-    @api.one
-    def route_account_manager(self):
+    def _route_account_manager(self):
+
+        class RouteContext(object):
+            def __init__(self, order):
+                self.order = order
+
+            @property
+            def state(self):
+                return self.order.partner_id.state_id.code
+
         routes = self.env['xpr_project.account_manager'].search([])
 
-        context = {'ctx' : {'state' : self.state_id.code } }
+        ctx = RouteContext(self)
 
-        #if self.partner.state_id.code in ['ON', 'MB', 'AB', 'SK', 'BC']:
+        context = {'ctx': ctx}
 
         for route in routes:
-            if not route.rule or not eval(route.rule, context):
+            if not route.rule:
                 continue
 
-            return route.manager
+            try:
+                if not eval(route.rule, context):
+                    continue
+
+                return route.manager
+            except Exception as e:
+                # TODO: Log error?
+                pass
 
         return None
 
@@ -86,12 +101,14 @@ class SaleOrder(models.Model):
 
         # Create project
 
+        manager = order._route_account_manager()
+
         today = fields.Date.context_today(self)
 
         project = self.env['project.project'].create(dict(
             name=u"{0} - {1}".format(order.partner_id.name, order.name),
             partner_id=order.partner_id.id,
-            user_id=order.route_account_manager(),
+            user_id=manager and manager.id or None,
             date_start=today,
             date=max(order.expected_delivery_date, today),
             salesperson=order.user_id.id,
@@ -152,6 +169,7 @@ class SaleOrder(models.Model):
     live_date = fields.Date('Live Date')
     cancel_date = fields.Date('Cancel Date')
     renew_date = fields.Date(string="Renew Date", compute=_get_renew_date, store=True)
+
 
 class AttachmentLabel(models.Model):
     """
