@@ -232,13 +232,17 @@ class Project(models.Model):
                     return task.ask_update()
 
     @api.multi
-    def set_live(self):
+    def set_live(self, date=None):
+
+        if not date:
+            date = fields.Date.context_today(self)
+
         ids = [project.analytic_account_id.id for project in self]
 
         self.env['sale.order'].search([
             ('project_id', 'in', ids)
         ]).write({
-            'live_date': fields.Date.context_today(self)
+            'live_date': date
         })
 
         self.notify_project_live()
@@ -397,7 +401,7 @@ class Task(models.Model):
 
             if ids <= set(live_tasks.keys()):
                 # All tasks are cancelled
-                order.live_date = max([live_tasks[t] for t in ids])
+                order.set_live(max([live_tasks[t] for t in ids]))
 
             if ids <= set(cancelled_tasks.keys()):
                 # All tasks are cancelled
