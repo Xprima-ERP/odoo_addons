@@ -2,6 +2,12 @@
 <openerp>
   <data>
 
+    <record model="ir.filters" id="csi_program_filter">
+        <field name="name">CSI Program</field>
+        <field name="model_id">sale.order</field>
+        <field name="domain">[['csi_contact', '!=', False]]</field>
+    </record>
+
     <record model="email.template" id="survey_mail">
         <field name="name">CSI - Survey</field>
         <field name="model_id" ref="sale.model_sale_order" />
@@ -56,6 +62,7 @@
         <field name="name">First CSI Survey</field>
         <field name="model">sale.order</field>
         <field name="model_id" ref="portal_sale.model_sale_order" />
+         <field name="filter_id" ref="csi_program_filter" /> 
         <field name="sequence">0</field>
         <field name="trg_date_range_type">day</field>
         <field name="trg_date_id" ref="xpr_sale_process.field_sale_order_date_signature" />
@@ -67,6 +74,7 @@
         <field name="name">CSI Recall Survey</field>
         <field name="model">sale.order</field>
         <field name="model_id" ref="portal_sale.model_sale_order" />
+        <field name="filter_id" ref="csi_program_filter" /> 
         <field name="sequence">0</field>
         <field name="trg_date_range">45</field>
         <field name="trg_date_range_type">day</field>
