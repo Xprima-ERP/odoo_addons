@@ -166,10 +166,12 @@ class JIRAParameterContextMapper(object):
     @property
     def account_manager(self):
 
-        if self.partner.state_id.code in ['ON', 'MB', 'AB', 'SK', 'BC']:
-            return 'Cliff Denham'
+        manager = self.request.instance.project_id.user_id
 
-        return u'Dave Bélisle'
+        if manager:
+            return manager.name
+
+        return ''
 
     @property
     def package(self):

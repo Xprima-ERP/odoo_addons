@@ -53,6 +53,22 @@ class SaleOrder(models.Model):
             order.renew_date = date
 
     @api.one
+    def route_account_manager(self):
+        routes = self.env['xpr_project.account_manager'].search([])
+
+        context = {'ctx' : {'state' : self.state_id.code } }
+
+        #if self.partner.state_id.code in ['ON', 'MB', 'AB', 'SK', 'BC']:
+
+        for route in routes:
+            if not route.rule or not eval(route.rule, context):
+                continue
+
+            return route.manager
+
+        return None
+
+    @api.one
     def create_project(self):
 
         order = self
@@ -75,6 +91,7 @@ class SaleOrder(models.Model):
         project = self.env['project.project'].create(dict(
             name=u"{0} - {1}".format(order.partner_id.name, order.name),
             partner_id=order.partner_id.id,
+            user_id=order.route_account_manager(),
             date_start=today,
             date=max(order.expected_delivery_date, today),
             salesperson=order.user_id.id,
@@ -148,6 +165,7 @@ class AttachmentLabel(models.Model):
 class Routing(models.Model):
 
     _name = "xpr_project.routing"
+
     jira_template_name = fields.Char(string="JIRA Template Name")
     manager = fields.Many2one('res.users', string="Project Manager")
     categories = fields.Many2many(
@@ -165,6 +183,15 @@ class Routing(models.Model):
             "A route already exists with this JIRA template. Key must be unique."
         ),
     ]
+
+
+class AccountManager(models.model):
+    _name = 'xpr_project.account_manager'
+    _order = 'sequence'
+
+    sequence = fields.Integer(string="Sequence")
+    rule = fields.Char(string="Rule")
+    manager = fields.Many2one('res.users', string="Project Manager", required=True)
 
 
 class Project(models.Model):

@@ -51,11 +51,47 @@
     </field>
   </record>
 
+   <record id="account_manager_form" model="ir.ui.view">
+      <field name="model">xpr_project.account_manager</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form>
+        <sheet>
+          <group>
+            <field name="sequence" />
+            <field name="rule" />
+            <field name="user_id"  />
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+ <record id="account_manager_tree" model="ir.ui.view">
+      <field name="model">xpr_project.account_manager</field>
+      <field name="type">tree</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="sequence" />
+            <field name="rule" />
+            <field name="user_id"  />
+        </tree>
+    </field>
+  </record>
+
   <record model="ir.actions.act_window" id="routing_action">
       <field name="name">Routing</field>
       <field name="res_model">xpr_project.routing</field>
       <field name="view_mode">tree,form</field>
   </record>
+
+  <record model="ir.actions.act_window" id="account_manager_action">
+      <field name="name">Account Manager</field>
+      <field name="res_model">xpr_project.account_manager</field>
+      <field name="view_mode">tree,form</field>
+  </record>
+
+
 
   <menuitem id="routing_menu" name="Routing"
     parent="base.menu_main_pm"/>
@@ -63,6 +99,10 @@
   <menuitem id="routing_rules_menu" name="Rules"
     parent="routing_menu"
     action="routing_action"/>
+
+   <menuitem id="account_manager_menu" name="Account Manager"
+    parent="routing_menu"
+    action="account_manager_action"/>
 
   </data>
 </openerp>
