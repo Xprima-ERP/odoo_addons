@@ -80,7 +80,6 @@
 
                 <field name="amount_total" position="replace">
                     <field name="amount_all_untaxed"/>
-                    <field name="renew_date" />
                 </field>
             </field>
         </record>
@@ -165,10 +164,6 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="xpr_solution_builder.sale_order_form"/>
             <field name="arch" type="xml">
-
-                <field name="starting_date" position="after">
-                    <field name="renew_date" />
-                </field>
 
                 <xpath expr="/form/header/button[@name='cancel']" position="attributes">
                     <attribute name="states">draft,contract_not_approved,sent</attribute>

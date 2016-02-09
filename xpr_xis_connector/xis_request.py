@@ -108,6 +108,8 @@ class XisRequest():
 
         error = None
         code = ''
+        response = None
+
         try:
             response = urllib2.urlopen(req, timeout=10)
             code = response.getcode()
@@ -124,6 +126,8 @@ class XisRequest():
                 _logger.info(msg)
             raise
         finally:
+            if response:
+                response.close()
             if not result:
                 contains_error = True
             elif not error:

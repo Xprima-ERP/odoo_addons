@@ -8,7 +8,6 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <field name="client_order_ref" position="after">
-                    <field name="starting_date" attrs="{'required': [('category','=', %(xpr_product.advertising)d)]}" />
                     <field name="solution" required="1" />
                     <field name="category" invisible="1" />
                     <field name="solution_discount" />

@@ -16,6 +16,7 @@
 import logging
 import io
 import re
+import urllib2
 
 _logger = logging.getLogger(__name__)
 
@@ -168,7 +169,7 @@ class JIRAParameterContextMapper(object):
         if self.partner.state_id.code in ['ON', 'MB', 'AB', 'SK', 'BC']:
             return 'Cliff Denham'
 
-        return 'Dave Bélisle'
+        return u'Dave Bélisle'
 
     @property
     def package(self):
@@ -259,8 +260,8 @@ class CreateIssue(JIRARequest):
     # Common formats. Shared custom fields.
 
     formats = {
-        "Account Manager": u"{object.account_manager}",
-        "Province": u"{object.province}",
+        "Account Manager": "{object.account_manager}",
+        "Province": "{object.province}",
         #"PTL": "",
         "Package": "{object.package}",
         "Make": "{object.makes}",
@@ -269,9 +270,9 @@ class CreateIssue(JIRARequest):
         #"Client Status": "Active",
         # "Live Date": "{object.delivery_date}",
         "Contract Date": "{object.date_order}",
-        "Representant": u"{object.salesperson}",
+        "Representant": "{object.salesperson}",
         "Contract #": "{object.contract}",
-        "Dealer Group": u"{object.dealer_group}",
+        "Dealer Group": "{object.dealer_group}",
         "New Client": "{object.new_client}",
     }
 
@@ -279,7 +280,8 @@ class CreateIssue(JIRARequest):
     project_formats = {
         'Default': {
             #'Summary': "{object.dealercode}",
-            "Description": u"{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
+            "Description":
+            "{object.fields.description}\n*Odoo [{object.order.name}|{object.order_url}]*"
         },
     }
 
@@ -315,7 +317,7 @@ class CreateIssue(JIRARequest):
                 if not format_string:
                     return None
 
-                return format_string.format(object=context).strip()
+                return unicode(format_string).format(object=context).strip()
 
             if not name.startswith('customfield'):
                 return None
@@ -325,7 +327,7 @@ class CreateIssue(JIRARequest):
             if meta['name'] not in field_to_format:
                 return None
 
-            formatted_value = field_to_format[meta['name']].format(object=context).strip()
+            formatted_value = unicode(field_to_format[meta['name']]).format(object=context).strip()
 
             if meta['schema']['type'] == 'date' and formatted_value:
                 # Take away possible time part
@@ -353,7 +355,7 @@ class CreateIssue(JIRARequest):
         # Assignation loop
 
         for name, value in issue.raw['fields'].items():
-            if name not in field_meta:
+            if name == 'attachment' or name not in field_meta:
                 continue
 
             m = map_value(name)
@@ -423,11 +425,22 @@ class CreateIssue(JIRARequest):
 
         story = self.jira.create_issue(fields=fields)
 
+        # Clone attachements
+
+        for attachment in template.fields.attachment:
+            stream = io.StringIO(unicode(attachment.get()))
+
+            self.jira.add_attachment(
+                story.key,
+                stream,
+                filename=attachment.filename)
+            stream.close()
+
         # Copy non empty attachments
 
         for attachment in task.env['ir.attachment'].search([
             ('res_model', '=', 'project.project'),
-            ('res_id', '=', task.project_id.analytic_account_id.id),
+            ('res_id', '=', task.project_id.id),
             ('file_size', '!=', 0)]
         ):
             if attachment.name not in attachement_names:
@@ -436,6 +449,7 @@ class CreateIssue(JIRARequest):
             _logger.info(u"JIRA add attachment {0}".format(attachment.datas_fname))
             stream = io.StringIO(unicode(attachment.datas.decode('base64')))
             self.jira.add_attachment(story.key, stream, filename=attachment.name)
+            stream.close()
 
         # Clone tasks
 
@@ -475,26 +489,57 @@ class BrowseTasks(JIRARequest):
         """
         Decorator object that exposes JIRA object as a pseudo task
         """
-        def __init__(self, env, instance):
+        def __init__(self, env, instance, jira):
             self.jira_issue_key = instance.key
-
+            self.jira = jira
             status = None
+
+            self._live_date = None
+            self._cancel_date = None
+
+            field_meta = self.jira.createmeta(
+                projectKeys=self.jira_issue_key.split('-')[0],
+                issuetypeNames=instance.fields.issuetype.name,
+                expand='projects.issuetypes.fields')['projects'][0]['issuetypes'][0]['fields']
+
+            for name, value in instance.raw['fields'].items():
+                if not name.startswith('customfield') or not value or name not in field_meta:
+                    continue
+
+                meta = field_meta[name]
+                if meta['name'] == 'Live Date':
+                    self._live_date = value
+
+                if meta['name'] == 'Cancellation Date':
+                    self._cancel_date = value
 
             if instance.fields.resolution:
                 status = instance.fields.resolution.name
 
-            if status == 'Completed':
+            if status == 'Completed' or self.live_date:
                 status = 'project.project_tt_deployment'
-            elif not status:
+            elif not status and not self.cancel_date:
                 status = 'project.project_tt_development'
             else:
                 status = 'project.project_tt_cancel'
 
             self.stage_id = env.ref(status)
 
+        @property
+        def live_date(self):
+            return self._live_date
+
+        @property
+        def cancel_date(self):
+            return self._cancel_date
+
     def __init__(self, instance, keys):
         super(BrowseTasks, self).__init__(instance)
         self.keys = keys
 
     def safe_execute(self):
-        return [BrowseTasks.TaskModel(self.instance.env, self.jira.issue(key)) for key in self.keys]
+        return [BrowseTasks.TaskModel(
+            self.instance.env,
+            self.jira.issue(key),
+            self.jira
+        ) for key in self.keys]

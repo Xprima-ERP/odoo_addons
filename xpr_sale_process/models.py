@@ -9,23 +9,6 @@ class SaleOrder(models.Model):
     _name = 'sale.order'
     _inherit = "sale.order"
 
-    @api.depends('starting_date', 'date_order')
-    def _get_renew_date(self):
-        for order in self:
-
-            date = (
-                order.starting_date or
-                order.date_order)
-
-            if date:
-                date = fields.Date.from_string(date)
-            else:
-                date = datetime.datetime.now()
-
-            date = fields.Date.to_string(date + datetime.timedelta(days=365))
-
-            order.renew_date = date
-
     state = fields.Selection(
         [
             ('draft', 'Draft Quotation'),
@@ -77,7 +60,6 @@ class SaleOrder(models.Model):
         copy=True
     )
 
-    renew_date = fields.Date(string="Renew Date", compute=_get_renew_date, store=True)
     date_signature = fields.Date(string="Signature Date")
 
     def check_manager_approval_needed(self):

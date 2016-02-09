@@ -34,6 +34,24 @@ class SaleOrder(models.Model):
         self.create_project()
         super(SaleOrder, self).approve_contract()
 
+    @api.depends('live_date')
+    def _get_renew_date(self):
+        for order in self:
+
+            date = order.live_date
+
+            if date:
+                date = fields.Date.from_string(date)
+
+            if order.category.id == self.env.ref('xpr_product.website').id:
+                delta = datetime.timedelta(days=365 * 2)
+            else:
+                continue
+
+            date = fields.Date.to_string(date + delta)
+
+            order.renew_date = date
+
     @api.one
     def create_project(self):
 
@@ -52,12 +70,15 @@ class SaleOrder(models.Model):
 
         # Create project
 
+        today = fields.Date.context_today(self)
+
         project = self.env['project.project'].create(dict(
             name=u"{0} - {1}".format(order.partner_id.name, order.name),
             partner_id=order.partner_id.id,
-            date_start=fields.Date.context_today(self),
-            date=order.expected_delivery_date,
+            date_start=today,
+            date=max(order.expected_delivery_date, today),
             salesperson=order.user_id.id,
+            state='draft'
         ))
 
         order.env['project.task'].create(dict(
@@ -93,6 +114,7 @@ class SaleOrder(models.Model):
             template.id, project.id)
 
         values['recipient_ids'] = [(4, route.manager.partner_id.id) for route in routes]
+        values['recipient_ids'].append((4, order.user_id.partner_id.id))
 
         self.env['mail.mail'].create(values)
 
@@ -111,7 +133,8 @@ class SaleOrder(models.Model):
     expected_delivery_date = fields.Date('Expected Delivery Date')
     delivery_date = fields.Date('Delivery Date')
     live_date = fields.Date('Live Date')
-
+    cancel_date = fields.Date('Cancel Date')
+    renew_date = fields.Date(string="Renew Date", compute=_get_renew_date, store=True)
 
 class AttachmentLabel(models.Model):
     """
@@ -155,8 +178,6 @@ class Project(models.Model):
 
         routes = self.env['xpr_project.routing'].search([('categories', 'in', [order.category.id])])
 
-        self.state = 'open'
-
         date_start = fields.Date.context_today(self)
 
         for route in routes:
@@ -169,17 +190,13 @@ class Project(models.Model):
                 notes=order.note,
                 project_id=self.id,
                 jira_template_name=route.jira_template_name,
-                date_start=fields.Date.context_today(self),
-                date_end=order.expected_delivery_date,
+                date_start=date_start,
+                date_end=max(order.expected_delivery_date, date_start),
             )
 
-            # if order.expected_delivery_date > date_start:
-            #     vals.update(dict(
-            #         date_start=date_start,
-            #         date_end=order.expected_delivery_date,
-            #     ))
-
             order.env['project.task'].create(vals).trigger_project()
+
+        self.state = 'open'
 
     @api.multi
     def start_project(self):
@@ -215,13 +232,17 @@ class Project(models.Model):
                     return task.ask_update()
 
     @api.multi
-    def set_live(self):
+    def set_live(self, date=None):
+
+        if not date:
+            date = fields.Date.context_today(self)
+
         ids = [project.analytic_account_id.id for project in self]
 
         self.env['sale.order'].search([
             ('project_id', 'in', ids)
         ]).write({
-            'live_date': fields.Date.context_today(self)
+            'live_date': date
         })
 
         self.notify_project_live()
@@ -331,9 +352,14 @@ class Task(models.Model):
 
     @api.model
     def read_jira_updates(self):
+        # Check tasks in development
+
+        done = self.env.ref('project.project_tt_deployment')
+        development = self.env.ref('project.project_tt_development')
+
         tasks = self.search([
-            ('stage_id', '=', self.env.ref('project.project_tt_development').id),
-            ('rule', 'in', ['jira', 'legacy'])
+            ('stage_id', '=', development.id),
+            ('rule', 'in', ['jira', 'legacy']),
         ])
 
         key_to_tasks = dict([(t.jira_issue_key, t) for t in tasks if t.jira_issue_key])
@@ -341,10 +367,8 @@ class Task(models.Model):
         updates = jira_request.BrowseTasks(self, key_to_tasks.keys()).execute() or []
 
         projects = dict()
-
-        done = self.env.ref('project.project_tt_deployment')
-        development = self.env.ref('project.project_tt_development')
-        #cancel = self.env.ref('project.project_tt_cancel')
+        live_tasks = dict()
+        cancelled_tasks = dict()
 
         for update in updates:
 
@@ -355,6 +379,12 @@ class Task(models.Model):
 
             target.with_context(from_jira=True).write({'stage_id': update.stage_id.id})
 
+            if update.live_date:
+                live_tasks[target.id] = update.live_date
+
+            if update.cancel_date:
+                cancelled_tasks[target.id] = update.cancel_date
+
             # if update.stage_id == done:
             #     target.date_end = fields.Date.context_today(self)
 
@@ -362,6 +392,20 @@ class Task(models.Model):
                 projects[target.project_id.id] = target.project_id
 
         for key, project in projects.items():
+
+            order = self.env['sale.order'].search([
+                ('project_id', '=', project.analytic_account_id.id)
+            ])
+
+            ids = set([t.id for t in project.tasks if t.rule in ['jira', 'legacy']])
+
+            if ids <= set(live_tasks.keys()):
+                # All tasks are cancelled
+                order.set_live(max([live_tasks[t] for t in ids]))
+
+            if ids <= set(cancelled_tasks.keys()):
+                # All tasks are cancelled
+                order.cancel_date = max([cancelled_tasks[t] for t in ids])
 
             if [t for t in project.tasks if t.stage_id != done]:
                 # Not all done
@@ -371,10 +415,6 @@ class Task(models.Model):
 
             # Deactivates tasks in project tree
             # p.set_template()
-
-            order = self.env['sale.order'].search([
-                ('project_id', '=', project.analytic_account_id.id)
-            ])
 
             # Order goes to next step
             order.state = 'manual'
@@ -474,7 +514,11 @@ class AskUpdateMessage(models.TransientModel):
         values = self.env['email.template'].with_context(message=self.message).generate_email(
             template.id, order.id)
 
-        destination_ids = [order.user_id.partner_id.id] + [u.partner_id.id for u in self.carbon_copy]
+        destination_ids = [
+            order.user_id.partner_id.id
+        ] + [
+            u.partner_id.id for u in self.carbon_copy
+        ]
 
         values['recipient_ids'] = [(4, pid) for pid in destination_ids]
 
