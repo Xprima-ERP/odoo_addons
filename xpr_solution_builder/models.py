@@ -280,9 +280,6 @@ class SalesOrder(models.Model):
     solution = fields.Many2one(
         'xpr_solution_builder.solution', string='Solution')
 
-    # TODO: Move data in live_date, delete field
-    starting_date = fields.Date('Starting Date')
-
     solution_discount = fields.Float(
         string='Solution Discount ($)', digits=(6, 2))
 

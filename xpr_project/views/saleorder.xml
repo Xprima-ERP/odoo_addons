@@ -14,7 +14,7 @@
         </field>
 
         <field name="solution" position="before">
-          <field name="expected_delivery_date" />
+          <field name="expected_delivery_date" readonly="1" />
           <field name="delivery_date" readonly="1" />
           <field name="live_date" attrs="{'required': [('category','=', %(xpr_product.advertising)d)]}" />
           <field name="renew_date" />
