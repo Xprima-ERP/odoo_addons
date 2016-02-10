@@ -66,7 +66,7 @@ xpr_project,model,"ir.ui.menu,name",xpr_project.account_manager_menu,Account Man
 xpr_project,field,"xpr_project.delivery_delay,write_uid",0,Last Updated by,Dernière mise à jour par
 xpr_project,view,project.project,xpr_project.project_form,Close Project,Fermer le projet
 xpr_project,model,"ir.actions.act_window,name",xpr_project.delivery_delay_action,Delivery Delay,Delai de livraison
-xpr_project,view,project.project,xpr_project.project_form,Approve,Approver
+xpr_project,view,project.project,xpr_project.project_form,Approve,Approuvé
 xpr_project,field,"sale.order,cancel_date",0,Cancel Date,Date d'annulation
 xpr_project,field,"xpr_project.delivery_delay,create_uid",0,Created by,Créé par
 xpr_project,field,"xpr_project.account_manager,manager",0,Project Manager,Gestionnaire de projet
