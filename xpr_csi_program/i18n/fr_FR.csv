@@ -2,7 +2,7 @@ module,type,name,res_id,src,value
 xpr_csi_program,field,"res.partner,csi_contact_am",0,CSI Contact A.M.,Contact ISC Gestionnaire de Compte
 xpr_csi_program,field,"sale.order,csi_contact",0,CSI Contact Sales,Contact ISC Ventes
 xpr_csi_program,model,"ir.model,name",xpr_csi_program.model_res_partner,Partner,Partenaire
-xpr_csi_program,model,"ir.model,name",xpr_csi_program.model_sale_order,Sales Order,Bon de commande
+xpr_csi_program,model,"ir.model,name",xpr_csi_program.model_sale_order,Sales Order,Commande de vente
 xpr_csi_program,model,"ir.actions.server,name",xpr_csi_program.survey_mail_action,First CSI Survey,Premier Sondage ISC
 xpr_csi_program,model,"email.template,subject",xpr_csi_program.recall_survey_mail,CSI Recall Survey: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name},CSI Recall Survey: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}
 xpr_csi_program,model,"email.template,body_html",xpr_csi_program.recall_survey_mail,"Contract <a href=""${object.form_url|safe}"">${object.name}</a> was live on ${object.live_date != False or ''}. It is time to send the CSI recall survey to ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}","Contract <a href=""${object.form_url|safe}"">${object.name}</a> was live on ${object.live_date != False or ''}. It is time to send the CSI recall survey to ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}"
