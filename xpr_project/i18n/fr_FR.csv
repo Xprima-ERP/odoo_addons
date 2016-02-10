@@ -61,7 +61,9 @@ xpr_project,field,"xpr_project.delivery_delay,create_date",0,Created on,Crée le
 xpr_project,view,project.project,xpr_project.project_form,Is Live,En ligne
 xpr_project,field,"project.task,salesperson",0,Salesperson,Vendeur
 xpr_project,model,"ir.actions.act_window,name",xpr_project.account_manager_action,Account Manager,Gestionnaire de compte
-xpr_project,field,"sale.order,live_date",0,Live Date,Date de fonction
+xpr_project,field,"sale.order,live_date",0,Live Date,Date de mise en ligne
+xpr_project,field,"sale.order,expected_delivery_date",0,Expected Delivery Date,Date de livraison prévue
+xpr_project,field,"sale.order,delivery_date",0,Delivery Date,Date de livraison
 xpr_project,model,"ir.ui.menu,name",xpr_project.account_manager_menu,Account Manager,Gestionnaire de compte
 xpr_project,field,"xpr_project.delivery_delay,write_uid",0,Last Updated by,Dernière mise à jour par
 xpr_project,view,project.project,xpr_project.project_form,Close Project,Fermer le projet
