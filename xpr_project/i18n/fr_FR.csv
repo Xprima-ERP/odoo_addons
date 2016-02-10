@@ -58,7 +58,7 @@ xpr_project,view,project.task,xpr_project.task_form,Expected Delivery Date,Date 
 xpr_project,view,project.project,xpr_project.project_form,See Specifications,Voir Spécifications
 xpr_project,field,"project.project,salesperson",0,Salesperson,Vendeur
 xpr_project,field,"xpr_project.delivery_delay,create_date",0,Created on,Crée le
-xpr_project,view,project.project,xpr_project.project_form,Is Live,En Fonction
+xpr_project,view,project.project,xpr_project.project_form,Is Live,En ligne
 xpr_project,field,"project.task,salesperson",0,Salesperson,Vendeur
 xpr_project,model,"ir.actions.act_window,name",xpr_project.account_manager_action,Account Manager,Gestionnaire de compte
 xpr_project,field,"sale.order,live_date",0,Live Date,Date de fonction
@@ -76,7 +76,7 @@ xpr_project,view,project.project,xpr_project.project_form,New Project Based on T
 xpr_project,field,"xpr_project.delivery_delay,delay",0,Delay in Days,Delai en jours
 xpr_project,field,"xpr_project.delivery_delay,write_date",0,Last Updated on,Dernière mise à jour
 xpr_project,field,"xpr_project.account_manager,sequence",0,Sequence,Sequence
-xpr_project,help,"sale.order,live_date",0,Goods are used by customer at this date. Delivery deadline. Beginning of billing process.,Les biens sont en fonction à cette date. Date limite de livraison. Début de facturation.
+xpr_project,help,"sale.order,live_date",0,Goods are used by customer at this date. Delivery deadline. Beginning of billing process.,Les biens sont en ligne à cette date. Date limite de livraison. Début de facturation.
 xpr_project,model,"ir.ui.menu,name",xpr_project.delivery_delay_menu,Delivery Delay,Délai de livraison
 xpr_project,field,"xpr_project.account_manager,write_uid",0,Last Updated by,Dernière mise à jour par
 xpr_project,view,project.project,xpr_project.project_form,Expected Delivery Date,Date de livraison attendue
