@@ -191,11 +191,25 @@ class SaleOrder(models.Model):
         projects_ids = project.search(cr, uid, [('analytic_account_id', 'in', ids)])
         return project.attachment_tree_view(cr, uid, projects_ids, context)
 
-    expected_delivery_date = fields.Date('Expected Delivery Date')
-    delivery_date = fields.Date('Delivery Date')
-    live_date = fields.Date('Live Date')
-    cancel_date = fields.Date('Cancel Date')
-    renew_date = fields.Date(string="Renew Date", compute=_get_renew_date, store=True)
+    expected_delivery_date = fields.Date(
+        'Expected Delivery Date',
+        help="Goods are meant to be available at this date.")
+
+    delivery_date = fields.Date(
+        'Delivery Date',
+        help="Goods are available at this date.")
+
+    live_date = fields.Date(
+        'Live Date',
+        help="Goods are used by customer at this date. Delivery deadline. Beginning of billing process.")
+
+    cancel_date = fields.Date(
+        'Cancel Date',
+        help="Signed contract was cancelled at this date.")
+
+    renew_date = fields.Date(
+        string="Renew Date", compute=_get_renew_date, store=True,
+        help="Contract expires. Time to replace or upgrade it.")
 
 
 class AttachmentLabel(models.Model):
