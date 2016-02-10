@@ -50,7 +50,7 @@
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
             <field name="subject">Advertisment quotation to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
-            <field name="body_html"><![CDATA[You must check the advertisment availability for quotation <a href="${object.form_url|safe}">${object.name}</a>.<br/>Salesperson notes:<br/>${ctx.get('message','')}]]></field>
+            <field name="body_html"><![CDATA[Please validate advertising availability for:&nbsp;<a href="${object.form_url|safe}">${object.name}</a>.<br>Salesperson notes:<br>${ctx.get('message','')}]]></field>
         </record>
 
         <record model="email.template" id="quotation_availability_refused">
