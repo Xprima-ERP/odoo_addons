@@ -201,7 +201,8 @@ class SaleOrder(models.Model):
 
     live_date = fields.Date(
         'Live Date',
-        help="Goods are used by customer at this date. Delivery deadline. Beginning of billing process.")
+        help="Goods are used by customer at this date. "
+        "Delivery deadline. Beginning of billing process.")
 
     cancel_date = fields.Date(
         'Cancel Date',
@@ -210,6 +211,24 @@ class SaleOrder(models.Model):
     renew_date = fields.Date(
         string="Renew Date", compute=_get_renew_date, store=True,
         help="Contract expires. Time to replace or upgrade it.")
+
+
+class Attachment(models.Model):
+
+    _inherit = 'ir.attachment'
+
+    @api.one
+    def file_open(self):
+        """
+        Copied from _file_read in super class
+        Returns a file handle instead of the data
+        """
+        full_path = self._full_path(self.store_fname)
+
+        try:
+            return open(full_path, 'rb')
+        except IOError:
+            return None
 
 
 class AttachmentLabel(models.Model):
