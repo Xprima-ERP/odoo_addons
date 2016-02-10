@@ -54,3 +54,39 @@ xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_lab
 xpr_project,model,"ir.model,name",xpr_project.model_project_task,Task,Tâche
 xpr_project,model,"email.template,body_html",xpr_project.template_order_bill_ready,"The following order is ready tp be billed <a href=""${object.form_url|safe}"">${object.name}</a>.","Le prochain contrat est prêt à être facturé <a href=""${object.form_url|safe}"">${object.name}</a>."
 xpr_project,view,xpr_project.update_message,xpr_project.ask_update_message,Write Approval message,Écrivez un message d'approbation
+xpr_project,view,project.task,xpr_project.task_form,Expected Delivery Date,Date de livraison prévue
+xpr_project,view,project.project,xpr_project.project_form,See Specifications,Voir Spécifications
+xpr_project,field,"project.project,salesperson",0,Salesperson,Vendeur
+xpr_project,field,"xpr_project.delivery_delay,create_date",0,Created on,Crée le
+xpr_project,view,project.project,xpr_project.project_form,Is Live,En Fonction
+xpr_project,field,"project.task,salesperson",0,Salesperson,Vendeur
+xpr_project,model,"ir.actions.act_window,name",xpr_project.account_manager_action,Account Manager,Gestionnaire de compte
+xpr_project,field,"sale.order,live_date",0,Live Date,Date de fonction
+xpr_project,model,"ir.ui.menu,name",xpr_project.account_manager_menu,Account Manager,Gestionnaire de compte
+xpr_project,field,"xpr_project.delivery_delay,write_uid",0,Last Updated by,Dernière mise à jour par
+xpr_project,view,project.project,xpr_project.project_form,Close Project,Fermer le projet
+xpr_project,model,"ir.actions.act_window,name",xpr_project.delivery_delay_action,Delivery Delay,Delai de livraison
+xpr_project,view,project.project,xpr_project.project_form,Approve,Approver
+xpr_project,field,"sale.order,cancel_date",0,Cancel Date,Date d'annulation
+xpr_project,field,"xpr_project.delivery_delay,create_uid",0,Created by,Créé par
+xpr_project,field,"xpr_project.account_manager,manager",0,Project Manager,Gestionnaire de projet
+xpr_project,help,"sale.order,cancel_date",0,Signed contract was cancelled at this date.,Contrat signé fut annulé à cette date.
+xpr_project,view,project.project,xpr_project.project_form,Ask Update,Demander une mise à jour
+xpr_project,view,project.project,xpr_project.project_form,New Project Based on Template,Nouveau projet basé sur un modèle
+xpr_project,field,"xpr_project.delivery_delay,delay",0,Delay in Days,Delai en jours
+xpr_project,field,"xpr_project.delivery_delay,write_date",0,Last Updated on,Dernière mise à jour
+xpr_project,field,"xpr_project.account_manager,sequence",0,Sequence,Sequence
+xpr_project,help,"sale.order,live_date",0,Goods are used by customer at this date. Delivery deadline. Beginning of billing process.,Les biens sont en fonction à cette date. Date limite de livraison. Début de facturation.
+xpr_project,model,"ir.ui.menu,name",xpr_project.delivery_delay_menu,Delivery Delay,Délai de livraison
+xpr_project,field,"xpr_project.account_manager,write_uid",0,Last Updated by,Dernière mise à jour par
+xpr_project,view,project.project,xpr_project.project_form,Expected Delivery Date,Date de livraison attendue
+xpr_project,field,"xpr_project.account_manager,create_date",0,Created on,Créé le
+xpr_project,view,sale.order,xpr_project.sale_order_search,Order Month,Mois de commande
+xpr_project,field,"xpr_project.account_manager,rule",0,Rule,Règle
+xpr_project,field,"xpr_project.update_message,salesperson",0,Salesperson,Vendeur
+xpr_project,field,"xpr_project.account_manager,write_date",0,Last Updated on,Dernière mise à jour
+xpr_project,view,sale.order,xpr_project.sale_order_search,Renewal Month,Mois de renouvellement
+xpr_project,help,"sale.order,expected_delivery_date",0,Goods are meant to be available at this date.,Les biens doivent être disponibles à cette date.
+xpr_project,field,"xpr_project.update_message,carbon_copy",0,Also to:,Aussi à:
+xpr_project,help,"sale.order,delivery_date",0,Goods are available at this date.,Les biens sont disponibles à cette date.
+
