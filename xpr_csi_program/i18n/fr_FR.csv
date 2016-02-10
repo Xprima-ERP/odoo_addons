@@ -2,4 +2,14 @@ module,type,name,res_id,src,value
 xpr_csi_program,field,"res.partner,csi_contact_am",0,CSI Contact A.M.,Contact ISC Gestionnaire de Compte
 xpr_csi_program,field,"sale.order,csi_contact",0,CSI Contact Sales,Contact ISC Ventes
 xpr_csi_program,model,"ir.model,name",xpr_csi_program.model_res_partner,Partner,Partenaire
-xpr_csi_program,model,"ir.model,name",xpr_csi_program.model_sale_order,Sales Order,Bon de commande
+xpr_csi_program,model,"ir.model,name",xpr_csi_program.model_sale_order,Sales Order,Commande de vente
+xpr_csi_program,model,"ir.actions.server,name",xpr_csi_program.survey_mail_action,First CSI Survey,Premier Sondage ISC
+xpr_csi_program,model,"ir.actions.server,help",xpr_csi_program.survey_mail_action,Sends First CSI Survey,Envoie le premier sondage ISC
+xpr_csi_program,model,"ir.actions.server,name",xpr_csi_program.recall_survey_mail_action,CSI Recall Survey,Sondage de rappel ISC
+xpr_csi_program,model,"ir.actions.server,help",xpr_csi_program.recall_survey_mail_action,Sends CSI Recall Survey,Envoie le sondage de rappel ISC
+xpr_csi_program,model,"ir.filters,name",xpr_csi_program.csi_program_filter,CSI Program,Programme ISC
+xpr_csi_program,model,"email.template,subject",xpr_csi_program.survey_mail,CSI Survey: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name},Sondage ISC : ${object.name} pour ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_csi_program,model,"email.template,body_html",xpr_csi_program.survey_mail,"Contract <a href=""${object.form_url|safe}"">${object.name}</a> is signed. Please send the CSI survey to: ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}","Contrat <a href=""${object.form_url|safe}"">${object.name}</a> est signé. Envoyer le sondage ISC à: ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}"
+xpr_csi_program,model,"email.template,subject",xpr_csi_program.recall_survey_mail,Reminder - CSI Survey: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name},Rappel - ISC Sondage: ${object.name} pour ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_csi_program,model,"email.template,body_html",xpr_csi_program.recall_survey_mail,"The contract <a href=""${object.form_url|safe}"">${object.name}</a> has been live since: ${object.live_date != False an object.live_date or ''}&nbsp;<div>If applicable, please resend the CSI survey to: ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}</div>","Le contrat <a href=""${object.form_url|safe}"">${object.name}</a> est livré depuis: ${object.live_date != False and object.live_date or ''}&nbsp;<div>Si appliquable, envoyer à nouveau à: ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}</div>"
+
