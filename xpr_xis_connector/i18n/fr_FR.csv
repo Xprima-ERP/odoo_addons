@@ -66,10 +66,9 @@ xpr_xis_connector,field,"xpr_xis_connector.dealer.region,region_code",0,Region C
 xpr_xis_connector,field,"res.partner.category,region",0,Region Info,Info sur la région
 xpr_xis_connector,model,"ir.actions.act_window,name",xpr_xis_connector.region_action,Regions,Régions
 xpr_xis_connector,model,"ir.ui.menu,name",xpr_xis_connector.dealer_region_menu,Regions,Régions
-xpr_xis_connector,field,"sale.order,renew_date",0,Renew Date,Date de renouvellement
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_rocky_mountain_house_res_partner_category,Rocky Mountain House (div#9),Rocky Mountain House (div#9)
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_saguenay_lac_st_jean_res_partner_category,Saguenay/Lac-St-Jean,Saguenay/Lac-St-Jean
-xpr_xis_connector,model,"ir.model,name",xpr_xis_connector.model_sale_order,Sales Order,Bon de commande
+xpr_xis_connector,model,"ir.model,name",xpr_xis_connector.model_sale_order,Sales Order,Commande de vente
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_sarnia_res_partner_category,Sarnia,Sarnia
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_sault_ste_marie_res_partner_category,Sault Ste. Marie,Sault Ste-Marie
 xpr_xis_connector,model,"res.partner.category,name",xpr_xis_connector.category_dealer_region_slave_lake_res_partner_category,Slave Lake (div #17),Slave Lake (div #17)
