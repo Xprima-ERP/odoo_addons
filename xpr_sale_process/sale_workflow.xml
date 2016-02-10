@@ -49,7 +49,7 @@
             <field name="auto_delete">True</field>
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
-            <field name="subject">Advertisment quotation to approve: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="subject">Advertisment quotation to approve: ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
             <field name="body_html"><![CDATA[Please validate advertising availability for:&nbsp;<a href="${object.form_url|safe}">${object.name}</a>.<br>Salesperson notes:<br>${ctx.get('message','')}]]></field>
         </record>
 
@@ -59,8 +59,8 @@
             <field name="auto_delete">True</field>
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_to">${(object.user_id.email or '')|safe}</field>
-            <field name="subject">Advertising Not available: ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
-            <field name="body_html"><![CDATA[The advertising quotation was declined: <a href="${object.form_url|safe}">${object.name}</a><br/>Advertising team notes:<br/>${ctx.get('message','')}]]></field>
+            <field name="subject">Advertising Unavailable: ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[Advertising is unavailable for: <a href="${object.form_url|safe}">${object.name}</a><br>Advertising team notes:<br>${ctx.get('message','')}]]></field>
         </record>
 
         <record model="email.template" id="quotation_manager_approval_mail">
@@ -69,8 +69,8 @@
             <field name="auto_delete">True</field>
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
-            <field name="subject">Quotation discount to approve: ${object.name} for ${object.partner_id! = False and object.partner_id.name or object.contact_name}</field>
-            <field name="body_html"><![CDATA[This quotation has to be approved for discounts <a href="${object.form_url|safe}">${object.name}</a>.]]></field>
+            <field name="subject">Discount Approval Request: ${object.name} for ${object.partner_id! = False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[Please validate discount(s) for:&nbsp;<a href="${object.form_url|safe}">${object.name}</a>]]></field>
         </record>
 
         <record model="email.template" id="quotation_availability_reopen_mail">
@@ -79,8 +79,8 @@
             <field name="auto_delete">True</field>
             <field name="lang">${object.partner_id.lang}</field>
             <field name="email_from">${(object.user_id.email or '')|safe}</field>
-            <field name="subject">Reopened quotation in availability check: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
-            <field name="body_html"><![CDATA[This quotation in availability check has been reopened <a href="${object.form_url|safe}">${object.name}</a>]]></field>
+            <field name="subject">Quotation Reopened: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+            <field name="body_html"><![CDATA[This quotation in availability check has been reopened:&nbsp;<a href="${object.form_url|safe}">${object.name}</a>]]></field>
         </record>
 
         <record id="view_availability_check_message" model="ir.ui.view">
