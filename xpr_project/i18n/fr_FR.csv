@@ -19,7 +19,6 @@ xpr_project,field,"xpr_project.routing,create_date",0,Created on,Créé le
 xpr_project,field,"xpr_project.update_message,create_date",0,Created on,Créé le
 xpr_project,field,"sale.order,delivery_date",0,Delivery Date,Date Livraison
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_domain,Domain Form,Formulaire de domaine
-xpr_project,field,"sale.order,expected_delivery_date",0,Expected Delivery Date,Date de Livraison prévue
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_isw,ISW,ISW
 xpr_project,field,"project.task,jira_issue_key",0,JIRA Issue,Entée JIRA
 xpr_project,field,"project.task,jira_template_name",0,JIRA Project Template,Patron de projet JIRA
@@ -54,7 +53,7 @@ xpr_project,view,sale.order,xpr_project.view_order_form,Specifications,Spécific
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_ttr,TTR,TTR
 xpr_project,model,"ir.model,name",xpr_project.model_project_task,Task,Tâche
 xpr_project,view,xpr_project.update_message,xpr_project.ask_update_message,Write Approval message,Écrivez un message d'approbation
-xpr_project,view,project.task,xpr_project.task_form,Expected Delivery Date,Date de livraison prévue
+xpr_project,view,project.task,xpr_project.task_form,Expected Delivery Date,Date de livraison attendue
 xpr_project,view,project.project,xpr_project.project_form,See Specifications,Voir Spécifications
 xpr_project,field,"project.project,salesperson",0,Salesperson,Vendeur
 xpr_project,field,"xpr_project.delivery_delay,create_date",0,Created on,Crée le
@@ -62,7 +61,7 @@ xpr_project,view,project.project,xpr_project.project_form,Is Live,En ligne
 xpr_project,field,"project.task,salesperson",0,Salesperson,Vendeur
 xpr_project,model,"ir.actions.act_window,name",xpr_project.account_manager_action,Account Manager,Gestionnaire de compte
 xpr_project,field,"sale.order,live_date",0,Live Date,Date de mise en ligne
-xpr_project,field,"sale.order,expected_delivery_date",0,Expected Delivery Date,Date de livraison prévue
+xpr_project,field,"sale.order,expected_delivery_date",0,Expected Delivery Date,Date de livraison attendue
 xpr_project,field,"sale.order,delivery_date",0,Delivery Date,Date de livraison
 xpr_project,model,"ir.ui.menu,name",xpr_project.account_manager_menu,Account Manager,Gestionnaire de compte
 xpr_project,field,"xpr_project.delivery_delay,write_uid",0,Last Updated by,Dernière mise à jour par
