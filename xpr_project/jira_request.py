@@ -17,6 +17,7 @@ import logging
 import io
 import re
 import urllib2
+import datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -491,13 +492,28 @@ class BrowseTasks(JIRARequest):
         """
         Decorator object that exposes JIRA object as a pseudo task
         """
-        def __init__(self, env, instance, jira):
-            self.jira_issue_key = instance.key
+        def __init__(self, env, key, jira):
+            from jira.exceptions import JIRAError
+
+            self.jira_issue_key = key
             self.jira = jira
             status = None
 
             self._live_date = None
             self._cancel_date = None
+
+            try:
+                instance = self.jira.issue(self.jira_issue_key)
+            except JIRAError as e:
+                if e.text != 'Issue Does Not Exist':
+                    raise
+
+                # Issue was probably destroyed. Read it as cancellation.
+                self._cancel_date = str(datetime.date.today())
+                self.stage_id = env.ref('project.project_tt_cancel')
+                return
+
+            # Issue was read successfuly.
 
             field_meta = self.jira.createmeta(
                 projectKeys=self.jira_issue_key.split('-')[0],
@@ -542,6 +558,6 @@ class BrowseTasks(JIRARequest):
     def safe_execute(self):
         return [BrowseTasks.TaskModel(
             self.instance.env,
-            self.jira.issue(key),
+            key,
             self.jira
         ) for key in self.keys]
