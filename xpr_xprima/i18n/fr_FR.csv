@@ -7,10 +7,10 @@ sale,model,"ir.actions.act_window,help",sale.action_orders,"<p class=""oe_view_n
                     quotation, sales order, delivery, invoicing and payment.
                 </p>
             ","<p class=""oe_view_nocontent_create"">
-Cliquez pour créer une soumission qui peut être converti en bon de commande.
+Cliquez pour créer une soumission qui peut être converti en commande de vente.
 </p><p>
 Odoo vous aidera à gérer efficacement le flux de vente complet:
-soumission, bon de commande, livraison, facturation et paiement.
+soumission, commande de vente, livraison, facturation et paiement.
 </p>
             "
 sale,model,"ir.actions.act_window,help",sale.act_res_partner_2_sale_order,"<p class=""oe_view_nocontent_create"">
@@ -25,10 +25,10 @@ sale,model,"ir.actions.act_window,help",sale.act_res_partner_2_sale_order,"<p cl
                 of the sales order.
               </p>
             ","<p class=""oe_view_nocontent_create"">
-Cliquez pour créer une soumission ou bon de commande pour ce client.
+Cliquez pour créer une soumission ou commande de vente pour ce client.
 </p><p>
 Odoo vous aidera à gérer efficacement le flux de vente complet:
-soumission, bon de commande, livraison, facturation et paiement.
+soumission, commande de vente, livraison, facturation et paiement.
 </p><p>
 La fonctionnalité sociale vous aide à organiser des discussions sur chaque commande, et permet à votre client de garder trace de l'évolution de la commande.
 </p>
@@ -41,10 +41,10 @@ sale,model,"ir.actions.act_window,help",sale.action_orders_salesteams,"<p class=
                 quotation, sales order, delivery, invoicing and payment.
               </p>
             ","<p class=""oe_view_nocontent_create"">
-Cliquez pour créer une soumission qui pourra être converti en bon de commande.
+Cliquez pour créer une soumission qui pourra être converti en commande de vente.
 </p><p>
 Odoo vous aidera à gérer efficacement le flux de vente complet:
-soumission, bon de commande, livraison, facturation et paiement.
+soumission, commande de vente, livraison, facturation et paiement.
 </p>
             "
 sale,model,"ir.actions.act_window,help",sale.action_quotations,"<p class=""oe_view_nocontent_create"">

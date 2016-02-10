@@ -26,3 +26,5 @@ xpr_report,report,xpr_report.report_saleorder,0,Unit Price,Prix unitaire
 xpr_report,report,xpr_report.report_saleorder,0,VAT,TVA
 xpr_report,report,xpr_report.report_saleorder,0,Your Reference,Votre référence
 xpr_report,model,"ir.model,name",xpr_report.model_res_company,Companies,Sociétés
+xpr_report,report,xpr_report.report_saleorder,0,Total,Total
+xpr_report,report,xpr_report.report_saleorder,0,Live Date,Date de mise en ligne
