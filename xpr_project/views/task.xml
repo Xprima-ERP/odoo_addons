@@ -15,7 +15,7 @@
         <field name="planned_hours" position="after">
           <field name="rule"  invisible="1"/>
           <field name="salesperson" />
-          <field name="date_start" invisible="1" />
+          <field name="date_start" />
           <field name="date_end" string="Expected Delivery Date"/>
           <field name="jira_url" attrs="{'invisible': [('rule', '!=', 'jira')]}" widget="url" />
         </field>

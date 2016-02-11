@@ -19,7 +19,6 @@ xpr_project,field,"xpr_project.routing,create_date",0,Created on,Créé le
 xpr_project,field,"xpr_project.update_message,create_date",0,Created on,Créé le
 xpr_project,field,"sale.order,delivery_date",0,Delivery Date,Date Livraison
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_domain,Domain Form,Formulaire de domaine
-xpr_project,field,"sale.order,expected_delivery_date",0,Expected Delivery Date,Date de Livraison prévue
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_isw,ISW,ISW
 xpr_project,field,"project.task,jira_issue_key",0,JIRA Issue,Entée JIRA
 xpr_project,field,"project.task,jira_template_name",0,JIRA Project Template,Patron de projet JIRA
@@ -61,7 +60,9 @@ xpr_project,field,"xpr_project.delivery_delay,create_date",0,Created on,Crée le
 xpr_project,view,project.project,xpr_project.project_form,Is Live,En ligne
 xpr_project,field,"project.task,salesperson",0,Salesperson,Vendeur
 xpr_project,model,"ir.actions.act_window,name",xpr_project.account_manager_action,Account Manager,Gestionnaire de compte
-xpr_project,field,"sale.order,live_date",0,Live Date,Date de fonction
+xpr_project,field,"sale.order,live_date",0,Live Date,Date de mise en ligne
+xpr_project,field,"sale.order,expected_delivery_date",0,Expected Delivery Date,Date de livraison prévue
+xpr_project,field,"sale.order,delivery_date",0,Delivery Date,Date de livraison
 xpr_project,model,"ir.ui.menu,name",xpr_project.account_manager_menu,Account Manager,Gestionnaire de compte
 xpr_project,field,"xpr_project.delivery_delay,write_uid",0,Last Updated by,Dernière mise à jour par
 xpr_project,view,project.project,xpr_project.project_form,Close Project,Fermer le projet
@@ -79,7 +80,7 @@ xpr_project,field,"xpr_project.account_manager,sequence",0,Sequence,Sequence
 xpr_project,help,"sale.order,live_date",0,Goods are used by customer at this date. Delivery deadline. Beginning of billing process.,Les biens sont en ligne à cette date. Date limite de livraison. Début de facturation.
 xpr_project,model,"ir.ui.menu,name",xpr_project.delivery_delay_menu,Delivery Delay,Délai de livraison
 xpr_project,field,"xpr_project.account_manager,write_uid",0,Last Updated by,Dernière mise à jour par
-xpr_project,view,project.project,xpr_project.project_form,Expected Delivery Date,Date de livraison attendue
+xpr_project,view,project.project,xpr_project.project_form,Expected Delivery Date,Date de livraison prévue
 xpr_project,field,"xpr_project.account_manager,create_date",0,Created on,Créé le
 xpr_project,view,sale.order,xpr_project.sale_order_search,Order Month,Mois de commande
 xpr_project,field,"xpr_project.account_manager,rule",0,Rule,Règle

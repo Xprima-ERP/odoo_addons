@@ -66,7 +66,7 @@
                 </field>
 
                 <field name="date_order" position="after">
-                    <field name="date_signature" />
+                    <field name="date_signature" readonly="1" />
                 </field>
 
             </field>
