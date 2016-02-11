@@ -148,6 +148,8 @@ class SaleOrder(models.Model):
             project_id=project.id,
             rule='specs',
             salesperson=order.user_id.id,
+            date_start=today,
+            date_end=project.date,
         ))
 
         # Add empty attachment for all subprojets
