@@ -369,7 +369,7 @@ class Project(models.Model):
 
         self.notify_project_live()
 
-    @api.model
+    @api.multi
     def notify_project_live(self):
 
         # Send mail to accounting
@@ -377,6 +377,7 @@ class Project(models.Model):
         template = self.env.ref('xpr_project.template_order_bill_ready')
 
         for project in self:
+
             order = self.env['sale.order'].search([
                 ('project_id', '=', project.analytic_account_id.id)
             ])
@@ -516,9 +517,6 @@ class Task(models.Model):
 
             if update.live_date:
                 live_tasks[target.id] = update.live_date
-            elif project_key == 'EPMCR' and update.stage_id == done:
-                # Move this rule into some config: Completed = Live
-                live_tasks[target.id] = fields.Date.context_today(self)
 
             if update.cancel_date:
                 cancelled_tasks[target.id] = update.cancel_date
