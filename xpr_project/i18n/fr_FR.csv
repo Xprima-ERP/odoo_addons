@@ -17,7 +17,6 @@ xpr_project,field,"xpr_project.update_message,create_uid",0,Created by,Créé pa
 xpr_project,field,"xpr_project.attachment.label,create_date",0,Created on,Créé le
 xpr_project,field,"xpr_project.routing,create_date",0,Created on,Créé le
 xpr_project,field,"xpr_project.update_message,create_date",0,Created on,Créé le
-xpr_project,field,"sale.order,delivery_date",0,Delivery Date,Date Livraison
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_domain,Domain Form,Formulaire de domaine
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_isw,ISW,ISW
 xpr_project,field,"project.task,jira_issue_key",0,JIRA Issue,Entée JIRA
