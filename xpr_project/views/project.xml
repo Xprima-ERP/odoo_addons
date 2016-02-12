@@ -80,7 +80,7 @@
           <group name="gantt_group">
             <field name="date_start" invisible="1" />
             <field name="specs_approval_date" />
-            <field name="date" string="Expected Delivery Date" help="Delivery date estimated by project manager."/>
+            <field name="date" string="Expected Delivery Date" help="Estimated delivery date of the project."/>
             <field name="salesperson" />
           </group>
         </group>

@@ -199,15 +199,15 @@ class SaleOrder(models.Model):
 
     expected_delivery_date = fields.Date(
         'Expected Delivery Date',
-        help="Delivery date estimated by project manager.")
+        help="Estimated delivery date of the project.")
 
     delivery_date = fields.Date(
         'Delivery Date',
-        help="Date when project is done and ready to go live and for customer tests.")
+        help="Actual delivery date of the project.")
 
     live_date = fields.Date(
         'Live Date',
-        help="Date when project is being used by customer.")
+        help="Approval date of the specifications provided to begin the project.")
 
     cancel_date = fields.Date(
         'Cancel Date',
@@ -215,7 +215,7 @@ class SaleOrder(models.Model):
 
     renew_date = fields.Date(
         'Renew Date', compute=_get_renew_date, store=True,
-        help="Contract renew date.")
+        help="Date of contract renewal.")
 
 
 class Attachment(models.Model):
@@ -388,11 +388,11 @@ class Project(models.Model):
     salesperson = fields.Many2one(
         'res.users',
         string="Salesperson",
-        help="Source of contract and provider of specs.",
-        )
+        help="Source of contract and provider of specs.")
+
     specs_approval_date = fields.Date(
         string="Specs Approval Date",
-        help="Project manager accepted the specs on this date. Project may start.",
+        help="Approval date of the specifications provided to begin the project.",
         readonly=True)
 
     # Template helper
@@ -609,7 +609,7 @@ class Task(models.Model):
     salesperson = fields.Many2one('res.users', string="Salesperson")
     specs_approval_date = fields.Date(
         string="Specs Approval Date",
-        help="Project manager accepted the specs on this date. Project may start.",
+        help="Approval date of the specifications provided to begin the project.",
         readonly=True,
         related="project_id.specs_approval_date")
 

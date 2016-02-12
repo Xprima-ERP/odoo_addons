@@ -62,11 +62,11 @@ xpr_project,field,"project.task,salesperson",0,Salesperson,Vendeur
 xpr_project,model,"ir.actions.act_window,name",xpr_project.account_manager_action,Account Manager,Gestionnaire de compte
 xpr_project,field,"sale.order,live_date",0,Live Date,Date de mise en ligne
 xpr_project,field,"sale.order,expected_delivery_date",0,Expected Delivery Date,Date de livraison prévue
-xpr_project,help,"sale.order,expected_delivery_date",0,Delivery date estimated by project manager.,Date de livraison estimée par le gestionnaire du projet.
+xpr_project,help,"sale.order,expected_delivery_date",0,Estimated delivery date of the project.,Date de livraison estimée du projet.
 xpr_project,field,"sale.order,delivery_date",0,Delivery Date,Date de livraison
-xpr_project,help,"sale.order,delivery_date",0,Date when project is done and ready to go live and for customer tests.,Date de livraison du projet au client pour fin de vérification, avant d'être mis en ligne.
+xpr_project,help,"sale.order,delivery_date",0,Actual delivery date of the project.,Date de livraison réelle du projet.
 xpr_project,field,"sale.order,renew_date",0,Renew Date,Date de renouvellement
-xpr_project,help,"sale.order,renew_date",0,Contract renew date.,Date de renouvellement du contrat.
+xpr_project,help,"sale.order,renew_date",0,Date of contract renewal.,Date de renouvellement du contrat.
 xpr_project,model,"ir.ui.menu,name",xpr_project.account_manager_menu,Account Manager,Gestionnaire de compte
 xpr_project,field,"xpr_project.delivery_delay,write_uid",0,Last Updated by,Dernière mise à jour par
 xpr_project,view,project.project,xpr_project.project_form,Close Project,Fermer le projet
@@ -81,7 +81,7 @@ xpr_project,view,project.project,xpr_project.project_form,New Project Based on T
 xpr_project,field,"xpr_project.delivery_delay,delay",0,Delay in Days,Delai en jours
 xpr_project,field,"xpr_project.delivery_delay,write_date",0,Last Updated on,Dernière mise à jour
 xpr_project,field,"xpr_project.account_manager,sequence",0,Sequence,Sequence
-xpr_project,help,"sale.order,live_date",0,Date when project is being used by customer.,"Date de mise en ligne de la solution, suite aux corrections demandées par le client."
+xpr_project,help,"sale.order,live_date",0,Approval date of the specifications provided to begin the project.,Date de mise en ligne officielle du projet.
 xpr_project,model,"ir.ui.menu,name",xpr_project.delivery_delay_menu,Delivery Delay,Délai de livraison
 xpr_project,field,"xpr_project.account_manager,write_uid",0,Last Updated by,Dernière mise à jour par
 xpr_project,view,project.project,xpr_project.project_form,Expected Delivery Date,Date de livraison prévue
@@ -93,9 +93,9 @@ xpr_project,field,"xpr_project.account_manager,write_date",0,Last Updated on,Der
 xpr_project,view,sale.order,xpr_project.sale_order_search,Renewal Month,Mois de renouvellement
 xpr_project,field,"xpr_project.update_message,carbon_copy",0,Also to:,Aussi à:
 xpr_project,view,project.task,xpr_project.task_tree,Expected Delivery Date,Date de livraison prévue
-xpr_project,help,"project.project,specs_approval_date",0,Project manager accepted the specs on this date. Project may start.,Date où les gestionnaires acceptent les specs fournies pour débuter le projet.
+xpr_project,help,"project.project,specs_approval_date",0,Approval date of the specifications provided to begin the project.,Date d'approbation des spécifications fournies pour débuter le projet.
 xpr_project,field,"project.project,specs_approval_date",0,Specs Approval Date,Date d'approbation des specs
-xpr_project,help,"project.task,specs_approval_date",0,Project manager accepted the specs on this date. Project may start.,Date où les gestionnaires acceptent les specs fournies pour débuter le projet.
+xpr_project,help,"project.task,specs_approval_date",0,Approval date of the specifications provided to begin the project.,Date d'approbation des spécifications fournies pour débuter le projet.
 xpr_project,field,"project.task,specs_approval_date",0,Specs Approval Date,Date d'approbation des specs
-xpr_project,view,project.task,xpr_project.task_form,Delivery date estimated by project manager.,Date de livraison estimée par le gestionnaire du projet.
-xpr_project,view,project.project,xpr_project.project_form,Delivery date estimated by project manager.,Date de livraison estimée par le gestionnaire du projet.
+xpr_project,view,project.task,xpr_project.task_form,Estimated delivery date of the project.,Date de livraison estimée du projet.
+xpr_project,view,project.project,xpr_project.project_form,Estimated delivery date of the project.,Date de livraison estimée du projet.
