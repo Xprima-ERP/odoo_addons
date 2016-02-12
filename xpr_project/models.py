@@ -34,7 +34,7 @@ class SaleOrder(models.Model):
         self.create_project()
         super(SaleOrder, self).approve_contract()
 
-    @api.depends('live_date')
+    @api.depends('live_date', 'order_line')
     def _get_renew_date(self):
         for order in self:
 
@@ -48,7 +48,16 @@ class SaleOrder(models.Model):
             if order.category.id == self.env.ref('xpr_product.website').id:
                 delta = datetime.timedelta(days=365 * 2)
             else:
-                continue
+                months = [
+                    line.product_uom_qty for line in order.order_line
+                    if line.product_id.id and not line.product_id.one_time_payment
+                ]
+
+                if months:
+                    delta = datetime.timedelta(days=31 * max(months))
+                else:
+                    # Not supposed to get here. Default to 2 years.
+                    delta = datetime.timedelta(days=365 * 2)
 
             date = fields.Date.to_string(date + delta)
 
@@ -356,9 +365,7 @@ class Project(models.Model):
 
         self.env['sale.order'].search([
             ('project_id', 'in', ids)
-        ]).write({
-            'live_date': date
-        })
+        ]).live_date = date
 
         self.notify_project_live()
 
@@ -388,8 +395,8 @@ class Project(models.Model):
     salesperson = fields.Many2one(
         'res.users',
         string="Salesperson",
-        help="Source of contract and provider of specs.",
-        )
+        help="Source of contract and provider of specs.")
+
     specs_approval_date = fields.Date(
         string="Specs Approval Date",
         help="Project manager accepted the specs on this date. Project may start.",
@@ -505,14 +512,16 @@ class Task(models.Model):
 
             target.with_context(from_jira=True).write({'stage_id': update.stage_id.id})
 
+            project_key = update.jira_issue_key.split('-')[0]
+
             if update.live_date:
                 live_tasks[target.id] = update.live_date
+            elif project_key == 'EPMCR' and update.stage_id == done:
+                # Move this rule into some config: Completed = Live
+                live_tasks[target.id] = fields.Date.context_today(self)
 
             if update.cancel_date:
                 cancelled_tasks[target.id] = update.cancel_date
-
-            # if update.stage_id == done:
-            #     target.date_end = fields.Date.context_today(self)
 
             if update.stage_id != development and target.rule == 'jira':
                 projects[target.project_id.id] = target.project_id
