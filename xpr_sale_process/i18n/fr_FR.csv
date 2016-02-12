@@ -119,6 +119,5 @@ xpr_sale_process,model,"res.groups,name",xpr_sale_process.rep_ui,Use Rep UI,Util
 xpr_sale_process,view,xpr_sale_process.availability_message,xpr_sale_process.view_availability_check_message,Write Approval message,Écrire le message d'approbation
 xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_crm_make_sale,Make sales,Conclure les ventes
 xpr_sale_process,field,"sale.order,date_signature",0,Signature Date,Date de signature
-xpr_sale_process,help,"sale.order,date_signature",0,Terms of contract are accepted by customer.,Termes du contrat sont acceptés par le client.
-
-
+xpr_sale_process,help,"sale.order,date_signature",0,Date when quotation is approved and signed and by customer.,Date de la création de la soumission.
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_remove_create_form,Quotation creation date,Date de création de la soumission.
