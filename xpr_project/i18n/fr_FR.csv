@@ -47,7 +47,7 @@ xpr_project,field,"project.task,rule",0,Rule,Règle
 xpr_project,model,"ir.ui.menu,name",xpr_project.routing_rules_menu,Rules,Règles
 xpr_project,model,"ir.model,name",xpr_project.model_sale_order,Sales Order,Commande de vente
 xpr_project,view,project.task,xpr_project.task_form,See Specifications,Voir Spécifications
-xpr_project,model,"email.template,subject",xpr_project.ask_update_mail,Specifications Revision: ${object.name} from ${object.partner_id != False and object.partner_id.name or object.contact_name},Révision de Specifications : ${object.name} de ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_project,model,"email.template,subject",xpr_project.ask_update_mail,Specifications Revision: ${object.name} from ${object.partner_id != False and object.partner_id.name or object.contact_name},Révision de Spécifications : ${object.name} de ${object.partner_id != False and object.partner_id.name or object.contact_name}
 xpr_project,model,"email.template,body_html",xpr_project.ask_update_mail,"Specifications must be updated to start the production of:&nbsp;<a href=""${object.form_url|safe}"">${object.name}</a>.<br>Production notes:<br>${ctx.get('message','')}","Les spécifications doivent être mis à jour pour commencer la production de :&nbsp;<a href=""${object.form_url|safe}"">${object.name}</a>.<br>Notes de la production :<br>${ctx.get('message','')}"
 xpr_project,view,sale.order,xpr_project.view_order_form,Specifications,Spécifications
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_ttr,TTR,TTR
@@ -56,13 +56,18 @@ xpr_project,view,xpr_project.update_message,xpr_project.ask_update_message,Write
 xpr_project,view,project.task,xpr_project.task_form,Expected Delivery Date,Date de livraison prévue
 xpr_project,view,project.project,xpr_project.project_form,See Specifications,Voir Spécifications
 xpr_project,field,"project.project,salesperson",0,Salesperson,Vendeur
+xpr_project,help,"project.project,salesperson",0,Source of contract and provider of specs.,Source du contrat et des specs.
 xpr_project,field,"xpr_project.delivery_delay,create_date",0,Created on,Crée le
 xpr_project,view,project.project,xpr_project.project_form,Is Live,En ligne
 xpr_project,field,"project.task,salesperson",0,Salesperson,Vendeur
 xpr_project,model,"ir.actions.act_window,name",xpr_project.account_manager_action,Account Manager,Gestionnaire de compte
 xpr_project,field,"sale.order,live_date",0,Live Date,Date de mise en ligne
 xpr_project,field,"sale.order,expected_delivery_date",0,Expected Delivery Date,Date de livraison prévue
+xpr_project,help,"sale.order,expected_delivery_date",0,Delivery date estimated by project manager.,Date de livraison estimée par le gestionnaire du projet.
 xpr_project,field,"sale.order,delivery_date",0,Delivery Date,Date de livraison
+xpr_project,help,"sale.order,delivery_date",0,Date when project is done and ready to go live and for customer tests.,Date de livraison du projet au client pour fin de vérification, avant d'être mis en ligne.
+xpr_project,field,"sale.order,renew_date",0,Renew Date,Date de renouvellement
+xpr_project,help,"sale.order,renew_date",0,Contract renew date.,Date de renouvellement du contrat.
 xpr_project,model,"ir.ui.menu,name",xpr_project.account_manager_menu,Account Manager,Gestionnaire de compte
 xpr_project,field,"xpr_project.delivery_delay,write_uid",0,Last Updated by,Dernière mise à jour par
 xpr_project,view,project.project,xpr_project.project_form,Close Project,Fermer le projet
@@ -77,7 +82,7 @@ xpr_project,view,project.project,xpr_project.project_form,New Project Based on T
 xpr_project,field,"xpr_project.delivery_delay,delay",0,Delay in Days,Delai en jours
 xpr_project,field,"xpr_project.delivery_delay,write_date",0,Last Updated on,Dernière mise à jour
 xpr_project,field,"xpr_project.account_manager,sequence",0,Sequence,Sequence
-xpr_project,help,"sale.order,live_date",0,Goods are used by customer at this date. Delivery deadline. Beginning of billing process.,Les biens sont en ligne à cette date. Date limite de livraison. Début de facturation.
+xpr_project,help,"sale.order,live_date",0,Date when project is being used by customer.,"Date de mise en ligne de la solution, suite aux corrections demandées par le client."
 xpr_project,model,"ir.ui.menu,name",xpr_project.delivery_delay_menu,Delivery Delay,Délai de livraison
 xpr_project,field,"xpr_project.account_manager,write_uid",0,Last Updated by,Dernière mise à jour par
 xpr_project,view,project.project,xpr_project.project_form,Expected Delivery Date,Date de livraison prévue
@@ -87,7 +92,11 @@ xpr_project,field,"xpr_project.account_manager,rule",0,Rule,Règle
 xpr_project,field,"xpr_project.update_message,salesperson",0,Salesperson,Vendeur
 xpr_project,field,"xpr_project.account_manager,write_date",0,Last Updated on,Dernière mise à jour
 xpr_project,view,sale.order,xpr_project.sale_order_search,Renewal Month,Mois de renouvellement
-xpr_project,help,"sale.order,expected_delivery_date",0,Goods are meant to be available at this date.,Les biens doivent être disponibles à cette date.
 xpr_project,field,"xpr_project.update_message,carbon_copy",0,Also to:,Aussi à:
-xpr_project,help,"sale.order,delivery_date",0,Goods are available at this date.,Les biens sont disponibles à cette date.
-
+xpr_project,view,project.task,xpr_project.task_tree,Expected Delivery Date,Date de livraison prévue
+xpr_project,help,"project.project,specs_approval_date",0,Project manager accepted the specs on this date. Project may start.,Date où les gestionnaires acceptent les specs fournies pour débuter le projet.
+xpr_project,field,"project.project,specs_approval_date",0,Specs Approval Date,Date d'approbation des specs
+xpr_project,help,"project.task,specs_approval_date",0,Project manager accepted the specs on this date. Project may start.,Date où les gestionnaires acceptent les specs fournies pour débuter le projet.
+xpr_project,field,"project.task,specs_approval_date",0,Specs Approval Date,Date d'approbation des specs
+xpr_project,view,project.task,xpr_project.task_form,Delivery date estimated by project manager.,Date de livraison estimée par le gestionnaire du projet.
+xpr_project,view,project.project,xpr_project.project_form,Delivery date estimated by project manager.,Date de livraison estimée par le gestionnaire du projet.

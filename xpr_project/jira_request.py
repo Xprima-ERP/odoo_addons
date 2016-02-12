@@ -548,16 +548,23 @@ class BrowseTasks(JIRARequest):
                     self._cancel_date = value
 
             if instance.fields.resolution:
-                status = instance.fields.resolution.name
-
-            if status == 'Completed' or self.live_date:
-                status = 'project.project_tt_deployment'
-            elif not status and not self.cancel_date:
-                status = 'project.project_tt_development'
+                resolution = instance.fields.resolution.name
             else:
-                status = 'project.project_tt_cancel'
+                resolution = None
 
-            self.stage_id = env.ref(status)
+            if instance.fields.status:
+                status = instance.fields.status
+            else:
+                status = None
+
+            if resolution == 'Completed' or status == 'Post-production':
+                odoo_status = 'project.project_tt_deployment'
+            elif not resolution and not self.cancel_date:
+                odoo_status = 'project.project_tt_development'
+            else:
+                odoo_status = 'project.project_tt_cancel'
+
+            self.stage_id = env.ref(odoo_status)
 
         @property
         def live_date(self):
