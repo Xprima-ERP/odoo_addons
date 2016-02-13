@@ -17,7 +17,7 @@
           <field name="salesperson" />
           <field name="date_start" invisible="1"/>
           <field name="specs_approval_date" />
-          <field name="date_end" string="Expected Delivery Date" help="Delivery date estimated by project manager."/>
+          <field name="date_end" string="Expected Delivery Date" help="Estimated delivery date of the project."/>
           <field name="jira_url" attrs="{'invisible': [('rule', '!=', 'jira')]}" widget="url" />
         </field>
 
