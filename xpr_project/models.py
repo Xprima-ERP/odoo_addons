@@ -116,6 +116,10 @@ class SaleOrder(models.Model):
             # Already created.
             return
 
+        if not order.category:
+            # Cannot route. Probably legacy order
+            return
+
         routes = self.env['xpr_project.routing'].search([('categories', 'in', [order.category.id])])
 
         if not routes:
@@ -148,6 +152,8 @@ class SaleOrder(models.Model):
             project_id=project.id,
             rule='specs',
             salesperson=order.user_id.id,
+            date_start=today,
+            date_end=project.date,
         ))
 
         # Add empty attachment for all subprojets
@@ -193,23 +199,41 @@ class SaleOrder(models.Model):
 
     expected_delivery_date = fields.Date(
         'Expected Delivery Date',
-        help="Goods are meant to be available at this date.")
+        help="Estimated delivery date of the project.")
 
     delivery_date = fields.Date(
         'Delivery Date',
-        help="Goods are available at this date.")
+        help="Actual delivery date of the project.")
 
     live_date = fields.Date(
         'Live Date',
-        help="Goods are used by customer at this date. Delivery deadline. Beginning of billing process.")
+        help="Approval date of the specifications provided to begin the project.")
 
     cancel_date = fields.Date(
         'Cancel Date',
         help="Signed contract was cancelled at this date.")
 
     renew_date = fields.Date(
-        string="Renew Date", compute=_get_renew_date, store=True,
-        help="Contract expires. Time to replace or upgrade it.")
+        'Renew Date', compute=_get_renew_date, store=True,
+        help="Date of contract renewal.")
+
+
+class Attachment(models.Model):
+
+    _inherit = 'ir.attachment'
+
+    @api.one
+    def file_open(self):
+        """
+        Copied from _file_read in super class
+        Returns a file handle instead of the data
+        """
+        full_path = self._full_path(self.store_fname)
+
+        try:
+            return open(full_path, 'rb')
+        except IOError:
+            return None
 
 
 class AttachmentLabel(models.Model):
@@ -361,7 +385,15 @@ class Project(models.Model):
 
             self.env['mail.mail'].create(values)
 
-    salesperson = fields.Many2one('res.users', string="Salesperson")
+    salesperson = fields.Many2one(
+        'res.users',
+        string="Salesperson",
+        help="Source of contract and provider of specs.")
+
+    specs_approval_date = fields.Date(
+        string="Specs Approval Date",
+        help="Approval date of the specifications provided to begin the project.",
+        readonly=True)
 
     # Template helper
     @property
@@ -400,7 +432,10 @@ class Task(models.Model):
                     ('project_id', '=', task.project_id.analytic_account_id.id)
                 ])
 
-                order.write({'date_confirm': fields.Date.context_today(self)})
+                today = fields.Date.context_today(self)
+
+                order.date_confirm = today
+                task.project_id.specs_approval_date = today
 
                 task.project_id.create_sub_tasks(order)
 
@@ -572,6 +607,11 @@ class Task(models.Model):
     jira_issue_key = fields.Char(string="JIRA Issue", required=False)
     jira_url = fields.Char(string="JIRA Url", compute=_jira_url)
     salesperson = fields.Many2one('res.users', string="Salesperson")
+    specs_approval_date = fields.Date(
+        string="Specs Approval Date",
+        help="Approval date of the specifications provided to begin the project.",
+        readonly=True,
+        related="project_id.specs_approval_date")
 
     _sql_constraints = [
         (

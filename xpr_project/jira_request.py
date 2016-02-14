@@ -14,9 +14,8 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import io
 import re
-import urllib2
+import datetime
 
 _logger = logging.getLogger(__name__)
 
@@ -253,7 +252,7 @@ class CreateIssue(JIRARequest):
 
     From order and JIRA template
     - Builds story
-    - Adds attachments
+    - Adds links when possible, otherwise attachments.
     - Adds subtasks
     """
 
@@ -427,18 +426,19 @@ class CreateIssue(JIRARequest):
 
         story = self.jira.create_issue(fields=fields)
 
-        # Clone attachements
+        # Link to attachments in template
 
         for attachment in template.fields.attachment:
-            stream = io.StringIO(unicode(attachment.get()))
+            self.jira.add_simple_link(
+                story.key, {
+                    'object': {
+                        'url': attachment.content,
+                        'title': attachment.filename
+                    }
+                }
+            )
 
-            self.jira.add_attachment(
-                story.key,
-                stream,
-                filename=attachment.filename)
-            stream.close()
-
-        # Copy non empty attachments
+        # Link to non empty attachments in Odoo
 
         for attachment in task.env['ir.attachment'].search([
             ('res_model', '=', 'project.project'),
@@ -448,9 +448,26 @@ class CreateIssue(JIRARequest):
             if attachment.name not in attachement_names:
                 continue
 
-            _logger.info(u"JIRA add attachment {0}".format(attachment.datas_fname))
-            stream = io.StringIO(unicode(attachment.datas.decode('base64')))
-            self.jira.add_attachment(story.key, stream, filename=attachment.name)
+            if attachment.url:
+                # If the attachment is an URL, make a link to it.
+                self.jira.add_simple_link(
+                    story.key, {
+                        'object': {
+                            'url': attachment.url,
+                            'title': attachment.name
+                        }
+                    }
+                )
+
+                continue
+
+            stream = attachment.file_open()[0]
+
+            self.jira.add_attachment(
+                story.key,
+                stream,
+                filename=attachment.name)
+
             stream.close()
 
         # Clone tasks
@@ -477,7 +494,7 @@ class CreateIssue(JIRARequest):
             _logger.info(u"JIRA create task {0}".format(fields))
             task = self.jira.create_issue(fields=fields)
 
-        return story and story.key or None
+        return story.key
 
 
 class BrowseTasks(JIRARequest):
@@ -491,13 +508,28 @@ class BrowseTasks(JIRARequest):
         """
         Decorator object that exposes JIRA object as a pseudo task
         """
-        def __init__(self, env, instance, jira):
-            self.jira_issue_key = instance.key
+        def __init__(self, env, key, jira):
+            from jira.exceptions import JIRAError
+
+            self.jira_issue_key = key
             self.jira = jira
             status = None
 
             self._live_date = None
             self._cancel_date = None
+
+            try:
+                instance = self.jira.issue(self.jira_issue_key)
+            except JIRAError as e:
+                if e.text != 'Issue Does Not Exist':
+                    raise
+
+                # Issue was probably destroyed. Read it as cancellation.
+                self._cancel_date = str(datetime.date.today())
+                self.stage_id = env.ref('project.project_tt_cancel')
+                return
+
+            # Issue was read successfuly.
 
             field_meta = self.jira.createmeta(
                 projectKeys=self.jira_issue_key.split('-')[0],
@@ -516,16 +548,23 @@ class BrowseTasks(JIRARequest):
                     self._cancel_date = value
 
             if instance.fields.resolution:
-                status = instance.fields.resolution.name
-
-            if status == 'Completed' or self.live_date:
-                status = 'project.project_tt_deployment'
-            elif not status and not self.cancel_date:
-                status = 'project.project_tt_development'
+                resolution = instance.fields.resolution.name
             else:
-                status = 'project.project_tt_cancel'
+                resolution = None
 
-            self.stage_id = env.ref(status)
+            if instance.fields.status:
+                status = instance.fields.status
+            else:
+                status = None
+
+            if resolution == 'Completed' or status == 'Post-production':
+                odoo_status = 'project.project_tt_deployment'
+            elif not resolution and not self.cancel_date:
+                odoo_status = 'project.project_tt_development'
+            else:
+                odoo_status = 'project.project_tt_cancel'
+
+            self.stage_id = env.ref(odoo_status)
 
         @property
         def live_date(self):
@@ -542,6 +581,6 @@ class BrowseTasks(JIRARequest):
     def safe_execute(self):
         return [BrowseTasks.TaskModel(
             self.instance.env,
-            self.jira.issue(key),
+            key,
             self.jira
         ) for key in self.keys]

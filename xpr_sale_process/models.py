@@ -62,7 +62,7 @@ class SaleOrder(models.Model):
 
     date_signature = fields.Date(
         string="Signature Date",
-        help="Terms of contract are accepted by customer.")
+        help="Date when the quotation is signed and approved by the customer.")
 
     def check_manager_approval_needed(self):
 

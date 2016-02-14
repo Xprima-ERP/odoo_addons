@@ -65,8 +65,12 @@
                     <attribute name="options">{'no_create': True}</attribute>
                 </field>
 
+                <field name="date_order" position="attributes">
+                    <attribute name="help">Quotation creation date.</attribute>
+                </field>
+
                 <field name="date_order" position="after">
-                    <field name="date_signature" />
+                    <field name="date_signature" readonly="1" />
                 </field>
 
             </field>
