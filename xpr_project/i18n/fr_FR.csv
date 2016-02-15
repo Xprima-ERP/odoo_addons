@@ -75,7 +75,7 @@ xpr_project,model,"ir.actions.act_window,name",xpr_project.delivery_delay_action
 xpr_project,view,project.project,xpr_project.project_form,Approve,Approuvé
 xpr_project,field,"sale.order,cancel_date",0,Cancel Date,Date d'annulation
 xpr_project,field,"xpr_project.delivery_delay,create_uid",0,Created by,Créé par
-xpr_project,field,"xpr_project.account_manager,manager",0,Project Manager,Gestionnaire de projet
+xpr_project,field,"xpr_project.account_manager,manager",0,Account Manager,Gestionnaire de compte
 xpr_project,help,"sale.order,cancel_date",0,Signed contract was cancelled at this date.,Contrat signé fut annulé à cette date.
 xpr_project,view,project.project,xpr_project.project_form,Ask Update,Demander une mise à jour
 xpr_project,view,project.project,xpr_project.project_form,New Project Based on Template,Nouveau projet basé sur un modèle

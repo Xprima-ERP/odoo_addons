@@ -553,13 +553,13 @@ class BrowseTasks(JIRARequest):
                 resolution = None
 
             if instance.fields.status:
-                status = instance.fields.status
+                status = instance.fields.status.name
             else:
                 status = None
 
             if resolution == 'Completed' or status == 'Post-production':
                 odoo_status = 'project.project_tt_deployment'
-            elif not resolution and not self.cancel_date:
+            elif not resolution and not self.cancel_date and status != 'Closed':
                 odoo_status = 'project.project_tt_development'
             else:
                 odoo_status = 'project.project_tt_cancel'

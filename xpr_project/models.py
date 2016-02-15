@@ -274,7 +274,7 @@ class AccountManager(models.Model):
 
     sequence = fields.Integer(string="Sequence")
     rule = fields.Char(string="Rule")
-    manager = fields.Many2one('res.users', string="Project Manager", required=True)
+    manager = fields.Many2one('res.users', string="Account Manager", required=True)
 
 
 class DeliveryDelay(models.Model):
