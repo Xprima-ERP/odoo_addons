@@ -207,7 +207,7 @@ class SaleOrder(models.Model):
 
     live_date = fields.Date(
         'Live Date',
-        help="Approval date of the specifications provided to begin the project.")
+        help="Official launch date of the project.")
 
     cancel_date = fields.Date(
         'Cancel Date',
