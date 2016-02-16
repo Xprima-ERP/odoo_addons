@@ -61,6 +61,7 @@ xpr_project,view,project.project,xpr_project.project_form,Is Live,En ligne
 xpr_project,field,"project.task,salesperson",0,Salesperson,Vendeur
 xpr_project,model,"ir.actions.act_window,name",xpr_project.account_manager_action,Account Manager,Gestionnaire de compte
 xpr_project,field,"sale.order,live_date",0,Live Date,Date de mise en ligne
+xpr_project,help,"sale.order,live_date",0,Official launch date of the project.,Date de mise en ligne officielle du projet.
 xpr_project,field,"sale.order,expected_delivery_date",0,Expected Delivery Date,Date de livraison prévue
 xpr_project,help,"sale.order,expected_delivery_date",0,Estimated delivery date of the project.,Date de livraison estimée du projet.
 xpr_project,field,"sale.order,delivery_date",0,Delivery Date,Date de livraison
@@ -74,14 +75,13 @@ xpr_project,model,"ir.actions.act_window,name",xpr_project.delivery_delay_action
 xpr_project,view,project.project,xpr_project.project_form,Approve,Approuvé
 xpr_project,field,"sale.order,cancel_date",0,Cancel Date,Date d'annulation
 xpr_project,field,"xpr_project.delivery_delay,create_uid",0,Created by,Créé par
-xpr_project,field,"xpr_project.account_manager,manager",0,Project Manager,Gestionnaire de projet
+xpr_project,field,"xpr_project.account_manager,manager",0,Account Manager,Gestionnaire de compte
 xpr_project,help,"sale.order,cancel_date",0,Signed contract was cancelled at this date.,Contrat signé fut annulé à cette date.
 xpr_project,view,project.project,xpr_project.project_form,Ask Update,Demander une mise à jour
 xpr_project,view,project.project,xpr_project.project_form,New Project Based on Template,Nouveau projet basé sur un modèle
 xpr_project,field,"xpr_project.delivery_delay,delay",0,Delay in Days,Delai en jours
 xpr_project,field,"xpr_project.delivery_delay,write_date",0,Last Updated on,Dernière mise à jour
 xpr_project,field,"xpr_project.account_manager,sequence",0,Sequence,Sequence
-xpr_project,help,"sale.order,live_date",0,Approval date of the specifications provided to begin the project.,Date de mise en ligne officielle du projet.
 xpr_project,model,"ir.ui.menu,name",xpr_project.delivery_delay_menu,Delivery Delay,Délai de livraison
 xpr_project,field,"xpr_project.account_manager,write_uid",0,Last Updated by,Dernière mise à jour par
 xpr_project,view,project.project,xpr_project.project_form,Expected Delivery Date,Date de livraison prévue

@@ -207,7 +207,7 @@ class SaleOrder(models.Model):
 
     live_date = fields.Date(
         'Live Date',
-        help="Approval date of the specifications provided to begin the project.")
+        help="Official launch date of the project.")
 
     cancel_date = fields.Date(
         'Cancel Date',
@@ -274,7 +274,7 @@ class AccountManager(models.Model):
 
     sequence = fields.Integer(string="Sequence")
     rule = fields.Char(string="Rule")
-    manager = fields.Many2one('res.users', string="Project Manager", required=True)
+    manager = fields.Many2one('res.users', string="Account Manager", required=True)
 
 
 class DeliveryDelay(models.Model):
