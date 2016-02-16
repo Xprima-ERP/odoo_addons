@@ -513,6 +513,8 @@ class BrowseTasks(JIRARequest):
 
             self.jira_issue_key = key
             self.jira = jira
+            project_key = self.jira_issue_key.split('-')[0]
+
             status = None
 
             self._live_date = None
@@ -532,7 +534,7 @@ class BrowseTasks(JIRARequest):
             # Issue was read successfuly.
 
             field_meta = self.jira.createmeta(
-                projectKeys=self.jira_issue_key.split('-')[0],
+                projectKeys=project_key,
                 issuetypeNames=instance.fields.issuetype.name,
                 expand='projects.issuetypes.fields')['projects'][0]['issuetypes'][0]['fields']
 
