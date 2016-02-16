@@ -13,7 +13,7 @@
         <field name="model_id" ref="sale.model_sale_order" />
         <field name="auto_delete">True</field>
         <field name="email_from">no_reply@xprima.com</field>
-        <field name="email_to">ekrummen@evolio.ca</field>
+        <field name="email_to">csi@evolio.ca</field>
         <field name="subject">CSI Survey: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
         <field name="body_html"><![CDATA[Contract <a href="${object.form_url|safe}">${object.name}</a> is signed. Please send the CSI survey to: ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}]]></field>
     </record>
@@ -23,7 +23,7 @@
         <field name="model_id" ref="sale.model_sale_order" />
         <field name="auto_delete">True</field>
         <field name="email_from">no_reply@xprima.com</field>
-        <field name="email_to">ekrummen@evolio.ca</field>
+        <field name="email_to">csi@evolio.ca</field>
         <field name="subject">Reminder - CSI Survey: ${object.name} for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
         <field name="body_html"><![CDATA[The contract <a href="${object.form_url|safe}">${object.name}</a> has been live since: ${object.live_date != False and object.live_date or ''}&nbsp;<div>If applicable, please resend the CSI survey to: ${(object.csi_contact.email != False and object.csi_contact.email or object.partner_id.email != False and object.partner_id.email or '')|safe}</div>]]></field>
     </record>
