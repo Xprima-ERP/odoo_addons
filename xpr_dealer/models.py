@@ -264,39 +264,13 @@ class Dealer(models.Model):
 
     additional_website = fields.Char("Additional Website", size=254)
 
-    # TODO: port to categories. Order of makes is important for XIS
-    # 'xis_makes': fields.char('XIS Makes', size=254),
-
-    # Industry translations
-    #     en
-    #  New Car
-    #  Used Car
-    #  New Moto
-    #  Used Moto
-    #  New ATV
-    #  Used ATV
-    #  New Snowmobile
-    #  Used Snowmobile
-    #  New Watercraft
-    #  Used Watercraft
-    # fr
-    #  Nouvelle voiture
-    #  Voiture usagée
-    #  Nouvelle moto
-    #  Moto usagée
-    #  Nouveau VTT
-    #  VTT usagé
-    #  Nouvelle motoneige
-    #  Motoneige usagée
-    #  Nouveau Véhicule marin
-    #  Véhicule marin usagé
-
     makes = fields.Many2many(
         'res.partner.category',
         'dealer_partner_category_make_rel',
         string="Makes",
     )
 
+    # Make sequance important for XIS
     make_sequence = fields.Char('Make Sequence')
 
     business = fields.Many2many(
