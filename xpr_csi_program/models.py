@@ -53,4 +53,10 @@ class SaleOrder(models.Model):
                 }
             }
 
+    @api.depends('category')
+    def _csi_in_program(self):
+        for order in self:
+            order.csi_in_program = (order.category == order.env.ref('xpr_product.website'))
+
     csi_contact = fields.Many2one('res.partner', 'CSI Contact Sales')
+    csi_in_program = fields.Boolean(string='In CSI Program', store=True, compute=_csi_in_program)

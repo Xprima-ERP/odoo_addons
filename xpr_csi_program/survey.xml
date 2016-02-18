@@ -5,7 +5,7 @@
     <record model="ir.filters" id="csi_program_filter">
         <field name="name">CSI Program</field>
         <field name="model_id">sale.order</field>
-        <field name="domain">[['csi_contact', '!=', False]]</field>
+        <field name="domain">[['csi_in_program', '=', True]]</field>
     </record>
 
     <record model="email.template" id="survey_mail">
