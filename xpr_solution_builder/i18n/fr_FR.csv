@@ -73,6 +73,7 @@ xpr_solution_builder,field,"xpr_solution_builder.solution.option,solution",0,Sol
 xpr_solution_builder,field,"xpr_solution_builder.solution_combiner,solution",0,Solution,Solution
 xpr_solution_builder,field,"xpr_solution_builder.solution_configurator,solution",0,Solution,Solution
 xpr_solution_builder,field,"sale.order,solution_discount",0,Solution Discount ($),Rabais sur la solution ($)
+xpr_solution_builder,field,"sale.order,solution_discount_money",0,Solution Discount,Rabais sur la solution
 xpr_solution_builder,field,"xpr_solution_builder.solution,list_price",0,Solution Price,Prix de la solution
 xpr_solution_builder,field,"sale.order.line,solution_part",0,Solution part,Solution part
 xpr_solution_builder,model,"ir.ui.menu,name",xpr_solution_builder.menu_solutions,Solutions,Solutions
