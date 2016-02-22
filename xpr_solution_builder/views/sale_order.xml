@@ -94,6 +94,7 @@
                                 </tree>
                     </field>
                     <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total_products">
+                         <field name="solution_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                         <field name="amount_products_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                     </group>
                          
