@@ -246,6 +246,11 @@ class SalesOrder(models.Model):
         for order in self:
             order.category = order.solution.category
 
+    @api.depends('solution_discount')
+    def _solution_discount_money(self):
+        for order in self:
+            order.solution_discount_money = order.solution_discount
+
     def order_line_report(self):
         """
         Line ordering for reports.
@@ -282,6 +287,13 @@ class SalesOrder(models.Model):
 
     solution_discount = fields.Float(
         string='Solution Discount ($)', digits=(6, 2))
+
+    # Duplicate field so we can see it in two places in form
+    solution_discount_money = fields.Float(
+        string='Solution Discount',
+        digits_compute=dp.get_precision('Account'),
+        readonly=True,
+        compute=_solution_discount_money)
 
     order_line_products = fields.One2many(
         'sale.order.line', compute=_get_line_products)
