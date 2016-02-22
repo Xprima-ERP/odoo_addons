@@ -82,8 +82,8 @@
       <field name="auto_delete">True</field>
       <field name="email_from">no_reply@xprima.com</field>
       <field name="email_to">${(object.user_id != False and object.user_id.email)|safe}</field>
-      <field name="subject">Specifications Revision: ${object.name} from ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
-      <field name="body_html"><![CDATA[Specifications must be updated to start the production of:&nbsp;<a href="${object.form_url|safe}">${object.name}</a>.<br>Production notes:<br>${ctx.get('message','')}]]></field>
+      <field name="subject">Revise Project Specifications for ${object.partner_id != False and object.partner_id.name or object.contact_name}</field>
+      <field name="body_html"><![CDATA[Please revise the specifications for this project: <a href="${object.form_url|safe}">${object.name}</a><br>Production notes:<br>${ctx.get('message','')}]]></field>
   </record>
 
   <record id="project.menu_action_view_task" model="ir.ui.menu">
