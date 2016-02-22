@@ -289,6 +289,11 @@ class SalesOrder(models.Model):
     order_line_options = fields.One2many(
         'sale.order.line', compute=_get_line_options)
 
+    solution_price = fields.Float(
+        string="Base Price",
+        readonly=True,
+        related="solution.list_price")
+
     amount_products_untaxed = fields.Float(
         string='Solution',
         digits_compute=dp.get_precision('Account'),

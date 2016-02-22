@@ -30,15 +30,15 @@ xpr_project,field,"xpr_project.routing,write_date",0,Last Updated on,Dernière m
 xpr_project,field,"xpr_project.update_message,write_date",0,Last Updated on,Dernière mise à jour le
 xpr_project,field,"xpr_project.update_message,message",0,Message,Message
 xpr_project,field,"xpr_project.attachment.label,name",0,Name,Nom
-xpr_project,model,"email.template,subject",xpr_project.template_order_bill_ready,Order ready to be billed: ${object.name},Contrat à facturer : ${object.name}
-xpr_project,model,"email.template,body_html",xpr_project.template_order_bill_ready,"This order is ready to be billed:&nbsp;<a href=""${object.form_url|safe}"">${object.name}</a>","Ce contrat est prêt à être facturé <a href=""${object.form_url|safe}"">${object.name}</a>"
+xpr_project,model,"email.template,subject",xpr_project.template_order_bill_ready,Bill Order for ${object.partner_id != False and object.partner_id.name or object.contact_name},Contrat à facturer pour ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_project,model,"email.template,body_html",xpr_project.template_order_bill_ready,"This order is ready to be billed: <a href=""${object.form_url|safe}"">${object.name}</a>","Veuillez facturer ce contrat : <a href=""${object.form_url|safe}"">${object.name}</a>"
 xpr_project,view,project.project,xpr_project.project_form,Other Info,Autres informations
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_ppa,PPA,PPA
+xpr_project,model,"email.template,subject",xpr_project.template_project_confirmation,Project specs to approve: ${object.name},Spécifications de projet à approuver: ${object.name}
 xpr_project,model,"email.template,body_html",xpr_project.template_project_confirmation,"Please confirm specification files for project <a href=""${object.form_url|safe}"">${object.name}</a>.","Confirmez les fichiers de spécifications pour le projet <a href=""${object.form_url|safe}"">${object.name}</a>."
 xpr_project,model,"ir.model,name",xpr_project.model_project_project,Project,Projet
 xpr_project,field,"xpr_project.routing,manager",0,Project Manager,Gestionnaire de Project
 xpr_project,field,"xpr_project.update_message,project_id",0,Project id,Project id
-xpr_project,model,"email.template,subject",xpr_project.template_project_confirmation,Project specs to approve: ${object.name},Spécifications de projet à approuver: ${object.name}
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_questionnaire,Questionnaire,Questionnaire
 xpr_project,model,"ir.actions.act_window,name",xpr_project.routing_action,Routing,Aiguillage
 xpr_project,model,"ir.ui.menu,name",xpr_project.routing_menu,Routing,Aiguillage
@@ -46,8 +46,8 @@ xpr_project,field,"project.task,rule",0,Rule,Règle
 xpr_project,model,"ir.ui.menu,name",xpr_project.routing_rules_menu,Rules,Règles
 xpr_project,model,"ir.model,name",xpr_project.model_sale_order,Sales Order,Commande de vente
 xpr_project,view,project.task,xpr_project.task_form,See Specifications,Voir Spécifications
-xpr_project,model,"email.template,subject",xpr_project.ask_update_mail,Specifications Revision: ${object.name} from ${object.partner_id != False and object.partner_id.name or object.contact_name},Révision de Spécifications : ${object.name} de ${object.partner_id != False and object.partner_id.name or object.contact_name}
-xpr_project,model,"email.template,body_html",xpr_project.ask_update_mail,"Specifications must be updated to start the production of:&nbsp;<a href=""${object.form_url|safe}"">${object.name}</a>.<br>Production notes:<br>${ctx.get('message','')}","Les spécifications doivent être mis à jour pour commencer la production de :&nbsp;<a href=""${object.form_url|safe}"">${object.name}</a>.<br>Notes de la production :<br>${ctx.get('message','')}"
+xpr_project,model,"email.template,subject",xpr_project.ask_update_mail,Revise Project Specifications for ${object.partner_id != False and object.partner_id.name or object.contact_name},Révision de Spécifications : ${object.name} de ${object.partner_id != False and object.partner_id.name or object.contact_name}
+xpr_project,model,"email.template,body_html",xpr_project.ask_update_mail,"Please revise the specifications for this project: <a href=""${object.form_url|safe}"">${object.name}</a><br>Production notes:<br>${ctx.get('message','')}","Les spécifications doivent être mis à jour pour commencer la production de :&nbsp;<a href=""${object.form_url|safe}"">${object.name}</a>.<br>Notes de la production :<br>${ctx.get('message','')}"
 xpr_project,view,sale.order,xpr_project.view_order_form,Specifications,Spécifications
 xpr_project,model,"xpr_project.attachment.label,name",xpr_project.attachment_label_ttr,TTR,TTR
 xpr_project,model,"ir.model,name",xpr_project.model_project_task,Task,Tâche
