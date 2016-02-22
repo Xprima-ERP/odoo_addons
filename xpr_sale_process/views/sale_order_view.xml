@@ -46,7 +46,7 @@
                     <attribute name="attrs">{'readonly': [('state','!=','draft')]}</attribute>
                 </field>
 
-                 <field name="solution_discount" position="attributes">
+                <field name="solution_discount" position="attributes">
                     <attribute name="attrs">{'readonly': [('state','!=','draft')]}</attribute>
                 </field>
 

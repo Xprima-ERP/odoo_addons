@@ -10,7 +10,7 @@ xpr_solution_builder,field,"xpr_solution_builder.solution.option,sticky",0,Canno
 xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_builder_search_view,Category,Catégorie
 xpr_solution_builder,field,"xpr_solution_builder.solution,category",0,Category,Catégorie
 xpr_solution_builder,field,"sale.order,amount_all_untaxed",0,Untaxed Amount,Montant hors-taxe
-xpr_solution_builder,field,"sale.order,solution_price",0,Base Price,Prix de base
+xpr_solution_builder,field,"sale.order,solution_price",0,Solution Price,Prix de la solution
 xpr_solution_builder,field,"sale.order,category",0,Category,Catégorie
 xpr_solution_builder,model,"ir.actions.act_window,name",xpr_solution_builder.action_solution_combiner,Combine,Combiner
 xpr_solution_builder,view,xpr_solution_builder.solution,xpr_solution_builder.solution_form_view,Combine,Combiner

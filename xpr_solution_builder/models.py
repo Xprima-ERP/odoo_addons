@@ -302,7 +302,7 @@ class SalesOrder(models.Model):
         'sale.order.line', compute=_get_line_options)
 
     solution_price = fields.Float(
-        string="Base Price",
+        string="Solution Price",
         readonly=True,
         related="solution.list_price")
 
