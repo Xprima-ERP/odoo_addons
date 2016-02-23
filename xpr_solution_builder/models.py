@@ -85,6 +85,8 @@ class Solution(models.Model):
     description = fields.Char(required=True, translate=True)
     list_price = fields.Float(string='Solution Price', digits=(6, 2))
 
+    default_code = fields.Char('Internal Reference', required=True)
+
     products = fields.Many2many(
         'product.product',
         'xpr_solution_builder_solution_mandatory_product_rel',
@@ -772,15 +774,16 @@ class SolutionCombiner(models.TransientModel):
         ])
 
         for right_solution in solutions:
-            combined = self.env['xpr_solution_builder.solution'].create({
-                "name": "{0}-{1}".format(
+            combined = self.env['xpr_solution_builder.solution'].create(dict(
+                name="{0}-{1}".format(
                     self.solution.name, right_solution.name),
-                "description": "{0} {1}".format(
+                description="{0} {1}".format(
                     self.solution.description, right_solution.description),
-                "list_price": (
+                list_price = (
                     self.solution.list_price +
                     right_solution.list_price),
-            })
+                default_code = self.solution.default_code
+            ))
 
             combined.products = (
                 self.solution.products |
