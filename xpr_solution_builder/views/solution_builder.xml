@@ -38,8 +38,8 @@
                     </header>
                     <sheet>
                         <group>
-                    
                             <field name="name"/>
+                            <field name="default_code"/>
                             <field name="description"/>
                             <field name="category" required="1"/>
                             <field name="list_price" />
@@ -102,6 +102,7 @@
             <field name="type">tree</field>
             <field name="arch" type="xml">
                 <tree string="Solutions">
+                    <field name="default_code"/>
                     <field name="name" />
                     <field name="category" />
                 </tree>
