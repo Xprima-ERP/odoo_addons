@@ -258,7 +258,8 @@ class SalesOrder(models.Model):
         Line ordering for reports.
         This sorting function should be in the report parser.
         """
-        sections = [1, 3, 4, 2, 0]
+
+        sections = [0, 1, 3, 2]
         return sorted(
             self.order_line,
             key=lambda line: (
@@ -334,6 +335,59 @@ class SalesOrder(models.Model):
         #track_visibility='always',
         help="The amount without tax.")
 
+    @api.multi
+    def apply_patch(self):
+
+        for order in self:
+            new_lines = self.env['sale.order.line']
+            unit = self.env.ref('product.product_uom_categ_unit')
+
+            delta_price = order.solution.list_price
+
+            new_lines += new_lines.new(dict(
+                order_id=order,
+                #product_id=order.product_id,
+                name=order.solution.name,
+                price_unit=order.solution.list_price,
+                solution_part=0,
+                product_uom_qty=1,
+                product_uom=unit.id,
+                sequence=0,
+                state='draft',
+            ))
+
+            include_correction = None
+            delta_price = 0
+
+            for line in order.order_line:
+                if line.solution_part not in [1,2,3]:
+                    continue
+
+                new_lines += new_lines.new(dict(
+                    order_id=line.order_id,
+                    product_id=line.product_id,
+                    name=line.name,
+                    price_unit=line.price_unit,
+                    solution_part=line.solution_part,
+                    product_uom_qty=line.product_uom_qty,
+                    product_uom=line.product_uom,
+                    sequence=line.sequence,
+                    discount_money=line.discount_money,
+                    discount=line.discount,
+                    state='draft',
+                ))
+
+                if line.solution_part == 1:
+                    delta_price += line.product_uom_qty * line.price_unit
+
+                if line.solution_part == 3:
+                    include_correction = line
+
+            if include_correction:
+                include_correction.price_unit = -delta_price
+
+            order.order_line = new_lines
+
     def _apply_solution(self, order):
         """
             Builds sales order using solution as template.
@@ -347,15 +401,28 @@ class SalesOrder(models.Model):
         # Override order lines
 
         new_lines = self.env['sale.order.line']
+        unit = self.env.ref('product.product_uom_categ_unit')
 
-        delta_price = order.solution.list_price
+        delta_price = 0
         sequence = 0
+
+        new_lines += new_lines.new(dict(
+            order_id=order,
+            #product_id
+            name=order.solution.name,
+            price_unit=order.solution.list_price,
+            solution_part=0,
+            product_uom_qty=1,
+            product_uom=unit.id,
+            sequence=sequence,
+            state='draft',
+        ))
 
         for product in order.solution.products:
 
             sequence += 10
             qty = quantities.get(product.id, 1.0)
-            delta_price -= product.lst_price * qty
+            delta_price += product.lst_price * qty
 
             new_lines += new_lines.new(dict(
                 order_id=order,
@@ -369,15 +436,15 @@ class SalesOrder(models.Model):
                 state='draft',
             ))
 
-        if sequence:
+        if delta_price:
             # Add solution integration line if there are mandatory lines.
             unit = self.env.ref('product.product_uom_categ_unit')
 
             sequence += 10
             new_lines += new_lines.new(dict(
                 order_id=order,
-                name="Solution integration",
-                price_unit=delta_price,
+                name="Included items",
+                price_unit= -delta_price,
                 solution_part=3,
                 product_uom_qty=1,
                 product_uom=unit.id,
@@ -412,31 +479,15 @@ class SalesOrder(models.Model):
 
         lines = self.env['sale.order.line']
 
-        sequence = 0
-        for line in order.order_line:
-            if line.solution_part != 4:
-                lines += line
-                sequence = max(sequence, line.sequence)
-                continue
-
-        solution_discount = -min(
+        solution_discount = max(
             order.solution.list_price, order.solution_discount)
 
-        if solution_discount != 0:
-            unit = self.env.ref('product.product_uom_categ_unit')
+        sequence = 0
+        for line in order.order_line:
+            if line.solution_part != 0:
+                continue
 
-            lines += order.order_line.new(dict(
-                order_id=order.id,
-                name="Solution discount",
-                price_unit=solution_discount,
-                solution_part=4,
-                state='draft',
-                product_uom_qty=1,
-                product_uom=unit.id,
-                sequence=sequence + 10
-            ))
-
-        order.order_line = lines
+            line.discount_money = solution_discount
 
     @api.onchange('solution')
     def onchange_solution(self):
@@ -779,10 +830,11 @@ class SolutionCombiner(models.TransientModel):
                     self.solution.name, right_solution.name),
                 description="{0} {1}".format(
                     self.solution.description, right_solution.description),
-                list_price = (
+                list_price=(
                     self.solution.list_price +
                     right_solution.list_price),
-                default_code = self.solution.default_code
+                default_code="{0}-{1}".format(
+                    self.solution.default_code, right_solution.default_code),
             ))
 
             combined.products = (
