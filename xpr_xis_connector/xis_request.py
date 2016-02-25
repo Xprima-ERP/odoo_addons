@@ -284,11 +284,15 @@ class SaleOrderRequest(XISRequestWrapper):
 
     def get_xis_data(self):
         ext_id = self.get_partner_ext_id()
-        # cannot do a transaction without ext id
-        # if not ext_id or not self.get_dealer_code():
-        #     return
 
-        lines = [line for line in self.order.order_line if line.product_id.default_code]
+        # Add solution line and options
+        lines = [
+            line for line in self.order.order_line
+            if (
+                line.solution_part == 0 or
+                line.product_id.default_code and line.solution_part != 1
+            )
+        ]
 
         nb_item = len(lines)
 
@@ -322,7 +326,8 @@ class SaleOrderRequest(XISRequestWrapper):
 
             data.update({
                 "qli_ProductCode_%s" % i:
-                line.product_id.default_code or "",
+                line.solution_part == 0 and self.order.solution.default_code or
+                line.product_id.default_code,
 
                 "qli_ListPrice_%s" % i:
                 int(line.product_uom_qty) * line.price_unit,

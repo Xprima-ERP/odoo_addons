@@ -12,6 +12,9 @@
                     <field name="category" invisible="1" />
                     <field name="solution_discount" />
                     <button name="sale_solution_option_action" type="object" string="Add Options"/>
+
+                    <button name="apply_patch" type="object" string="Patch" groups="base.group_erp_manager"/>
+
                 </field>
 
                 <field name="order_line" position="replace">
@@ -22,6 +25,8 @@
                             <field name="state" invisible="1" />
                             <field name="th_weight" invisible="1" />
                             <field name="solution_part" invisible="1" />
+                            <field name="name" invisible="1"/>
+                            <field name="product_id" invisible="1"/>
                             <field name="display_name" readonly="1" />
                             <field name="display_description" readonly="1" />
                             <field name="product_uom_qty" attrs="{'readonly': [('solution_part','!=', 2)]}"/>
@@ -37,61 +42,25 @@
                         </tree>
                     </field>
                     <field name="order_line_products" class="oe_read_only">
-                         <form string="Sales Order Lines" >
-                                    <header groups="base.group_user">
-                                        <button name="302" states="confirmed" string="Invoice" type="action" icon="terp-document-new"/>
-                                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done" statusbar_colors="{&quot;exception&quot;:&quot;red&quot;,&quot;cancel&quot;:&quot;red&quot;}"/>
-                                    </header>
-                                    <group>
-                                        <group>
-                                            <field name="product_id" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom}" groups="base.group_user" on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, False, product_uos_qty, False, name, parent.partner_id, False, True, parent.date_order, False, parent.fiscal_position, False, context)"/>
-                                            <label for="product_uom_qty"/>
-                                            <div>
-                                                <field context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom}" name="product_uom_qty" class="oe_inline" on_change="product_id_change(parent.pricelist_id,product_id,product_uom_qty,product_uom,product_uos_qty,product_uos,name,parent.partner_id, False, False, parent.date_order, False, parent.fiscal_position, True, context)"/>
-                                                <field name="product_uom" groups="product.group_uom" class="oe_inline oe_no_button" on_change="product_uom_change(parent.pricelist_id,product_id,product_uom_qty,product_uom,product_uos_qty,product_uos,name,parent.partner_id, False, False, parent.date_order, context)"/>
-                                            </div>
-                                            <label for="product_uos_qty" groups="product.group_uos"/>
-                                            <div groups="product.group_uos">
-                                                <field name="product_uos_qty" class="oe_inline"/>
-                                                <field name="product_uos" options="{&quot;no_open&quot;: True}" class="oe_inline"/>
-                                            </div>
-                                            <field name="price_unit"/>
-                                            <label for="discount" groups="sale.group_discount_per_so_line"/>
-                                            <div name="discount" groups="sale.group_discount_per_so_line">
-                                                <field name="discount" class="oe_inline"/> %
-                                            </div>
-                                        </group>
-                                        <group>
-                                            <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
-                                            <field name="th_weight"/>
-                                            <field name="address_allotment_id"/>
-                                        </group>
-                                    </group>
-                                    <label for="name"/>
-                                    <field name="name"/>
-                                    <div groups="base.group_no_one">
-                                        <label for="invoice_lines"/>
-                                        <field name="invoice_lines"/>
-                                    </div>
-                                </form>
-                                <tree string="Sales Order Lines">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="state" invisible="1"/>
-                                    <field name="th_weight" invisible="1"/>
-                                    <field name="display_name" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom}" groups="base.group_user" on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, False, product_uos_qty, False, name, parent.partner_id, False, True, parent.date_order, False, parent.fiscal_position, False, context)"/>
-                                    <field name="display_description" readonly="1" />
+                        <tree string="Sales Order Lines">
+                            <field name="sequence" widget="handle"/>
+                            <field name="state" invisible="1"/>
+                            <field name="th_weight" invisible="1"/>
+                            <field name="name" invisible="1"/>
+                            <field name="product_id" invisible="1"/>
+                            <field name="display_name" groups="base.group_user"/>
+                            <field name="display_description" readonly="1" />
 
-                                    <field name="product_uom_qty" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom}" on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, False, parent.fiscal_position, True, context)"/>
-                                    <field name="product_uom" on_change="product_uom_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, context)" groups="product.group_uom" options="{&quot;no_open&quot;: True}"/>
-                                    <field name="product_uos_qty" groups="product.group_uos" invisible="1"/>
-                                    <field name="product_uos" string="UoS" groups="product.group_uos" invisible="1"/>
-                                    <field name="price_unit" invisible="1" />
-                                    
-                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible="1"/>
+                            <field name="product_uom_qty" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom}" on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, False, parent.fiscal_position, True, context)"/>
+                            <field name="product_uom" on_change="product_uom_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, context)" groups="product.group_uom" options="{&quot;no_open&quot;: True}"/>
+                            <field name="product_uos_qty" groups="product.group_uos" invisible="1"/>
+                            <field name="product_uos" string="UoS" groups="product.group_uos" invisible="1"/>
+                            <field name="price_unit" invisible="1" />
+                            <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible="1"/>
 
-                                    <field name="discount" groups="sale.group_discount_per_so_line" invisible="1" />
-                                    <field name="price_subtotal" invisible="1"/>
-                                </tree>
+                            <field name="discount" groups="sale.group_discount_per_so_line" invisible="1" />
+                            <field name="price_subtotal" invisible="1"/>
+                        </tree>
                     </field>
                     <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total_products">
                          <field name="solution_price" widget="monetary" options="{'currency_field': 'currency_id'}"/>
@@ -99,63 +68,26 @@
                         <field name="amount_products_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
                     </group>
                          
-                           
                     <field name="order_line_options" class="oe_read_only">
-                        <form string="Sales Order Lines">
-                                    <header groups="base.group_user">
-                                        <button name="302" states="confirmed" string="Invoice" type="action" icon="terp-document-new"/>
-                                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done" statusbar_colors="{&quot;exception&quot;:&quot;red&quot;,&quot;cancel&quot;:&quot;red&quot;}"/>
-                                    </header>
-                                    <group>
-                                        <group>
-                                            <field name="display_name" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom}" groups="base.group_user" on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, False, product_uos_qty, False, name, parent.partner_id, False, True, parent.date_order, False, parent.fiscal_position, False, context)"/>
-                                            <label for="product_uom_qty"/>
-                                            <div>
-                                                <field context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom}" name="product_uom_qty" class="oe_inline" on_change="product_id_change(parent.pricelist_id,product_id,product_uom_qty,product_uom,product_uos_qty,product_uos,name,parent.partner_id, False, False, parent.date_order, False, parent.fiscal_position, True, context)"/>
-                                                <field name="product_uom" groups="product.group_uom" class="oe_inline oe_no_button" on_change="product_uom_change(parent.pricelist_id,product_id,product_uom_qty,product_uom,product_uos_qty,product_uos,name,parent.partner_id, False, False, parent.date_order, context)"/>
-                                            </div>
-                                            <label for="product_uos_qty" groups="product.group_uos"/>
-                                            <div groups="product.group_uos">
-                                                <field name="product_uos_qty" class="oe_inline"/>
-                                                <field name="product_uos" options="{&quot;no_open&quot;: True}" class="oe_inline"/>
-                                            </div>
-                                            <field name="price_unit"/>
-                                            <label for="discount" groups="sale.group_discount_per_so_line"/>
-                                            <div name="discount" groups="sale.group_discount_per_so_line">
-                                                <field name="discount" class="oe_inline"/> %
-                                            </div>
-                                        </group>
-                                        <group>
-                                            <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]"/>
-                                            <field name="th_weight"/>
-                                            <field name="address_allotment_id"/>
-                                        </group>
-                                    </group>
-                                    <label for="display_description"/>
-                                    <field name="display_description"/>
-                                    <div groups="base.group_no_one">
-                                        <label for="invoice_lines"/>
-                                        <field name="invoice_lines"/>
-                                    </div>
-                                </form>
-                                <tree string="Sales Order Lines">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="state" invisible="1"/>
-                                    <field name="th_weight" invisible="1"/>
-                                    <field name="display_name" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom}" groups="base.group_user" on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, False, product_uos_qty, False, name, parent.partner_id, False, True, parent.date_order, False, parent.fiscal_position, False, context)"/>
-                                    <field name="display_description"/>
-                                    <field name="product_uom_qty" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom}" on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, False, parent.fiscal_position, True, context)"/>
-                                    <field name="product_uom" on_change="product_uom_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, context)" groups="product.group_uom" options="{&quot;no_open&quot;: True}"/>
-                                    <field name="product_uos_qty" groups="product.group_uos" invisible="1"/>
-                                    <field name="product_uos" string="UoS" groups="product.group_uos" invisible="1"/>
-                                    <field name="price_unit"/>
-                                    
-                                    <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible="1"/>
+                        <tree string="Sales Order Lines">
+                            <field name="sequence" widget="handle"/>
+                            <field name="state" invisible="1"/>
+                            <field name="th_weight" invisible="1"/>
+                            <field name="name" invisible="1"/>
+                            <field name="product_id" invisible="1"/>
+                            <field name="display_name" groups="base.group_user" />
+                            <field name="display_description"/>
+                            <field name="product_uom_qty" context="{'partner_id':parent.partner_id, 'quantity':product_uom_qty, 'pricelist':parent.pricelist_id, 'uom':product_uom}" on_change="product_id_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, False, parent.fiscal_position, True, context)"/>
+                            <field name="product_uom" on_change="product_uom_change(parent.pricelist_id, product_id, product_uom_qty, product_uom, product_uos_qty, product_uos, name, parent.partner_id, False, False, parent.date_order, context)" groups="product.group_uom" options="{&quot;no_open&quot;: True}"/>
+                            <field name="product_uos_qty" groups="product.group_uos" invisible="1"/>
+                            <field name="product_uos" string="UoS" groups="product.group_uos" invisible="1"/>
+                            <field name="price_unit"/>
+                            <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible="1"/>
 
-                                    <field name="discount" groups="sale.group_discount_per_so_line" invisible="1" />
-                                    <field name="discount_money" groups="sale.group_discount_per_so_line"  />
-                                    <field name="price_subtotal"/>
-                                </tree>
+                            <field name="discount" groups="sale.group_discount_per_so_line" invisible="1" />
+                            <field name="discount_money" groups="sale.group_discount_per_so_line"  />
+                            <field name="price_subtotal"/>
+                        </tree>
                     </field>
                     <group class="oe_subtotal_footer oe_right" colspan="2" name="sale_total_options">
                         <field name="amount_options_untaxed" widget="monetary" options="{'currency_field': 'currency_id'}"/>
