@@ -437,7 +437,7 @@ class SalesOrder(models.Model):
                 name=product.description_sale or ' ',
                 product_uom_qty=qty,
                 price_unit=product.lst_price,
-                solution_part=is_package and 2 or 0,
+                solution_part=2,  # is_package and 2 or 0,
                 product_uom=product.uom_id,
                 sequence=sequence,
                 state='draft',
