@@ -197,20 +197,23 @@ class SalesOrder(models.Model):
     def _get_line_products(self):
 
         for record in self:
-            record.order_line_products = self.env['sale.order.line']
+            lines = self.env['sale.order.line']
             for line in record.order_line:
-                # Do not include integration line
-                if line.solution_part == 1:
-                    record.order_line_products += line
+                if line.solution_part in [0, 1]:
+                    lines += line
+
+            record.order_line_products = lines
 
     @api.depends('order_line')
     def _get_line_options(self):
 
         for record in self:
-            record.order_line_options = self.env['sale.order.line']
+            lines = self.env['sale.order.line']
             for line in record.order_line:
                 if line.solution_part == 2:
-                    record.order_line_options += line
+                    lines += line
+
+            record.order_line_options = lines
 
     def _get_line_amount(self, line):
         line_base = line.price_unit * line.product_uom_qty
@@ -259,9 +262,9 @@ class SalesOrder(models.Model):
         This sorting function should be in the report parser.
         """
 
-        sections = [0, 1, 3, 2]
+        sections = [0, 1, 2]
         return sorted(
-            self.order_line,
+            [line for line in self.order_line if line.solution_part in sections],
             key=lambda line: (
                 sections.index(line.solution_part), line.sequence, line.name))
 
@@ -299,10 +302,10 @@ class SalesOrder(models.Model):
         compute=_solution_discount_money)
 
     order_line_products = fields.One2many(
-        'sale.order.line', compute=_get_line_products)
+        'sale.order.line', readonly=1, compute=_get_line_products)
 
     order_line_options = fields.One2many(
-        'sale.order.line', compute=_get_line_options)
+        'sale.order.line', readonly=1, compute=_get_line_options)
 
     solution_price = fields.Float(
         string="Solution Price",
@@ -338,55 +341,37 @@ class SalesOrder(models.Model):
     @api.multi
     def apply_patch(self):
 
+        unit = self.env.ref('product.product_uom_categ_unit')
+
+        has_zero = False
         for order in self:
-            new_lines = self.env['sale.order.line']
-            unit = self.env.ref('product.product_uom_categ_unit')
 
-            delta_price = order.solution.list_price
+            for line in list(order.order_line):
+                if line.solution_part == 0:
+                    has_zero = True
 
-            new_lines += new_lines.new(dict(
-                order_id=order,
-                #product_id=order.product_id,
-                name=order.solution.name,
-                price_unit=order.solution.list_price,
-                solution_part=0,
-                product_uom_qty=1,
-                product_uom=unit.id,
-                sequence=0,
-                state='draft',
-            ))
-
-            include_correction = None
-            delta_price = 0
-
-            for line in order.order_line:
-                if line.solution_part not in [1,2,3]:
+                if line.solution_part not in [0, 1, 2]:
+                    line.unlink()
                     continue
 
-                new_lines += new_lines.new(dict(
-                    order_id=line.order_id,
-                    product_id=line.product_id,
-                    name=line.name,
-                    price_unit=line.price_unit,
-                    solution_part=line.solution_part,
-                    product_uom_qty=line.product_uom_qty,
-                    product_uom=line.product_uom,
-                    sequence=line.sequence,
-                    discount_money=line.discount_money,
-                    discount=line.discount,
-                    state='draft',
-                ))
-
                 if line.solution_part == 1:
-                    delta_price += line.product_uom_qty * line.price_unit
+                    line.price_unit = 0
 
-                if line.solution_part == 3:
-                    include_correction = line
+                # Reinit display name
 
-            if include_correction:
-                include_correction.price_unit = -delta_price
-
-            order.order_line = new_lines
+            if order.solution.default_code and not has_zero:
+                order.order_line += order.order_line.new(dict(
+                    order_id=order,
+                    #product_id=order.product_id,
+                    name=order.solution.name,
+                    price_unit=order.solution.list_price,
+                    solution_part=0,
+                    product_uom_qty=1,
+                    product_uom=unit.id,
+                    sequence=0,
+                    state='draft',
+                    discount_money=order.solution_discount,
+                ))
 
     def _apply_solution(self, order):
         """
@@ -405,49 +390,36 @@ class SalesOrder(models.Model):
 
         delta_price = 0
         sequence = 0
+        is_package = False
 
-        new_lines += new_lines.new(dict(
-            order_id=order,
-            #product_id
-            name=order.solution.name,
-            price_unit=order.solution.list_price,
-            solution_part=0,
-            product_uom_qty=1,
-            product_uom=unit.id,
-            sequence=sequence,
-            state='draft',
-        ))
+        if order.solution.default_code:
+            is_package = True
+            new_lines += new_lines.new(dict(
+                order_id=order,
+                #product_id
+                name=order.solution.name,
+                price_unit=order.solution.list_price,
+                solution_part=0,
+                product_uom_qty=1,
+                product_uom=unit.id,
+                sequence=sequence,
+                state='draft',
+                discount_money=order.solution_discount,  # TODO: Remove this
+            ))
 
         for product in order.solution.products:
 
             sequence += 10
             qty = quantities.get(product.id, 1.0)
-            delta_price += product.lst_price * qty
 
             new_lines += new_lines.new(dict(
                 order_id=order,
                 product_id=product,
                 name=product.description_sale or ' ',
                 product_uom_qty=qty,
-                price_unit=product.lst_price,
-                solution_part=1,
+                price_unit=not is_package and product.lst_price or 0,
+                solution_part=is_package and 1 or 0,
                 product_uom=product.uom_id,
-                sequence=sequence,
-                state='draft',
-            ))
-
-        if delta_price:
-            # Add solution integration line if there are mandatory lines.
-            unit = self.env.ref('product.product_uom_categ_unit')
-
-            sequence += 10
-            new_lines += new_lines.new(dict(
-                order_id=order,
-                name="Included items",
-                price_unit= -delta_price,
-                solution_part=3,
-                product_uom_qty=1,
-                product_uom=unit.id,
                 sequence=sequence,
                 state='draft',
             ))
@@ -465,7 +437,7 @@ class SalesOrder(models.Model):
                 name=product.description_sale or ' ',
                 product_uom_qty=qty,
                 price_unit=product.lst_price,
-                solution_part=2,
+                solution_part=is_package and 2 or 0,
                 product_uom=product.uom_id,
                 sequence=sequence,
                 state='draft',
@@ -479,7 +451,7 @@ class SalesOrder(models.Model):
 
         lines = self.env['sale.order.line']
 
-        solution_discount = max(
+        solution_discount = min(
             order.solution.list_price, order.solution_discount)
 
         sequence = 0
@@ -606,11 +578,9 @@ class SalesOrderLine(models.Model):
             else:
                 line.display_description = (line.name or '').strip()
 
-    # 0 Don't care (not solution)
-    # 1 mandatory line
-    # 2 optional line
-    # 3 price correction line for mandatory products
-    # 4 solution discount
+    # 0 Main/unpackaged (solution)
+    # 1 mandatory composition of solution
+    # 2 optional composition of solution
 
     solution_part = fields.Integer(default=0)
 
