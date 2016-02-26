@@ -85,7 +85,7 @@ class Solution(models.Model):
     description = fields.Char(required=True, translate=True)
     list_price = fields.Float(string='Solution Price', digits=(6, 2))
 
-    default_code = fields.Char('Internal Reference', required=True)
+    default_code = fields.Char('Internal Reference')
 
     products = fields.Many2many(
         'product.product',
