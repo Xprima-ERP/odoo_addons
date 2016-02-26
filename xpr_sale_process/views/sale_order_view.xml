@@ -122,14 +122,6 @@
                     <attribute name="create">true</attribute>
                 </xpath>
 
-                 <field name="solution" position="attributes">
-                    <attribute name="attrs">{'readonly': False}</attribute>
-                </field>
-
-                 <field name="solution_discount" position="attributes">
-                    <attribute name="attrs">{'readonly': False}</attribute>
-                </field>
-
                  <xpath expr="//button[@name='sale_solution_option_action']" position="attributes">
                     <attribute name="states"></attribute>
                 </xpath>
