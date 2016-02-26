@@ -164,6 +164,7 @@ class SaleOrder(models.Model):
         values = self.env['email.template'].generate_email(
             template.id, self.id)
 
+        values['email_from'] = salesman.email
         values['recipient_ids'] = [(4, team.user_id.partner_id.id)]
 
         self.env['mail.mail'].create(values)
