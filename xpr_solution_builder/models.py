@@ -346,6 +346,8 @@ class SalesOrder(models.Model):
         has_zero = False
         for order in self:
 
+            order.category = order.solution.category
+
             for line in list(order.order_line):
                 if line.solution_part == 0:
                     has_zero = True
