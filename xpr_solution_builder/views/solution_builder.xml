@@ -39,7 +39,7 @@
                     <sheet>
                         <group>
                             <field name="name"/>
-                            <field name="default_code"/>
+                            <field name="default_code" /> <!-- attrs="{'required': [('products', '!=', False)]}" -->
                             <field name="description"/>
                             <field name="category" required="1"/>
                             <field name="list_price" />
