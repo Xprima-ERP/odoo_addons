@@ -173,21 +173,19 @@
                 </xpath>
 
                 <xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
-                    <button type="workflow" name="sig_check_approval_needed" string="Ask Approval" states="draft,manager_not_approved,contract_not_approved" />
+                    <button type="workflow" name="sig_check_approval_needed" string="Ask Approval" states="draft,manager_not_approved" />
 
                     <button type="workflow" name="sig_availability_checked" string="Availability Checked" states="need_availability_check" groups="xpr_sale_process.advertising" />
 
                     <button type="workflow" name="sig_availability_not_checked_notify" string="Not Available" states="need_availability_check" groups="xpr_sale_process.advertising" />
 
-                    <button type="workflow" name="sig_lost" string="Lost" states="contract_not_approved" groups="base.group_sale_manager"/>
+                    <button type="workflow" name="sig_lost" string="Lost" states="contract_not_approved"/>
 
                     <button type="workflow" name="sig_manager_approved" string="Approve" states="need_manager_approval" groups="base.group_sale_manager" />
 
                     <button type="workflow" name="sig_manager_not_approved" string="Declined" states="need_manager_approval"  groups="base.group_sale_manager"/>
 
-                    <button type="workflow" name="sig_contract_reopened" string="Reopen" states="contract_not_presented" />
-
-                    <button type="workflow" name="sig_contract_reopened" string="Reopen" states="need_availability_check,need_manager_approval" groups="base.group_sale_salesman"/>
+                    <button type="workflow" name="sig_contract_reopened" string="Reopen" states="need_availability_check,need_manager_approval,contract_not_presented"/>
 
                 </xpath>
 
