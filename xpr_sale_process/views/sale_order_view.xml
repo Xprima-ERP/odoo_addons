@@ -59,7 +59,7 @@
                 </xpath>
 
                 <xpath expr="/form/header/button[@name='copy_quotation']" position="attributes">
-                    <attribute name="states">cancel,draft,contract_not_approved</attribute>
+                    <attribute name="states">cancel,draft</attribute>
                 </xpath>
                 <field name="client_order_ref" position="attributes">
                     <attribute name="readonly">1</attribute>
@@ -179,13 +179,13 @@
 
                     <button type="workflow" name="sig_availability_not_checked_notify" string="Not Available" states="need_availability_check" groups="xpr_sale_process.advertising" />
 
-                    <button type="workflow" name="sig_lost" string="Lost" states="contract_not_approved"/>
-
                     <button type="workflow" name="sig_manager_approved" string="Approve" states="need_manager_approval" groups="base.group_sale_manager" />
 
                     <button type="workflow" name="sig_manager_not_approved" string="Declined" states="need_manager_approval"  groups="base.group_sale_manager"/>
 
-                    <button type="workflow" name="sig_contract_reopened" string="Reopen" states="need_availability_check,need_manager_approval,contract_not_presented"/>
+                    <button type="workflow" name="sig_contract_reopened" string="Reopen" states="need_availability_check,need_manager_approval,contract_not_presented,contract_not_approved"/>
+
+                    <button type="workflow" name="sig_lost" string="Lost" states="contract_not_approved"/>
 
                 </xpath>
 
