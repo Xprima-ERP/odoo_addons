@@ -37,7 +37,7 @@
                             <field name="price_unit" attrs="{'readonly': [('is_ad_line','==', False)]}" />
                             <field name="tax_id" widget="many2many_tags" domain="[('parent_id','=',False),('type_tax_use','&lt;&gt;','purchase')]" invisible="1" />
                             <field name="discount" invisible="1" />
-                            <field name="discount_money" groups="sale.group_discount_per_so_line" attrs="{'readonly': [('solution_part','!=', 2)]}"/>
+                            <field name="discount_money" groups="sale.group_discount_per_so_line" attrs="{'readonly': [('solution_part','=', 1)]}"/>
                             <field name="price_subtotal" />
                         </tree>
                     </field>

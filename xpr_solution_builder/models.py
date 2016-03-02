@@ -510,7 +510,7 @@ class SalesOrderLine(models.Model):
 
         for line in self:
             if (
-                line.solution_part == 2
+                line.solution_part != 1
                 and line.price_unit and line.product_uom_qty
             ):
                 line.discount_money = max(
