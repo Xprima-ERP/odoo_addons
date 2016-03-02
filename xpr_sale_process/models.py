@@ -66,9 +66,6 @@ class SaleOrder(models.Model):
 
     def check_manager_approval_needed(self):
 
-        if self.solution_discount:
-            return True
-
         for line in self.order_line:
             if line.discount_money:
                 return True

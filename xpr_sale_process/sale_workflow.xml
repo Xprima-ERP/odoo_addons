@@ -305,6 +305,12 @@
             <field name="signal">sig_contract_reopened</field>
         </record>
 
+        <record id="trans_act_contract_not_approved_act_contract_reopened" model="workflow.transition">
+            <field name="act_from" ref="act_contract_not_approved"/>
+            <field name="act_to" ref="act_contract_reopened"/>
+            <field name="signal">sig_contract_reopened</field>
+        </record>
+
         <record id="trans_act_manager_approval_needed_act_interrupted" model="workflow.transition">
             <field name="act_from" ref="act_manager_approval_needed"/>
             <field name="act_to" ref="act_approval_interrupted"/>
