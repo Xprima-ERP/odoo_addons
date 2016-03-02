@@ -50,10 +50,6 @@
                     <attribute name="attrs">{'readonly': [('state','!=','draft')]}</attribute>
                 </field>
 
-                <field name="solution_discount" position="attributes">
-                    <attribute name="attrs">{'readonly': [('state','!=','draft')]}</attribute>
-                </field>
-
                 <xpath expr="//button[@name='sale_solution_option_action']" position="attributes">
                     <attribute name="states">draft</attribute>
                 </xpath>
@@ -126,9 +122,10 @@
                     <attribute name="states"></attribute>
                 </xpath>
 
-                <field name="client_order_ref" position="attributes">
+                <!-- Was used to fix duplicate XIS codes. TODO: Remove this. -->
+                <!-- <field name="client_order_ref" position="attributes">
                     <attribute name="readonly">0</attribute>
-                </field>
+                </field> -->
             </field>
         </record>
 

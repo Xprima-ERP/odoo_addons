@@ -81,7 +81,19 @@ class Solution(models.Model):
             # Assign new recordset
             solution.options_extra = extras
 
+    @api.depends('name', 'default_code')
+    def _display_name(self):
+        for solution in self:
+            if solution.default_code:
+                solution.display_name = '[{0}] {1}'.format(
+                    solution.default_code, solution.name)
+            else:
+                solution.display_name = solution.name
+
     name = fields.Char(required=True, translate=True)
+
+    display_name = fields.Char(compute=_display_name)
+
     description = fields.Char(required=True, translate=True)
     list_price = fields.Float(string='Solution Price', digits=(6, 2))
 
@@ -251,11 +263,6 @@ class SalesOrder(models.Model):
         for order in self:
             order.category = order.solution.category
 
-    @api.depends('solution_discount')
-    def _solution_discount_money(self):
-        for order in self:
-            order.solution_discount_money = order.solution_discount
-
     def order_line_report(self):
         """
         Line ordering for reports.
@@ -291,15 +298,9 @@ class SalesOrder(models.Model):
     solution = fields.Many2one(
         'xpr_solution_builder.solution', string='Solution')
 
+    # Deprecated. TODO: Remove this.
     solution_discount = fields.Float(
         string='Solution Discount ($)', digits=(6, 2))
-
-    # Duplicate field so we can see it in two places in form
-    solution_discount_money = fields.Float(
-        string='Solution Discount',
-        digits_compute=dp.get_precision('Account'),
-        readonly=True,
-        compute=_solution_discount_money)
 
     order_line_products = fields.One2many(
         'sale.order.line', readonly=1, compute=_get_line_products)
@@ -349,7 +350,13 @@ class SalesOrder(models.Model):
             order.category = order.solution.category
 
             for line in list(order.order_line):
+
                 if line.solution_part == 0:
+                    if not line.product_id:
+                        # Apply solution discount to first zero with no product.
+                        line.discount_money = order.solution_discount
+                        line.name=order.solution.description or ' '
+
                     has_zero = True
 
                 if line.solution_part not in [0, 1, 2]:
@@ -364,8 +371,8 @@ class SalesOrder(models.Model):
             if order.solution.default_code and not has_zero:
                 order.order_line += order.order_line.new(dict(
                     order_id=order,
-                    #product_id=order.product_id,
-                    name=order.solution.name,
+                    #product_id
+                    name=order.solution.description or ' ',
                     price_unit=order.solution.list_price,
                     solution_part=0,
                     product_uom_qty=1,
@@ -398,15 +405,15 @@ class SalesOrder(models.Model):
             is_package = True
             new_lines += new_lines.new(dict(
                 order_id=order,
-                #product_id
-                name=order.solution.name,
+                #product_id #  No actual product. Will read solution code.
+                name=order.solution.description or ' ',
                 price_unit=order.solution.list_price,
                 solution_part=0,
                 product_uom_qty=1,
                 product_uom=unit.id,
                 sequence=sequence,
                 state='draft',
-                discount_money=order.solution_discount,  # TODO: Remove this
+                discount_money=0,
             ))
 
         for product in order.solution.products:
@@ -447,34 +454,11 @@ class SalesOrder(models.Model):
 
         order.order_line = new_lines
 
-    def _apply_solution_discount(self, order):
-
-        solution_discount_line = None
-
-        lines = self.env['sale.order.line']
-
-        solution_discount = min(
-            order.solution.list_price, order.solution_discount)
-
-        sequence = 0
-        for line in order.order_line:
-            if line.solution_part != 0:
-                continue
-
-            line.discount_money = solution_discount
-
     @api.onchange('solution')
     def onchange_solution(self):
 
         for order in self:
             self._apply_solution(order)
-
-        return {}
-
-    @api.onchange('solution_discount')
-    def onchange_solution_discount(self):
-        for order in self:
-            self._apply_solution_discount(order)
 
         return {}
 
@@ -568,6 +552,8 @@ class SalesOrderLine(models.Model):
 
             if line.product_id:
                 line.display_name = line.product_id.display_name
+            elif line.solution_part == 0:
+                line.display_name = line.order_id.solution.display_name
             else:
                 line.display_name = ''
 
