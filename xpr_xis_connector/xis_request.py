@@ -289,7 +289,7 @@ class SaleOrderRequest(XISRequestWrapper):
         lines = [
             line for line in self.order.order_line
             if (
-                line.solution_part == 0 or
+                line.solution_part == 0 and (self.order.solution.default_code or '').strip() or
                 line.product_id.default_code and line.solution_part != 1
             )
         ]
