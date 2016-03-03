@@ -270,7 +270,7 @@
       <blockTable colWidths="89.0,226.0,55.0,60.0,50.0,55.0" style="Table5">
         <tr>
           <td>
-            <para style="terp_default_9">[[ line.solution_part == 0 and o.solution.default_code or line.display_name ]] </para>
+            <para style="terp_default_9">[[ line.display_name ]] </para>
           </td>
           <td>
             <para style="terp_default_9">[[ format(line.display_description) ]] </para>
@@ -284,10 +284,10 @@
             <para style="terp_default_Right_9">[[ formatLang(line.product_uos and line.product_uos_qty or line.product_uom_qty) ]] [[ line.product_uos and line.product_uos.name or line.product_uom.name ]]</para>
           </td>
           <td>
-            <para style="terp_default_Right_9">[[ line.solution_part  == 2 and formatLang(line.price_unit , digits=get_digits(dp='Product Price')) or '' ]]</para>
+            <para style="terp_default_Right_9">[[ line.solution_part  != 1 and formatLang(line.price_unit , digits=get_digits(dp='Product Price')) or '' ]]</para>
           </td>
           <td>
-            <para style="terp_default_Centre_9">[[ line.solution_part  == 2 and formatLang(line.discount_money, digits=get_digits(dp='Account')) or '' ]]</para>
+            <para style="terp_default_Centre_9">[[ line.solution_part  != 1 and formatLang(line.discount_money, digits=get_digits(dp='Account')) or '' ]]</para>
           </td>
           <td>
             <para style="terp_default_Right_9">[[ (line.solution_part != 1 and formatLang(line.price_subtotal, digits=get_digits(dp='Account'), currency_obj=o.pricelist_id.currency_id)) or (o.partner_id.lang == 'fr_FR' and 'inclus') or 'included' ]] </para>

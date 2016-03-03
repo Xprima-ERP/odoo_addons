@@ -195,13 +195,6 @@
             <field name="action">write({'state':'draft'})</field>
         </record>
 
-        <record model="workflow.activity" id="act_contract_reopened">
-            <field name="name">Reopened for edit</field>
-            <field name="wkf_id" ref="sale.wkf_sale"/>
-            <field name="kind">function</field>
-            <field name="action">write({'state':'draft'})</field>
-        </record>
-
         <record model="workflow.activity" id="act_approval_interrupted">
             <field name="name">Approval Interrupted</field>
             <field name="wkf_id" ref="sale.wkf_sale"/>
@@ -288,9 +281,17 @@
             <field name="condition">has_rights_to_approve()</field>
         </record>
 
-        <record id="trans_act_manager_not_approved_draft" model="workflow.transition">
+        <record id="trans_act_manager_not_approved_act_contract_reopened" model="workflow.transition">
             <field name="act_from" ref="act_manager_not_approved"/>
-            <field name="act_to" ref="sale.act_draft"/>
+            <field name="act_to" ref="act_contract_reopened"/>
+            <field name="signal">sig_contract_reopened</field>
+        </record>
+
+         <!-- Temporary. For unblocking a situation in live-->
+        <record id="trans_act_draft_act_contract_reopened" model="workflow.transition">
+            <field name="act_from" ref="sale.act_draft"/>
+            <field name="act_to" ref="act_contract_reopened"/>
+            <field name="signal">sig_contract_reopened</field>
         </record>
 
         <record id="trans_act_contract_not_presented_act_contract_reopened" model="workflow.transition">
@@ -301,6 +302,12 @@
 
         <record id="trans_act_manager_approval_needed_act_contract_reopened" model="workflow.transition">
             <field name="act_from" ref="act_manager_approval_needed"/>
+            <field name="act_to" ref="act_contract_reopened"/>
+            <field name="signal">sig_contract_reopened</field>
+        </record>
+
+        <record id="trans_act_contract_not_approved_act_contract_reopened" model="workflow.transition">
+            <field name="act_from" ref="act_contract_not_approved"/>
             <field name="act_to" ref="act_contract_reopened"/>
             <field name="signal">sig_contract_reopened</field>
         </record>
