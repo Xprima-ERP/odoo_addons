@@ -85,7 +85,7 @@ class Solution(models.Model):
     def _display_name(self):
         for solution in self:
             if solution.default_code:
-                solution.display_name = '[{0}] {1}'.format(
+                solution.display_name = u'[{0}] {1}'.format(
                     solution.default_code, solution.name)
             else:
                 solution.display_name = solution.name
@@ -298,10 +298,6 @@ class SalesOrder(models.Model):
     solution = fields.Many2one(
         'xpr_solution_builder.solution', string='Solution')
 
-    # Deprecated. TODO: Remove this.
-    solution_discount = fields.Float(
-        string='Solution Discount ($)', digits=(6, 2))
-
     order_line_products = fields.One2many(
         'sale.order.line', readonly=1, compute=_get_line_products)
 
@@ -353,9 +349,7 @@ class SalesOrder(models.Model):
 
                 if line.solution_part == 0:
                     if not line.product_id:
-                        # Apply solution discount to first zero with no product.
-                        line.discount_money = order.solution_discount
-                        line.name=order.solution.description or ' '
+                        line.name = order.solution.description or ' '
 
                     has_zero = True
 
@@ -379,7 +373,7 @@ class SalesOrder(models.Model):
                     product_uom=unit.id,
                     sequence=0,
                     state='draft',
-                    discount_money=order.solution_discount,
+                    discount_money=0,
                 ))
 
     def _apply_solution(self, order):

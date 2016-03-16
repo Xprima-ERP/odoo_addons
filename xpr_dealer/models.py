@@ -52,6 +52,9 @@ class Partner(models.Model):
 
     is_test = fields.Boolean('Is Test')  # Indicates if this is a test partner (i.e. PTL).
 
+    # Copied from parent and made translatable
+    website = fields.Char("Website", size=254, help="Website of Partner or Company", translate=True)
+
     # TODO: dealer != null
     # "is_dealer": fields.boolean("Is Dealer"),
 
@@ -258,11 +261,12 @@ class Dealer(models.Model):
         "res.country",
         "Billing Country")
 
-    # TODO: Make 'website' translatable.
+    # Deprecated
     website_french = fields.Char(
         "Website French", size=254, help="Website of Partner or Company")
 
-    additional_website = fields.Char("Additional Website", size=254)
+    # Looks useless and contains mostly junk. Removed from form.
+    additional_website = fields.Char("Additional Website", size=254, translate=True)
 
     makes = fields.Many2many(
         'res.partner.category',
