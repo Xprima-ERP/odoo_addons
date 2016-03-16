@@ -261,13 +261,6 @@ class Dealer(models.Model):
         "res.country",
         "Billing Country")
 
-    # Deprecated
-    website_french = fields.Char(
-        "Website French", size=254, help="Website of Partner or Company")
-
-    # Looks useless and contains mostly junk. Removed from form.
-    additional_website = fields.Char("Additional Website", size=254, translate=True)
-
     makes = fields.Many2many(
         'res.partner.category',
         'dealer_partner_category_make_rel',

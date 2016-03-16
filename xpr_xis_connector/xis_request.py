@@ -558,8 +558,8 @@ class DealerRequest(XISRequestWrapper):
             'dealercode': p.code.strip() or '',
             'dealeremail': '',  # must go from xis to OE.
             'dealername': p.name.strip() or '',
-            'dealerurle': p.website or '',
-            'dealerurlf': self.dealer.website_french or '',
+            'dealerurle': p.with_context(lang='en_EN').website or '',
+            'dealerurlf': p.with_context(lang='fr_FR').website or '',
             'dpd_override': '',  # '%s 00:00:00' % (p.dpd_override,)
             'fax': p.fax or '',
             'geolat': self.dealer.geolat,
