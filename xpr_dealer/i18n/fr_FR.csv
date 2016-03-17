@@ -329,3 +329,5 @@ xpr_dealer,field,"xpr_dealer.dealer,assigned_user",0,Assigned Salesperson,Vendeu
 xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.unassigned_dealer_menu,Unassigned Dealers,Concessionnaires sans vendeurs
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Makes,Marques
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,City,Ville
+xpr_dealer,view,res.partner,xpr_dealer.view_partner_form,Copy company coordinates,Copier les coordonnées de la société  
+

@@ -41,6 +41,10 @@ class Partner(models.Model):
                     }
                 }
 
+    # Extends liste of fields to be copied from parent
+    def _address_fields(self, cr, uid, context=None):
+        return super(Partner, self)._address_fields(cr, uid) + ['phone', 'website', 'fax']
+
     dealer = fields.One2many(
         'xpr_dealer.dealer',
         'partner',
