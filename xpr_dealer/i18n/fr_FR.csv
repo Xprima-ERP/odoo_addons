@@ -5,7 +5,6 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_portalma
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_atv,ATV,ATV
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_abitibi_temiscamingue,Abitibi/Témiscamingue,Abitibi/Témiscamingue
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_acura,Acura,Acura
-xpr_dealer,field,"xpr_dealer.dealer,additional_website",0,Additional Website,Site web additionnel
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.view_dealer_form,Address,Adresse
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_alfaromeo,Alfa Romeo,Alfa Romeo
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_american_hotrod,American Hotrod,American Hotrod
@@ -302,8 +301,6 @@ xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_moto_vic
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_volkswagen,Volkswagen,Volkswagen
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_volvo,Volvo,Volvo
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_watercraft,Watercraft,Watercraft
-xpr_dealer,field,"xpr_dealer.dealer,website_french",0,Website French,URL du site web (FR)
-xpr_dealer,help,"xpr_dealer.dealer,website_french",0,Website of Partner or Company,Site web du partenaire ou de l'entreprise
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_car_westernstar,Western Star,Western Star
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_market_windsor,Windsor,Windsor
 xpr_dealer,model,"res.partner.category,name",xpr_dealer.category_dealer_region_windsor,Windsor,Windsor
@@ -332,3 +329,5 @@ xpr_dealer,field,"xpr_dealer.dealer,assigned_user",0,Assigned Salesperson,Vendeu
 xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.unassigned_dealer_menu,Unassigned Dealers,Concessionnaires sans vendeurs
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Makes,Marques
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,City,Ville
+xpr_dealer,view,res.partner,xpr_dealer.view_partner_form,Copy company coordinates,Copier les coordonnées de la société  
+

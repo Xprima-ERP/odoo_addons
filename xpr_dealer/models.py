@@ -41,6 +41,10 @@ class Partner(models.Model):
                     }
                 }
 
+    # Extends liste of fields to be copied from parent
+    def _address_fields(self, cr, uid, context=None):
+        return super(Partner, self)._address_fields(cr, uid) + ['phone', 'website', 'fax']
+
     dealer = fields.One2many(
         'xpr_dealer.dealer',
         'partner',
@@ -260,13 +264,6 @@ class Dealer(models.Model):
     billing_country_id = fields.Many2one(
         "res.country",
         "Billing Country")
-
-    # Deprecated
-    website_french = fields.Char(
-        "Website French", size=254, help="Website of Partner or Company")
-
-    # Looks useless and contains mostly junk. Removed from form.
-    additional_website = fields.Char("Additional Website", size=254, translate=True)
 
     makes = fields.Many2many(
         'res.partner.category',
