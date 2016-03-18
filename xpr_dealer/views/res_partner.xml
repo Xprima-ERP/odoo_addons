@@ -23,6 +23,10 @@
           <attribute name="string">Full History</attribute>
         </xpath>
 
+        <label for="use_parent_address" position="attributes">
+          <attribute name="string">Copy company coordinates</attribute> <!-- TODO: Translate-->
+        </label>
+
         <field name="category_id" position="replace">
             <field name="is_test" invisible="[('is_company', '=', 'False')]"/>
             <label for="is_test" string="Is Test" invisible="[('is_company', '=', 'False')]"/>
@@ -34,6 +38,16 @@
             <field name="category_id" placeholder="Tags..." widget="many2many_tags" domain="['|', '|', '|', '|',('parent_id','child_of', %(category_dealer_group)d ), ('id','child_of', %(category_dealer_certification_automatic)d ), ('id','child_of', %(category_dealer_certification_manual)d ), ('id','child_of', %(category_dealer_marketing_association)d ), ('id','child_of', %(category_dealer_association)d )]"/>
 
         </field>
+
+        <field name="lang" position="replace" />
+        <field name="website" position="after" >
+          <field name="lang"/>
+        </field>
+
+        <xpath expr="//page[@name='sales_purchases']" position="attributes">
+          <attribute name="attrs">{'invisible': [('is_company','=', False)]}</attribute>
+        </xpath>
+
     </field>
   </record>
 
