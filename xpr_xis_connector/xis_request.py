@@ -555,11 +555,11 @@ class DealerRequest(XISRequestWrapper):
             'customermask': self.get_customermasks() or '',
             'dayspastdue': '',  # p.dayspastdue
             'dealerarea': self.get_dealerarea(),
-            'dealercode': p.code.strip() or '',
+            'dealercode': p.code.strip(),
             'dealeremail': '',  # must go from xis to OE.
-            'dealername': p.name.strip() or '',
-            'dealerurle': p.with_context(lang='en_EN').website or '',
-            'dealerurlf': p.with_context(lang='fr_FR').website or '',
+            'dealername': p.name.strip(),
+            'dealerurle': (p.with_context(lang='en_EN').website or '').strip(),
+            'dealerurlf': (p.with_context(lang='fr_FR').website or '').strip(),
             'dpd_override': '',  # '%s 00:00:00' % (p.dpd_override,)
             'fax': p.fax or '',
             'geolat': self.dealer.geolat,
