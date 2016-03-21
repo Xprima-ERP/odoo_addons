@@ -24,7 +24,7 @@
         </xpath>
 
         <label for="use_parent_address" position="attributes">
-          <attribute name="string">Copy company coordinates</attribute> <!-- TODO: Translate-->
+          <attribute name="string">Copy company coordinates</attribute>
         </label>
 
         <field name="category_id" position="replace">
@@ -124,7 +124,7 @@
 
           <notebook colspan="4">
             <page string="Contacts"  autofocus="autofocus">
-                    <field name="child_ids" mode="kanban" context="{'default_parent_id': active_id, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_supplier': supplier, 'default_customer': customer, 'default_use_parent_address': True}">
+                    <field name="child_ids" mode="kanban" context="{'default_parent_id': active_id, 'default_street': street, 'default_street2': street2, 'default_city': city, 'default_state_id': state_id, 'default_zip': zip, 'default_country_id': country_id, 'default_supplier': supplier, 'default_customer': customer, 'default_use_parent_address': True, 'default_phone': phone, 'default_website': website, 'default_fax': fax,}">
                         <kanban>
                             <field name="color"/>
                             <field name="name"/>
@@ -199,9 +199,13 @@
                                 </div>
                                 <group>
                                     <field name="function" placeholder="e.g. Sales Director"/>
-                                    <field name="email"/>
-                                    <field name="phone"/>
-                                    <field name="mobile"/>
+                                    <field name="email" />
+                                    <field name="website" />
+                                    <field name="phone" />
+                                    <field name="fax" />
+                                    <field name="mobile" />
+                                    <field name="lang" />
+
                                 </group>
                                 <div>
                                     <field name="use_parent_address"/><label for="use_parent_address"/>
