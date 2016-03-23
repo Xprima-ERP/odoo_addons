@@ -56,6 +56,8 @@ class Partner(models.Model):
 
     is_test = fields.Boolean('Is Test')  # Indicates if this is a test partner (i.e. PTL).
 
+    unilingual_website = fields.Boolean("French unilingual website", help="Hides website from english portals")
+
     # Copied from parent and made translatable
     website = fields.Char("Website", size=254, help="Website of Partner or Company", translate=True)
 

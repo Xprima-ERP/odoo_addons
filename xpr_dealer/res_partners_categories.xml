@@ -713,6 +713,18 @@
         <field name="name">Yamaha</field>
         <field name="parent_id" ref="category_dealer_watercraft" />
     </record>
+    <record model="res.partner.category" id="category_dealer_watercraft_alumacraft">
+        <field name="name">Alumacraft</field>
+        <field name="parent_id" ref="category_dealer_watercraft" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_watercraft_premier">
+        <field name="name">Premier</field>
+        <field name="parent_id" ref="category_dealer_watercraft" />
+    </record>
+    <record model="res.partner.category" id="category_dealer_watercraft_palm_beach">
+        <field name="name">Palm Beach</field>
+        <field name="parent_id" ref="category_dealer_watercraft" />
+    </record>
 
 </data>
 
