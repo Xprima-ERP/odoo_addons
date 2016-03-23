@@ -330,4 +330,4 @@ xpr_dealer,model,"ir.ui.menu,name",xpr_dealer.unassigned_dealer_menu,Unassigned 
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,Makes,Marques
 xpr_dealer,view,xpr_dealer.dealer,xpr_dealer.dealer_search_view,City,Ville
 xpr_dealer,view,res.partner,xpr_dealer.view_partner_form,Copy company coordinates,Copier les coordonnées de la société  
-
+xpr_dealer,field,"res.partner,unilingual_website",0,French unilingual website,Site unilingue francais

@@ -534,6 +534,24 @@ class DealerRequest(XISRequestWrapper):
 
         return ''
 
+    def get_url(self, partner, language):
+
+        if language[:2] == 'en' and partner.unilingual_website:
+            # French only website. Do not provide an url.
+            return ''
+
+        url = partner.with_context(lang=language).website
+
+        if not url:
+            return ''
+
+        url = url.strip()
+
+        if url == "http://":
+            return ''
+
+        return url
+
     def get_xis_data(self):
 
         # Validate data. Must be a dealer.
@@ -558,8 +576,8 @@ class DealerRequest(XISRequestWrapper):
             'dealercode': p.code.strip(),
             'dealeremail': '',  # must go from xis to OE.
             'dealername': p.name.strip(),
-            'dealerurle': (p.with_context(lang='en_EN').website or '').strip(),
-            'dealerurlf': (p.with_context(lang='fr_FR').website or '').strip(),
+            'dealerurle': self.get_url(p, 'en_EN'),
+            'dealerurlf': self.get_url(p, 'fr_FR'),
             'dpd_override': '',  # '%s 00:00:00' % (p.dpd_override,)
             'fax': p.fax or '',
             'geolat': self.dealer.geolat,
