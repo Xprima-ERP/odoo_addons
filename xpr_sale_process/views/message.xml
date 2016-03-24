@@ -47,8 +47,8 @@
             <field name="params" eval="&quot;{
                 'domain': [('model','=','crm.lead'),
                     '|',
-                    ('notification_ids.partner_id.section_id.user_id', 'in', [uid]),
-                    ('author_id.section_id.user_id', 'in', [uid]),
+                    ('notification_ids.partner_id.user_id.team_ids.user_id', 'in', [uid]),
+                    ('author_id.user_id.team_ids.user_id', 'in', [uid]),
                 ],
                 'view_mailbox': True,
                 'show_compose_message': False

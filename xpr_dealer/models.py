@@ -100,6 +100,10 @@ class Users(models.Model):
             'assigned_user': self.active
         })
 
+    # Reverse of crm.case.section.member_ids
+    # In our organisation, there should be only one team at a time.
+    team_ids = fields.Many2many('crm.case.section', 'sale_member_rel', 'member_id', 'section_id', 'Member Of Team')
+
 
 class Dealer(models.Model):
     """
@@ -245,7 +249,7 @@ class Dealer(models.Model):
 
         for dealer in self:
             if ccaq.id in [c.id for c in dealer.customer_of]:
-                dealer.business =[(4, c.id, _) for c in dealer.business] +  [(4, used.id, _)]
+                dealer.business = [(4, c.id, _) for c in dealer.business] + [(4, used.id, _)]
 
     assigned_user = fields.Boolean(
         string="Assigned Salesperson",
