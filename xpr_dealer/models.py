@@ -56,10 +56,15 @@ class Partner(models.Model):
 
     is_test = fields.Boolean('Is Test')  # Indicates if this is a test partner (i.e. PTL).
 
-    unilingual_website = fields.Boolean("French unilingual website", help="Hides website from english portals")
+    unilingual_website = fields.Boolean(
+        "French unilingual website",
+        help="Hides website from english portals")
 
     # Copied from parent and made translatable
-    website = fields.Char("Website", size=254, help="Website of Partner or Company", translate=True)
+    website = fields.Char(
+        "Website", size=254,
+        help="Website of Partner or Company",
+        translate=True)
 
     # TODO: dealer != null
     # "is_dealer": fields.boolean("Is Dealer"),
@@ -94,6 +99,10 @@ class Users(models.Model):
         ).write({
             'assigned_user': self.active
         })
+
+    # Reverse of crm.case.section.member_ids
+    # In our organisation, there should be only one team at a time.
+    team_ids = fields.Many2many('crm.case.section', 'sale_member_rel', 'member_id', 'section_id', 'Member Of Team')
 
 
 class Dealer(models.Model):
@@ -230,6 +239,18 @@ class Dealer(models.Model):
 
             dealer.make_sequence = ','.join(new_makes + list(makes_set - set(makes_parsed)))
 
+    @api.onchange('customer_of')
+    def _check_ccaq_customer(self):
+        """
+        Whenever a dealer is CCAQ, it is in the used business from then on.
+        """
+        ccaq = self.env.ref('xpr_dealer.category_dealer_customer_ccaq')
+        used = self.env.ref('xpr_dealer.category_dealer_used')
+
+        for dealer in self:
+            if ccaq.id in [c.id for c in dealer.customer_of]:
+                dealer.business = [(4, c.id, _) for c in dealer.business] + [(4, used.id, _)]
+
     assigned_user = fields.Boolean(
         string="Assigned Salesperson",
         readonly=True,
@@ -283,7 +304,7 @@ class Dealer(models.Model):
     )
 
     # Old customermask
-    customer = fields.Many2many(
+    customer_of = fields.Many2many(
         'res.partner.category',
         'dealer_partner_category_customer_rel',
         string="Customer of",

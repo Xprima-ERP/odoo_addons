@@ -604,8 +604,11 @@
         <field name="name">Yamaha</field>
         <field name="parent_id" ref="category_dealer_moto" />
     </record>
+    <record model="res.partner.category" id="category_dealer_moto_mv_agusta">
+        <field name="name">MV Agusta</field>
+        <field name="parent_id" ref="category_dealer_moto" />
+    </record>
 </data>
-
 <data>
     <record model="res.partner.category" id="category_dealer_atv">
         <field name="name">ATV</field>

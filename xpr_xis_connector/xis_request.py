@@ -491,7 +491,7 @@ class DealerRequest(XISRequestWrapper):
         return state
 
     def get_customermasks(self):
-        return ';'.join(cm.name for cm in self.dealer.customer)
+        return ';'.join(cm.name for cm in self.dealer.customer_of)
 
     def get_is_not_used(self):
 

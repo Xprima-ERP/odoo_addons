@@ -126,7 +126,7 @@ class SaleOrder(models.Model):
             return False
 
         try:
-            if self.env.user.id == self.user_id.partner_id.section_id.user_id.id:
+            if self.env.user.id == self.user_id.team_ids.user_id.id:
                 return True
         except:
             raise AccessError(
@@ -146,11 +146,13 @@ class SaleOrder(models.Model):
             # No salesman. No team.
             return
 
-        team = salesman.section_id
+        team = self.user_id.team_ids
 
         if not team:
             # No team, no team leader.
             return
+
+        team = team[0]
 
         if team.user_id.id == self.env.user.id:
             # User is actually the leader. No need to auto notify.

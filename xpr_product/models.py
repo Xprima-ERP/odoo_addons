@@ -21,7 +21,7 @@
 from openerp import models, fields, api
 
 
-class product_product(models.Model):
+class ProductTemplate(models.Model):
     _inherit = "product.template"
 
     # Deprecated
@@ -42,8 +42,48 @@ class product_product(models.Model):
         domain="[('type','=','normal')]",
         help="Select category for the current product")
 
+    # Override parent field. Made readonly. Set code in variants
+    default_code = fields.Char(
+        related="product_variant_ids.default_code",
+        string="Internal Reference",
+        readonly=True)
 
-class sale_order(models.Model):
+
+class Product(models.Model):
+    """
+    All variants of same product must have same reference number.
+    This emulates the default_code to be in template.
+    """
+    _inherit = "product.product"
+
+    @api.multi
+    def write(self, vals):
+
+        status = super(Product, self).write(vals)
+
+        if 'default_code' not in vals:
+            return status
+
+        # In theory, products in recordset could
+        # come from different templates. There is typically only one.
+        templates = [p.product_tmpl_id.id for p in self]
+
+        # Propagate default code to sibling variants.
+
+        default_code = vals['default_code']
+
+        siblings = self.search([
+            ('product_tmpl_id', 'in', templates),
+            '|', ('default_code', default_code and '=' or '!=', None), ('default_code', '!=', default_code)
+        ])
+
+        if not siblings:
+            return status
+
+        return siblings.write({'default_code': default_code})
+
+
+class SaleOrder(models.Model):
     _inherit = "sale.order"
 
     def _get_one_time_total(self):

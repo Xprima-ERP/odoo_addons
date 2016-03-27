@@ -59,7 +59,7 @@
          <field name="name" filter_domain="['|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self)]"/>
          <filter help="My Dealers" name="my_dealers" icon="terp-personal+" domain="[('user_id','=',uid)]"/>
          <filter help="Unassigned" name="unassigned" domain="[('assigned_user', '=', False)]" />
-         <filter help="My Team" name="my_team" domain="[('user_id.partner_id.section_id.user_id', 'in', [uid])]" />
+         <filter help="My Team" name="my_team" domain="[('user_id.team_ids.user_id', 'in', [uid])]" />
          <separator/>
          <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]"/>
          <field name="makes" string="Vehicle" filter_domain="[('makes.parent_id','ilike', self)]"/>
@@ -252,9 +252,10 @@
                         domain="[('parent_id.parent_id', 'child_of', %(category_dealer_region)d)]"/>
                     <field name="portalmask" widget="many2many_tags"
                         domain="[('parent_id.parent_id', 'child_of', %(category_dealer_portal)d)]"/>
-                    <field name="customer" widget="many2many_tags"
+                    <field name="customer_of" widget="many2many_tags"
                       domain="[('parent_id.parent_id', 'child_of', %(category_dealer_customer)d)]"/>
-
+                    <field name="business" widget="many2many_tags"
+                      domain="[('parent_id.parent_id', 'child_of', %(category_dealer_business)d)]"/>
                     <field name="makes" widget="many2many_tags"
                       domain="[('parent_id.parent_id.parent_id', 'child_of', %(category_dealer_industry)d)]"/>
 
