@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+  <data>
+
+  <record id="view_attachment_tree" model="ir.ui.view">
+      <field name="model">ir.attachment</field>
+      <field name="inherit_id" ref="base.view_attachment_tree"/>
+      <field name="arch" type="xml">
+        <field name="create_date" position="after">
+          <field name="write_uid" />
+          <field name="write_date"/>
+        </field>
+    </field>
+  </record>
+
+
+  <record id="view_attachment_form" model="ir.ui.view">
+      <field name="model">ir.attachment</field>
+      <field name="inherit_id" ref="base.view_attachment_form"/>
+      <field name="arch" type="xml">
+
+        <group string="History" position="inside">
+
+          <label for="write_uid" string="Update"/>
+          <div name="creation_div">
+            <field name="write_uid" readonly="1" class="oe_inline"/> on 
+            <field name="write_date" readonly="1" class="oe_inline"/>
+          </div>
+
+        </group>
+    </field>
+  </record>
+
+  </data>
+</openerp>
