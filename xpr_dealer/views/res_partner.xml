@@ -59,7 +59,7 @@
          <field name="name" filter_domain="['|','|',('display_name','ilike',self),('ref','=',self),('email','ilike',self)]"/>
          <filter help="My Dealers" name="my_dealers" icon="terp-personal+" domain="[('user_id','=',uid)]"/>
          <filter help="Unassigned" name="unassigned" domain="[('assigned_user', '=', False)]" />
-         <filter help="My Team" name="my_team" domain="[('user_id.team_ids.user_id', 'in', [uid])]" />
+         <filter help="My Team" name="my_team" domain="[('user_id.team_ids.member_ids', 'in', [uid])]" />
          <separator/>
          <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]"/>
          <field name="makes" string="Vehicle" filter_domain="[('makes.parent_id','ilike', self)]"/>

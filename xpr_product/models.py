@@ -59,10 +59,10 @@ class Product(models.Model):
     @api.multi
     def write(self, vals):
 
-        status = super(Product, self).write(vals)
+        super(Product, self).write(vals)
 
         if 'default_code' not in vals:
-            return status
+            return
 
         # In theory, products in recordset could
         # come from different templates. There is typically only one.
@@ -77,10 +77,8 @@ class Product(models.Model):
             '|', ('default_code', default_code and '=' or '!=', None), ('default_code', '!=', default_code)
         ])
 
-        if not siblings:
-            return status
-
-        return siblings.write({'default_code': default_code})
+        if siblings:
+            siblings.write({'default_code': default_code})
 
 
 class SaleOrder(models.Model):

@@ -56,6 +56,7 @@ Contributors
         'views/saleorder.xml',
         'views/routing.xml',
         'views/attachment_label.xml',
+        'views/attachment.xml',
         'views/project.xml',
         'views/task.xml',
         'security/ir.model.access.csv',

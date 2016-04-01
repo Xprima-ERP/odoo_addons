@@ -593,21 +593,19 @@ class Task(models.Model):
 
                 del vals['stage_id']
 
-        res = super(Task, self).write(vals)
+        super(Task, self).write(vals)
 
         if self.env.context.get('from_jira'):
             # Not user interaction. No need to go further.
             # This avoids recursive loops.
 
-            return res
+            return
 
         if 'stage_id' in vals:
             # Not using a 'depends' decorator.
             # Update depends on actual value in db.
 
             self.trigger_project()
-
-        return res
 
     rule = fields.Char(string="Rule", default="jira")
     jira_template_name = fields.Char(string="JIRA Project Template")
