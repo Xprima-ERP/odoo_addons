@@ -71,6 +71,10 @@
                   <field name="name" invisible="1" />
                 </field>
 
+                <button name="case_mark_won" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+
                 <xpath expr="//label[@for='name']" position="replace">
                     <group>
                         <field name="category" required="1" domain="[('parent_id.parent_id','child_of', %(product.product_category_all)d )]"/>
