@@ -21,6 +21,7 @@
                 </filter>
                 <filter string="Order Month" position="after">
                     <filter string="Category" domain="[]" context="{'group_by':'category'}"/>
+                    <filter string="Solution" domain="[]" context="{'group_by':'solution'}"/>
                 </filter>
             </field>
         </record>

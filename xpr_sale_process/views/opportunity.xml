@@ -29,6 +29,11 @@
                 <filter name="unassigned" position="before">
                     <filter help="My Team" name="my_team" domain="[('user_id.team_ids.member_ids', 'in', [uid])]" />
                 </filter>
+
+                 <filter string="Expected Closing" position="after">
+                    <filter string="Category" domain="[]" context="{'group_by':'category'}"/>
+                    <filter string="Solution" domain="[]" context="{'group_by':'solution'}"/>
+                </filter>
             </field>
         </record>
 
