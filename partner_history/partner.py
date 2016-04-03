@@ -23,6 +23,7 @@ from openerp import models, fields, api
 from openerp.osv import fields as osv_fields
 from openerp.tools.translate import _
 from openerp.tools import ustr
+from openerp.exceptions import AccessError, except_orm
 
 
 class mail_message(models.Model):
@@ -168,7 +169,24 @@ class mail_message(models.Model):
 
             vals.update({'partner_ids': [(6, 0, target_ids)], })
 
-        return super(mail_message, self.with_context({'default_status' : 'outgoing'})).create(vals)
+        return super(mail_message, self.with_context({'default_status': 'outgoing'})).create(vals)
+
+    # Xprima Patch. 'See own leads' users are restricted to messages from their team.
+    def read(self, cr, uid, ids, fields=None, context=None, load='_classic_read'):
+        """ If user doesn't have access to all messages, reduce list of ids """
+
+        try:
+            self.check_access_rule(cr, uid, ids, 'read', context=context)
+        except except_orm:
+            # Do not have access to sale.order ids
+            # This happens for users with see own leads
+            # For now, fail silently.
+            # TODO: Filter out the ids that cause the failure.
+
+            ids = []
+
+        return super(mail_message, self).read(
+            cr, uid, ids, fields=fields, context=context, load=load)
 
 
 class res_partner(models.Model):
