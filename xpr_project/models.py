@@ -363,9 +363,13 @@ class Project(models.Model):
 
         ids = [project.analytic_account_id.id for project in self]
 
-        self.env['sale.order'].search([
+        orders = self.env['sale.order'].search([
             ('project_id', 'in', ids)
-        ]).live_date = date
+        ])
+
+        orders.live_date = date
+        # Order goes to next step
+        orders.state = 'manual'
 
         self.notify_project_live()
 
@@ -532,12 +536,6 @@ class Task(models.Model):
 
             ids = set([t.id for t in project.tasks if t.rule in ['jira', 'legacy']])
 
-            if ids <= set(live_tasks.keys()):
-                # All tasks are cancelled
-                project.with_context(
-                    live_date=max([live_tasks[t] for t in ids])
-                ).set_live()
-
             if ids <= set(cancelled_tasks.keys()):
                 # All tasks are cancelled
                 order.cancel_date = max([cancelled_tasks[t] for t in ids])
@@ -548,11 +546,15 @@ class Task(models.Model):
 
             project.set_done()
 
+            if ids <= set(live_tasks.keys()):
+                # All tasks are live
+                project.with_context(
+                    live_date=max([live_tasks[t] for t in ids])
+                ).set_live()
+
             # Deactivates tasks in project tree
             # p.set_template()
 
-            # Order goes to next step
-            order.state = 'manual'
             order.delivery_date = fields.Date.context_today(order)
 
     @api.multi
