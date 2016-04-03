@@ -19,6 +19,9 @@
       <field name="inherit_id" ref="base.view_attachment_form"/>
       <field name="arch" type="xml">
 
+        <group string="History" position="attributes">
+          <attribute name="groups" />
+        </group>
         <group string="History" position="inside">
 
           <label for="write_uid" string="Update"/>
