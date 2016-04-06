@@ -16,11 +16,12 @@
                 </filter>
 
                 <filter name="my_sale_orders_filter" position="after">
-                    <filter help="My Team" name="my_team" domain="[('user_id.team_ids.user_id', 'in', [uid])]" />
+                    <filter help="My Team" name="my_team" domain="[('user_id.team_ids.member_ids', 'in', [uid])]" />
 
                 </filter>
                 <filter string="Order Month" position="after">
                     <filter string="Category" domain="[]" context="{'group_by':'category'}"/>
+                    <filter string="Solution" domain="[]" context="{'group_by':'solution'}"/>
                 </filter>
             </field>
         </record>
@@ -247,5 +248,10 @@
                 'search_default_my_sale_orders_filter': 1}
             </field>
         </record>
+
+          <record id="crm.menu_crm_leads" model="ir.ui.menu">
+            <field name="groups_id" eval="[(6,0,[ref('group_hidden')])]"/>
+        </record>
+
     </data>
 </openerp>

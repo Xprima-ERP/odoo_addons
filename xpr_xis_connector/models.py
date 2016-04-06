@@ -91,12 +91,10 @@ class DealerCertification(models.Model):
     @api.multi
     def write(self, vals):
 
-        status = super(DealerCertification, self).write(vals)
+        super(DealerCertification, self).write(vals)
 
         for certification in self:
             xis_request.PartnerCertificationRequest(certification).execute()
-
-        return status
 
     @api.model
     def create(self, vals):
@@ -136,7 +134,7 @@ class SaleOrder(models.Model):
         Syncs with XIS when contract is approved
         """
 
-        status = super(SaleOrder, self).write(vals)
+        super(SaleOrder, self).write(vals)
 
         # No need to feedback output fields or fields that have no effect in XIS.
 
@@ -145,7 +143,7 @@ class SaleOrder(models.Model):
                 vals.pop(key)
 
         if not vals:
-            return status
+            return
 
         for order in self:
 
@@ -161,8 +159,6 @@ class SaleOrder(models.Model):
                 continue
 
             xis_request.SaleOrderRequest(order).execute()
-
-        return status
 
 
 class Partner(models.Model):
@@ -208,11 +204,9 @@ class Partner(models.Model):
         post_write_data = self._pre_write(vals)
 
         # Make the standard call
-        status = super(Partner, self).write(vals)
+        super(Partner, self).write(vals)
 
         self._post_write(post_write_data)
-
-        return status
 
 
 class Dealer(models.Model):
@@ -264,18 +258,16 @@ class Dealer(models.Model):
         post_write_data = self._pre_write(vals)
 
         # Make the standard call
-        status = super(Dealer, self.with_context(no_xis_synch=True)).write(vals)
+        super(Dealer, self.with_context(no_xis_synch=True)).write(vals)
 
         for key in ['assigned_user']:
             if key in vals:
                 vals.pop(key)
 
         if not vals:
-            return status
+            return
 
         self._post_write(post_write_data)
-
-        return status
 
 
 class User(models.Model):

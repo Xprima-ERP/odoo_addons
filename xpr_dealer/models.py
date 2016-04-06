@@ -33,7 +33,7 @@ class Partner(models.Model):
             if partner.code:
                 partner.code = partner.code.strip().upper()
 
-            if not partner.code:
+            if partner.is_company and not partner.code:
                 return {
                     'warning': {
                         'title': 'Error',

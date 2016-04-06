@@ -99,3 +99,5 @@ xpr_project,help,"project.task,specs_approval_date",0,Approval date of the speci
 xpr_project,field,"project.task,specs_approval_date",0,Specs Approval Date,Date d'approbation des specs
 xpr_project,view,project.task,xpr_project.task_form,Estimated delivery date of the project.,Date de livraison estimée du projet.
 xpr_project,view,project.project,xpr_project.project_form,Estimated delivery date of the project.,Date de livraison estimée du projet.
+xpr_project,view,ir.attachment,xpr_project.view_attachment_form,Update,Mise à jour
+xpr_project,view,ir.attachment,xpr_project.view_attachment_form,on,le
