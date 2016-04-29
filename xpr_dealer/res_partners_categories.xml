@@ -671,7 +671,10 @@
         <field name="name">Yamaha</field>
         <field name="parent_id" ref="category_dealer_atv" />
     </record>
-       
+    <record model="res.partner.category" id="category_dealer_atv_cf_moto">
+        <field name="name">CF Moto</field>
+        <field name="parent_id" ref="category_dealer_atv" />
+    </record>
 </data>
     
 <data>
