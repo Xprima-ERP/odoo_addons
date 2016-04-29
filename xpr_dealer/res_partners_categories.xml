@@ -424,6 +424,10 @@
         <field name="name">Can-Am</field>
         <field name="parent_id" ref="category_dealer_moto" />
     </record>
+    <record model="res.partner.category" id="category_dealer_moto_cf_moto">
+        <field name="name">CF Moto</field>
+        <field name="parent_id" ref="category_dealer_moto" />
+    </record>
     <record model="res.partner.category" id="category_dealer_moto_chironex">
         <field name="name">Chironex</field>
         <field name="parent_id" ref="category_dealer_moto" />
