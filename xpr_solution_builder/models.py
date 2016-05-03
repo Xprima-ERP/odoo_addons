@@ -228,6 +228,10 @@ class SalesOrder(models.Model):
             record.order_line_options = lines
 
     def _get_line_amount(self, line):
+        if line.product_id and not line.product_id.one_time_payment:
+            # Discount applied monthly
+            return (line.price_unit - line.discount_money) * line.product_uom_qty
+
         line_base = line.price_unit * line.product_uom_qty
         return line_base - line.discount_money
 
@@ -488,21 +492,30 @@ class SalesOrderLine(models.Model):
 
         for line in self:
             if (
-                line.solution_part != 1
-                and line.price_unit and line.product_uom_qty
+                line.solution_part == 1
+                or not line.price_unit or not line.product_uom_qty
             ):
+                line.discount_money = 0
+                continue
+
+            if line.product_id and not line.product_id.one_time_payment:
+                # Discount is monthly
                 line.discount_money = max(
                     0,
-                    min(
-                        line.discount_money,
-                        line.product_uom_qty * line.price_unit))
+                    min(line.discount_money, line.price_unit))
 
-                # line.discount = (
-                #     100.0 * line.discount_money
-                #     / line.product_uom_qty / line.price_unit
-                # )
-            else:
-                line.discount_money = 0
+                continue
+
+            line.discount_money = max(
+                0,
+                min(
+                    line.discount_money,
+                    line.product_uom_qty * line.price_unit))
+
+            # line.discount = (
+            #     100.0 * line.discount_money
+            #     / line.product_uom_qty / line.price_unit
+            # )
 
         return {}
 
@@ -515,15 +528,25 @@ class SalesOrderLine(models.Model):
 
         for line in self:
             amount = line.price_unit * line.product_uom_qty
-            if line.discount_money > 0:
-                # Discounts should never permit to go negative.
-                line.price_subtotal = max(
-                    0,
-                    amount - line.discount_money)
+            if line.discount_money <= 0:
+                # Subtotal may already be negative (with discount == 0)
+                line.price_subtotal = amount
                 continue
 
-            # Subtotal may already be negative (with discount == 0)
-            line.price_subtotal = amount
+            # Discounts should never permit to go negative.
+
+            if line.product_id and not line.product_id.one_time_payment:
+                # Discount is applied monthly
+
+                line.price_subtotal = max(
+                    0,
+                    (line.price_unit - line.discount_money) * line.product_uom_qty)
+
+                continue
+
+            line.price_subtotal = max(
+                0,
+                amount - line.discount_money)
 
     @api.onchange('product_id')
     def _is_ad_line(self):
