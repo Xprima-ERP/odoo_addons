@@ -51,8 +51,7 @@ class ProductTemplate(models.Model):
 
 class Product(models.Model):
     """
-    All variants of same product must have same reference number.
-    This emulates the default_code to be in template.
+    All variants of same product without any code get the same reference number.
     """
     _inherit = "product.product"
 
@@ -74,7 +73,8 @@ class Product(models.Model):
 
         siblings = self.search([
             ('product_tmpl_id', 'in', templates),
-            '|', ('default_code', default_code and '=' or '!=', None), ('default_code', '!=', default_code)
+            ('default_code', '!=', default_code), # Avoid recursive calls.
+            ('default_code', 'in', ['', None]), # Set codes only for unset siblings.
         ])
 
         if siblings:
