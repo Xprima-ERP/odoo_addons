@@ -96,7 +96,7 @@ class SaleOrder(models.Model):
 
         for sale_order in self:
             sale_order.monthly_total = sum([
-                line.price_subtotal for line in sale_order.order_line
+                line.price_unit - line.discount_money for line in sale_order.order_line
                 if not line.product_id.one_time_payment
             ])
 
