@@ -154,6 +154,7 @@ class SaleOrder(models.Model):
                 'lost',
                 'sent',
                 'done',
+                'production',
             ]:
                 # No need to synch before approval.
                 continue
