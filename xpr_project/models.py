@@ -190,7 +190,6 @@ class SaleOrder(models.Model):
             template.id, project.id)
 
         values['recipient_ids'] = [(4, route.manager.partner_id.id) for route in routes]
-        values['recipient_ids'].append((4, order.user_id.partner_id.id))
 
         self.env['mail.mail'].create(values)
 
@@ -595,19 +594,21 @@ class Task(models.Model):
 
                 del vals['stage_id']
 
-        super(Task, self).write(vals)
+        res = super(Task, self).write(vals)
 
-        if self.env.context.get('from_jira'):
+        if self.env.context.get('from_jira') or not res:
             # Not user interaction. No need to go further.
             # This avoids recursive loops.
 
-            return
+            return res
 
         if 'stage_id' in vals:
             # Not using a 'depends' decorator.
             # Update depends on actual value in db.
 
             self.trigger_project()
+
+        return res
 
     rule = fields.Char(string="Rule", default="jira")
     jira_template_name = fields.Char(string="JIRA Project Template")
