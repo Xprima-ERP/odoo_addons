@@ -190,7 +190,6 @@ class SaleOrder(models.Model):
             template.id, project.id)
 
         values['recipient_ids'] = [(4, route.manager.partner_id.id) for route in routes]
-        values['recipient_ids'].append((4, order.user_id.partner_id.id))
 
         self.env['mail.mail'].create(values)
 
