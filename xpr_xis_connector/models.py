@@ -91,10 +91,15 @@ class DealerCertification(models.Model):
     @api.multi
     def write(self, vals):
 
-        super(DealerCertification, self).write(vals)
+        res = super(DealerCertification, self).write(vals)
+
+        if not res:
+            return res
 
         for certification in self:
             xis_request.PartnerCertificationRequest(certification).execute()
+
+        return res
 
     @api.model
     def create(self, vals):
@@ -134,7 +139,7 @@ class SaleOrder(models.Model):
         Syncs with XIS when contract is approved
         """
 
-        super(SaleOrder, self).write(vals)
+        res = super(SaleOrder, self).write(vals)
 
         # No need to feedback output fields or fields that have no effect in XIS.
 
@@ -142,8 +147,8 @@ class SaleOrder(models.Model):
             if key in vals:
                 vals.pop(key)
 
-        if not vals:
-            return
+        if not vals or not res:
+            return res
 
         for order in self:
 
@@ -161,6 +166,8 @@ class SaleOrder(models.Model):
 
             xis_request.SaleOrderRequest(order).execute()
 
+
+        return res
 
 class Partner(models.Model):
     """
@@ -205,9 +212,14 @@ class Partner(models.Model):
         post_write_data = self._pre_write(vals)
 
         # Make the standard call
-        super(Partner, self).write(vals)
+        res = super(Partner, self).write(vals)
+
+        if not res:
+            return res
 
         self._post_write(post_write_data)
+
+        return res
 
 
 class Dealer(models.Model):
@@ -259,16 +271,18 @@ class Dealer(models.Model):
         post_write_data = self._pre_write(vals)
 
         # Make the standard call
-        super(Dealer, self.with_context(no_xis_synch=True)).write(vals)
+        res = super(Dealer, self.with_context(no_xis_synch=True)).write(vals)
 
         for key in ['assigned_user']:
             if key in vals:
                 vals.pop(key)
 
-        if not vals:
-            return
+        if not vals or not res:
+            return res
 
         self._post_write(post_write_data)
+
+        return res
 
 
 class User(models.Model):
