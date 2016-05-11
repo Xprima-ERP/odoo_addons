@@ -475,8 +475,12 @@ class DealerRequest(XISRequestWrapper):
         }.get(self.dealer.site_type)
 
     def get_salesrep_ext_id(self):
-        # Get current user XIS id
-        return self.partner.env.user.xis_user_external_id
+        # Get partner sales person user XIS id
+
+        if self.partner.user_id:
+            return self.partner.user_id.xis_user_external_id
+
+        return 0
 
     def get_state(self):
         p = self.partner
