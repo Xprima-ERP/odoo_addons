@@ -43,7 +43,7 @@ Setup:
         'res_groups.xml',
         'security/ir.model.access.csv',
         'sale_workflow.xml',
-        'crm.case.stage.csv',
+        #'crm.case.stage.csv', # For initial deployment only.
         'views/sale_order_view.xml',
         'views/product_category_view.xml',
         'views/opportunity.xml',
