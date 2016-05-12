@@ -12,7 +12,7 @@
                     <field name="category" invisible="1" />
                     <button name="sale_solution_option_action" type="object" string="Add Options"/>
 
-                    <button name="apply_patch" type="object" string="Patch" groups="base.group_erp_manager"/>
+                    <!-- <button name="apply_patch" type="object" string="Patch" groups="base.group_erp_manager"/> -->
 
                 </field>
 
