@@ -90,11 +90,11 @@ class XisRequest():
 
         url = self._get_url(page_name)
 
+        _logger.info("XIS request {0} {1}".format(url, values))
+
         if not url:
             # Not configured
             return True, None
-
-        _logger.info("XIS request {0} {1}".format(url, values))
 
         # send request
         data = "&".join([
@@ -117,7 +117,7 @@ class XisRequest():
         except urllib2.URLError as e:
             error = e
             if hasattr(e, 'reason'):
-                _logger.info(
+                _logger.error(
                     'We failed to reach a server. Reason: %s' % e.reason)
             elif hasattr(e, 'code'):
                 msg = 'The server couldn\'t fulfill the request. ' \
@@ -136,8 +136,10 @@ class XisRequest():
                 contains_error = False
             status = not (error or contains_error)
             if not status:
-                self.send_email(model, data, result, code, error=error,
-                                internal_error=contains_error)
+                self.send_email(
+                    model, data, result, code, error=error,
+                    internal_error=contains_error)
+
         _logger.info(result)
         return status, result
 
