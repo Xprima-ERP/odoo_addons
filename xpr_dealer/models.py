@@ -56,15 +56,9 @@ class Partner(models.Model):
 
     is_test = fields.Boolean('Is Test')  # Indicates if this is a test partner (i.e. PTL).
 
-    unilingual_website = fields.Boolean(
-        "French unilingual website",
-        help="Hides website from english portals")
-
-    # Copied from parent and made translatable
-    website = fields.Char(
-        "Website", size=254,
-        help="Website of Partner or Company",
-        translate=True)
+    website_fr = fields.Char(
+        "French Website", size=254,
+        help="Website of Partner or Company")
 
     # TODO: dealer != null
     # "is_dealer": fields.boolean("Is Dealer"),
@@ -102,7 +96,10 @@ class Users(models.Model):
 
     # Reverse of crm.case.section.member_ids
     # In our organisation, there should be only one team at a time.
-    team_ids = fields.Many2many('crm.case.section', 'sale_member_rel', 'member_id', 'section_id', 'Member Of Team')
+    team_ids = fields.Many2many(
+        'crm.case.section',
+        'sale_member_rel', 'member_id', 'section_id',
+        'Member Of Team')
 
 
 class Dealer(models.Model):
