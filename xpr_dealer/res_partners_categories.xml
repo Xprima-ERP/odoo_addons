@@ -735,7 +735,10 @@
         <field name="name">Palm Beach</field>
         <field name="parent_id" ref="category_dealer_watercraft" />
     </record>
-
+    <record model="res.partner.category" id="category_dealer_watercraft_princecraft">
+        <field name="PrinceCraft</field>
+        <field name="parent_id" ref="category_dealer_watercraft" />
+    </record>
 </data>
 
 <data>
