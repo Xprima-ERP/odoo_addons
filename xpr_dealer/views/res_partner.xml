@@ -265,8 +265,9 @@
                  <group>
                    <field name="callsource_tollfree"/>
                    <field name="site_type"/>
+
                    <field name="website" widget="url" placeholder="e.g. www.odoo.com"/>
-                  <field name="unilingual_website"/>
+                   <field name="website_fr" widget="url" placeholder="e.g. www.odoo.com"/>
                 </group>
 
                 <group>

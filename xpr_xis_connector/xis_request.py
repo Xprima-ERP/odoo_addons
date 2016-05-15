@@ -542,11 +542,13 @@ class DealerRequest(XISRequestWrapper):
 
     def get_url(self, partner, language):
 
-        if language[:2] == 'en' and partner.unilingual_website:
-            # French only website. Do not provide an url.
-            return ''
+        if language[:2] == 'fr':
+            url = partner.website_fr
+        else:
+            url = partner.website
 
-        url = partner.with_context(lang=language).website
+        # Not translatable anymore
+        # url = partner.with_context(lang=language).website
 
         if not url:
             return ''
@@ -555,6 +557,9 @@ class DealerRequest(XISRequestWrapper):
 
         if url == "http://":
             return ''
+
+        if not url.startswith("http://"):
+            url = "http://" + url
 
         return url
 
