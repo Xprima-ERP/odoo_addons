@@ -224,6 +224,22 @@ class Dealer(models.Model):
         for dealer in self:
             dealer.assigned_user = dealer.user_id and dealer.user_id.active
 
+    @api.onchange('industry')
+    def _update_make_domain(self):
+        for dealer in self:
+            make_industries = set([m.parent_id.id for m in dealer.makes])
+            new_industries = set([ind.id for ind in dealer.industry])
+
+            if make_industries - new_industries:
+                return {
+                    'error': {
+                        'title': 'Error',
+                        'message': "Cannot remove industry if there are related makes"
+                    }
+                }
+
+            return {'domain': {'makes': [('parent_id', 'in', list(new_industries))]}}
+
     @api.onchange('makes', 'make_sequence')
     def _check_ordered(self):
         for dealer in self:
@@ -298,6 +314,12 @@ class Dealer(models.Model):
         'res.partner.category',
         'dealer_partner_category_business_rel',
         string="Business",
+    )
+
+    industry = fields.Many2many(
+        'res.partner.category',
+        'dealer_partner_category_industry_rel',
+        string="Industry",
     )
 
     # Old customermask
@@ -409,3 +431,44 @@ class DealerAssign(models.TransientModel):
 
         for dealer in self.dealers:
             dealer.user_id = self.salesperson
+
+
+class DealerPatch(models.TransientModel):
+
+    """
+    Dealer patch wizard.
+
+    Loaded to apply a live data patch on dealers selected from list view
+    """
+
+    _name = 'xpr_dealer.dealer_patch'
+
+    def _init_dealers(self):
+
+        context = self.env.context
+
+        active_ids = context.get('active_ids')
+
+        if not active_ids:
+            return []
+
+        return self.env['xpr_dealer.dealer'].browse(active_ids)
+
+    dealers = fields.Many2many(
+        'xpr_dealer.dealer',
+        'dealer_patch_dealers_rel',
+        string='Dealers',
+        required=True,
+        default=_init_dealers)
+
+    @api.multi
+    def apply_patch(self):
+        for dealer in self.dealers:
+            make_industries = set([m.parent_id.id for m in dealer.makes])
+            new_industries = set([ind.id for ind in dealer.industry])
+            add_industries = make_industries - new_industries
+
+            if not add_industries:
+                continue
+
+            dealer.industry = [(4, add_id, _) for add_id in add_industries]

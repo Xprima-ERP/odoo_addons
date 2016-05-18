@@ -62,7 +62,7 @@
          <filter help="My Team" name="my_team" domain="[('user_id.team_ids.member_ids', 'in', [uid])]" />
          <separator/>
          <field name="category_id" string="Tag" filter_domain="[('category_id','ilike', self)]"/>
-         <field name="makes" string="Vehicle" filter_domain="[('makes.parent_id','ilike', self)]"/>
+         <field name="industry" string="Vehicle" filter_domain="[('industry','ilike', self)]"/>
          <field name="makes" string="Makes" filter_domain="[('makes','ilike', self)]"/>
          <field name="code"/>
          <field name="state_id"/>
@@ -256,8 +256,11 @@
                       domain="[('parent_id.parent_id', 'child_of', %(category_dealer_customer)d)]"/>
                     <field name="business" widget="many2many_tags"
                       domain="[('parent_id.parent_id', 'child_of', %(category_dealer_business)d)]"/>
-                    <field name="makes" widget="many2many_tags"
-                      domain="[('parent_id.parent_id.parent_id', 'child_of', %(category_dealer_industry)d)]"/>
+
+                    <field name="industry" widget="many2many_tags"
+                      domain="[('parent_id', '=', %(category_dealer_industry)d)]"/>
+
+                    <field name="makes" widget="many2many_tags"/> <!-- Dynamic domain -->
 
                     <field name="make_sequence" />
                 </group>
@@ -373,6 +376,34 @@
     </field>
   </record>
 
+ <record id="dealer_assign_wizard" model="ir.ui.view">
+      <field name="name">xpr_dealer.dealer_patch_form</field>
+      <field name="model">xpr_dealer.dealer_patch</field>
+      <field name="arch" type="xml">
+            <form string="Assign Dealers">
+                <group>
+                    <field name="dealers" readonly="1" />
+                </group>
+
+                <footer>
+
+                <button
+                    string="Patch"
+                    type="object"
+                    name="apply_patch"
+                    class="oe_highlight"
+                />
+                <button
+                    string="Cancel"
+                    class="oe_link"
+                    special="cancel" />
+                </footer>
+            </form>
+    </field>
+  </record>
+
+
+
   <record model="ir.actions.act_window" id="dealer_action">
       <field name="name">Dealers</field>
       <field name="res_model">xpr_dealer.dealer</field>
@@ -422,6 +453,18 @@
               id="assign_dealer_action"
               groups="base.group_sale_manager"
               />
+
+  <!-- For live data updates. You can comment out this action -->
+  <act_window name="Apply Patch"
+      res_model="xpr_dealer.dealer_patch"
+      src_model="xpr_dealer.dealer"
+      view_mode="form"
+      multi="True"
+      target="new"
+      key2="client_action_multi"
+      id="apply_patch_dealer_action"
+      groups="base.group_sale_manager"
+      />
 
   </data>
 </openerp>
