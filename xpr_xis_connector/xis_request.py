@@ -457,7 +457,7 @@ class DealerRequest(XISRequestWrapper):
             b.name for b in dealer_en.business
         ]
 
-        industries = set(m.name for m in self.dealer.industry)
+        industries = set(m.name for m in dealer_en.industry)
 
         return ";".join([
             "{0} {1}".format(b, i) for b in businesses for i in industries

@@ -9,67 +9,68 @@
         Set as empty for DB consistency
         -->
 
-         <record id="term_website_fr" model="term.term">
+        <record id="term_website_fr" model="term.term">
             <field name="name">Website_fr</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
          </record>
 
-         <record id="term_website_en" model="term.term">
+        <record id="term_website_en" model="term.term">
             <field name="name">Website_en</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
-         </record>
+        </record>
 
         <record id="term_advertising_fr" model="term.term">
             <field name="name">Advertising_fr</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
-         </record>
+        </record>
 
-         <record id="term_advertising_en" model="term.term">
+        <record id="term_advertising_en" model="term.term">
             <field name="name">Advertising_en</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
-         </record>
+        </record>
 
-          <record id="term_visibility_fr" model="term.term">
+        <record id="term_visibility_fr" model="term.term">
             <field name="name">Visibility_fr</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
-         </record>
+        </record>
 
-         <record id="term_visibility_en" model="term.term" >
+        <record id="term_visibility_en" model="term.term" >
             <field name="name">Visibility_en</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
-         </record>
+        </record>
+
     </data>
 
-    <data> 
+    <data noupdate="1">
 
          <!-- Term and condition rules -->
 
-          <record id="term_rule_website_en" model="term.rule" >
+        <record id="term_rule_website_en" model="term.rule" >
             <field name="term_id" ref="term_website_en" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
             <field name="condition">object.category.id == object.env.ref("xpr_product.website").id and object.partner_id.lang == "en_US"
             </field>
-         </record>
+        </record>
 
-         <record id="term_rule_website_fr" model="term.rule" >
+        <record id="term_rule_website_fr" model="term.rule" >
             <field name="term_id" ref="term_website_fr" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
             <field name="condition">object.category.id == object.env.ref("xpr_product.website").id and object.partner_id.lang == "fr_FR"
             </field>
-         </record>
+        </record>
 
         <record id="term_rule_advertising_en" model="term.rule" >
             <field name="term_id" ref="term_advertising_en" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
             <field name="condition">object.category.id in set([object.env.ref("xpr_product.advertising").id, object.env.ref("xpr_product.adwords").id, object.env.ref("xpr_product.seo").id]) and object.partner_id.lang == "en_US"
             </field>
-         </record>
+        </record>
 
         <record id="term_rule_advertising_fr" model="term.rule" >
             <field name="term_id" ref="term_advertising_fr" />
@@ -78,19 +79,19 @@
             </field>
         </record>
 
-          <record id="term_rule_visibility_en" model="term.rule" >
+        <record id="term_rule_visibility_en" model="term.rule" >
             <field name="term_id" ref="term_visibility_en" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
             <field name="condition">object.category.id == object.env.ref("xpr_product.visibility").id and object.partner_id.lang == "en_US"
             </field>
-         </record>
+        </record>
 
-         <record id="term_rule_visibility_fr" model="term.rule" >
+        <record id="term_rule_visibility_fr" model="term.rule" >
             <field name="term_id" ref="term_visibility_fr" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
             <field name="condition">object.category.id == object.env.ref("xpr_product.visibility").id and object.partner_id.lang == "fr_FR"
             </field>
-         </record>
+        </record>
 
     </data>
 
