@@ -260,7 +260,9 @@
                     <field name="industry" widget="many2many_tags"
                       domain="[('parent_id', '=', %(category_dealer_industry)d)]"/>
 
-                    <field name="makes" widget="many2many_tags"/> <!-- Dynamic domain -->
+                    <!-- domain="[('parent_id.parent_id', 'in', industry) -->
+                    <field name="makes" widget="many2many_tags"
+                      domain="[('parent_id.parent_id', '=', %(category_dealer_industry)d)]"/>
 
                     <field name="make_sequence" />
                 </group>
