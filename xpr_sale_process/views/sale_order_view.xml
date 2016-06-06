@@ -223,8 +223,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,calendar,graph</field>
             <field name="search_view_id" ref="sale.view_sales_order_filter"/>
-            <field name="context">{'search_default_my_sale_orders_filter': 1}
-            </field>
+            <field name="context">{'search_default_my_sale_orders_filter': 0}</field>
             <field name="domain">[('state', 'in', ['contract_approved', 'waiting_date', 'production', 'manual', 'done'])]</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
@@ -236,7 +235,29 @@
             </field>
         </record>
 
-        <menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman,base.group_sale_manager"/>
+        <record id="action_contracts_rep" model="ir.actions.act_window">
+            <!-- Same as action_contracts, except only own sales order are shown-->
+            <field name="name">Contracts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="search_view_id" ref="sale.view_sales_order_filter"/>
+            <field name="context">{'search_default_my_sale_orders_filter': 1}</field>
+            <field name="domain">[('state', 'in', ['contract_approved', 'waiting_date', 'production', 'manual', 'done'])]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a quotation that can be converted into a sales order.
+                </p>
+                <p>
+                    Odoo will help you efficiently handle the complete sales flow: quotation, sales order, delivery, invoicing and payment.
+                </p>
+            </field>
+        </record>
+
+        <menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman_all_leads,base.group_sale_manager"/>
+
+        <menuitem action="action_contracts_rep" id="menu_contracts_rep" parent="base.menu_sales" sequence="6" groups="rep_ui"/>
 
         <record id="sale.menu_sale_order" model="ir.ui.menu">
             <field name="groups_id" eval="[(6, 0, [ref('group_hidden')])]"/>
@@ -245,7 +266,7 @@
         <record id="sale.action_quotations" model="ir.actions.act_window">
             <field name="domain">[('state','not in',['contract_approved', 'waiting_date', 'production', 'manual', 'done'])]</field>
             <field name="context">{
-                'search_default_my_sale_orders_filter': 1}
+                'search_default_my_sale_orders_filter': 0}
             </field>
         </record>
 
