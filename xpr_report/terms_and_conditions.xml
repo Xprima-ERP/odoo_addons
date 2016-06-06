@@ -21,7 +21,7 @@
             <field name="pdf"> </field>
         </record>
 
-        <record id="term_advertising_fr" model="term.term">
+      <!--   <record id="term_advertising_fr" model="term.term">
             <field name="name">Advertising_fr</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
@@ -31,7 +31,7 @@
             <field name="name">Advertising_en</field>
             <field name="mode">end</field>
             <field name="pdf"> </field>
-        </record>
+        </record> -->
 
         <record id="term_visibility_fr" model="term.term">
             <field name="name">Visibility_fr</field>
@@ -65,7 +65,7 @@
             </field>
         </record>
 
-        <record id="term_rule_advertising_en" model="term.rule" >
+      <!--   <record id="term_rule_advertising_en" model="term.rule" >
             <field name="term_id" ref="term_advertising_en" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
             <field name="condition">object.category.id in set([object.env.ref("xpr_product.advertising").id, object.env.ref("xpr_product.adwords").id, object.env.ref("xpr_product.seo").id]) and object.partner_id.lang == "en_US"
@@ -77,7 +77,7 @@
             <field name="report_id" ref="xpr_report.report_sale_order" />
             <field name="condition">object.category.id in set([object.env.ref("xpr_product.advertising").id, object.env.ref("xpr_product.adwords").id, object.env.ref("xpr_product.seo").id]) and object.partner_id.lang == "fr_FR"
             </field>
-        </record>
+        </record> -->
 
         <record id="term_rule_visibility_en" model="term.rule" >
             <field name="term_id" ref="term_visibility_en" />
