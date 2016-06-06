@@ -257,7 +257,7 @@
 
         <menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman_all_leads,base.group_sale_manager"/>
 
-        <menuitem action="action_contracts_rep" id="menu_contracts_rep" parent="base.menu_sales" sequence="6" groups="rep_ui"/>
+        <menuitem action="action_contracts_rep" id="menu_contracts_rep" parent="base.menu_sales" sequence="5" groups="rep_ui"/>
 
         <record id="sale.menu_sale_order" model="ir.ui.menu">
             <field name="groups_id" eval="[(6, 0, [ref('group_hidden')])]"/>
@@ -270,9 +270,38 @@
             </field>
         </record>
 
+        <record id="action_quotations_rep" model="ir.actions.act_window">
+            <!-- Same as sale.action_quotations, except only own quotations are shown-->
+            <field name="name">Quotations</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="search_view_id" ref="sale.view_sales_order_filter"/>
+            <field name="context">{'search_default_my_sale_orders_filter': 1}</field>
+            <field name="domain">[('state', 'not in', ['contract_approved', 'waiting_date', 'production', 'manual', 'done'])]</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                Click to create a quotation, the first step of a new sale.
+              </p><p>
+                Odoo will help you handle efficiently the complete sale flow:
+                from the quotation to the sales order, the
+                delivery, the invoicing and the payment collection.
+              </p><p>
+                The social feature helps you organize discussions on each sales
+                order, and allow your customers to keep track of the evolution
+                of the sales order.
+              </p>
+            </field>
+        </record>
+
           <record id="crm.menu_crm_leads" model="ir.ui.menu">
             <field name="groups_id" eval="[(6,0,[ref('group_hidden')])]"/>
         </record>
+
+        <menuitem action="sale.action_quotations" id="sale.menu_sale_quotations" parent="base.menu_sales" sequence="6" groups="base.group_sale_salesman_all_leads,base.group_sale_manager"/>
+
+        <menuitem action="action_quotations_rep" id="menu_quotation_rep" parent="base.menu_sales" sequence="6" groups="rep_ui"/>
 
     </data>
 </openerp>
