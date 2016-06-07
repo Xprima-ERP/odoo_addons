@@ -255,9 +255,9 @@
             </field>
         </record>
 
-        <menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman_all_leads,base.group_sale_manager"/>
+        <menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="6" groups="base.group_sale_salesman_all_leads,base.group_sale_manager"/>
 
-        <menuitem action="action_contracts_rep" id="menu_contracts_rep" parent="base.menu_sales" sequence="5" groups="rep_ui"/>
+        <menuitem action="action_contracts_rep" id="menu_contracts_rep" parent="base.menu_sales" sequence="6" groups="rep_ui"/>
 
         <record id="sale.menu_sale_order" model="ir.ui.menu">
             <field name="groups_id" eval="[(6, 0, [ref('group_hidden')])]"/>
@@ -299,9 +299,9 @@
             <field name="groups_id" eval="[(6,0,[ref('group_hidden')])]"/>
         </record>
 
-        <menuitem action="sale.action_quotations" id="sale.menu_sale_quotations" parent="base.menu_sales" sequence="6" groups="base.group_sale_salesman_all_leads,base.group_sale_manager"/>
+        <menuitem action="sale.action_quotations" id="sale.menu_sale_quotations" parent="base.menu_sales" sequence="5" groups="base.group_sale_salesman_all_leads,base.group_sale_manager"/>
 
-        <menuitem action="action_quotations_rep" id="menu_quotation_rep" parent="base.menu_sales" sequence="6" groups="rep_ui"/>
+        <menuitem action="action_quotations_rep" id="menu_quotation_rep" parent="base.menu_sales" sequence="5" groups="rep_ui"/>
 
     </data>
 </openerp>
