@@ -580,10 +580,12 @@ class SalesOrderLine(models.Model):
 
             if line.product_id:
                 line.display_description = (line.product_id.description_sale or '').strip()
+            elif line.solution_part == 0:
+                line.display_description = line.order_id.solution.description
             else:
                 line.display_description = (line.name or '').strip()
 
-    # 0 Main/unpackaged (solution)
+    # 0 Solution
     # 1 mandatory composition of solution
     # 2 optional composition of solution
 
