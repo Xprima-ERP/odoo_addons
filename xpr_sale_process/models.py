@@ -158,6 +158,11 @@ class SaleOrder(models.Model):
             # User is actually the leader. No need to auto notify.
             return
 
+        if self.check_product_availability_needed():
+            # Discount is going to be approved by approuval group.
+            # No need to send mail.
+            return
+
         template = self.env.ref('xpr_sale_process.quotation_manager_approval_mail')
 
         values = self.env['email.template'].generate_email(
