@@ -83,7 +83,7 @@
       <field name="arch" type="xml">
         <form string="Dealer">
           <sheet>
-            <h1><field name="name" readonly="1"/></h1>
+            <h1><field name="name"/></h1>
 
             <group>
               <field name="id" invisible="1" readonly="1"/>
