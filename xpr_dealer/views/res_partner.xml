@@ -83,7 +83,7 @@
       <field name="arch" type="xml">
         <form string="Dealer">
           <sheet>
-            <h1><field name="name" readonly="1"/></h1>
+            <h1><field name="name"/></h1>
 
             <group>
               <field name="id" invisible="1" readonly="1"/>
@@ -378,11 +378,11 @@
     </field>
   </record>
 
- <record id="dealer_assign_wizard" model="ir.ui.view">
+ <record id="patch_wizard" model="ir.ui.view">
       <field name="name">xpr_dealer.dealer_patch_form</field>
       <field name="model">xpr_dealer.dealer_patch</field>
       <field name="arch" type="xml">
-            <form string="Assign Dealers">
+            <form string="Patch Dealers">
                 <group>
                     <field name="dealers" readonly="1" />
                 </group>
