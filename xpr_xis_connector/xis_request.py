@@ -516,7 +516,13 @@ class DealerRequest(XISRequestWrapper):
         if self.get_is_not_used():
             return ''
 
-        return ';'.join(mask.name for mask in self.dealer.portalmask)
+        translate_dict = {
+            'Cars and Jobs': 'Cars and jobs'
+        }
+
+        return ';'.join(
+            translate_dict.get(mask.name, mask.name)
+            for mask in self.dealer.portalmask)
 
     def get_is_test(self):
 
