@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- encoding: utf-8 -*-
 #
 #    OpenERP, Open Source Management Solution
@@ -18,6 +17,7 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+
 import urllib
 import urllib2
 import logging
@@ -301,6 +301,8 @@ class SaleOrderRequest(XISRequestWrapper):
         if not nb_item:
             return
 
+        comments = (self.order.note or '').decode('utf-8').encode('latin-1')
+
         data = {
             # "123" sample base dealercode
             "qt_dc": self.get_dealer_code().strip(),
@@ -308,8 +310,8 @@ class SaleOrderRequest(XISRequestWrapper):
             # example of opportunity
             "qt_Opportunityid": '',
             "qt_CreatedDate": self.get_last_modif_date(),
-            "qt_Comments": self.order.note or '',
-            "qt_IComments": self.order.note or '',
+            "qt_Comments": comments,
+            "qt_IComments": comments,
 
             # Marc Cassuto  Sales Rep 736
             "qt_user_external_id__c": ext_id,
