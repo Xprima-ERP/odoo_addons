@@ -66,6 +66,7 @@ Contributors
         'security/ir.model.access.csv',
         'views/res_user.xml',
         'views/res_partner_categories.xml',
+        'views/res_partner.xml',
         'config.xml',
         'res_partners_categories.xml',
     ],
