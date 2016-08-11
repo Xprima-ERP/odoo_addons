@@ -9,11 +9,18 @@
         <field name="partner_id" position="after">
           <field name="csi_contact"
             domain="[('parent_id', '=', partner_id)]"
-            attrs="{'required': [('category','=', %(xpr_product.website)d )], 'readonly': [('category','!=', %(xpr_product.website)d )]}" />
+            attrs="{'readonly': [('category','!=', %(xpr_product.website)d )]}"
+            />
 
         </field>
       </field>
     </record>
+
+    <!--
+      CSI Partner not mandatory for website anymore. Noody is using it at this time.
+      attrs="{'required': [('category','=', %(xpr_product.website)d )], 'readonly': [('category','!=', %(xpr_product.website)d )]}"
+    -->
+
 
 <!--
     <record model="ir.ui.view" id="view_order_form_csi_program_partner">

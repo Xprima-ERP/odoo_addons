@@ -26,6 +26,15 @@ class Partner(models.Model):
 
     _inherit = "res.partner"
 
+    def _propagate_sales_person_to_contacts(self):
+        for partner in self:
+            if not partner.dealer:
+                # Don't update non dealers yet.
+                continue
+
+            for child in partner.child_ids:
+                child.user_id = partner.user_id
+
     @api.onchange('code')
     def _check_code_case(self):
         for partner in self:
