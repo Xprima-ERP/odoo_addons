@@ -442,6 +442,42 @@ class DealerAssign(models.TransientModel):
             dealer.user_id = self.salesperson
 
 
+class DealerDoNotUse(models.TransientModel):
+
+    """
+    Dealer deprecation wizard.
+
+    Alternate to deletion or setting as inactive. To keep dealer data visible to support and management.
+    """
+
+    _name = 'xpr_dealer.dealer_donotuse'
+
+    def _init_dealers(self):
+
+        context = self.env.context
+
+        active_ids = context.get('active_ids')
+
+        if not active_ids:
+            return []
+
+        return self.env['xpr_dealer.dealer'].browse(active_ids)
+
+    dealers = fields.Many2many(
+        'xpr_dealer.dealer',
+        'dealer_donotuse_rel',
+        string='Dealers',
+        required=True,
+        default=_init_dealers)
+
+    @api.multi
+    def deprecate(self):
+
+        for dealer in self.dealers:
+            dealer.is_test = True
+            dealer.portalmask = [(5, _, _)]
+
+
 class DealerPatch(models.TransientModel):
 
     """
@@ -473,11 +509,12 @@ class DealerPatch(models.TransientModel):
     @api.multi
     def apply_patch(self):
         for dealer in self.dealers:
-            make_industries = set([m.parent_id.id for m in dealer.makes])
-            new_industries = set([ind.id for ind in dealer.industry])
-            add_industries = make_industries - new_industries
+            pass
+            # make_industries = set([m.parent_id.id for m in dealer.makes])
+            # new_industries = set([ind.id for ind in dealer.industry])
+            # add_industries = make_industries - new_industries
 
-            if not add_industries:
-                continue
+            # if not add_industries:
+            #     continue
 
-            dealer.industry = [(4, add_id, _) for add_id in add_industries]
+            # dealer.industry = [(4, add_id, _) for add_id in add_industries]
