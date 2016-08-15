@@ -9,7 +9,7 @@
 </record>
 
 <!-- For export and import needs -->
-<record id="action_sale_lines" model="ir.actions.act_window">
+<!-- <record id="action_sale_lines" model="ir.actions.act_window">
 	<field name="name">Order Lines</field>
 	<field name="type">ir.actions.act_window</field>
 	<field name="res_model">sale.order.line</field>
@@ -38,5 +38,7 @@
 
            
         </record>
+-->
+
 </data>
 </openerp>

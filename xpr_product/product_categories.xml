@@ -18,10 +18,10 @@
        <field name="parent_id" ref="product.product_category_all"/>
     </record>
 
-    <record id="adwords" model="product.category">
+<!--     <record id="adwords" model="product.category">
        <field name="name">AdWords</field>
        <field name="parent_id" ref="product.product_category_all"/>
-    </record>
+    </record> -->
 
     <record id="visibility" model="product.category">
        <field name="name">Visibility</field>
