@@ -443,7 +443,7 @@ class SalesOrder(models.Model):
                 product_id=product,
                 name=product.description_sale or ' ',
                 product_uom_qty=qty,
-                price_unit=product.lst_price,
+                price_unit=product.lst_price or product.tier_low,
                 solution_part=2,  # is_package and 2 or 0,
                 product_uom=product.uom_id,
                 sequence=sequence,
@@ -527,6 +527,28 @@ class SalesOrderLine(models.Model):
         """
 
         for line in self:
+
+            if line.product_id and (line.product_id.tier_low or line.product_id.tier_high):
+
+                # Check if price in in tier range
+                if line.price_unit < line.product_id.tier_low:
+                    line.price_unit = line.product_id.tier_low
+                    return {
+                        'warning': {
+                            'title': 'Error',
+                            'message': "Product price must remain in tier"
+                        }
+                    }
+
+                if line.product_id.tier_high and line.price_unit >= line.product_id.tier_high:
+                    line.price_unit = line.product_id.tier_high - 1
+                    return {
+                        'warning': {
+                            'title': 'Error',
+                            'message': "Product price must remain in tier"
+                        }
+                    }
+
             amount = line.price_unit * line.product_uom_qty
             if line.discount_money <= 0:
                 # Subtotal may already be negative (with discount == 0)
