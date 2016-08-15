@@ -68,14 +68,14 @@
       <!--   <record id="term_rule_advertising_en" model="term.rule" >
             <field name="term_id" ref="term_advertising_en" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
-            <field name="condition">object.category.id in set([object.env.ref("xpr_product.advertising").id, object.env.ref("xpr_product.adwords").id, object.env.ref("xpr_product.seo").id]) and object.partner_id.lang == "en_US"
+            <field name="condition">object.category.id in set([object.env.ref("xpr_product.advertising").id, object.env.ref("xpr_product.seo").id]) and object.partner_id.lang == "en_US"
             </field>
         </record>
 
         <record id="term_rule_advertising_fr" model="term.rule" >
             <field name="term_id" ref="term_advertising_fr" />
             <field name="report_id" ref="xpr_report.report_sale_order" />
-            <field name="condition">object.category.id in set([object.env.ref("xpr_product.advertising").id, object.env.ref("xpr_product.adwords").id, object.env.ref("xpr_product.seo").id]) and object.partner_id.lang == "fr_FR"
+            <field name="condition">object.category.id in set([object.env.ref("xpr_product.advertising").id, object.env.ref("xpr_product.seo").id]) and object.partner_id.lang == "fr_FR"
             </field>
         </record> -->
 

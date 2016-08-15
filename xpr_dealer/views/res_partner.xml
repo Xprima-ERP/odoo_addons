@@ -378,6 +378,32 @@
     </field>
   </record>
 
+  <record id="dealer_donotuse_wizard" model="ir.ui.view">
+      <field name="name">xpr_dealer.dealer_donotuse_form</field>
+      <field name="model">xpr_dealer.dealer_donotuse</field>
+      <field name="arch" type="xml">
+            <form string="Do Not Use">
+                <group>
+                    <field name="dealers" readonly="1"  />
+                </group>
+
+                <footer>
+
+                <button
+                    string="Do Not Use"
+                    type="object"
+                    name="deprecate"
+                    class="oe_highlight"
+                />
+                <button
+                    string="Cancel"
+                    class="oe_link"
+                    special="cancel" />
+                </footer>
+            </form>
+    </field>
+  </record>
+
  <record id="patch_wizard" model="ir.ui.view">
       <field name="name">xpr_dealer.dealer_patch_form</field>
       <field name="model">xpr_dealer.dealer_patch</field>
@@ -404,12 +430,11 @@
     </field>
   </record>
 
-
-
   <record model="ir.actions.act_window" id="dealer_action">
       <field name="name">Dealers</field>
       <field name="res_model">xpr_dealer.dealer</field>
       <field name="view_mode">tree,form</field>
+      <field name="domain">[('is_test', '=', False)]</field>
       <field name="context">{'search_default_my_dealers': 1}</field>
   </record>
 
@@ -417,11 +442,12 @@
       <field name="name">Team Dealers</field>
       <field name="res_model">xpr_dealer.dealer</field>
       <field name="view_mode">tree,form</field>
+      <field name="domain">[('is_test', '=', False)]</field>
       <field name="context">{'search_default_my_team': 1}</field>
   </record>
 
   <record model="ir.actions.act_window" id="dealer_all_action">
-      <field name="name">All Dealers</field>
+      <field name="name">All Dealers: Tests included</field>
       <field name="res_model">xpr_dealer.dealer</field>
       <field name="view_mode">tree,form</field>
   </record>
@@ -438,23 +464,38 @@
     action="dealer_team_action"
     sequence="1"
     groups="base.group_sale_manager"/>
-
-  <menuitem id="dealer_all_menu" name="All"
+-->
+  <menuitem id="dealer_all_menu" name="All included"
     parent="dealer_menu"
     action="dealer_all_action"
     sequence="2"
-    groups="base.group_no_one"/> -->
+    groups="xpr_sale_process.create_company"/>
 
   <act_window name="Assign Salesperson"
-              res_model="xpr_dealer.dealer_assign"
-              src_model="xpr_dealer.dealer"
-              view_mode="form"
-              multi="True"
-              target="new"
-              key2="client_action_multi"
-              id="assign_dealer_action"
-              groups="base.group_sale_manager"
-              />
+    res_model="xpr_dealer.dealer_assign"
+    src_model="xpr_dealer.dealer"
+    view_mode="form"
+    multi="True"
+    target="new"
+    key2="client_action_multi"
+    id="assign_dealer_action"
+    groups="base.group_sale_manager"
+    />
+
+
+  <act_window name="Do Not Use Anymore"
+    res_model="xpr_dealer.dealer_donotuse"
+    src_model="xpr_dealer.dealer"
+    view_mode="form"
+    multi="True"
+    target="new"
+    key2="client_action_multi"
+    id="donotuse_dealer_action"
+    groups="xpr_sale_process.create_company"
+    />
+
+
+
 
   <!-- For live data updates. You can comment out this action -->
   <act_window name="Apply Patch"

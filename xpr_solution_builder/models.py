@@ -81,6 +81,16 @@ class Solution(models.Model):
             # Assign new recordset
             solution.options_extra = extras
 
+    @api.onchange('budget')
+    def _check_budget(self):
+        for solution in self:
+            min_budget = sum([ex.product.tier_low for ex in solution.options_extra if ex.sticky])
+
+            if min_budget <= solution.budget:
+                continue
+
+            solution.budget = min_budget
+
     @api.depends('name', 'default_code')
     def _display_name(self):
         for solution in self:
@@ -443,7 +453,7 @@ class SalesOrder(models.Model):
                 product_id=product,
                 name=product.description_sale or ' ',
                 product_uom_qty=qty,
-                price_unit=product.lst_price,
+                price_unit=product.lst_price or product.tier_low,
                 solution_part=2,  # is_package and 2 or 0,
                 product_uom=product.uom_id,
                 sequence=sequence,
@@ -527,6 +537,28 @@ class SalesOrderLine(models.Model):
         """
 
         for line in self:
+
+            if line.product_id and (line.product_id.tier_low or line.product_id.tier_high):
+
+                # Check if price in in tier range
+                if line.price_unit < line.product_id.tier_low:
+                    line.price_unit = line.product_id.tier_low
+                    return {
+                        'warning': {
+                            'title': 'Error',
+                            'message': "Product price must remain in tier"
+                        }
+                    }
+
+                if line.product_id.tier_high and line.price_unit >= line.product_id.tier_high:
+                    line.price_unit = line.product_id.tier_high - 1
+                    return {
+                        'warning': {
+                            'title': 'Error',
+                            'message': "Product price must remain in tier"
+                        }
+                    }
+
             amount = line.price_unit * line.product_uom_qty
             if line.discount_money <= 0:
                 # Subtotal may already be negative (with discount == 0)
@@ -560,7 +592,7 @@ class SalesOrderLine(models.Model):
 
             line.is_ad_line = cat.id in [
                 self.env.ref('xpr_product.advertising').id,
-                self.env.ref('xpr_product.adwords').id
+                #self.env.ref('xpr_product.adwords').id
             ]
 
     @api.onchange('product_id')
