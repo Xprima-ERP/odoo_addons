@@ -301,7 +301,7 @@ class SaleOrderRequest(XISRequestWrapper):
         if not nb_item:
             return
 
-        comments = (self.order.note or '').decode('utf-8').encode('latin-1')
+        comments = (self.order.note or '').encode('latin-1')
 
         data = {
             # "123" sample base dealercode
