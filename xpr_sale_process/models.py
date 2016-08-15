@@ -250,7 +250,7 @@ class Lead(models.Model, LeadMixin):
     @api.onchange('planned_revenue', 'category')
     def _select_default_solution(self):
         # Based on expected revenue, we solution with closest budget.
-        # This logic is needed for Adwords
+        # This logic is needed for Advertising
 
         if not self.planned_revenue or not self.category:
             return

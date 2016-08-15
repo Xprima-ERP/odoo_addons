@@ -592,7 +592,7 @@ class SalesOrderLine(models.Model):
 
             line.is_ad_line = cat.id in [
                 self.env.ref('xpr_product.advertising').id,
-                self.env.ref('xpr_product.adwords').id
+                #self.env.ref('xpr_product.adwords').id
             ]
 
     @api.onchange('product_id')

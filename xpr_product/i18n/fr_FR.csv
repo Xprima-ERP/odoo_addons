@@ -2,7 +2,6 @@ module,type,name,res_id,src,value
 xpr_product,view,product.product,xpr_product.product_normal_form_view,Accounting,Comptabilité
 xpr_product,view,product.template,xpr_product.product_template_only_form_view,Accounting,Comptabilité
 xpr_product,model,"product.category,name",xpr_product.advertising,Advertising,Publicité
-xpr_product,model,"product.category,name",xpr_product.adwords,AdWords,AdWords
 xpr_product,field,"product.template,categ_term",0,Category,Catégorie
 xpr_product,view,product.product,xpr_product.product_normal_form_view,Inventory,Inventaire
 xpr_product,view,product.template,xpr_product.product_template_only_form_view,Inventory,Inventaire
