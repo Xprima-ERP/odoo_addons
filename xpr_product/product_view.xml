@@ -52,9 +52,13 @@
         <field name="type" position="replace">
           <!-- Don't need type. We do need category.-->
           <field name="type" invisible="1" />
-          <field name="categ_id"/>
+          <field name="categ_term" readonly="1"/>
         </field>
 
+        <field name="lst_price" position="after">
+          <field name="tier_low" attrs="{'invisible': [('categ_term', '!=',  %(advertising)d) ]}"  />
+          <field name="tier_high" attrs="{'invisible': [('categ_term', '!=',  %(advertising)d) ]}"  />
+        </field>
 
         <field name="sale_ok" position="replace">
           <field name="sale_ok" invisible="1" />

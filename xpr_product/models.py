@@ -73,14 +73,20 @@ class Product(models.Model):
 
         siblings = self.search([
             ('product_tmpl_id', 'in', templates),
-            ('default_code', '!=', default_code), # Avoid recursive calls.
-            ('default_code', 'in', ['', None]), # Set codes only for unset siblings.
+            ('default_code', '!=', default_code),  # Avoid recursive calls.
+            ('default_code', 'in', ['', None]),  # Set codes only for unset siblings.
         ])
 
         if siblings:
             siblings.write({'default_code': default_code})
 
         return res
+
+    tier_low = fields.Float(
+        string='Tier Price Low', digits=(6, 2), default=0)
+
+    tier_high = fields.Float(
+        string='Tier Price High', digits=(6, 2), default=0)
 
 
 class SaleOrder(models.Model):
