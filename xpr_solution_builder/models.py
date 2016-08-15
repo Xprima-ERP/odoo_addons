@@ -81,6 +81,16 @@ class Solution(models.Model):
             # Assign new recordset
             solution.options_extra = extras
 
+    @api.onchange('budget')
+    def _check_budget(self):
+        for solution in self:
+            min_budget = sum([ex.product.tier_low for ex in solution.options_extra if ex.sticky])
+
+            if min_budget <= solution.budget:
+                continue
+
+            solution.budget = min_budget
+
     @api.depends('name', 'default_code')
     def _display_name(self):
         for solution in self:
