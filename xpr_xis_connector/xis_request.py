@@ -100,7 +100,7 @@ class XisRequest():
         data = "&".join([
             "{0}={1}".format(
                 key,
-                urllib.quote_plus(json.dumps(value)))
+                urllib.quote_plus(json.dumps(value, ensure_ascii=False).encode('utf-8')))
             for key, value in values.items()
         ])
 
@@ -301,7 +301,7 @@ class SaleOrderRequest(XISRequestWrapper):
         if not nb_item:
             return
 
-        comments = (self.order.note or '').encode('latin-1')
+        comments = self.order.note or ''
 
         data = {
             # "123" sample base dealercode
