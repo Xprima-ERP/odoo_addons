@@ -97,7 +97,7 @@ class Users(models.Model):
     # Called by automated action
     @api.one
     def _mark_dealers(self):
-        self.env['xpr_dealer.dealer'].search(
+        self.env['xpr_dealer.dealer'].sudo().search(
             [('partner.user_id', '=', self.id)]
         ).write({
             'assigned_user': self.active
@@ -447,7 +447,8 @@ class DealerDoNotUse(models.TransientModel):
     """
     Dealer deprecation wizard.
 
-    Alternate to deletion or setting as inactive. To keep dealer data visible to support and management.
+    Alternate to deletion or setting as inactive.
+    To keep dealer data visible to support and management.
     """
 
     _name = 'xpr_dealer.dealer_donotuse'
