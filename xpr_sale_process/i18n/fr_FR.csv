@@ -100,6 +100,7 @@ xpr_sale_process,model,"email.template,body_html",xpr_sale_process.quotation_ava
 xpr_sale_process,model,"ir.model,name",xpr_sale_process.model_sale_order,Sales Order,Commande de vente
 xpr_sale_process,model,"ir.actions.server,name",xpr_sale_process.opportunity_reminder_action,Send Mail,Envoyer un courriel
 xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Ask Approval,Demander l'approbation
+xpr_sale_process,view,sale.order,xpr_sale_process.sale_order_xprima_sale_process_view,Make Contract,Créer le contrat
 xpr_sale_process,model,"ir.actions.server,help",xpr_sale_process.opportunity_reminder_action,Sends opportunity action mail reminder,Envoie un rappel d'action par courriel.
 xpr_sale_process,field,"crm.lead,solution",0,Solution,Solution
 xpr_sale_process,field,"crm.make.sale,solution",0,Solution,Solution

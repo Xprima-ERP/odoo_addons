@@ -261,6 +261,12 @@
             <field name="condition">check_manager_approval_needed()</field>
         </record>
 
+        <record id="trans_draft_manager_approved" model="workflow.transition">
+            <field name="act_from" ref="sale.act_draft"/>
+            <field name="act_to" ref="act_manager_approved"/>
+            <field name="signal">sig_direct_approve</field>
+        </record>
+
         <record id="trans_check_manager_approval_needed_approved" model="workflow.transition">
             <field name="act_from" ref="act_check_manager_approval_needed"/>
             <field name="act_to" ref="act_manager_approved"/>

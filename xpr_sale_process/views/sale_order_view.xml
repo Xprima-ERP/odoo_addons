@@ -113,7 +113,7 @@
             <field name="name">sale.order.form.keep.create</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_order_remove_create_form"/>
-            <field name="groups_id" search="[('name','=','Manager')]" />
+            <field name="groups_id" eval="[(6, 0, [ref('create_company'), ref('rep_pixel')])]" />
             <field name="arch" type="xml">
                 <xpath expr="//form" position="attributes">
                     <attribute name="create">true</attribute>
@@ -134,7 +134,7 @@
             <field name="name">sale.order.tree.keep.create</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale_order_remove_create_tree"/>
-            <field name="groups_id" search="[('name','=','Manager')]" />
+            <field name="groups_id" eval="[(6, 0, [ref('create_company'), ref('rep_pixel')])]" />
             <field name="arch" type="xml">
                  <xpath expr="//tree" position="attributes">
                     <attribute name="create">true</attribute>
@@ -146,7 +146,7 @@
             <field name="name">quotation.tree.keep.create</field>
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="quotation_remove_create_tree"/>
-            <field name="groups_id" search="[('name','=','Manager')]" />
+            <field name="groups_id" eval="[(6, 0, [ref('create_company'), ref('rep_pixel')])]" />
             <field name="arch" type="xml">
                  <xpath expr="//tree" position="attributes">
                     <attribute name="create">true</attribute>
@@ -171,6 +171,9 @@
                 </xpath>
 
                 <xpath expr="/form/header/button[@name='print_quotation' and @states='draft']" position="after">
+
+                    <button type="workflow" name="sig_direct_approve" string="Make Contract" states="draft" groups="xpr_sale_process.rep_pixel" />
+
                     <button type="workflow" name="sig_check_approval_needed" string="Ask Approval" states="draft" />
 
                     <button type="workflow" name="sig_availability_checked" string="Availability Checked" states="need_availability_check" groups="xpr_sale_process.advertising" />
@@ -255,9 +258,31 @@
             </field>
         </record>
 
+        <record id="action_contracts_rep_pixel" model="ir.actions.act_window">
+            <!-- Same as action_contracts, except only own sales order are shown-->
+            <field name="name">Pixel Contracts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,calendar,graph</field>
+            <field name="search_view_id" ref="sale.view_sales_order_filter"/>
+            <field name="context">{'search_default_my_team': 1}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    Click to create a quotation that can be converted into a sales order.
+                </p>
+                <p>
+                    Odoo will help you efficiently handle the complete sales flow: quotation, sales order, delivery, invoicing and payment.
+                </p>
+            </field>
+        </record>
+
+
         <menuitem action="action_contracts" id="menu_contracts" parent="base.menu_sales" sequence="6" groups="base.group_sale_salesman_all_leads,base.group_sale_manager"/>
 
         <menuitem action="action_contracts_rep" id="menu_contracts_rep" parent="base.menu_sales" sequence="6" groups="rep_ui"/>
+
+        <menuitem action="action_contracts_rep_pixel" id="menu_contracts_rep_pixel" parent="base.menu_sales" sequence="7" groups="rep_pixel"/>
 
         <record id="sale.menu_sale_order" model="ir.ui.menu">
             <field name="groups_id" eval="[(6, 0, [ref('group_hidden')])]"/>
