@@ -27,6 +27,13 @@
             <field name="implied_ids/id" eval="[(4, ref('base.group_partner_manager'))]" />
         </record>
 
+        <record model="res.groups" id="rep_pixel">
+            <field name="name">Pixel Rep</field>
+            <field name="comment">This group permits sales person to skip validation process in contract creation.</field>
+            <field name="implied_ids/id" eval="[(4, ref('base.group_sale_salesman'))]" />
+            <field name="category_id" ref="base.module_category_sales_management"/>
+        </record>
+
         <record model="res.groups" id="group_hidden">
             <field name="name">Hidden</field>
             <field name="comment">This group permits hiding stuff. Keep it empty.</field>
