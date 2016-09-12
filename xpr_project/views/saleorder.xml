@@ -39,6 +39,18 @@
     </field>
   </record>
 
+   <record id="view_order_form_express" model="ir.ui.view">
+      <!-- Do not make live date mandatory -->
+      <field name="model">sale.order</field>
+      <field name="inherit_id" ref="view_order_form"/>
+      <field name="groups_id" eval="[(6, 0, [ref('xpr_sale_process.rep_pixel')])]" />
+      <field name="arch" type="xml">
+        <field name="live_date" position="attributes">
+          <attribute name="attrs" />
+        </field>
+    </field>
+  </record>
+
   <record id="view_order_tree" model="ir.ui.view">
       <field name="model">sale.order</field>
       <field name="inherit_id" ref="sale.view_order_tree"/>
