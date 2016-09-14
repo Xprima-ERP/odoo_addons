@@ -100,7 +100,14 @@ class XisRequest():
         data = "&".join([
             "{0}={1}".format(
                 key,
-                urllib.quote_plus(json.dumps(value, ensure_ascii=False).encode('utf-8')))
+                urllib.quote_plus(
+                    json.dumps(
+                        value,
+                        ensure_ascii=False
+                        ).replace(
+                            u"\u2019", "'"
+                        ).encode('utf-8')))
+
             for key, value in values.items()
         ])
 
