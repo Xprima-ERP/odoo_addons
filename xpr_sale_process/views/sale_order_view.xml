@@ -48,11 +48,11 @@
                 </xpath>
 
                 <field name="solution" position="attributes">
-                    <attribute name="attrs">{'readonly': [('state','!=','draft')]}</attribute>
+                    <attribute name="attrs">{'readonly': [('state','!=','draft'), ('state', '!=', 'need_availability_check')]}</attribute>
                 </field>
 
                 <xpath expr="//button[@name='sale_solution_option_action']" position="attributes">
-                    <attribute name="states">draft</attribute>
+                    <attribute name="states">draft,need_availability_check</attribute>
                 </xpath>
 
                 <xpath expr="/form/header/button[@name='copy_quotation']" position="attributes">

@@ -47,7 +47,7 @@ class SaleOrder(models.Model):
             'draft': [('readonly', False)],
             #'manager_not_approved': [('readonly', False)],
             #'contract_not_approved': [('readonly', False)],
-            #'need_availability_check': [('readonly', False)],
+            'need_availability_check': [('readonly', False)],
             #'need_manager_approval': [('readonly', False)],
 
             #'sent': [('readonly', False)],
