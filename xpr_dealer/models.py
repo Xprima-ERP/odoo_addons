@@ -50,7 +50,21 @@ class Partner(models.Model):
                     }
                 }
 
-    # Extends liste of fields to be copied from parent
+    @api.onchange('is_test')
+    def _check_code_case(self):
+        for partner in self:
+
+            if not partner.is_test:
+                continue
+
+            template = self.env.ref('xpr_dealer.partner_delete_notification_mail')
+
+            values = self.env['email.template'].generate_email(
+                template.id, self.id)
+
+            self.env['mail.mail'].create(values)
+
+    # Extends list of fields to be copied from parent
     def _address_fields(self, cr, uid, context=None):
         return super(Partner, self)._address_fields(cr, uid) + ['phone', 'website', 'fax']
 

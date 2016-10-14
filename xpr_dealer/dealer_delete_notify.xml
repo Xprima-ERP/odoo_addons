@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+
+    <data>
+        <record model="email.template" id="partner_delete_notification_mail">
+            <field name="name">Partner - Delete notification</field>
+            <field name="model_id" ref="res.partner" />
+            <!-- <field name="auto_delete">True</field> -->
+            <field name="email_from">no_reply@xprima.com</field>
+            <field name="email_to">cdelean@xprima.com</field> <!-- TODO: Make alias for finance team -->
+            <field name="subject">Deleted Partner: ${object.code}</field>
+            <field name="body_html"><![CDATA[<p>This partner has been deleted:</p><ul><li>Name: ${object.name}</li><li>CODE: ${object.code}</li></ul>]]></field>
+        </record>
+
+        <!-- TODO: Make rules and filters instead of an onchange  -->
+
+    </data>
+</openerp>
+
