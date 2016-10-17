@@ -48,6 +48,7 @@ Contributors
         'views/res_partner.xml',
         'res_user_mark_dealer.xml',
         'res_user_propagate_salesperson.xml',
+        'dealer_delete_notify.xml'
     ],
     'installable': True,
 }
