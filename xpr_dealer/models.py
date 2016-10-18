@@ -155,6 +155,24 @@ class Dealer(models.Model):
         # TODO: Check if we need to call super class.
         pass
 
+    ######## Button API
+
+    @api.multi
+    def schedule_meeting(self, *args, **kwargs):
+        return self.partner.schedule_meeting(*args, **kwargs)
+
+    @api.multi
+    def get_dealer_sales_action(self):
+        for dealer in self:
+            return {
+                'type': 'ir.actions.act_window',
+                'res_model': 'sale.order',
+                'views': [[False, "list"]],
+                #'target': 'new',
+                #'view_id': '320',
+                'context': {'search_default_partner_id': dealer.partner.id, 'default_partner_id': dealer.partner.id}
+            }
+
     ######## Mail API redirected to partner. TODO: Make a mixin out of this.
 
     def message_get_subscription_data(self, cr, uid, ids, user_pid=None, context=None):
