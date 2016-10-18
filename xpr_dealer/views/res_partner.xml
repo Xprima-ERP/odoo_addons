@@ -85,6 +85,47 @@
           <sheet>
             <h1><field name="name"/></h1>
 
+            <!-- Copied from partner buttons. Changed context to point to partner -->
+
+            <div class="oe_right oe_button_box" name="buttons">
+                <button class="oe_inline oe_stat_button" type="action" attrs="{'invisible': [('customer', '=', False)]}" name="430" icon="fa-star" context="{'search_default_partner_id': partner}">
+                    <field string="Opportunities" name="opportunity_count" widget="statinfo"/>
+                </button>
+                <button class="oe_inline oe_stat_button" type="object" name="schedule_meeting" icon="fa-calendar" context="{'partner_id': partner}">
+                    <field string="Meetings" name="meeting_count" widget="statinfo"/>
+                </button>
+                <button class="oe_inline oe_stat_button" type="action" name="421" icon="fa-phone" context="{'search_default_partner_id': partner, 'default_duration': 1.0}">
+                    <field string="Calls" name="phonecall_count" widget="statinfo"/>
+                </button>
+                <!--
+                <button type="action" class="oe_stat_button" id="invoice_button" icon="fa-pencil-square-o" name="252" attrs="{'invisible': [('customer', '=', False)]}" context="{'search_default_partner_id': partner,'default_partner_id': partner}">
+                    <div><strong><field name="total_invoiced" widget="monetary"/></strong><br/>Invoiced</div>
+                </button>
+                -->
+                <button class="oe_inline oe_stat_button" type="object" name="get_dealer_sales_action" attrs="{'invisible': [('customer', '=', False)]}" icon="fa-strikethrough">
+                   <field string="Sales" name="sale_order_count" widget="statinfo"/>
+                </button>
+
+                <!--
+                <button type="action" class="oe_stat_button" name="178" icon="fa-list">
+                   <field string="Journal Items" name="journal_item_count" widget="statinfo"/>
+                </button>
+                -->
+
+                <!--
+                <button class="oe_inline oe_stat_button" type="action" name="278" icon="fa-book" context="{'search_default_partner_id': [partner], 'default_partner_id': partner}">
+                   <field string="Contracts" name="contracts_count" widget="statinfo"/>
+                </button>
+                -->
+
+                <!--
+                <button class="oe_inline oe_stat_button" type="action" name="502" context="{'search_default_partner_id': partner, 'default_partner_id': partner}" icon="fa-tasks">
+                   <field string="Tasks" name="task_count" widget="statinfo"/>
+                </button>
+                -->
+            </div>
+
+
             <group>
               <field name="id" invisible="1" readonly="1"/>
               <field name="partner" domain="[('dealer','=', False)]" attrs="{'readonly': [('partner','!=', False), ('id', '!=', False)]}"/>
